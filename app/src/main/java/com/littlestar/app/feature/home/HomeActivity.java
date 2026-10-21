@@ -155,15 +155,21 @@ public final class HomeActivity extends ChildActivity {
         if (spokenToday || s.nextWord == null) {
             return;
         }
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        spokenToday = true;   // 先占位，防止多次 render 重复触发
         String today = container().clock.today().toString();
-        if (today.equals(prefs.getString(PREF_LAST_SPEAK_DATE, null))) {
-            spokenToday = true;
-            return;
-        }
-        spokenToday = true;
-        prefs.edit().putString(PREF_LAST_SPEAK_DATE, today).apply();
-        speakHero();
+        // SharedPreferences 首次读会加载文件：放到 diskIO，避免主线程磁盘读（StrictMode）
+        container().executors.diskIO().execute(() -> {
+            SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+            boolean already = today.equals(prefs.getString(PREF_LAST_SPEAK_DATE, null));
+            if (!already) {
+                prefs.edit().putString(PREF_LAST_SPEAK_DATE, today).apply();
+            }
+            container().executors.mainThread().execute(() -> {
+                if (!already && !isFinishing() && !isDestroyed()) {
+                    speakHero();
+                }
+            });
+        });
     }
 
     private void speakHero() {

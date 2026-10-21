@@ -138,3 +138,18 @@
 - 问题：验收要求「目标改 5，第二天首页 5 段」；真机 shell 没有 SET_TIME 权限，不能直接改日期。
 - 做法：Plan 保存 goal=5 后（settings.xml 确认 daily_goal=5），`run-as rm files/progress.json` + force-stop 重进 → 当天 plan 按新 goal 重建 → 首页显示 5 段（见 docs/screenshots/M6/home_goal5_next.png「Today 0 / 5 words」）。当天已有 plan 时不重算（SessionBuilder.todayPlan 有 plan 直接返回）。
 - 理由：改不了系统时间时，这是等价于「次日」的最保守验证。
+
+## D27 · 2026-10-21 · release 验收用 debug 签名（M8）
+- 问题：release 没有签名配置，assembleRelease 出的包无法安装。
+- 做法：buildTypes.release 加 `signingConfig signingConfigs.debug`，仅用于 M8 验收；正式发布前替换为正式 keystore 并从构建脚本移除。
+- 理由：§15 要求验证 release（R8）行为；最小侵入。
+
+## D28 · 2026-10-21 · R8 keep 规则补 ContentRepository 包装类（M8）
+- 问题：release（R8 开启）冷启动崩溃：`内容解析失败: words.json` → Gson 反射实例化 ContentRepository 的私有包装类 WordsFile/CultureFile 失败。
+- 做法：proguard-rules.pro 加 `-keep class com.littlestar.app.data.content.ContentRepository$* { *; }`；真机验证 release 学习进度写读正常。
+- 理由：模型类已有 keep；漏了 repository 内部的 Gson 目标类。
+
+## D29 · 2026-10-21 · StrictMode 范围与残留说明（M8）
+- 问题：§15 要求 debug 开启 StrictMode 检测主线程磁盘 IO。开启后发现 SharedPreferences 首次读取（主线程）触发 DiskReadViolation。
+- 做法：AppContainer 构造后在 diskIO 线程预热 settings（首次文件加载在后台完成）；HomeActivity「当天首次朗读」的日期检查改到 diskIO→main 回调。残留违规全部是框架内部路径（布局膨胀 mmap、startActivity、输入子系统 KeyCharacterMap、ColorOS Hans），与应用数据文件无关。
+- 理由：§15 的核心是 progress.json 不上主线程；框架内部 mmap 读取不属于缺陷。

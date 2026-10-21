@@ -20,6 +20,11 @@ public final class LittleStarApp extends Application {
     public void onCreate() {
         super.onCreate();
         container = new AppContainer(this);
+        // debug 构建开启 StrictMode（容器建好后开启：getFilesDir 等框架调用不算违规）（§15）
+        if (BuildConfig.DEBUG) {
+            android.os.StrictMode.setThreadPolicy(new android.os.StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads().detectDiskWrites().penaltyLog().build());
+        }
         // 硬影块按下音效（BlockLayout 不直接依赖 AppContainer）
         BlockLayout.setPressSoundHook(() -> container.sfx.play(SfxPlayer.Sfx.TAP));
         // 时长到点 → 休息页 / 上限页（§10.1）

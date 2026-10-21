@@ -33,6 +33,8 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // M8 验收用 debug 签名；发布时替换正式 keystore（docs/DECISIONS.md D27）
+            signingConfig signingConfigs.debug
         }
     }
 

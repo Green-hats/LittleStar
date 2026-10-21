@@ -1,0 +1,36 @@
+# LittleStar 验收清单（§15）
+
+日期：2026-10-21 ｜ 设备：一加 8T（KB2000，1080×2400，ColorOS Android 15）
+构建：debug `com.littlestar.app.debug` + release `com.littlestar.app`（R8 开启，验收用 debug 签名 D27）
+
+| # | 检查项 | 结果 | 证据 |
+|---|---|---|---|
+| 1 | contrast_check.py 浅色、深色都通过 | ✅ | `python3 tools/contrast_check.py` 退出码 0（全部 OK，含 night 组） |
+| 2 | 没有 INTERNET 权限 | ✅ | `aapt dump permissions app-release.apk`：只有 POST_NOTIFICATIONS / RECEIVE_BOOT_COMPLETED / FOREGROUND_SERVICE(_MEDIA_PLAYBACK) / ACCESS_NETWORK_STATE / WAKE_LOCK（后两个来自 media3） |
+| 3 | 布局 / Java 无十六进制色值、硬编码中文 | ✅ | `grep -rE "#[0-9a-fA-F]{6}" app/src/main/res/layout app/src/main/java` 无输出；中文字面量脚本扫描无输出（内容 JSON 除外） |
+| 4 | 教学汉字子集字体 + zh-CN，「骨」「直」字形正确 | ✅ | M1 已验（docs/screenshots/M1）；子集字体 43KB（D6） |
+| 5 | 硬影按下：内容下沉、影子剩 2dp；深色下影子黑色 | ✅ | M1 Gallery 截图；M8 深色走查 docs/screenshots/M8/*_dark.png 目视确认 |
+| 6 | 每日目标改为 5，第二天首页 5 段 | ✅ | 真机无法改系统时间（shell 无 SET_TIME）；用「Plan 保存 5 → 删 progress.json 重建当天 plan → 首页 Today 0 / 5 words、5 段」等价验证（docs/screenshots/M6/home_goal5_next.png，方法 D26） |
+| 7 | LIMIT 后重开 app 仍停在休息页；家长延长后可继续 | ✅ | M7 真机全流程验收（commit 268cde2） |
+| 8 | 会话中途到时，不打断答题 | ✅ | Flashcard/Quiz deferTimeUp()=true（M3 起）；M7 TimeUp 验收通过 |
+| 9 | 睡前定时「播完这首再停」生效并发晚安通知 | ✅ | M5 真机：1 分钟定时到点 → 播完当前音轨 → PAUSED + 通知 id=1003「故事讲完啦，晚安」 |
+| 10 | 重启设备后每日提醒仍触发；目标完成当天不发 | ⚠️ 代码审查通过，真机重启未测 | BootReceiver 注册 BOOT_COMPLETED/TIME_SET/TIMEZONE_CHANGED → reminders.reschedule()（manifest 已注册）；不 reboot 测试机（D24 教训）；「当天完成不发」由 ReminderReceiver 读今日计划判定 |
+| 11 | 进程被杀后从 Quiz 恢复到同一题 | ✅ | M8 真机：答到第 2 题 → `am kill` → 重开回到 Quiz 2/3（docs/screenshots/M8/quiz_recovery_before/after.png） |
+| 12 | 小屏 360×640 每屏可滚动、无裁切 | ⚠️ 真机 ROM 限制未测 | ColorOS shell 无 WRITE_SECURE_SETTINGS，`wm size` 被拒；布局全部 wrap_content/minHeight + NestedScrollView 按 §11 实现 |
+| 13 | `./gradlew test connectedAndroidTest` 全绿 | ✅ | JVM 单测 46/46；instrumented 4/4（SmokeTest 全流程、TimeUpActivityTest ×2、AtomicStateFile） |
+| 14 | 无 .kt/.kts、无 Kotlin 插件、无 -ktx | ✅ | `find . -name "*.kt*"` 无输出；releaseRuntimeClasspath 只有传递的 kotlin-stdlib（§15 允许） |
+| 15 | 依赖无 Room/SQLite、无 annotationProcessor | ✅ | build.gradle 仅 androidx/gson/media3；无 annotationProcessor 行 |
+| 16 | StrictMode 主流程无违规 | ✅ | debug 开启 detectDiskReads/Writes；应用代码主线程无 progress.json/content 读写（D29：prefs 预热 + 朗读日期检查改异步）；残留违规均为框架内部（布局膨胀 mmap / startActivity / 输入子系统） |
+| 17 | 学一个字按 Home 划掉 app，重开进度还在 | ✅ | release 包真机：学会「猫」→ `am kill` → 重开 Today 1/3 保留（docs/screenshots/M8/release_home_before/after.png） |
+| 18 | progress.json 改非法 JSON 重开不崩溃、从备份恢复 | ✅ | ProgressStoreTest.corruptMain_fallsBackToBackup / corruptBoth_startsFresh 单测覆盖（真机 run-as 写文件被 SELinux 拒，代码路径单测覆盖） |
+| 19 | 公开方法有 @NonNull/@Nullable；Lint 无 nullability 错误 | ✅ | 全部公开方法已标注；`assembleDebug` Lint 无 nullability 报错 |
+| 20 | release APK < 30MB | ✅ | app-release.apk = 5.8MB（R8 + shrinkResources） |
+
+## 性能
+
+- 冷启动：`am start -W` TotalTime 726ms（< 1.5s 目标）。
+
+## M8 走查结论（8 屏深色变体，docs/screenshots/M8/*_dark.png）
+
+home_word / words_list / flashcard / quiz（答对反馈态）/ reward / culture_stories / player / parent_dashboard：
+深色下硬影为纯黑、无文字裁切、无溢出；星星、印章、反馈色（mint/clay）正常。1.3 倍字体与小屏变体受设备 ROM 限制未做真机走查（见 #12 与 DECISIONS D24；组件级 1.3× 已由 M1 Gallery 覆盖）。
