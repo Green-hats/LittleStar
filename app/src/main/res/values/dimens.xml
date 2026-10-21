@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ls_margin">24dp</dimen>
+    <dimen name="ls_section">24dp</dimen>
+    <dimen name="ls_section_lg">32dp</dimen>
+    <dimen name="ls_card_pad">20dp</dimen>
+    <dimen name="ls_gap">12dp</dimen>
+    <dimen name="ls_gap_sm">8dp</dimen>
+
+    <dimen name="ls_btn_primary">64dp</dimen>
+    <dimen name="ls_btn_secondary">56dp</dimen>
+    <dimen name="ls_btn_icon">48dp</dimen>
+    <dimen name="ls_row_parent">56dp</dimen>
+
+    <dimen name="ls_radius_hero">28dp</dimen>
+    <dimen name="ls_radius_block">18dp</dimen>
+    <dimen name="ls_radius_tile">16dp</dimen>
+    <dimen name="ls_radius_chip">10dp</dimen>
+    <dimen name="ls_radius_input">14dp</dimen>
+
+    <dimen name="ls_stroke_hero">4dp</dimen>
+    <dimen name="ls_stroke_block">3dp</dimen>
+    <dimen name="ls_stroke_chip">2dp</dimen>
+    <dimen name="ls_shadow_hero">8dp</dimen>
+    <dimen name="ls_shadow_block">6dp</dimen>
+    <dimen name="ls_shadow_tile">4dp</dimen>
+    <dimen name="ls_shadow_secondary">5dp</dimen>
+    <dimen name="ls_shadow_parent">2dp</dimen>
+    <dimen name="ls_press_remain">2dp</dimen>   <!-- 按下后剩余的影子 -->
+
+    <dimen name="ls_content_max_width">480dp</dimen>
+</resources>

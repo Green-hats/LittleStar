@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主题属性：BlockLayout 默认描边 / 影子颜色 -->
+    <attr name="lsStroke" format="color" />
+    <attr name="lsShadow" format="color" />
+    <attr name="blockLayoutStyle" format="reference" />
+
+    <declare-styleable name="BlockLayout">
+        <attr name="ls_fill" format="color|reference" />
+        <attr name="ls_strokeColor" format="color|reference" />
+        <attr name="ls_shadowColor" format="color|reference" />
+        <attr name="ls_strokeWidth" format="dimension" />
+        <attr name="ls_shadowOffset" format="dimension" />
+        <attr name="ls_cornerRadius" format="dimension" />
+        <attr name="ls_pressable" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SegmentProgressView">
+        <attr name="segments" format="integer" />
+        <attr name="filled" format="integer" />
+        <attr name="fillColor" format="color|reference" />
+        <attr name="trackColor" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="StepperView">
+        <attr name="minValue" format="integer" />
+        <attr name="maxValue" format="integer" />
+        <attr name="value" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="BarChartView">
+        <attr name="days" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="SoundWaveView">
+        <attr name="barColor" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="StampView">
+        <attr name="learned" format="boolean" />
+    </declare-styleable>
+</resources>

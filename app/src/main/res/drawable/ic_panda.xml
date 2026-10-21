@@ -1,0 +1,24 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 占位熊猫：M1 用 assets/illustrations/panda_v3.svg 精修 -->
+    <path
+        android:fillColor="#211D18"
+        android:pathData="M30,22 a10,10 0 1,0 0.1,0 M78,22 a10,10 0 1,0 0.1,0" />
+    <path
+        android:fillColor="#FFFDF6"
+        android:strokeColor="#211D18"
+        android:strokeWidth="4"
+        android:pathData="M54,26 c-18,0 -30,12 -30,28 c0,16 12,28 30,28 c18,0 30,-12 30,-28 c0,-16 -12,-28 -30,-28 z" />
+    <path
+        android:fillColor="#211D18"
+        android:pathData="M40,50 a6.5,7.5 0 1,0 0.1,0 M68,50 a6.5,7.5 0 1,0 0.1,0" />
+    <path
+        android:fillColor="#FFFDF6"
+        android:pathData="M40,51 a2.5,2.5 0 1,0 0.1,0 M68,51 a2.5,2.5 0 1,0 0.1,0" />
+    <path
+        android:fillColor="#211D18"
+        android:pathData="M50,64 h8 l-4,5 z" />
+</vector>

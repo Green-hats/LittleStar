@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.LittleStar" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/ls_red</item>
+        <item name="colorOnPrimary">@color/ls_on_red</item>
+        <item name="colorSecondary">@color/ls_blue</item>
+        <item name="colorOnSecondary">@color/ls_on_blue</item>
+        <item name="colorTertiary">@color/ls_green</item>
+        <item name="colorOnTertiary">@color/ls_on_green</item>
+        <item name="colorSurface">@color/ls_card</item>
+        <item name="colorOnSurface">@color/ls_ink</item>
+        <item name="colorOnSurfaceVariant">@color/ls_muted</item>
+        <item name="colorOutline">@color/ls_stroke</item>
+        <item name="colorError">@color/ls_on_clay</item>
+        <item name="colorErrorContainer">@color/ls_clay</item>
+        <item name="android:colorBackground">@color/ls_paper</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="lsStroke">@color/ls_stroke</item>
+        <item name="lsShadow">@color/ls_shadow</item>
+        <item name="blockLayoutStyle">@style/Widget.LS.Block</item>
+    </style>
+
+    <!-- 孩子区：纸白底，锁定竖屏在 manifest 里做 -->
+    <style name="Theme.LittleStar.Child" parent="Theme.LittleStar" />
+
+    <!-- 家长区：同一套色板，组件用 M3 -->
+    <style name="Theme.LittleStar.Parent" parent="Theme.LittleStar" />
+
+    <!-- 启动画面 -->
+    <style name="Theme.LittleStar.Splash" parent="Theme.SplashScreen.IconBackground">
+        <item name="windowSplashScreenBackground">@color/ls_paper</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_panda</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/ls_yellow</item>
+        <item name="postSplashScreenTheme">@style/Theme.LittleStar.Child</item>
+    </style>
+</resources>

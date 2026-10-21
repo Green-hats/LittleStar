@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 中性 -->
+    <color name="ls_paper">#F8EFDD</color>
+    <color name="ls_card">#FFFDF6</color>
+    <color name="ls_ink">#211D18</color>
+    <color name="ls_muted">#6E6252</color>
+    <color name="ls_stroke">#211D18</color>
+    <color name="ls_shadow">#211D18</color>
+    <color name="ls_track">#E2D3B8</color>        <!-- 未完成进度段、关闭的开关 -->
+    <!-- 职务色 -->
+    <color name="ls_red">#B8331C</color>          <!-- 修正：原 #C93A22 在纸白上 4.47 -->
+    <color name="ls_on_red">#FFFDF6</color>
+    <color name="ls_yellow">#F5B301</color>
+    <color name="ls_on_yellow">#211D18</color>
+    <color name="ls_green">#27A567</color>
+    <color name="ls_on_green">#211D18</color>     <!-- 青绿上只用墨字 -->
+    <color name="ls_blue">#1F6FD0</color>
+    <color name="ls_on_blue">#FFFDF6</color>
+    <!-- 反馈容器 -->
+    <color name="ls_clay">#F6D3C6</color>
+    <color name="ls_on_clay">#7A4A33</color>      <!-- 答错说明文字 -->
+    <color name="ls_mint">#CDEBD8</color>
+    <color name="ls_on_mint">#1B5E3B</color>
+</resources>

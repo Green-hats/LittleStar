@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ls_paper">#17130E</color>
+    <color name="ls_card">#241F19</color>
+    <color name="ls_ink">#F3E7D3</color>
+    <color name="ls_muted">#C9B79B</color>
+    <color name="ls_stroke">#B8AA93</color>
+    <color name="ls_shadow">#000000</color>       <!-- 硬影在深色下用纯黑，不跟随文字色 -->
+    <color name="ls_track">#3A3229</color>
+    <color name="ls_red">#FF8A6E</color>
+    <color name="ls_on_red">#17130E</color>
+    <color name="ls_yellow">#FFC94D</color>
+    <color name="ls_on_yellow">#17130E</color>
+    <color name="ls_green">#6FD3A2</color>
+    <color name="ls_on_green">#17130E</color>
+    <color name="ls_blue">#7FB4FF</color>
+    <color name="ls_on_blue">#17130E</color>
+    <color name="ls_clay">#4A2A24</color>
+    <color name="ls_on_clay">#F3C7B8</color>
+    <color name="ls_mint">#1E4A3A</color>
+    <color name="ls_on_mint">#BFEBD3</color>
+</resources>

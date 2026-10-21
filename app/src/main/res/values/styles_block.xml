@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 硬影块基础样式：子样式只覆盖差异项 -->
+    <style name="Widget.LS.Block" parent="">
+        <item name="ls_fill">@color/ls_card</item>
+        <item name="ls_strokeWidth">@dimen/ls_stroke_block</item>
+        <item name="ls_shadowOffset">@dimen/ls_shadow_block</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_block</item>
+        <item name="ls_pressable">true</item>
+    </style>
+
+    <!-- 实心主块 64dp：朱红 -->
+    <style name="Widget.LS.Block.Primary">
+        <item name="ls_fill">@color/ls_red</item>
+        <item name="ls_strokeWidth">@dimen/ls_stroke_hero</item>
+        <item name="ls_shadowOffset">@dimen/ls_shadow_block</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_block</item>
+    </style>
+
+    <!-- 实心主块 64dp：靛蓝（听 / 媒体） -->
+    <style name="Widget.LS.Block.Primary.Blue">
+        <item name="ls_fill">@color/ls_blue</item>
+        <item name="ls_strokeWidth">@dimen/ls_stroke_hero</item>
+        <item name="ls_shadowOffset">@dimen/ls_shadow_block</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_block</item>
+    </style>
+
+    <!-- 次按钮 56dp -->
+    <style name="Widget.LS.Block.Secondary">
+        <item name="ls_strokeWidth">@dimen/ls_stroke_block</item>
+        <item name="ls_shadowOffset">@dimen/ls_shadow_secondary</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_block</item>
+    </style>
+
+    <!-- 图标块 48dp -->
+    <style name="Widget.LS.Block.Icon">
+        <item name="ls_strokeWidth">@dimen/ls_stroke_block</item>
+        <item name="ls_shadowOffset">@dimen/ls_shadow_tile</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_input</item>
+    </style>
+
+    <!-- 主角卡 -->
+    <style name="Widget.LS.Block.Hero">
+        <item name="ls_strokeWidth">@dimen/ls_stroke_hero</item>
+        <item name="ls_shadowOffset">@dimen/ls_shadow_hero</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_hero</item>
+        <item name="ls_pressable">false</item>
+    </style>
+
+    <!-- 模块块 104dp -->
+    <style name="Widget.LS.Block.Module">
+        <item name="ls_strokeWidth">@dimen/ls_stroke_hero</item>
+        <item name="ls_shadowOffset">@dimen/ls_shadow_block</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_block</item>
+    </style>
+
+    <!-- 网格卡 160dp -->
+    <style name="Widget.LS.Block.Tile">
+        <item name="ls_strokeWidth">@dimen/ls_stroke_block</item>
+        <item name="ls_shadowOffset">@dimen/ls_shadow_tile</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_tile</item>
+    </style>
+
+    <!-- 测验选项 92dp -->
+    <style name="Widget.LS.Block.Option">
+        <item name="ls_strokeWidth">@dimen/ls_stroke_block</item>
+        <item name="ls_shadowOffset">@dimen/ls_shadow_tile</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_tile</item>
+    </style>
+
+    <!-- 家长区行 56dp：2dp 线 + 2dp 影 -->
+    <style name="Widget.LS.Block.Parent">
+        <item name="ls_strokeWidth">@dimen/ls_stroke_chip</item>
+        <item name="ls_shadowOffset">@dimen/ls_shadow_parent</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_input</item>
+    </style>
+</resources>

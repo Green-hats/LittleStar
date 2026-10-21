@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 教学汉字：子集字体，zh-CN 保证中文字形 -->
+    <style name="TextAppearance.LS.HanziHero" parent="">
+        <item name="fontFamily">@font/noto_sans_sc_hanzi</item>
+        <item name="android:textSize">100sp</item>
+        <item name="android:textLocale">zh-CN</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/ls_ink</item>
+    </style>
+
+    <style name="TextAppearance.LS.HanziTile" parent="">
+        <item name="fontFamily">@font/noto_sans_sc_hanzi</item>
+        <item name="android:textSize">40sp</item>
+        <item name="android:textLocale">zh-CN</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/ls_ink</item>
+    </style>
+
+    <style name="TextAppearance.LS.HanziOption" parent="">
+        <item name="fontFamily">@font/noto_sans_sc_hanzi</item>
+        <item name="android:textSize">34sp</item>
+        <item name="android:textLocale">zh-CN</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/ls_ink</item>
+    </style>
+
+    <style name="TextAppearance.LS.Display" parent="">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/ls_ink</item>
+    </style>
+
+    <style name="TextAppearance.LS.Title" parent="">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/ls_ink</item>
+    </style>
+
+    <style name="TextAppearance.LS.Headline" parent="">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/ls_ink</item>
+    </style>
+
+    <style name="TextAppearance.LS.Body" parent="">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/ls_ink</item>
+    </style>
+
+    <style name="TextAppearance.LS.Caption" parent="">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/ls_muted</item>
+    </style>
+
+    <style name="TextAppearance.LS.Pinyin" parent="">
+        <item name="fontFamily">@font/littlestar_latin</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/ls_ink</item>
+    </style>
+
+    <style name="TextAppearance.LS.Pinyin.Small" parent="TextAppearance.LS.Pinyin">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.LS.English" parent="">
+        <item name="fontFamily">@font/littlestar_latin</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/ls_muted</item>
+    </style>
+
+    <style name="TextAppearance.LS.English.Small" parent="TextAppearance.LS.English">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextAppearance.LS.Button" parent="">
+        <item name="fontFamily">@font/littlestar_latin</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/ls_on_red</item>
+        <item name="android:maxLines">1</item>
+    </style>
+</resources>
