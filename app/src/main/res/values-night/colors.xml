@@ -27,4 +27,7 @@
     <color name="ls_panda_shade">#E6E6E6</color>
     <color name="ls_panda_blush">#F28294</color>
     <color name="ls_panda_zzz">#6E6252</color>
+    <!-- M3：遮罩 / 柔和黄 -->
+    <color name="ls_ink_scrim">#61F3E7D3</color>
+    <color name="ls_yellow_soft">#4A3A1A</color>
 </resources>

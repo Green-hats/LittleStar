@@ -32,6 +32,10 @@ public final class RewardViewModel extends ViewModel {
 
         record PraiseSfx() implements Effect {
         }
+
+        /** init 时连续发射的多个事件打包成一批（LiveData 在观察者未激活时只保留最后一个值）。 */
+        record Batch(@NonNull List<Effect> effects) implements Effect {
+        }
     }
 
     public static final class UiState {
@@ -92,10 +96,12 @@ public final class RewardViewModel extends ViewModel {
         state.setValue(new UiState(stars, Math.max(1, s.newWordIds.size()),
                 Collections.unmodifiableList(learned), showStars, s.correct, s.total));
         if (showStars) {
+            List<Effect> batch = new ArrayList<>();
             for (int i = 0; i < stars; i++) {
-                effects.setValue(new Event<>(new Effect.StarSfx(i)));
+                batch.add(new Effect.StarSfx(i));
             }
-            effects.setValue(new Event<>(new Effect.PraiseSfx()));
+            batch.add(new Effect.PraiseSfx());
+            effects.setValue(new Event<>(new Effect.Batch(batch)));
         }
         return true;
     }

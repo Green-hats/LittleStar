@@ -47,3 +47,48 @@
 - 问题：M1 进行中，父代理在同一工作区并行做 M2，AppContainer 等文件被并发修改。
 - 做法：M1 只 add 显式路径（core/ui、core/audio、drawable、raw、src/debug、相关 values、tools/svg_to_vector.py、截图、DECISIONS），不用 `git add -A`；AppContainer 的 SfxPlayer 接线在 M2 提交前已增量合并，随 M2 提交入库；M1 提交不含 M2 未完成的 feature/*、androidTest 路径。
 - 理由：两个里程碑各自提交，历史清晰，互不污染。
+
+## D10 · 2026-10-21 · 音频缺失用页面内对话框而非 MaterialAlertDialog（M3）
+- 问题：工程文档 §9.4 写「盖 38% 墨色遮罩 + MaterialAlertDialogBuilder」，但 §0.2 硬性规则禁止孩子区出现系统对话框（AlertDialog/Toast），两条冲突。
+- 做法：Flashcard 布局里做 in-page 遮罩 + BlockLayout 卡片（继续 / 重试），不用 AlertDialog；视觉与 §7.26 设计图一致。
+- 理由：§0.2 优先级最高；in-page 实现与 AlertDialog 视觉等价且更可控。
+
+## D11 · 2026-10-21 · M3 不导航的入口（M3）
+- 问题：ThemesActivity / CultureCategoriesActivity / ParentGateActivity / PlayerActivity 属 M4/M5/M6，M3 时类不存在。
+- 做法：首页两个模块块、家长入口、文态 LISTEN 的点击暂不导航（保留按压反馈）；会话链 Home→Flashcard→Quiz→Reward 完整可用。
+- 理由：一次只做一个里程碑；M4/M5/M6 接入时只需替换空 lambda。
+
+## D12 · 2026-10-21 · 「当天第一次自动朗读」的记录位置（M3）
+- 问题：§9.1 要求进入时当天第一次自动朗读今日字，需要跨冷启动记住「今天读过没有」。
+- 做法：用 HomeActivity 的 getPreferences（Activity 级 SharedPreferences）存 last_speak_date，不动 SettingsStore（其键都是家长设置）。
+- 理由：这是 UI 态而非家长设置；加 SettingsStore 键会让 M2 的类膨胀。
+
+## D13 · 2026-10-21 · Quiz 的 SavedStateHandle 工厂（M3）
+- 问题：QuizViewModel 需要 SavedStateHandle，通用 ViewModelFactory 不支持 CreationExtras。
+- 做法：QuizActivity 内联一个 ViewModelProvider.Factory，在 create(Class, CreationExtras) 里用 SavedStateHandleSupport.createSavedStateHandle(extras) 构造。
+- 理由：§9.5 许可的做法；不改通用工厂。
+
+## D14 · 2026-10-21 · 引导「允许提醒」只写设置（M3）
+- 问题：§7.20 要求点「允许提醒」才弹 Android 13+ 通知权限；通知调度属 M7。
+- 做法：M3 只写 settings.setNotifRationaleShown(true) + completeOnboarding，不申请权限；M7 接 ReminderScheduler 时再弹权限。
+- 理由：任务明确 M3 范围；不阻塞引导流程。
+
+## D15 · 2026-10-21 · RewardViewModel 增加 Effect.Batch（M3）
+- 问题：RewardViewModel.init 连续 setValue 多个 Effect（StarSfx×N + PraiseSfx），但 Activity 在 onCreate 注册的观察者到 STARTED 才激活，MutableLiveData 只保留最后一个值 → StarSfx 全丢，星星不亮。
+- 做法：Effect 增加 record Batch(List<Effect>)，init 把一批事件打包成单个事件；Activity 端逐个处理。
+- 理由：最小改动，不改变 Event 语义；QuizViewModel.choose 的连续两个事件发生在用户点击后（观察者已激活），不受影响。
+
+## D16 · 2026-10-21 · REVIEW 会话奖励副标题（M3）
+- 问题：REVIEW 会话无新字，「你学会了 0 个字」语义奇怪，设计书未定义该文案。
+- 做法：learnedWords 为空时显示「复习完成！」（reward_subtitle_review）。
+- 理由：保守的最小文案，不改变其他逻辑。
+
+## D17 · 2026-10-21 · ContentRepository 增量查询方法（M3）
+- 问题：Flashcard 顶栏要主题名（只有 themeIdOf），Quiz 选项要拼音（选项只有汉字串）。
+- 做法：ContentRepository 增加 themeById(id) 与 wordByHanzi(hanzi) 两个只读查询。
+- 理由：内容库是唯一的字/主题索引，比在各页面自建映射保守。
+
+## D18 · 2026-10-21 · 一加 8T 禁止 pm clear（M3）
+- 问题：`adb shell pm clear com.littlestar.app.debug` 抛 SecurityException（CLEAR_APP_USER_DATA 不授予 shell）。
+- 做法：清数据用 `am force-stop` + `run-as <pkg> rm files/progress.json shared_prefs/*.xml`；Espresso 测试内通过容器重置（settings + store.update 清空）。
+- 理由：真机限制；测试内重置同时覆盖内存态，比删文件更彻底。

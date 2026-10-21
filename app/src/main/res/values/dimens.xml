@@ -30,4 +30,31 @@
     <dimen name="ls_press_remain">2dp</dimen>   <!-- 按下后剩余的影子 -->
 
     <dimen name="ls_content_max_width">480dp</dimen>
+
+    <!-- M3 逐屏尺寸 -->
+    <dimen name="ls_home_hero_height">360dp</dimen>
+    <dimen name="ls_avatar">40dp</dimen>
+    <dimen name="ls_toggle_width">96dp</dimen>
+    <dimen name="ls_ill_large">120dp</dimen>
+    <dimen name="ls_quiz_card_height">200dp</dimen>
+    <dimen name="ls_stamp">64dp</dimen>
+    <dimen name="ls_badge">28dp</dimen>
+    <dimen name="ls_feedback_height">48dp</dimen>
+    <dimen name="ls_reward_stage">180dp</dimen>
+    <dimen name="ls_reward_panda">100dp</dimen>
+    <dimen name="ls_star">40dp</dimen>
+    <dimen name="ls_confetti">10dp</dimen>
+    <dimen name="ls_wave">40dp</dimen>
+    <dimen name="ls_wave_height">24dp</dimen>
+    <dimen name="ls_word_chip">72dp</dimen>
+    <dimen name="ls_seg_height">12dp</dimen>
+    <dimen name="ls_listen_block">56dp</dimen>
+    <dimen name="ls_module_glyph">40dp</dimen>
+    <dimen name="ls_module_height">104dp</dimen>
+    <dimen name="ls_parent_entry_top">28dp</dimen>
+    <dimen name="ls_hero_label_top">96dp</dimen>
+    <dimen name="ls_hero_hanzi_bottom">96dp</dimen>
+    <dimen name="ls_hero_pinyin_bottom">52dp</dimen>
+    <dimen name="ls_ob_dialog_width">280dp</dimen>
+    <dimen name="ls_badge_pad">4dp</dimen>
 </resources>

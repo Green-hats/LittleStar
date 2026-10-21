@@ -118,6 +118,10 @@ public final class HomeViewModel extends ViewModel {
                 break;
             }
         }
+        // 今日目标完成时展示计划里最后一个字（复习入口的主角卡不空白）
+        if (next == null && !plan.newWordIds.isEmpty()) {
+            next = content.wordById(plan.newWordIds.get(plan.newWordIds.size() - 1));
+        }
         boolean allDone = plan.newWordIds.isEmpty();
 
         UiState cur = state.getValue();

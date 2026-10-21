@@ -160,6 +160,34 @@ public final class ContentRepository {
         return wordId == null ? null : requireLoaded(wordTheme).get(wordId);
     }
 
+    /** 按 id 查主题（M3 加：Flashcard 顶栏显示主题名）。 */
+    @Nullable
+    public Theme themeById(@Nullable String themeId) {
+        if (themeId == null) {
+            return null;
+        }
+        for (Theme t : requireLoaded(themes)) {
+            if (t.id.equals(themeId)) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    /** 按汉字查字（M3 加：Quiz 选项只有汉字串，需要反查拼音）。 */
+    @Nullable
+    public Word wordByHanzi(@Nullable String hanzi) {
+        if (hanzi == null) {
+            return null;
+        }
+        for (Word w : requireLoaded(wordsInOrder)) {
+            if (hanzi.equals(w.hanzi)) {
+                return w;
+            }
+        }
+        return null;
+    }
+
     @NonNull
     public List<Word> wordsOfTheme(@NonNull String themeId) {
         for (Theme t : requireLoaded(themes)) {

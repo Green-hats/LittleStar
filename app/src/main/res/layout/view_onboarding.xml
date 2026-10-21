@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- §7.20 首次引导：HomeActivity 的 firstLaunch 态。step1 年龄+目标 → step2 提醒。 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/obRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ls_paper"
+    android:orientation="vertical"
+    android:padding="@dimen/ls_margin">
+
+    <!-- ===== 第一步：年龄与目标 ===== -->
+    <LinearLayout
+        android:id="@+id/obStep1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/ob_step_1"
+            android:textAppearance="@style/TextAppearance.LS.Caption" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_section_lg"
+            android:text="@string/ob_title_setup"
+            android:textAppearance="@style/TextAppearance.LS.Display"
+            android:textSize="34sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap_sm"
+            android:text="@string/ob_subtitle_setup"
+            android:textAppearance="@style/TextAppearance.LS.Caption"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_section_lg"
+            android:text="@string/ob_age_label"
+            android:textAppearance="@style/TextAppearance.LS.Body"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap"
+            android:orientation="horizontal">
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/obAge3"
+                style="@style/Widget.LS.Block.Option"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ls_btn_secondary"
+                android:layout_weight="1">
+
+                <com.littlestar.app.core.ui.HanziTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="20sp" />
+            </com.littlestar.app.core.ui.BlockLayout>
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/obAge4"
+                style="@style/Widget.LS.Block.Option"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ls_btn_secondary"
+                android:layout_marginStart="@dimen/ls_gap"
+                android:layout_weight="1">
+
+                <com.littlestar.app.core.ui.HanziTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="20sp" />
+            </com.littlestar.app.core.ui.BlockLayout>
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/obAge5"
+                style="@style/Widget.LS.Block.Option"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ls_btn_secondary"
+                android:layout_marginStart="@dimen/ls_gap"
+                android:layout_weight="1">
+
+                <com.littlestar.app.core.ui.HanziTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="20sp" />
+            </com.littlestar.app.core.ui.BlockLayout>
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/obAge6"
+                style="@style/Widget.LS.Block.Option"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ls_btn_secondary"
+                android:layout_marginStart="@dimen/ls_gap"
+                android:layout_weight="1">
+
+                <com.littlestar.app.core.ui.HanziTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="20sp" />
+            </com.littlestar.app.core.ui.BlockLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_section"
+            android:text="@string/ob_goal_label"
+            android:textAppearance="@style/TextAppearance.LS.Body"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap"
+            android:orientation="horizontal">
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/obGoal1"
+                style="@style/Widget.LS.Block.Option"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ls_btn_secondary"
+                android:layout_weight="1">
+
+                <com.littlestar.app.core.ui.HanziTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="20sp" />
+            </com.littlestar.app.core.ui.BlockLayout>
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/obGoal3"
+                style="@style/Widget.LS.Block.Option"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ls_btn_secondary"
+                android:layout_marginStart="@dimen/ls_gap"
+                android:layout_weight="1">
+
+                <com.littlestar.app.core.ui.HanziTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="20sp" />
+            </com.littlestar.app.core.ui.BlockLayout>
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/obGoal5"
+                style="@style/Widget.LS.Block.Option"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ls_btn_secondary"
+                android:layout_marginStart="@dimen/ls_gap"
+                android:layout_weight="1">
+
+                <com.littlestar.app.core.ui.HanziTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="20sp" />
+            </com.littlestar.app.core.ui.BlockLayout>
+        </LinearLayout>
+
+        <!-- 建议卡 -->
+        <com.littlestar.app.core.ui.BlockLayout
+            style="@style/Widget.LS.Block.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/ls_btn_secondary"
+            android:layout_marginTop="@dimen/ls_section"
+            app:ls_pressable="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/ls_gap">
+
+                <ImageView
+                    android:layout_width="@dimen/ls_icon"
+                    android:layout_height="@dimen/ls_icon"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_star"
+                    app:tint="@color/ls_yellow" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ls_gap"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/obSuggestion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.LS.Body"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ob_suggestion_sub"
+                        android:textAppearance="@style/TextAppearance.LS.Caption" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.littlestar.app.core.ui.BlockLayout>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.littlestar.app.core.ui.BlockLayout
+            android:id="@+id/obNext"
+            style="@style/Widget.LS.Block.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ls_btn_primary">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/ob_next"
+                android:textAppearance="@style/TextAppearance.LS.Button" />
+        </com.littlestar.app.core.ui.BlockLayout>
+
+        <TextView
+            android:id="@+id/obSkip1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/ls_gap"
+            android:padding="@dimen/ls_gap_sm"
+            android:text="@string/ob_skip"
+            android:textAppearance="@style/TextAppearance.LS.Caption"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- ===== 第二步：提醒 ===== -->
+    <LinearLayout
+        android:id="@+id/obStep2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="@string/ob_step_2"
+            android:textAppearance="@style/TextAppearance.LS.Caption" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_section_lg"
+            android:text="@string/ob_title_notify"
+            android:textAppearance="@style/TextAppearance.LS.Display"
+            android:textSize="34sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap_sm"
+            android:text="@string/ob_subtitle_notify"
+            android:textAppearance="@style/TextAppearance.LS.Caption"
+            android:textSize="14sp" />
+
+        <!-- 提醒卡 -->
+        <com.littlestar.app.core.ui.BlockLayout
+            style="@style/Widget.LS.Block.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_section_lg"
+            app:ls_pressable="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/ls_gap">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.littlestar.app.core.ui.BlockLayout
+                        style="@style/Widget.LS.Block.Icon"
+                        android:layout_width="@dimen/ls_btn_icon"
+                        android:layout_height="@dimen/ls_btn_icon"
+                        app:ls_fill="@color/ls_yellow"
+                        app:ls_pressable="false">
+
+                        <ImageView
+                            android:layout_width="@dimen/ls_icon"
+                            android:layout_height="@dimen/ls_icon"
+                            android:layout_gravity="center"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_clock"
+                            app:tint="@color/ls_on_yellow" />
+                    </com.littlestar.app.core.ui.BlockLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/ls_gap"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ob_notify_time"
+                            android:textAppearance="@style/TextAppearance.LS.Headline" />
+
+                        <TextView
+                            android:id="@+id/obNotifyDesc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.LS.Caption"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_gap"
+                    android:background="@drawable/bg_notify_preview"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/ls_gap">
+
+                    <ImageView
+                        android:layout_width="@dimen/ls_icon"
+                        android:layout_height="@dimen/ls_icon"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_star" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/ls_gap_sm"
+                        android:text="@string/ob_notify_preview"
+                        android:textAppearance="@style/TextAppearance.LS.Body" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.littlestar.app.core.ui.BlockLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap"
+            android:text="@string/ob_notify_note"
+            android:textAppearance="@style/TextAppearance.LS.Caption"
+            android:textSize="14sp" />
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.littlestar.app.core.ui.BlockLayout
+            android:id="@+id/obAllow"
+            style="@style/Widget.LS.Block.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ls_btn_primary">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/ob_allow"
+                android:textAppearance="@style/TextAppearance.LS.Button" />
+        </com.littlestar.app.core.ui.BlockLayout>
+
+        <com.littlestar.app.core.ui.BlockLayout
+            android:id="@+id/obLater"
+            style="@style/Widget.LS.Block.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ls_btn_secondary"
+            android:layout_marginTop="@dimen/ls_gap">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/ob_later"
+                android:textAppearance="@style/TextAppearance.LS.Button"
+                android:textColor="@color/ls_ink" />
+        </com.littlestar.app.core.ui.BlockLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap_sm"
+            android:text="@string/ob_notify_footer"
+            android:textAppearance="@style/TextAppearance.LS.Caption" />
+    </LinearLayout>
+</LinearLayout>

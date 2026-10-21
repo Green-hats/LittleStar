@@ -13,4 +13,81 @@
     <string name="ls_stepper_increase_desc">增加</string>
     <string name="ls_bar_chart_desc">最近七天的学习分钟数</string>
     <string name="ls_speaking_desc">正在朗读</string>
+
+    <string name="nav_back">返回</string>
+
+    <!-- ===== M3 · Home ===== -->
+    <string name="home_panda_desc">熊猫盼盼</string>
+    <string name="home_star_capsule_desc">%1$d 颗星星</string>
+    <string name="home_mode_word">字</string>
+    <string name="home_mode_culture">文</string>
+    <string name="home_today_words">今天 · 识字</string>
+    <string name="home_today_culture">今天 · 文化</string>
+    <string name="home_today_done">今天 · 学完啦</string>
+    <string name="home_start">START</string>
+    <string name="home_review">复习一下</string>
+    <string name="home_listen">LISTEN</string>
+    <string name="home_listen_desc">听发音</string>
+    <string name="home_today_progress">Today %1$d / %2$d words</string>
+    <string name="home_progress_done">今天学完啦</string>
+    <string name="home_module_words_title">Words</string>
+    <string name="home_module_words_sub">Cards · Quiz</string>
+    <string name="home_module_culture_title">Culture</string>
+    <string name="home_module_culture_sub">Songs · Stories · Poems</string>
+    <string name="home_parent_entry">Parent Centre</string>
+
+    <!-- ===== M3 · 首次引导（§7.20）===== -->
+    <string name="ob_step_1">1 / 2</string>
+    <string name="ob_step_2">2 / 2</string>
+    <string name="ob_title_setup">先设好两件事</string>
+    <string name="ob_subtitle_setup">之后可以在家长中心修改。</string>
+    <string name="ob_age_label">孩子几岁？</string>
+    <string name="ob_age_years">%1$d 岁</string>
+    <string name="ob_goal_label">每天学几个字？</string>
+    <string name="ob_goal_words">%1$d 个字</string>
+    <string name="ob_suggestion">建议：%1$d 岁 · 每天 %2$d 个字</string>
+    <string name="ob_suggestion_sub">约 5–10 分钟 / 天</string>
+    <string name="ob_slogan">每天一点点</string>
+    <string name="ob_slogan_sub">就会亮起来</string>
+    <string name="ob_next">下一步</string>
+    <string name="ob_skip">跳过</string>
+    <string name="ob_title_notify">每天提醒一次</string>
+    <string name="ob_subtitle_notify">到点提醒，不打扰。</string>
+    <string name="ob_notify_time">每天 19:30</string>
+    <string name="ob_notify_desc">提醒孩子学 %1$d 个字</string>
+    <string name="ob_notify_preview">小星星 · 该学汉字啦</string>
+    <string name="ob_notify_note">只在设定时间提醒，不用于促活。</string>
+    <string name="ob_allow">允许提醒</string>
+    <string name="ob_later">先不用</string>
+    <string name="ob_notify_footer">系统会再弹一次权限窗口，之后可在家长中心关闭。</string>
+
+    <!-- ===== M3 · Flashcard ===== -->
+    <string name="fc_session_title">今天 · 识字</string>
+    <string name="fc_counter">%1$d/%2$d</string>
+    <string name="fc_next">NEXT</string>
+    <string name="fc_done">完成</string>
+    <string name="fc_stamp_label">I learned it</string>
+    <string name="fc_reading">朗读中</string>
+    <string name="fc_audio_missing_title">发音暂时没有</string>
+    <string name="fc_audio_missing_msg">可以先看字形，等会儿再试</string>
+    <string name="fc_audio_continue">继续</string>
+    <string name="fc_audio_retry">重试</string>
+
+    <!-- ===== M3 · Quiz ===== -->
+    <string name="quiz_title">Quiz 测验</string>
+    <string name="quiz_listen_hint">听一听</string>
+    <string name="quiz_counter">%1$d / %2$d</string>
+    <string name="quiz_feedback_correct">答对啦！</string>
+    <string name="quiz_feedback_wrong">再听一次，答案是「%1$s」</string>
+    <string name="quiz_next">NEXT</string>
+    <string name="quiz_done">完成</string>
+
+    <!-- ===== M3 · Reward ===== -->
+    <string name="reward_title">太棒了！</string>
+    <string name="reward_subtitle">你学会了 %1$d 个字</string>
+    <string name="reward_subtitle_review">复习完成！</string>
+    <string name="reward_stamp_text">学会</string>
+    <string name="reward_done">完成</string>
+    <string name="reward_again">再来一次</string>
+    <string name="reward_star_desc">第 %1$d 颗星</string>
 </resources>
