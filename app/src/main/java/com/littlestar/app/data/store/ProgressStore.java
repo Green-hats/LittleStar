@@ -39,6 +39,7 @@ public final class ProgressStore {
     private final Gson gson;
     private final AppClock clock;
     private final AppExecutors executors;
+    private final long saveDebounceMs;
 
     private ProgressState state;                                 // 只在 diskIO 线程访问
     private boolean loaded;
@@ -50,10 +51,18 @@ public final class ProgressStore {
 
     public ProgressStore(@NonNull StateFile file, @NonNull Gson gson,
                          @NonNull AppClock clock, @NonNull AppExecutors executors) {
+        this(file, gson, clock, executors, SAVE_DEBOUNCE_MS);
+    }
+
+    /** 测试用：自定义防抖时长。 */
+    public ProgressStore(@NonNull StateFile file, @NonNull Gson gson,
+                         @NonNull AppClock clock, @NonNull AppExecutors executors,
+                         long saveDebounceMs) {
         this.file = file;
         this.gson = gson;
         this.clock = clock;
         this.executors = executors;
+        this.saveDebounceMs = saveDebounceMs;
     }
 
     /** App 启动时调用。读文件 → 迁移 → 清理过期数据 → 发布快照。 */
@@ -156,7 +165,7 @@ public final class ProgressStore {
         }
         pendingSave = saver.schedule(
                 () -> executors.diskIO().execute(this::writeBlocking),
-                SAVE_DEBOUNCE_MS, TimeUnit.MILLISECONDS);
+                saveDebounceMs, TimeUnit.MILLISECONDS);
     }
 
     private void writeBlocking() {
