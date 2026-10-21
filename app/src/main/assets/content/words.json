@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "themes": [
+    {
+      "id": "animals",
+      "order": 1,
+      "nameZh": "动物",
+      "nameEn": "Animals",
+      "glyph": "动",
+      "illustration": "ill_placeholder",
+      "words": [
+        { "id": "mao",  "hanzi": "猫", "pinyin": "māo",  "english": "cat",    "image": "ill_placeholder", "audio": "audio/words/mao.ogg",  "distractors": ["狗", "鸟", "鱼"] },
+        { "id": "gou",  "hanzi": "狗", "pinyin": "gǒu",  "english": "dog",    "image": "ill_placeholder", "audio": "audio/words/gou.ogg",  "distractors": ["猫", "马", "牛"] },
+        { "id": "niao", "hanzi": "鸟", "pinyin": "niǎo", "english": "bird",   "image": "ill_placeholder", "audio": "audio/words/niao.ogg", "distractors": ["鱼", "猫", "虫"] },
+        { "id": "yu",   "hanzi": "鱼", "pinyin": "yú",   "english": "fish",   "image": "ill_placeholder", "audio": "audio/words/yu.ogg",   "distractors": ["鸟", "猫", "狗"] },
+        { "id": "ma",   "hanzi": "马", "pinyin": "mǎ",   "english": "horse",  "image": "ill_placeholder", "audio": "audio/words/ma.ogg",   "distractors": ["牛", "狗", "鸟"] },
+        { "id": "niu",  "hanzi": "牛", "pinyin": "niú",  "english": "cow",    "image": "ill_placeholder", "audio": "audio/words/niu.ogg",  "distractors": ["马", "羊", "狗"] }
+      ]
+    },
+    {
+      "id": "fruits",
+      "order": 2,
+      "nameZh": "水果",
+      "nameEn": "Fruits",
+      "glyph": "果",
+      "illustration": "ill_placeholder",
+      "words": [
+        { "id": "guo", "hanzi": "果", "pinyin": "guǒ", "english": "fruit",  "image": "ill_placeholder", "audio": "audio/words/guo.ogg", "distractors": ["瓜", "桃", "梨"] },
+        { "id": "gua", "hanzi": "瓜", "pinyin": "guā", "english": "melon",  "image": "ill_placeholder", "audio": "audio/words/gua.ogg", "distractors": ["果", "桃", "枣"] },
+        { "id": "tao", "hanzi": "桃", "pinyin": "táo", "english": "peach",  "image": "ill_placeholder", "audio": "audio/words/tao.ogg", "distractors": ["梨", "李", "果"] },
+        { "id": "li_2", "hanzi": "梨", "pinyin": "lí",  "english": "pear",   "image": "ill_placeholder", "audio": "audio/words/li_2.ogg", "distractors": ["桃", "李", "瓜"] },
+        { "id": "zao", "hanzi": "枣", "pinyin": "zǎo", "english": "jujube", "image": "ill_placeholder", "audio": "audio/words/zao.ogg", "distractors": ["李", "果", "瓜"] },
+        { "id": "li_3", "hanzi": "李", "pinyin": "lǐ",  "english": "plum",   "image": "ill_placeholder", "audio": "audio/words/li_3.ogg", "distractors": ["梨", "桃", "枣"] }
+      ]
+    },
+    {
+      "id": "colors",
+      "order": 3,
+      "nameZh": "颜色",
+      "nameEn": "Colors",
+      "glyph": "色",
+      "illustration": "ill_placeholder",
+      "words": [
+        { "id": "hong", "hanzi": "红", "pinyin": "hóng", "english": "red",    "image": "ill_placeholder", "audio": "audio/words/hong.ogg", "distractors": ["黄", "蓝", "绿"] },
+        { "id": "huang","hanzi": "黄", "pinyin": "huáng","english": "yellow", "image": "ill_placeholder", "audio": "audio/words/huang.ogg","distractors": ["红", "白", "黑"] },
+        { "id": "lan",  "hanzi": "蓝", "pinyin": "lán",  "english": "blue",   "image": "ill_placeholder", "audio": "audio/words/lan.ogg",  "distractors": ["绿", "红", "黑"] },
+        { "id": "lv",   "hanzi": "绿", "pinyin": "lǜ",   "english": "green",  "image": "ill_placeholder", "audio": "audio/words/lv.ogg",   "distractors": ["蓝", "黄", "白"] },
+        { "id": "bai",  "hanzi": "白", "pinyin": "bái",  "english": "white",  "image": "ill_placeholder", "audio": "audio/words/bai.ogg",  "distractors": ["黑", "红", "黄"] },
+        { "id": "hei",  "hanzi": "黑", "pinyin": "hēi",  "english": "black",  "image": "ill_placeholder", "audio": "audio/words/hei.ogg",  "distractors": ["白", "蓝", "绿"] }
+      ]
+    },
+    {
+      "id": "numbers",
+      "order": 4,
+      "nameZh": "数字",
+      "nameEn": "Numbers",
+      "glyph": "数",
+      "illustration": "ill_placeholder",
+      "words": [
+        { "id": "yi",  "hanzi": "一", "pinyin": "yī",  "english": "one",   "image": "ill_placeholder", "audio": "audio/words/yi.ogg",  "distractors": ["二", "三", "四"] },
+        { "id": "er",  "hanzi": "二", "pinyin": "èr",  "english": "two",   "image": "ill_placeholder", "audio": "audio/words/er.ogg",  "distractors": ["一", "三", "五"] },
+        { "id": "san", "hanzi": "三", "pinyin": "sān", "english": "three", "image": "ill_placeholder", "audio": "audio/words/san.ogg", "distractors": ["二", "四", "五"] },
+        { "id": "si",  "hanzi": "四", "pinyin": "sì",  "english": "four",  "image": "ill_placeholder", "audio": "audio/words/si.ogg",  "distractors": ["三", "五", "六"] },
+        { "id": "wu",  "hanzi": "五", "pinyin": "wǔ",  "english": "five",  "image": "ill_placeholder", "audio": "audio/words/wu.ogg",  "distractors": ["四", "六", "三"] },
+        { "id": "liu", "hanzi": "六", "pinyin": "liù", "english": "six",   "image": "ill_placeholder", "audio": "audio/words/liu.ogg", "distractors": ["五", "四", "二"] }
+      ]
+    },
+    {
+      "id": "family",
+      "order": 5,
+      "nameZh": "家人",
+      "nameEn": "Family",
+      "glyph": "家",
+      "illustration": "ill_placeholder",
+      "words": [
+        { "id": "ba",   "hanzi": "爸", "pinyin": "bà",  "english": "dad",             "image": "ill_placeholder", "audio": "audio/words/ba.ogg",   "distractors": ["妈", "哥", "弟"] },
+        { "id": "ma_5", "hanzi": "妈", "pinyin": "mā",  "english": "mum",             "image": "ill_placeholder", "audio": "audio/words/ma_5.ogg", "distractors": ["爸", "姐", "妹"] },
+        { "id": "ge",   "hanzi": "哥", "pinyin": "gē",  "english": "older brother",   "image": "ill_placeholder", "audio": "audio/words/ge.ogg",   "distractors": ["弟", "爸", "姐"] },
+        { "id": "jie",  "hanzi": "姐", "pinyin": "jiě", "english": "older sister",    "image": "ill_placeholder", "audio": "audio/words/jie.ogg",  "distractors": ["妹", "妈", "哥"] },
+        { "id": "di",   "hanzi": "弟", "pinyin": "dì",  "english": "younger brother", "image": "ill_placeholder", "audio": "audio/words/di.ogg",   "distractors": ["哥", "妹", "爸"] },
+        { "id": "mei",  "hanzi": "妹", "pinyin": "mèi", "english": "younger sister",  "image": "ill_placeholder", "audio": "audio/words/mei.ogg",  "distractors": ["姐", "弟", "妈"] }
+      ]
+    },
+    {
+      "id": "nature",
+      "order": 6,
+      "nameZh": "自然",
+      "nameEn": "Nature",
+      "glyph": "月",
+      "illustration": "ill_placeholder",
+      "words": [
+        { "id": "yue",   "hanzi": "月", "pinyin": "yuè", "english": "moon",     "image": "ill_placeholder", "audio": "audio/words/yue.ogg",   "distractors": ["星", "山", "水"] },
+        { "id": "shan",  "hanzi": "山", "pinyin": "shān","english": "mountain", "image": "ill_placeholder", "audio": "audio/words/shan.ogg",  "distractors": ["水", "木", "火"] },
+        { "id": "shui",  "hanzi": "水", "pinyin": "shuǐ","english": "water",    "image": "ill_placeholder", "audio": "audio/words/shui.ogg",  "distractors": ["火", "山", "木"] },
+        { "id": "huo",   "hanzi": "火", "pinyin": "huǒ", "english": "fire",     "image": "ill_placeholder", "audio": "audio/words/huo.ogg",   "distractors": ["水", "木", "山"] },
+        { "id": "mu",    "hanzi": "木", "pinyin": "mù",  "english": "wood",     "image": "ill_placeholder", "audio": "audio/words/mu.ogg",    "distractors": ["山", "水", "火"] },
+        { "id": "xing",  "hanzi": "星", "pinyin": "xīng","english": "star",     "image": "ill_placeholder", "audio": "audio/words/xing.ogg",  "distractors": ["月", "火", "水"] }
+      ]
+    }
+  ]
+}

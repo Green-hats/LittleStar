@@ -1,0 +1,413 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "songs",
+      "order": 1,
+      "nameZh": "儿歌",
+      "nameEn": "Songs",
+      "glyph": "儿",
+      "mvp": true
+    },
+    {
+      "id": "stories",
+      "order": 2,
+      "nameZh": "故事",
+      "nameEn": "Stories",
+      "glyph": "故",
+      "mvp": true
+    },
+    {
+      "id": "poems",
+      "order": 3,
+      "nameZh": "古诗",
+      "nameEn": "Poems",
+      "glyph": "诗",
+      "mvp": true
+    },
+    {
+      "id": "idioms",
+      "order": 4,
+      "nameZh": "成语",
+      "nameEn": "Idioms",
+      "glyph": "成",
+      "mvp": false
+    },
+    {
+      "id": "festivals",
+      "order": 5,
+      "nameZh": "节日",
+      "nameEn": "Festivals",
+      "glyph": "节",
+      "mvp": false
+    }
+  ],
+  "items": [
+    {
+      "id": "xiaoxingxing",
+      "categoryId": "songs",
+      "titleZh": "小星星",
+      "subtitle": "儿歌",
+      "cover": "ill_placeholder",
+      "glyph": "星",
+      "audio": "audio/culture/xiaoxingxing.ogg",
+      "durationSec": 13,
+      "bedtime": true,
+      "featured": [],
+      "lyrics": [
+        {
+          "startMs": 0,
+          "hanzi": "一闪一闪亮晶晶",
+          "pinyin": "yí shǎn yí shǎn liàng jīng jīng",
+          "english": "Twinkle, twinkle, little star"
+        },
+        {
+          "startMs": 5000,
+          "hanzi": "满天都是小星星",
+          "pinyin": "mǎn tiān dōu shì xiǎo xīng xing",
+          "english": "Stars all over the sky"
+        },
+        {
+          "startMs": 10000,
+          "hanzi": "挂在天上放光明",
+          "pinyin": "guà zài tiān shàng fàng guāng míng",
+          "english": "Hanging in the sky, shining bright"
+        },
+        {
+          "startMs": 15000,
+          "hanzi": "好像许多小眼睛",
+          "pinyin": "hǎo xiàng xǔ duō xiǎo yǎn jing",
+          "english": "Like so many little eyes"
+        },
+        {
+          "startMs": 20000,
+          "hanzi": "一闪一闪亮晶晶",
+          "pinyin": "yí shǎn yí shǎn liàng jīng jīng",
+          "english": "Twinkle, twinkle, little star"
+        },
+        {
+          "startMs": 25000,
+          "hanzi": "满天都是小星星",
+          "pinyin": "mǎn tiān dōu shì xiǎo xīng xing",
+          "english": "Stars all over the sky"
+        }
+      ]
+    },
+    {
+      "id": "liangzhilaohu",
+      "categoryId": "songs",
+      "titleZh": "两只老虎",
+      "subtitle": "儿歌",
+      "cover": "ill_placeholder",
+      "glyph": "虎",
+      "audio": "audio/culture/liangzhilaohu.ogg",
+      "durationSec": 13,
+      "bedtime": false,
+      "featured": [],
+      "lyrics": [
+        {
+          "startMs": 0,
+          "hanzi": "两只老虎",
+          "pinyin": "liǎng zhī lǎo hǔ",
+          "english": "Two little tigers"
+        },
+        {
+          "startMs": 4000,
+          "hanzi": "两只老虎",
+          "pinyin": "liǎng zhī lǎo hǔ",
+          "english": "Two little tigers"
+        },
+        {
+          "startMs": 8000,
+          "hanzi": "跑得快",
+          "pinyin": "pǎo de kuài",
+          "english": "Running fast"
+        },
+        {
+          "startMs": 12000,
+          "hanzi": "跑得快",
+          "pinyin": "pǎo de kuài",
+          "english": "Running fast"
+        },
+        {
+          "startMs": 16000,
+          "hanzi": "一只没有耳朵",
+          "pinyin": "yì zhī méi yǒu ěr duo",
+          "english": "One has no ears"
+        },
+        {
+          "startMs": 20000,
+          "hanzi": "一只没有尾巴",
+          "pinyin": "yì zhī méi yǒu wěi ba",
+          "english": "One has no tail"
+        },
+        {
+          "startMs": 24000,
+          "hanzi": "真奇怪",
+          "pinyin": "zhēn qí guài",
+          "english": "How strange"
+        },
+        {
+          "startMs": 28000,
+          "hanzi": "真奇怪",
+          "pinyin": "zhēn qí guài",
+          "english": "How strange"
+        }
+      ]
+    },
+    {
+      "id": "baluobo",
+      "categoryId": "songs",
+      "titleZh": "拔萝卜",
+      "subtitle": "儿歌",
+      "cover": "ill_placeholder",
+      "glyph": "卜",
+      "audio": "audio/culture/baluobo.ogg",
+      "durationSec": 13,
+      "bedtime": false,
+      "featured": [],
+      "lyrics": [
+        {
+          "startMs": 0,
+          "hanzi": "拔萝卜",
+          "pinyin": "bá luó bo",
+          "english": "Pull the radish"
+        },
+        {
+          "startMs": 4000,
+          "hanzi": "拔萝卜",
+          "pinyin": "bá luó bo",
+          "english": "Pull the radish"
+        },
+        {
+          "startMs": 8000,
+          "hanzi": "哎哟哎哟拔萝卜",
+          "pinyin": "āi yō āi yō bá luó bo",
+          "english": "Heave-ho, pull the radish"
+        },
+        {
+          "startMs": 14000,
+          "hanzi": "哎哟哎哟拔不动",
+          "pinyin": "āi yō āi yō bá bù dòng",
+          "english": "Heave-ho, it won't budge"
+        },
+        {
+          "startMs": 20000,
+          "hanzi": "老婆婆快快来",
+          "pinyin": "lǎo pó po kuài kuài lái",
+          "english": "Grandma, come quickly"
+        },
+        {
+          "startMs": 26000,
+          "hanzi": "快来帮我们拔萝卜",
+          "pinyin": "kuài lái bāng wǒ men bá luó bo",
+          "english": "Come help us pull the radish"
+        }
+      ]
+    },
+    {
+      "id": "zhaopengyou",
+      "categoryId": "songs",
+      "titleZh": "找朋友",
+      "subtitle": "儿歌",
+      "cover": "ill_placeholder",
+      "glyph": "友",
+      "audio": "audio/culture/zhaopengyou.ogg",
+      "durationSec": 8,
+      "bedtime": false,
+      "featured": [],
+      "lyrics": [
+        {
+          "startMs": 0,
+          "hanzi": "找呀找呀找朋友",
+          "pinyin": "zhǎo ya zhǎo ya zhǎo péng you",
+          "english": "Looking, looking for a friend"
+        },
+        {
+          "startMs": 5000,
+          "hanzi": "找到一个好朋友",
+          "pinyin": "zhǎo dào yí gè hǎo péng you",
+          "english": "Found a good friend"
+        },
+        {
+          "startMs": 10000,
+          "hanzi": "敬个礼呀握握手",
+          "pinyin": "jìng gè lǐ ya wò wò shǒu",
+          "english": "Salute and shake hands"
+        },
+        {
+          "startMs": 15000,
+          "hanzi": "你是我的好朋友",
+          "pinyin": "nǐ shì wǒ de hǎo péng you",
+          "english": "You are my good friend"
+        }
+      ]
+    },
+    {
+      "id": "changebenyue",
+      "categoryId": "stories",
+      "titleZh": "嫦娥奔月",
+      "subtitle": "故事",
+      "cover": "ill_placeholder",
+      "glyph": "月",
+      "audio": "audio/culture/changebenyue.ogg",
+      "durationSec": 47,
+      "bedtime": true,
+      "featured": [],
+      "lyrics": []
+    },
+    {
+      "id": "shouzhudaitu",
+      "categoryId": "stories",
+      "titleZh": "守株待兔",
+      "subtitle": "故事",
+      "cover": "ill_placeholder",
+      "glyph": "兔",
+      "audio": "audio/culture/shouzhudaitu.ogg",
+      "durationSec": 47,
+      "bedtime": false,
+      "featured": [],
+      "lyrics": []
+    },
+    {
+      "id": "guitusaipao",
+      "categoryId": "stories",
+      "titleZh": "龟兔赛跑",
+      "subtitle": "故事",
+      "cover": "ill_placeholder",
+      "glyph": "龟",
+      "audio": "audio/culture/guitusaipao.ogg",
+      "durationSec": 34,
+      "bedtime": false,
+      "featured": [],
+      "lyrics": []
+    },
+    {
+      "id": "huashetianzu",
+      "categoryId": "stories",
+      "titleZh": "画蛇添足",
+      "subtitle": "故事",
+      "cover": "ill_placeholder",
+      "glyph": "蛇",
+      "audio": "audio/culture/huashetianzu.ogg",
+      "durationSec": 39,
+      "bedtime": false,
+      "featured": [],
+      "lyrics": []
+    },
+    {
+      "id": "jingyesi",
+      "categoryId": "poems",
+      "titleZh": "静夜思",
+      "subtitle": "古诗 · 李白",
+      "cover": "ill_placeholder",
+      "glyph": "思",
+      "audio": "audio/culture/jingyesi.ogg",
+      "durationSec": 9,
+      "bedtime": true,
+      "featured": [],
+      "lyrics": [
+        {
+          "startMs": 0,
+          "hanzi": "床前明月光",
+          "pinyin": "chuáng qián míng yuè guāng",
+          "english": "Moonlight before my bed"
+        },
+        {
+          "startMs": 6000,
+          "hanzi": "疑是地上霜",
+          "pinyin": "yí shì dì shàng shuāng",
+          "english": "Like frost upon the ground"
+        },
+        {
+          "startMs": 12000,
+          "hanzi": "举头望明月",
+          "pinyin": "jǔ tóu wàng míng yuè",
+          "english": "I lift my head to watch the moon"
+        },
+        {
+          "startMs": 18000,
+          "hanzi": "低头思故乡",
+          "pinyin": "dī tóu sī gù xiāng",
+          "english": "I bow my head and think of home"
+        }
+      ]
+    },
+    {
+      "id": "yonge",
+      "categoryId": "poems",
+      "titleZh": "咏鹅",
+      "subtitle": "古诗 · 骆宾王",
+      "cover": "ill_placeholder",
+      "glyph": "鹅",
+      "audio": "audio/culture/yonge.ogg",
+      "durationSec": 9,
+      "bedtime": false,
+      "featured": [],
+      "lyrics": [
+        {
+          "startMs": 0,
+          "hanzi": "鹅鹅鹅",
+          "pinyin": "é é é",
+          "english": "Goose, goose, goose"
+        },
+        {
+          "startMs": 5000,
+          "hanzi": "曲项向天歌",
+          "pinyin": "qū xiàng xiàng tiān gē",
+          "english": "Bent neck sings to the sky"
+        },
+        {
+          "startMs": 11000,
+          "hanzi": "白毛浮绿水",
+          "pinyin": "bái máo fú lǜ shuǐ",
+          "english": "White feathers float on green water"
+        },
+        {
+          "startMs": 17000,
+          "hanzi": "红掌拨清波",
+          "pinyin": "hóng zhǎng bō qīng bō",
+          "english": "Red feet paddle the clear waves"
+        }
+      ]
+    },
+    {
+      "id": "chunxiao",
+      "categoryId": "poems",
+      "titleZh": "春晓",
+      "subtitle": "古诗 · 孟浩然",
+      "cover": "ill_placeholder",
+      "glyph": "春",
+      "audio": "audio/culture/chunxiao.ogg",
+      "durationSec": 9,
+      "bedtime": false,
+      "featured": [],
+      "lyrics": [
+        {
+          "startMs": 0,
+          "hanzi": "春眠不觉晓",
+          "pinyin": "chūn mián bù jué xiǎo",
+          "english": "Spring sleep, unaware of dawn"
+        },
+        {
+          "startMs": 6000,
+          "hanzi": "处处闻啼鸟",
+          "pinyin": "chù chù wén tí niǎo",
+          "english": "Everywhere I hear birds singing"
+        },
+        {
+          "startMs": 12000,
+          "hanzi": "夜来风雨声",
+          "pinyin": "yè lái fēng yǔ shēng",
+          "english": "In the night came wind and rain"
+        },
+        {
+          "startMs": 18000,
+          "hanzi": "花落知多少",
+          "pinyin": "huā luò zhī duō shǎo",
+          "english": "How many petals have fallen"
+        }
+      ]
+    }
+  ]
+}

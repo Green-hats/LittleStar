@@ -26,3 +26,9 @@
 - 问题：文档规定 compileSdk 35，但最新稳定版 androidx.core 1.17.0 等要求 compileSdk ≥ 36。
 - 做法：compileSdk 36，targetSdk 仍为 35（edge-to-edge 行为不变），minSdk 26 不变。
 - 理由：「取最新稳定版依赖」与「compileSdk 35」冲突，升级 compileSdk 只影响编译期 API 可见性，不改变运行时行为；是最保守的解法。
+
+## D6 · 2026-10-21 · 子集字体已生成；占位图与占位音频
+- 问题：M0 时临时用了全量 NotoSansSC-Bold.otf（8.3MB）。
+- 做法：内容 JSON 定稿后用 tools/subset_font.py 生成 43KB 子集（195 字，含 words/culture 全部汉字 + distractors + 常用 UI 字），已替换 res/font/noto_sans_sc_hanzi.otf。系统 python3 缺 fontTools，用 `python3 -m venv /tmp/fontenv && /tmp/fontenv/bin/pip install fonttools brotli` 后运行。
+- 词卡配图与封面全部先用 ill_placeholder（工程文档 §8.8 允许的 MVP 占位）；占位音频用 macOS say 婷婷 + ffmpeg vorbis（工具：tools/make_placeholder_audio.sh）。
+- 理由：不阻塞开发，正式版前替换为真人录音与定稿插画。

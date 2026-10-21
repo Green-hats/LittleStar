@@ -19,4 +19,12 @@
     <color name="ls_on_clay">#F3C7B8</color>
     <color name="ls_mint">#1E4A3A</color>
     <color name="ls_on_mint">#BFEBD3</color>
+    <!-- 熊猫插画内容色（不参与颜色角色，深浅色保持一致） -->
+    <color name="ls_panda_white">#FFFFFF</color>
+    <color name="ls_panda_ink">#211D18</color>
+    <color name="ls_panda_patch">#232323</color>
+    <color name="ls_panda_nose">#333333</color>
+    <color name="ls_panda_shade">#E6E6E6</color>
+    <color name="ls_panda_blush">#F28294</color>
+    <color name="ls_panda_zzz">#6E6252</color>
 </resources>
