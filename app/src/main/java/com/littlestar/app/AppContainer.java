@@ -20,8 +20,12 @@ import com.littlestar.app.data.repo.ProgressRepository;
 import com.littlestar.app.data.repo.UsageRepository;
 import com.littlestar.app.data.store.AtomicStateFile;
 import com.littlestar.app.data.store.ProgressStore;
+import com.littlestar.app.core.audio.SpeechPlayer;
 import com.littlestar.app.domain.ReviewScheduler;
 import com.littlestar.app.domain.SessionBuilder;
+import com.littlestar.app.notify.Notifier;
+import com.littlestar.app.notify.ReminderScheduler;
+import com.littlestar.app.playback.SleepTimerController;
 
 import java.io.File;
 import java.util.Random;
@@ -44,6 +48,10 @@ public final class AppContainer {
     public final SessionBuilder sessionBuilder;
     public final ScreenTimeTracker screenTime;
     public final SfxPlayer sfx;
+    public final SpeechPlayer speech;
+    public final SleepTimerController sleepTimer;
+    public final Notifier notifier;
+    public final ReminderScheduler reminders;
 
     public AppContainer(@NonNull Application app) {
         Gson gson = new Gson();
@@ -56,8 +64,12 @@ public final class AppContainer {
         favourites = new FavouriteRepository(store, clock);
         scheduler = new ReviewScheduler();
         sessionBuilder = new SessionBuilder(content, scheduler, clock, new Random());
-        screenTime = new ScreenTimeTracker(clock, new Handler(Looper.getMainLooper()));
+        screenTime = new ScreenTimeTracker(usage, settings, clock, new Handler(Looper.getMainLooper()));
         sfx = new SfxPlayer(app, settings::isSoundEnabled);
+        speech = new SpeechPlayer(app);
+        sleepTimer = new SleepTimerController(clock);
+        notifier = new Notifier(app);
+        reminders = new ReminderScheduler(app, settings, clock);
         store.loadAsync();   // 后台线程读入 progress.json
     }
 

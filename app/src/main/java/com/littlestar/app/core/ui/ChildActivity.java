@@ -33,8 +33,8 @@ public abstract class ChildActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    /** 会话中（Flashcard / Quiz）返回 true：到时不打断，等奖励页结束再弹。 */
-    protected boolean deferTimeUp() {
+    /** 会话中（Flashcard / Quiz）返回 true：到时不打断，等奖励页结束再弹。跨包访问故为 public。 */
+    public boolean deferTimeUp() {
         return false;
     }
 

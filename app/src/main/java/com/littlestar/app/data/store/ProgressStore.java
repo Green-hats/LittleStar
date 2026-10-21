@@ -85,6 +85,12 @@ public final class ProgressStore {
         });
     }
 
+    /** 同步读一次。只能在 diskIO 线程（如 BroadcastReceiver 的 goAsync 任务）调用。 */
+    public <T> T readBlocking(@NonNull Function<ProgressState, T> query) {
+        ensureLoaded();
+        return query.apply(state);
+    }
+
     /** 所有修改的唯一入口：diskIO 线程执行 → 发布新快照 → 2 秒防抖后保存。 */
     public void update(@NonNull Consumer<ProgressState> mutation) {
         executors.diskIO().execute(() -> {
