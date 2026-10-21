@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- §7.7 文化分类：MVP 3 类（2 + 古诗宽卡），统一青绿字形块；收藏行；盼盼页脚 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cultureRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ls_paper"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:maxWidth="@dimen/ls_content_max_width"
+        android:orientation="vertical"
+        android:padding="@dimen/ls_margin">
+
+        <!-- 顶栏 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/btnBack"
+                style="@style/Widget.LS.Block.Icon"
+                android:layout_width="@dimen/ls_btn_icon"
+                android:layout_height="@dimen/ls_btn_icon"
+                android:contentDescription="@string/nav_back">
+
+                <ImageView
+                    android:layout_width="@dimen/ls_icon"
+                    android:layout_height="@dimen/ls_icon"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_back" />
+            </com.littlestar.app.core.ui.BlockLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/ls_gap"
+                android:layout_weight="1"
+                android:text="@string/cul_top"
+                android:textAppearance="@style/TextAppearance.LS.Title" />
+
+            <ImageView
+                android:layout_width="@dimen/ls_icon"
+                android:layout_height="@dimen/ls_icon"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_star"
+                app:tint="@color/ls_yellow" />
+
+            <TextView
+                android:id="@+id/starCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/ls_gap_sm"
+                android:textAppearance="@style/TextAppearance.LS.Title" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_section"
+            android:text="@string/cul_title"
+            android:textAppearance="@style/TextAppearance.LS.Headline" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap_sm"
+            android:text="@string/cul_subtitle"
+            android:textAppearance="@style/TextAppearance.LS.Caption"
+            android:textSize="14sp" />
+
+        <!-- 2 类方块 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_section"
+            android:orientation="horizontal">
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/catSongs"
+                style="@style/Widget.LS.Block.Tile"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ls_theme_tile_height"
+                android:layout_weight="1">
+
+                <com.littlestar.app.core.ui.BlockLayout
+                    style="@style/Widget.LS.Block.Icon"
+                    android:layout_width="@dimen/ls_module_glyph"
+                    android:layout_height="@dimen/ls_module_glyph"
+                    android:layout_marginStart="@dimen/ls_gap"
+                    android:layout_marginTop="@dimen/ls_gap"
+                    app:ls_fill="@color/ls_green">
+
+                    <com.littlestar.app.core.ui.HanziTextView
+                        android:id="@+id/glyphSongs"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/ls_on_green"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </com.littlestar.app.core.ui.BlockLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="@dimen/ls_gap"
+                    android:layout_marginBottom="@dimen/ls_gap"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/nameSongs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.LS.Title" />
+
+                    <TextView
+                        android:id="@+id/nameSongsEn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.LS.English.Small" />
+
+                    <TextView
+                        android:id="@+id/countSongs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.LS.Caption" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/ls_icon"
+                    android:layout_height="@dimen/ls_icon"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="@dimen/ls_gap"
+                    android:layout_marginBottom="@dimen/ls_gap"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_chevron" />
+            </com.littlestar.app.core.ui.BlockLayout>
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/catStories"
+                style="@style/Widget.LS.Block.Tile"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ls_theme_tile_height"
+                android:layout_marginStart="@dimen/ls_gap"
+                android:layout_weight="1">
+
+                <com.littlestar.app.core.ui.BlockLayout
+                    style="@style/Widget.LS.Block.Icon"
+                    android:layout_width="@dimen/ls_module_glyph"
+                    android:layout_height="@dimen/ls_module_glyph"
+                    android:layout_marginStart="@dimen/ls_gap"
+                    android:layout_marginTop="@dimen/ls_gap"
+                    app:ls_fill="@color/ls_green">
+
+                    <com.littlestar.app.core.ui.HanziTextView
+                        android:id="@+id/glyphStories"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/ls_on_green"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </com.littlestar.app.core.ui.BlockLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="@dimen/ls_gap"
+                    android:layout_marginBottom="@dimen/ls_gap"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/nameStories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.LS.Title" />
+
+                    <TextView
+                        android:id="@+id/nameStoriesEn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.LS.English.Small" />
+
+                    <TextView
+                        android:id="@+id/countStories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.LS.Caption" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/ls_icon"
+                    android:layout_height="@dimen/ls_icon"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="@dimen/ls_gap"
+                    android:layout_marginBottom="@dimen/ls_gap"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_chevron" />
+            </com.littlestar.app.core.ui.BlockLayout>
+        </LinearLayout>
+
+        <!-- 古诗宽卡 -->
+        <com.littlestar.app.core.ui.BlockLayout
+            android:id="@+id/catPoems"
+            style="@style/Widget.LS.Block.Tile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/ls_row_culture"
+            android:layout_marginTop="@dimen/ls_gap">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/ls_gap">
+
+                <com.littlestar.app.core.ui.BlockLayout
+                    style="@style/Widget.LS.Block.Icon"
+                    android:layout_width="@dimen/ls_module_glyph"
+                    android:layout_height="@dimen/ls_module_glyph"
+                    app:ls_fill="@color/ls_green">
+
+                    <com.littlestar.app.core.ui.HanziTextView
+                        android:id="@+id/glyphPoems"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/ls_on_green"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </com.littlestar.app.core.ui.BlockLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ls_gap"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/namePoems"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.LS.Title" />
+
+                    <TextView
+                        android:id="@+id/countPoems"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.LS.Caption" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/ls_icon"
+                    android:layout_height="@dimen/ls_icon"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_chevron" />
+            </LinearLayout>
+        </com.littlestar.app.core.ui.BlockLayout>
+
+        <!-- 收藏行 -->
+        <com.littlestar.app.core.ui.BlockLayout
+            android:id="@+id/favRow"
+            style="@style/Widget.LS.Block.Parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ls_btn_icon"
+            android:layout_marginTop="@dimen/ls_gap">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/ls_gap"
+                android:paddingEnd="@dimen/ls_gap">
+
+                <ImageView
+                    android:layout_width="@dimen/ls_icon"
+                    android:layout_height="@dimen/ls_icon"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_heart"
+                    app:tint="@color/ls_red" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ls_gap"
+                    android:layout_weight="1"
+                    android:text="@string/cul_fav_row"
+                    android:textAppearance="@style/TextAppearance.LS.Body" />
+
+                <TextView
+                    android:id="@+id/favCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.LS.Caption" />
+
+                <ImageView
+                    android:layout_width="@dimen/ls_icon"
+                    android:layout_height="@dimen/ls_icon"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_chevron"
+                    app:tint="@color/ls_muted" />
+            </LinearLayout>
+        </com.littlestar.app.core.ui.BlockLayout>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- 盼盼页脚 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cul_slogan"
+                    android:textAppearance="@style/TextAppearance.LS.Title" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cul_slogan_sub"
+                    android:textAppearance="@style/TextAppearance.LS.Caption"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="@dimen/ls_stamp"
+                android:layout_height="@dimen/ls_stamp"
+                android:background="@drawable/bg_circle_yellow">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/home_panda_desc"
+                    android:padding="@dimen/ls_gap_sm"
+                    android:src="@drawable/ic_panda" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

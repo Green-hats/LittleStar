@@ -59,4 +59,15 @@
     <dimen name="ls_badge_pad">4dp</dimen>
     <dimen name="ls_theme_tile_height">176dp</dimen>
     <dimen name="ls_tile_ill">64dp</dimen>
+    <dimen name="ls_row_culture">80dp</dimen>
+    <dimen name="ls_cover">56dp</dimen>
+    <dimen name="ls_play_big">76dp</dimen>
+    <dimen name="ls_player_cover">200dp</dimen>
+    <dimen name="ls_track_height">10dp</dimen>
+    <dimen name="ls_thumb">22dp</dimen>
+    <dimen name="ls_switch_w">52dp</dimen>
+    <dimen name="ls_switch_h">30dp</dimen>
+    <dimen name="ls_switch_knob">22dp</dimen>
+    <dimen name="ls_sheet_option_h">80dp</dimen>
+    <dimen name="ls_switch_travel">22dp</dimen>
 </resources>

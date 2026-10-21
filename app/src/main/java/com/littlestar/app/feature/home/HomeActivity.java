@@ -66,7 +66,11 @@ public final class HomeActivity extends ChildActivity {
                     com.littlestar.app.feature.words.ThemesActivity.class));
             Motion.childEnter(this);
         });
-        binding.moduleCulture.setOnClickListener(v -> { /* M5 接 CultureCategoriesActivity */ });
+        binding.moduleCulture.setOnClickListener(v -> {
+            startActivity(new Intent(this,
+                    com.littlestar.app.feature.culture.CultureCategoriesActivity.class));
+            Motion.childEnter(this);
+        });
         binding.parentEntry.setOnClickListener(v -> { /* M6 接 ParentGateActivity */ });
 
         setupOnboarding();
@@ -167,7 +171,17 @@ public final class HomeActivity extends ChildActivity {
     private void startSession() {
         HomeViewModel.UiState s = vm.state().getValue();
         if (s != null && s.mode == HomeModeResolver.Mode.CULTURE) {
-            // M3：文态 LISTEN 暂不导航（Player 属 M5）
+            // 文态 LISTEN → 播放器（推荐条目，queue = 同类全部）
+            if (s.featured != null) {
+                java.util.List<String> queue = new java.util.ArrayList<>();
+                for (com.littlestar.app.data.content.model.CultureItem it
+                        : container().content.itemsOfCategory(s.featured.categoryId)) {
+                    queue.add(it.id);
+                }
+                startActivity(com.littlestar.app.feature.player.PlayerActivity.intent(
+                        this, s.featured.id, queue));
+                Motion.childEnter(this);
+            }
             return;
         }
         startActivity(FlashcardActivity.sessionIntent(this));

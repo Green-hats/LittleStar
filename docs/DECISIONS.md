@@ -122,3 +122,9 @@
 - 问题：若队列在 deadline 前播完（player 已停），onSleepDeadlineReached 只设 setPauseAtEndOfMediaItems，不会再有 END_OF_MEDIA_ITEM 事件，晚安通知/清理永远不触发（M5 子代理真机发现）。
 - 做法：onSleepDeadlineReached 开头加 `if (!player.isPlaying()) { finishSleepStop(); return; }`。
 - 理由：修复死等；行为与「到点即停」一致。
+
+## D24 · 2026-10-21 · 真机验收环境限制（M5）
+- 问题：一加 8T（ColorOS）上 shell 无法授予 POST_NOTIFICATIONS（pm grant / appops 都被拒绝）。
+- 做法：通过 `am start APPLICATION_DETAILS_SETTINGS` 打开系统设置页，用坐标点按打开「允许通知」；M7 的权限弹窗流程不受影响（正常运行时弹窗）。
+- 另：设备锁屏无法远程解开时会导致 PackageManager install 挂起；恢复手段是先叫人手动解锁，不要盲目 reboot（教训：reboot 后 USB 需人工恢复在线）。
+- 理由：记录环境坑，后续里程碑验收复用。

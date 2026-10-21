@@ -103,4 +103,46 @@
     <string name="wl_learned">%1$d / %2$d learned</string>
     <string name="wl_hint">点一个字，听发音</string>
     <string name="wl_learned_desc">已学会</string>
+
+    <!-- ===== M5 · 文化模块 ===== -->
+    <string name="cul_top">Culture 文</string>
+    <string name="cul_title">选一类</string>
+    <string name="cul_subtitle">儿歌 · 故事 · 古诗</string>
+    <string name="cul_unit_shou">首</string>
+    <string name="cul_unit_ge">个</string>
+    <string name="cul_count_fmt">%1$d %2$s</string>
+    <string name="cul_fav_row">Favourites 收藏</string>
+    <string name="cul_slogan">每天听一点</string>
+    <string name="cul_slogan_sub">10 minutes a day</string>
+    <string name="cul_list_header_fmt">%1$s · %2$d</string>
+    <string name="sleep_timer">Sleep timer</string>
+    <string name="sleep_timer_off">Off</string>
+    <string name="sleep_timer_remaining">%1$d:%2$02d</string>
+
+    <string name="player_desc_play">播放</string>
+    <string name="player_desc_pause">暂停</string>
+    <string name="player_desc_prev">上一首</string>
+    <string name="player_desc_next">下一首</string>
+    <string name="player_desc_fav">收藏</string>
+    <string name="player_time_fmt">%1$d:%2$02d</string>
+    <string name="player_subtitle_fmt">%1$s · %2$s</string>
+
+    <string name="st_headline">播完这首就睡</string>
+    <string name="st_sub">到时间会轻轻停下来，不吵醒孩子。</string>
+    <string name="st_minutes">%1$d 分钟</string>
+    <string name="st_minute_debug">1 分钟</string>
+    <string name="st_finish">播完当前这首再停</string>
+    <string name="st_finish_sub">不会突然切断故事</string>
+    <string name="st_start">开始计时</string>
+    <string name="st_cancel">取消</string>
+    <string name="st_running">还剩 %1$d:%2$02d</string>
+    <string name="st_cancel_timer">取消计时</string>
+
+    <string name="fav_top">Favourites 收藏</string>
+    <string name="fav_count">%1$d 个收藏</string>
+    <string name="fav_sort_new">最新</string>
+    <string name="fav_sort_old">最早</string>
+    <string name="fav_empty_title">还没有收藏</string>
+    <string name="fav_empty_sub">听到喜欢的，点红心就收起来。</string>
+    <string name="fav_empty_cta">去听一首</string>
 </resources>
