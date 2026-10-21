@@ -102,3 +102,23 @@
 - 问题：M3 的 RewardViewModel 只在 showStars 时发 PraiseSfx；THEME 不发星星但奖励页仍应有完成仪式。
 - 做法：PraiseSfx 移出 showStars 条件，始终发；星星事件仍只限非 THEME。
 - 理由：§7.5 只说 THEME 不发星星，提示音不是星星。
+
+## D21 · 2026-10-21 · 播放进度条用自定义 View（M5）
+- 问题：§9.9 允许「Slider 改样式或自定义 View」；Slider 是 Material 组件，主题与孩子区硬影语言不一致。
+- 做法：core/ui/SongProgressView（10dp 圆头轨道 track 色 + 蓝色已播段 + 黄色方块拖柄带墨线，拖动回调 positionMs）。
+- 理由：视觉与设计图一致，无 Material 依赖。
+
+## D22 · 2026-10-21 · 睡前定时开关用自绘 toggle（M5）
+- 问题：孩子区关联页面不使用 Material 组件；Switch 样式不搭。
+- 做法：FrameLayout + 轨道 drawable（bg_switch_on/off）+ 圆点平移；状态写 SettingsStore.sleepFinishTrack。
+- 理由：与块视觉一致。
+
+## D23 · 2026-10-21 · Player 回前台不打断播放（M5）
+- 问题：PlayerActivity.onStart 每次重连 MediaController，若直接 setMediaItems 会重置正在播的内容。
+- 做法：当前 mediaId 与目标条目相同且队列长度一致时跳过 setMediaItems；否则从 queueIndex 重排。
+- 理由：§7.24 暂停语义——后台回来进度不重置。
+
+## D21 · 2026-10-21 · 睡前定时边界：队列提前播完
+- 问题：若队列在 deadline 前播完（player 已停），onSleepDeadlineReached 只设 setPauseAtEndOfMediaItems，不会再有 END_OF_MEDIA_ITEM 事件，晚安通知/清理永远不触发（M5 子代理真机发现）。
+- 做法：onSleepDeadlineReached 开头加 `if (!player.isPlaying()) { finishSleepStop(); return; }`。
+- 理由：修复死等；行为与「到点即停」一致。

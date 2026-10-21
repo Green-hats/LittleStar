@@ -85,6 +85,11 @@ public final class PlaybackService extends MediaSessionService {
         if (player == null || sleepTimer == null) {
             return;
         }
+        if (!player.isPlaying()) {
+            // 队列在到点前已播完：不会再有 END_OF_MEDIA_ITEM 事件，直接进停止流程
+            finishSleepStop();
+            return;
+        }
         if (sleepTimer.isFinishTrack()) {
             // 播完当前这首再停
             player.setPauseAtEndOfMediaItems(true);
