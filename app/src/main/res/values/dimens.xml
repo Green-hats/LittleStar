@@ -7,6 +7,7 @@
     <dimen name="ls_gap">12dp</dimen>
     <dimen name="ls_gap_sm">8dp</dimen>
 
+    <dimen name="ls_icon">24dp</dimen>
     <dimen name="ls_btn_primary">64dp</dimen>
     <dimen name="ls_btn_secondary">56dp</dimen>
     <dimen name="ls_btn_icon">48dp</dimen>

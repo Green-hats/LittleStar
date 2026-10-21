@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LittleStar</string>
+
+    <!-- 组件无障碍 / 组件内文案 -->
+    <string name="ls_seg_progress_desc">已学 %1$d / %2$d</string>
+    <string name="ls_stamp_char">会</string>
+    <string name="ls_stamp_learned_desc">已学会</string>
+    <string name="ls_stamp_not_learned_desc">还没学会</string>
+    <string name="ls_stepper_minus">−</string>
+    <string name="ls_stepper_plus">+</string>
+    <string name="ls_stepper_decrease_desc">减少</string>
+    <string name="ls_stepper_increase_desc">增加</string>
+    <string name="ls_bar_chart_desc">最近七天的学习分钟数</string>
+    <string name="ls_speaking_desc">正在朗读</string>
 </resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- M1 组件画廊（仅 debug） -->
+    <string name="gallery_title">组件画廊</string>
+    <string name="gallery_light">浅色</string>
+    <string name="gallery_dark">深色</string>
+    <string name="gallery_font">1.3×字</string>
+
+    <string name="gallery_sec_blocks">硬影块 · 9 个样式</string>
+    <string name="gallery_start">START</string>
+    <string name="gallery_listen">LISTEN</string>
+    <string name="gallery_secondary">再听一次</string>
+    <string name="gallery_hero_char">月</string>
+    <string name="gallery_module_char">字</string>
+    <string name="gallery_module_sub">Words</string>
+    <string name="gallery_tile_pinyin">yuè</string>
+    <string name="gallery_option_char">月</string>
+    <string name="gallery_parent_row">家长中心</string>
+    <string name="gallery_press_demo">自动演示：按下内容下沉、影子不动（剩 2dp）</string>
+
+    <string name="gallery_sec_progress">分段进度 SegmentProgressView</string>
+    <string name="gallery_sec_stepper">步进器 StepperView</string>
+    <string name="gallery_sec_stamp">印章 StampView（点右侧重播盖章动效）</string>
+    <string name="gallery_sec_wave">声波 SoundWaveView</string>
+    <string name="gallery_speaking">朗读中</string>
+
+    <string name="gallery_sec_hanzi">汉字与拼音（字形验证）</string>
+    <string name="gallery_hanzi_sample">月骨直女绿</string>
+    <string name="gallery_pinyin_sample">yuè gǔ zhí · nǚ lǜ ǚ ǜ</string>
+
+    <string name="gallery_sec_chart">每周分钟数 BarChartView</string>
+    <string name="gallery_sec_icons">图标（20 个）</string>
+    <string name="gallery_sec_panda">熊猫盼盼</string>
+    <string name="gallery_panda_awake">醒着</string>
+    <string name="gallery_panda_sleep">睡着</string>
+</resources>

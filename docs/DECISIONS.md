@@ -32,3 +32,18 @@
 - 做法：内容 JSON 定稿后用 tools/subset_font.py 生成 43KB 子集（195 字，含 words/culture 全部汉字 + distractors + 常用 UI 字），已替换 res/font/noto_sans_sc_hanzi.otf。系统 python3 缺 fontTools，用 `python3 -m venv /tmp/fontenv && /tmp/fontenv/bin/pip install fonttools brotli` 后运行。
 - 词卡配图与封面全部先用 ill_placeholder（工程文档 §8.8 允许的 MVP 占位）；占位音频用 macOS say 婷婷 + ffmpeg vorbis（工具：tools/make_placeholder_audio.sh）。
 - 理由：不阻塞开发，正式版前替换为真人录音与定稿插画。
+
+## D7 · 2026-10-21 · 占位音效编码器（M1）
+- 问题：任务示例用 `ffmpeg -c:a libvorbis`，但本机 ffmpeg 9.0.2 未编译 libvorbis。
+- 做法：改用内置 vorbis 编码器（`-c:a vorbis -strict -2`），该编码器只支持双声道，滤镜链末尾加 `pan=stereo|c0=c0|c1=c0`；输出仍为 .ogg vorbis，SoundPool 可解。
+- 理由：占位音效只为区分 5 个反馈音，正式版前替换为录制音效。
+
+## D8 · 2026-10-21 · 熊猫 SVG 转换取舍（M1）
+- 问题：panda_v3.svg / panda_sleep.svg 含纸白背景矩形、480 黄圆、`<text>z z`。
+- 做法：按 §8.8 删掉背景矩形与黄色圆贴（黄圆 + 墨圈由 BlockLayout / ShapeableImageView 提供，gallery 里用 debug 专用的 bg_panda_disc 演示）；`translate+scale` 映射为 VectorDrawable `<group>`，path 原样保留；两个 `<text>z</text>` 用描边折线路径代替；颜色进 values(+night) 的 ls_panda_*（内容色，深浅色一致）。转换脚本固化在 tools/svg_to_vector.py。
+- 理由：§8.8 明确要求；脚本可重复执行。
+
+## D9 · 2026-10-21 · M1 / M2 并行开发的提交边界（M1）
+- 问题：M1 进行中，父代理在同一工作区并行做 M2，AppContainer 等文件被并发修改。
+- 做法：M1 只 add 显式路径（core/ui、core/audio、drawable、raw、src/debug、相关 values、tools/svg_to_vector.py、截图、DECISIONS），不用 `git add -A`；AppContainer 的 SfxPlayer 接线在 M2 提交前已增量合并，随 M2 提交入库；M1 提交不含 M2 未完成的 feature/*、androidTest 路径。
+- 理由：两个里程碑各自提交，历史清晰，互不污染。

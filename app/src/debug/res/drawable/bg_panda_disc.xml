@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 熊猫的黄色圆贴 + 墨圈（gallery 用；正式页由 BlockLayout 圆形提供） -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/ls_yellow" />
+    <stroke
+        android:width="@dimen/ls_stroke_hero"
+        android:color="@color/ls_stroke" />
+</shape>
