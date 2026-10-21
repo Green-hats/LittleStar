@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- §7.3 词表：红色描边 Quiz 入口 + 6 段进度 + 2×3 词块 + 底部提示 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/wordListRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ls_paper"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:maxWidth="@dimen/ls_content_max_width"
+        android:orientation="vertical"
+        android:padding="@dimen/ls_margin">
+
+        <!-- 顶栏：返回 + 主题名 + Quiz 描边入口 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/btnBack"
+                style="@style/Widget.LS.Block.Icon"
+                android:layout_width="@dimen/ls_btn_icon"
+                android:layout_height="@dimen/ls_btn_icon"
+                android:contentDescription="@string/nav_back">
+
+                <ImageView
+                    android:layout_width="@dimen/ls_icon"
+                    android:layout_height="@dimen/ls_icon"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_back" />
+            </com.littlestar.app.core.ui.BlockLayout>
+
+            <TextView
+                android:id="@+id/listTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/ls_gap"
+                android:layout_weight="1"
+                android:textAppearance="@style/TextAppearance.LS.Title" />
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/btnQuiz"
+                style="@style/Widget.LS.Block.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/ls_btn_icon"
+                app:ls_strokeColor="@color/ls_red">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/ls_gap"
+                    android:paddingEnd="@dimen/ls_gap"
+                    android:text="@string/wl_quiz"
+                    android:textAppearance="@style/TextAppearance.LS.Body"
+                    android:textColor="@color/ls_red"
+                    android:textStyle="bold" />
+            </com.littlestar.app.core.ui.BlockLayout>
+        </LinearLayout>
+
+        <!-- 进度 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.littlestar.app.core.ui.SegmentProgressView
+                android:id="@+id/listProgress"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ls_seg_height"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/listProgressText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/ls_gap"
+                android:textAppearance="@style/TextAppearance.LS.Caption" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/wordGrid"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/ls_gap"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:overScrollMode="never" />
+
+        <!-- 底部提示 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/ls_icon"
+                android:layout_height="@dimen/ls_icon"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_speaker"
+                app:tint="@color/ls_muted" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/ls_gap_sm"
+                android:text="@string/wl_hint"
+                android:textAppearance="@style/TextAppearance.LS.Caption"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

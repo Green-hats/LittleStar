@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 主题块：插画 + 序号徽章（6/6 变绿勾）+ 中文名 + 英文 + 字数 + 已学数 -->
+<com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/themeTile"
+    style="@style/Widget.LS.Block.Tile"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/ls_theme_tile_height"
+    android:layout_marginBottom="@dimen/ls_gap">
+
+    <!-- 序号徽章 / 全学完绿勾 -->
+    <com.littlestar.app.core.ui.BlockLayout
+        android:id="@+id/badgeNum"
+        style="@style/Widget.LS.Block.Icon"
+        android:layout_width="@dimen/ls_badge"
+        android:layout_height="@dimen/ls_badge"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="@dimen/ls_gap"
+        android:layout_marginEnd="@dimen/ls_gap"
+        app:ls_fill="@color/ls_yellow"
+        app:ls_pressable="false">
+
+        <TextView
+            android:id="@+id/badgeText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.LS.Caption"
+            android:textColor="@color/ls_on_yellow"
+            android:textStyle="bold" />
+    </com.littlestar.app.core.ui.BlockLayout>
+
+    <ImageView
+        android:id="@+id/badgeDone"
+        android:layout_width="@dimen/ls_badge"
+        android:layout_height="@dimen/ls_badge"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="@dimen/ls_gap"
+        android:layout_marginEnd="@dimen/ls_gap"
+        android:background="@drawable/bg_badge_green"
+        android:contentDescription="@string/wl_learned_desc"
+        android:padding="@dimen/ls_badge_pad"
+        android:src="@drawable/ic_check"
+        android:visibility="gone"
+        app:tint="@color/ls_on_green" />
+
+    <!-- 插画占位 + 主题字形 -->
+    <FrameLayout
+        android:layout_width="@dimen/ls_tile_ill"
+        android:layout_height="@dimen/ls_tile_ill"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/ls_gap">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ill_placeholder" />
+
+        <com.littlestar.app.core.ui.HanziTextView
+            android:id="@+id/themeGlyph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.LS.HanziTile"
+            android:textColor="@color/ls_on_yellow"
+            android:textSize="28sp" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/ls_gap"
+        android:layout_marginBottom="@dimen/ls_gap"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/themeNameZh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.LS.Title" />
+
+        <TextView
+            android:id="@+id/themeNameEn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.LS.English.Small" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/themeCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.LS.Caption" />
+
+            <TextView
+                android:id="@+id/themeLearned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/ls_gap_sm"
+                android:textAppearance="@style/TextAppearance.LS.Caption"
+                android:textColor="@color/ls_on_mint" />
+        </LinearLayout>
+    </LinearLayout>
+</com.littlestar.app.core.ui.BlockLayout>

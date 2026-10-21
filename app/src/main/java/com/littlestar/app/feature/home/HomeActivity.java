@@ -61,7 +61,11 @@ public final class HomeActivity extends ChildActivity {
         binding.heroCard.setOnClickListener(v -> speakHero());
 
         // 模块与家长入口：M3 不导航（ThemesActivity / CultureCategoriesActivity / ParentGate 后续里程碑）
-        binding.moduleWords.setOnClickListener(v -> { /* M4 接 ThemesActivity */ });
+        binding.moduleWords.setOnClickListener(v -> {
+            startActivity(new Intent(this,
+                    com.littlestar.app.feature.words.ThemesActivity.class));
+            Motion.childEnter(this);
+        });
         binding.moduleCulture.setOnClickListener(v -> { /* M5 接 CultureCategoriesActivity */ });
         binding.parentEntry.setOnClickListener(v -> { /* M6 接 ParentGateActivity */ });
 

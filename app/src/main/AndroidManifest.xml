@@ -38,6 +38,14 @@
             android:name=".feature.reward.RewardActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.words.ThemesActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.words.WordListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
     </application>
 </manifest>

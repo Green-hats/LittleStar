@@ -92,3 +92,13 @@
 - 问题：`adb shell pm clear com.littlestar.app.debug` 抛 SecurityException（CLEAR_APP_USER_DATA 不授予 shell）。
 - 做法：清数据用 `am force-stop` + `run-as <pkg> rm files/progress.json shared_prefs/*.xml`；Espresso 测试内通过容器重置（settings + store.update 清空）。
 - 理由：真机限制；测试内重置同时覆盖内存态，比删文件更彻底。
+
+## D19 · 2026-10-21 · 主题/词表网格横向间距（M4）
+- 问题：GridLayoutManager(2) 没有内置间距。
+- 做法：ThemesActivity.GapDecoration（左块右半个 gap、右块左半个 gap），纵向间距由 item 的 marginBottom 提供；WordList 复用同一装饰。
+- 理由：不引入第三方库，块与块间距 = ls_gap。
+
+## D20 · 2026-10-21 · THEME 会话奖励页仍播「太棒了」（M4）
+- 问题：M3 的 RewardViewModel 只在 showStars 时发 PraiseSfx；THEME 不发星星但奖励页仍应有完成仪式。
+- 做法：PraiseSfx 移出 showStars 条件，始终发；星星事件仍只限非 THEME。
+- 理由：§7.5 只说 THEME 不发星星，提示音不是星星。

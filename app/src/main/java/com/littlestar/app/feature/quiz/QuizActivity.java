@@ -44,6 +44,15 @@ public final class QuizActivity extends ChildActivity {
         return i;
     }
 
+    /** 词表 Quiz 入口（M4）：THEME 会话不发星星。 */
+    @NonNull
+    public static Intent themeIntent(@NonNull Activity from, long sessionId) {
+        Intent i = new Intent(from, QuizActivity.class);
+        i.putExtra(EXTRA_MODE, QuizViewModel.Mode.THEME.name());
+        i.putExtra(EXTRA_SESSION_ID, sessionId);
+        return i;
+    }
+
     private ActivityQuizBinding binding;
     private QuizViewModel vm;
     private ViewQuizOptionBinding[] options;
@@ -136,7 +145,6 @@ public final class QuizActivity extends ChildActivity {
         int mint = ContextCompat.getColor(this, R.color.ls_mint);
         int clay = ContextCompat.getColor(this, R.color.ls_clay);
         int onMint = ContextCompat.getColor(this, R.color.ls_on_mint);
-        int onCard = ContextCompat.getColor(this, R.color.ls_card);
 
         for (int i = 0; i < options.length; i++) {
             ViewQuizOptionBinding ob = options[i];

@@ -95,14 +95,15 @@ public final class RewardViewModel extends ViewModel {
         boolean showStars = !SessionBuilder.KIND_THEME.equals(s.kind);
         state.setValue(new UiState(stars, Math.max(1, s.newWordIds.size()),
                 Collections.unmodifiableList(learned), showStars, s.correct, s.total));
+        List<Effect> batch = new ArrayList<>();
         if (showStars) {
-            List<Effect> batch = new ArrayList<>();
             for (int i = 0; i < stars; i++) {
                 batch.add(new Effect.StarSfx(i));
             }
-            batch.add(new Effect.PraiseSfx());
-            effects.setValue(new Event<>(new Effect.Batch(batch)));
         }
+        // 提示音「太棒了」与星星无关：THEME 不发星星但仍播提示音
+        batch.add(new Effect.PraiseSfx());
+        effects.setValue(new Event<>(new Effect.Batch(batch)));
         return true;
     }
 

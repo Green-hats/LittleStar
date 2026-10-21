@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 词块：配图占位 + 汉字 40sp + 拼音 14sp + 英文 12sp + 已学绿勾 -->
+<com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/wordTile"
+    style="@style/Widget.LS.Block.Tile"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/ls_theme_tile_height"
+    android:layout_marginBottom="@dimen/ls_gap">
+
+    <ImageView
+        android:id="@+id/wordDone"
+        android:layout_width="@dimen/ls_badge"
+        android:layout_height="@dimen/ls_badge"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="@dimen/ls_gap"
+        android:layout_marginEnd="@dimen/ls_gap"
+        android:background="@drawable/bg_badge_green"
+        android:contentDescription="@string/wl_learned_desc"
+        android:padding="@dimen/ls_badge_pad"
+        android:src="@drawable/ic_check"
+        android:visibility="gone"
+        app:tint="@color/ls_on_green" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/ls_gap_sm">
+
+        <FrameLayout
+            android:layout_width="@dimen/ls_tile_ill"
+            android:layout_height="@dimen/ls_tile_ill">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ill_placeholder" />
+
+            <com.littlestar.app.core.ui.HanziTextView
+                android:id="@+id/wordGlyph"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.LS.HanziTile"
+                android:textColor="@color/ls_on_yellow"
+                android:textSize="28sp" />
+        </FrameLayout>
+
+        <com.littlestar.app.core.ui.HanziTextView
+            android:id="@+id/wordHanzi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap_sm"
+            android:textAppearance="@style/TextAppearance.LS.HanziTile" />
+
+        <TextView
+            android:id="@+id/wordPinyin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.LS.Pinyin.Small" />
+
+        <TextView
+            android:id="@+id/wordEnglish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.LS.English.Small" />
+    </LinearLayout>
+</com.littlestar.app.core.ui.BlockLayout>

@@ -57,4 +57,6 @@
     <dimen name="ls_hero_pinyin_bottom">52dp</dimen>
     <dimen name="ls_ob_dialog_width">280dp</dimen>
     <dimen name="ls_badge_pad">4dp</dimen>
+    <dimen name="ls_theme_tile_height">176dp</dimen>
+    <dimen name="ls_tile_ill">64dp</dimen>
 </resources>

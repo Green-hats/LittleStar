@@ -90,4 +90,17 @@
     <string name="reward_done">完成</string>
     <string name="reward_again">再来一次</string>
     <string name="reward_star_desc">第 %1$d 颗星</string>
+
+    <!-- ===== M4 · 字模块 ===== -->
+    <string name="themes_top">Words 字</string>
+    <string name="themes_title">选一个主题</string>
+    <string name="themes_subtitle">6 themes · 6 words each</string>
+    <string name="themes_order_hint">从 1 开始，按推荐顺序学</string>
+    <string name="themes_words_count">%1$d 个字</string>
+    <string name="themes_learned">已学 %1$d/%2$d</string>
+    <string name="themes_badge_desc">第 %1$d 个主题</string>
+    <string name="wl_quiz">Quiz</string>
+    <string name="wl_learned">%1$d / %2$d learned</string>
+    <string name="wl_hint">点一个字，听发音</string>
+    <string name="wl_learned_desc">已学会</string>
 </resources>
