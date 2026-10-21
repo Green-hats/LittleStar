@@ -160,6 +160,8 @@ public final class RewardActivity extends ChildActivity {
 
     private void handle(@NonNull RewardViewModel.Effect e) {
         if (e instanceof RewardViewModel.Effect.Close) {
+            // §10.1：会话中到时不打断，奖励页结束时检查一次（defer 兜底）
+            container().screenTime.checkNow();
             finish();
             Motion.childExit(this);
         } else if (e instanceof RewardViewModel.Effect.PlayAgain) {

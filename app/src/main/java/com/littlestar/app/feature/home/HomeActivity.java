@@ -29,6 +29,8 @@ import com.littlestar.app.feature.flashcard.FlashcardActivity;
  */
 public final class HomeActivity extends ChildActivity {
 
+    private static final int REQ_POST_NOTIFICATIONS = 41;
+
     /** 当天第一次进入自动朗读的日期记录（Activity 级 SharedPreferences，不进 SettingsStore）。 */
     private static final String PREF_LAST_SPEAK_DATE = "last_speak_date";
 
@@ -222,9 +224,15 @@ public final class HomeActivity extends ChildActivity {
             binding.onboarding.obNotifyDesc.setText(getString(R.string.ob_notify_desc, obGoal));
         });
         binding.onboarding.obSkip1.setOnClickListener(v -> vm.completeOnboarding(obGoal));
-        // 允许提醒：M3 只写设置，权限申请留 M7
+        // 允许提醒：用户点了才申请 POST_NOTIFICATIONS（Android 13+）；拒绝不阻塞（§10.3）
         binding.onboarding.obAllow.setOnClickListener(v -> {
             container().settings.setNotifRationaleShown(true);
+            if (android.os.Build.VERSION.SDK_INT >= 33
+                    && checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                    != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+                        REQ_POST_NOTIFICATIONS);
+            }
             vm.completeOnboarding(obGoal);
         });
         binding.onboarding.obLater.setOnClickListener(v -> vm.completeOnboarding(obGoal));

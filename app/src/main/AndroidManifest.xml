@@ -63,6 +63,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".feature.timeup.TimeUpActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
         <!-- §10.2 播放服务 -->
         <service
             android:name=".playback.PlaybackService"

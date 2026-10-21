@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.littlestar.app.BuildConfig;
 import com.littlestar.app.R;
 import com.littlestar.app.core.ui.BlockLayout;
 import com.littlestar.app.core.ui.Insets;
@@ -20,9 +21,12 @@ import com.littlestar.app.databinding.ActivityParentTimeBinding;
 public final class ParentTimeActivity extends ParentActivity {
 
     private static final int[] LIMITS = {15, 30, 45, 60};
+    /** debug 专用 1 分钟选项（M7 验收：1 分钟后进 LIMIT）。 */
+    private static final int[] LIMITS_DEBUG = {1, 15, 30, 45, 60};
 
     private ActivityParentTimeBinding binding;
     private BlockLayout[] opts;
+    private int[] values;
     private int selected;
 
     @Override
@@ -32,9 +36,15 @@ public final class ParentTimeActivity extends ParentActivity {
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
 
-        opts = new BlockLayout[]{binding.opt15, binding.opt30, binding.opt45, binding.opt60};
+        values = BuildConfig.DEBUG ? LIMITS_DEBUG : LIMITS;
+        if (BuildConfig.DEBUG) {
+            binding.opt1.setVisibility(View.VISIBLE);
+        }
+        opts = BuildConfig.DEBUG
+                ? new BlockLayout[]{binding.opt1, binding.opt15, binding.opt30, binding.opt45, binding.opt60}
+                : new BlockLayout[]{binding.opt15, binding.opt30, binding.opt45, binding.opt60};
         for (int i = 0; i < opts.length; i++) {
-            int v = LIMITS[i];
+            int v = values[i];
             ((TextView) opts[i].getChildAt(0)).setText(getString(R.string.pt_minutes_fmt, v));
             opts[i].setOnClickListener(x -> select(v));
         }
@@ -79,7 +89,7 @@ public final class ParentTimeActivity extends ParentActivity {
         int yellow = ContextCompat.getColor(this, R.color.ls_yellow);
         int card = ContextCompat.getColor(this, R.color.ls_card);
         for (int i = 0; i < opts.length; i++) {
-            opts[i].setFillColor(LIMITS[i] == minutes ? yellow : card);
+            opts[i].setFillColor(values[i] == minutes ? yellow : card);
         }
     }
 }

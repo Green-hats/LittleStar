@@ -52,12 +52,29 @@
             android:text="@string/pt_title"
             android:textAppearance="@style/TextAppearance.LS.Headline" />
 
-        <!-- 15 / 30 / 45 / 60 -->
+        <!-- 15 / 30 / 45 / 60（debug 多一个 1 分钟验收选项） -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_section"
             android:orientation="horizontal">
+
+            <com.littlestar.app.core.ui.BlockLayout
+                android:id="@+id/opt1"
+                style="@style/Widget.LS.Block.Option"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ls_btn_primary"
+                android:layout_marginEnd="@dimen/ls_gap_sm"
+                android:layout_weight="1"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.LS.Body"
+                    android:textStyle="bold" />
+            </com.littlestar.app.core.ui.BlockLayout>
 
             <com.littlestar.app.core.ui.BlockLayout
                 android:id="@+id/opt15"

@@ -29,6 +29,9 @@ import java.time.Instant;
  */
 public final class PlaybackService extends MediaSessionService {
 
+    /** TimeUp 等系统页用它让播放暂停（§9.17）。 */
+    public static final String ACTION_PAUSE = "com.littlestar.app.action.PAUSE";
+
     @Nullable
     private MediaSession session;
     @Nullable
@@ -142,6 +145,17 @@ public final class PlaybackService extends MediaSessionService {
         if (player != null && !player.isPlaying()) {
             stopSelf();
         }
+    }
+
+    @Override
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+        if (intent != null && ACTION_PAUSE.equals(intent.getAction())) {
+            if (player != null) {
+                player.pause();
+            }
+            return START_STICKY;
+        }
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable
