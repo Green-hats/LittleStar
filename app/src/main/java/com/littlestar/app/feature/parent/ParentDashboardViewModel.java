@@ -21,13 +21,21 @@ public final class ParentDashboardViewModel extends ViewModel {
         /** 今日测验正确率 0–100；今天没测验为 -1。 */
         public final int todayQuizPercent;
         public final List<Integer> weekMinutes;
+        /** 本周学会字数（汇总卡标题右侧）。 */
+        public final int weekLearned;
 
         public UiState(int todayMinutes, int todayLearned, int todayQuizPercent,
                        List<Integer> weekMinutes) {
+            this(todayMinutes, todayLearned, todayQuizPercent, weekMinutes, 0);
+        }
+
+        public UiState(int todayMinutes, int todayLearned, int todayQuizPercent,
+                       List<Integer> weekMinutes, int weekLearned) {
             this.todayMinutes = todayMinutes;
             this.todayLearned = todayLearned;
             this.todayQuizPercent = todayQuizPercent;
             this.weekMinutes = weekMinutes;
+            this.weekLearned = weekLearned;
         }
     }
 
@@ -64,8 +72,14 @@ public final class ParentDashboardViewModel extends ViewModel {
             }
         }
         int percent = total == 0 ? -1 : Math.round(100f * correct / total);
+        // 本周学会字数
+        int weekLearned = 0;
+        for (int i = 0; i < 7; i++) {
+            weekLearned += ProgressRepository.learnedOn(ps,
+                    container.clock.today().minusDays(i), container.clock);
+        }
         state.setValue(new UiState(minutes, learned, percent,
-                UsageRepository.weekMinutes(ps, container.clock.today())));
+                UsageRepository.weekMinutes(ps, container.clock.today()), weekLearned));
     }
 
     @NonNull

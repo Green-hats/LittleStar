@@ -71,7 +71,11 @@ public final class HomeActivity extends ChildActivity {
                     com.littlestar.app.feature.culture.CultureCategoriesActivity.class));
             Motion.childEnter(this);
         });
-        binding.parentEntry.setOnClickListener(v -> { /* M6 接 ParentGateActivity */ });
+        binding.parentEntry.setOnClickListener(v -> {
+            startActivity(com.littlestar.app.feature.parent.ParentGateActivity.intent(this,
+                    com.littlestar.app.feature.parent.ParentGateActivity.TARGET_DASHBOARD));
+            Motion.parentFade(this);
+        });
 
         setupOnboarding();
     }

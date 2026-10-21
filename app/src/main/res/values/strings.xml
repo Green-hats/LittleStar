@@ -145,4 +145,91 @@
     <string name="fav_empty_title">还没有收藏</string>
     <string name="fav_empty_sub">听到喜欢的，点红心就收起来。</string>
     <string name="fav_empty_cta">去听一首</string>
+
+    <!-- ===== M6 · 家长区 ===== -->
+    <string name="pg_top">Parents</string>
+    <string name="pg_title">家长验证</string>
+    <string name="pg_sub">请完成下面的题目</string>
+    <string name="pg_hint1">仅家长可以进入；答错会回到上一页。</string>
+    <string name="pg_hint2">进入后可查看学习记录、设置时长与提醒。</string>
+    <string name="pg_confirm">确认</string>
+    <string name="pg_answer_hint">答案</string>
+
+    <string name="pd_top">Overview</string>
+    <string name="pd_settings">Settings</string>
+    <string name="pd_greeting">今天学得不错</string>
+    <string name="pd_date_fmt">%1$s · 周%2$s</string>
+    <string name="pd_today_minutes">今日时长</string>
+    <string name="pd_unit_min">分钟</string>
+    <string name="pd_today_learned">今日识字</string>
+    <string name="pd_unit_ge">个</string>
+    <string name="pd_quiz_percent">测验正确率</string>
+    <string name="pd_quiz_none">–</string>
+    <string name="pd_week">本周学习</string>
+    <string name="pd_week_fmt">%1$d 个字</string>
+    <string name="pd_row_time">使用时长</string>
+    <string name="pd_row_time_sub_fmt">每天 %1$d 分钟 · 休息提醒%2$s</string>
+    <string name="pd_row_plan">学习计划</string>
+    <string name="pd_row_plan_sub_fmt">每天 %1$d 个字 · %2$s 提醒</string>
+    <string name="pd_row_records">学习记录</string>
+    <string name="pd_row_records_sub">查看每天学了什么</string>
+    <string name="pd_on">开</string>
+    <string name="pd_off">关</string>
+
+    <string name="pt_top">Limits</string>
+    <string name="pt_title">每天可以看多久？</string>
+    <string name="pt_minutes_fmt">%1$d 分钟</string>
+    <string name="pt_rest">休息提醒</string>
+    <string name="pt_rest_sub">连续玩 15 分钟提醒一次</string>
+    <string name="pt_extra">今天已达上限，可以再给 10 分钟</string>
+    <string name="pt_extra_btn">再给 10 分钟</string>
+    <string name="pt_save">保存</string>
+    <string name="pt_cancel">取消</string>
+    <string name="pt_saved">已保存</string>
+
+    <string name="pp_top">Plan</string>
+    <string name="pp_title">每天学几个字？</string>
+    <string name="pp_reminder">提醒时间</string>
+    <string name="pp_weekly_fmt">本周目标：%1$d 个字</string>
+    <string name="pp_weekly_sub_fmt">每天 %1$d 个 × %2$d 天</string>
+    <string name="pp_saved">已保存，明天起生效</string>
+    <string name="pp_need_day">至少选一天</string>
+    <string name="pp_notif_off">通知已关闭，去设置打开</string>
+    <string name="pp_notif_rationale">到点提醒孩子学习，需要通知权限。</string>
+
+    <string name="pr_top">Records</string>
+    <string name="pr_week_fmt">本周 %1$d 个字 · %2$d 次测验</string>
+    <string name="pr_compare_more">比上周多 %1$d 个字</string>
+    <string name="pr_compare_less">比上周少 %1$d 个字</string>
+    <string name="pr_compare_same">与上周一样</string>
+    <string name="pr_row_fmt">%1$d 个字 · 测验 %2$d/%3$d · %4$d 分钟</string>
+    <string name="pr_empty">还没有记录</string>
+    <string name="pr_empty_cta">回首页</string>
+    <string name="pr_privacy">所有数据只保存在这台设备上</string>
+
+    <string name="ss_sound">声音</string>
+    <string name="ss_sound_sub">音效与朗读</string>
+    <string name="ss_english">双语提示</string>
+    <string name="ss_english_sub">测验里显示英文</string>
+    <string name="ss_reset">重置进度</string>
+    <string name="ss_reset_sub">清空所有学习数据</string>
+    <string name="ss_reset_title">重置进度？</string>
+    <string name="ss_reset_msg">会清空所有学习进度与星星，不能恢复。确定吗？</string>
+    <string name="ss_reset_confirm">重置</string>
+    <string name="ss_cancel">取消</string>
+    <string name="ss_privacy">隐私</string>
+    <string name="ss_privacy_text">所有数据只保存在这台设备上，不上传。</string>
+    <string name="ss_about">关于</string>
+    <string name="ss_version_fmt">版本 %1$s · 离线 · 无广告 · 无账号</string>
+    <string name="ss_reset_done">已重置</string>
+
+    <string-array name="weekday_short">
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+        <item>日</item>
+    </string-array>
 </resources>

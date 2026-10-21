@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- §7.25 家长设置 BottomSheet：声音 / 双语提示 / 重置进度 / 隐私 / 版本 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settingsRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/ls_paper"
+    android:orientation="vertical"
+    android:padding="@dimen/ls_margin">
+
+    <!-- 学习 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ss_sound"
+                android:textAppearance="@style/TextAppearance.LS.Body"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ss_sound_sub"
+                android:textAppearance="@style/TextAppearance.LS.Caption" />
+        </LinearLayout>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/soundSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ls_gap"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ss_english"
+                android:textAppearance="@style/TextAppearance.LS.Body"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ss_english_sub"
+                android:textAppearance="@style/TextAppearance.LS.Caption" />
+        </LinearLayout>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/englishSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- 数据 -->
+    <com.littlestar.app.core.ui.BlockLayout
+        android:id="@+id/resetRow"
+        style="@style/Widget.LS.Block.Parent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ls_row_parent"
+        android:layout_marginTop="@dimen/ls_section">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/ls_gap"
+            android:paddingEnd="@dimen/ls_gap">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ss_reset"
+                    android:textAppearance="@style/TextAppearance.LS.Body"
+                    android:textColor="@color/ls_red"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ss_reset_sub"
+                    android:textAppearance="@style/TextAppearance.LS.Caption" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="@dimen/ls_icon"
+                android:layout_height="@dimen/ls_icon"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_chevron" />
+        </LinearLayout>
+    </com.littlestar.app.core.ui.BlockLayout>
+
+    <!-- 隐私 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ls_section"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ss_privacy"
+            android:textAppearance="@style/TextAppearance.LS.Body"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap_sm"
+            android:text="@string/ss_privacy_text"
+            android:textAppearance="@style/TextAppearance.LS.Caption"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- 关于 -->
+    <TextView
+        android:id="@+id/versionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ls_section"
+        android:textAppearance="@style/TextAppearance.LS.Caption" />
+</LinearLayout>

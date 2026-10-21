@@ -128,3 +128,13 @@
 - 做法：通过 `am start APPLICATION_DETAILS_SETTINGS` 打开系统设置页，用坐标点按打开「允许通知」；M7 的权限弹窗流程不受影响（正常运行时弹窗）。
 - 另：设备锁屏无法远程解开时会导致 PackageManager install 挂起；恢复手段是先叫人手动解锁，不要盲目 reboot（教训：reboot 后 USB 需人工恢复在线）。
 - 理由：记录环境坑，后续里程碑验收复用。
+
+## D25 · 2026-10-21 · 重置进度的实现（M6）
+- 问题：SettingsSheet 重置需清 ProgressStore 全部数据；没有一个官方的「清空」API。
+- 做法：MaterialAlertDialogBuilder 二次确认（家长区允许系统对话框）→ store.update 里清空 words/sessions/dailyPlans/usage/favourites 并重置 nextSessionId → flushNow → Snackbar「已重置」。
+- 理由：不新增数据层 API；update+flushNow 是既有写路径。
+
+## D26 · 2026-10-21 · 「改每日目标次日生效」的真机验证方法（M6）
+- 问题：验收要求「目标改 5，第二天首页 5 段」；真机 shell 没有 SET_TIME 权限，不能直接改日期。
+- 做法：Plan 保存 goal=5 后（settings.xml 确认 daily_goal=5），`run-as rm files/progress.json` + force-stop 重进 → 当天 plan 按新 goal 重建 → 首页显示 5 段（见 docs/screenshots/M6/home_goal5_next.png「Today 0 / 5 words」）。当天已有 plan 时不重算（SessionBuilder.todayPlan 有 plan 直接返回）。
+- 理由：改不了系统时间时，这是等价于「次日」的最保守验证。

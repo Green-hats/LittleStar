@@ -87,5 +87,33 @@
             </intent-filter>
         </receiver>
 
+        <!-- M6 家长区 -->
+        <activity
+            android:name=".feature.parent.ParentGateActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.LittleStar.Parent"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".feature.parent.ParentDashboardActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.LittleStar.Parent" />
+        <activity
+            android:name=".feature.parent.ParentTimeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.LittleStar.Parent" />
+        <activity
+            android:name=".feature.parent.ParentPlanActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.LittleStar.Parent" />
+        <activity
+            android:name=".feature.parent.ParentRecordsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.LittleStar.Parent" />
+
     </application>
 </manifest>

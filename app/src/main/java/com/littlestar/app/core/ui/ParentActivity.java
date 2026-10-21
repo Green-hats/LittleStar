@@ -39,8 +39,10 @@ public abstract class ParentActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    /** 后台超时后需要重新验证：由 M6 接入 ParentGate。默认只 finish。 */
+    /** 后台超时后需要重新验证（§5.3）：跳回 ParentGate 并关掉当前家长页。 */
     protected void onReauthRequired() {
+        startActivity(com.littlestar.app.feature.parent.ParentGateActivity.intent(this,
+                com.littlestar.app.feature.parent.ParentGateActivity.TARGET_DASHBOARD));
         finish();
     }
 
