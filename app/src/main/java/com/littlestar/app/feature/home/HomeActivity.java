@@ -225,7 +225,19 @@ public final class HomeActivity extends ChildActivity {
         selectGoal(obGoal, goalChips, goals);
 
         binding.onboarding.obNext.setOnClickListener(v -> {
+            // 第一步 → 第二步（家长 PIN，D31）
             binding.onboarding.obStep1.setVisibility(View.GONE);
+            binding.onboarding.obStepPin.setVisibility(View.VISIBLE);
+        });
+        binding.onboarding.obPinNext.setOnClickListener(v -> {
+            // 第二步 → 第三步（提醒）；PIN 必须 4 位数字
+            String pin = binding.onboarding.obPinInput.getText().toString().trim();
+            if (pin.length() != 4) {
+                Motion.shake(binding.onboarding.obPinInput);
+                return;
+            }
+            container().settings.setParentPin(pin);
+            binding.onboarding.obStepPin.setVisibility(View.GONE);
             binding.onboarding.obStep2.setVisibility(View.VISIBLE);
             binding.onboarding.obNotifyDesc.setText(getString(R.string.ob_notify_desc, obGoal));
         });

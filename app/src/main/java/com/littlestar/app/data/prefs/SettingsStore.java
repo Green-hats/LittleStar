@@ -28,6 +28,7 @@ public final class SettingsStore {
         public static final String NOTIF_RATIONALE_SHOWN = "notif_rationale_shown";
         public static final String SOUND_ENABLED = "sound_enabled";
         public static final String ENGLISH_HINT = "english_hint";
+        public static final String PARENT_PIN = "parent_pin";
 
         private Keys() {
         }
@@ -150,6 +151,22 @@ public final class SettingsStore {
 
     public void setEnglishHint(boolean show) {
         prefs.edit().putBoolean(Keys.ENGLISH_HINT, show).apply();
+    }
+
+    /** 家长密码（D31：PIN 登录取代算术验证，引导时设置）。 */
+    public boolean isPinSet() {
+        String pin = prefs.getString(Keys.PARENT_PIN, "");
+        return pin != null && pin.length() == 4;
+    }
+
+    @NonNull
+    public String getParentPin() {
+        String pin = prefs.getString(Keys.PARENT_PIN, "");
+        return pin == null ? "" : pin;
+    }
+
+    public void setParentPin(@NonNull String pin) {
+        prefs.edit().putString(Keys.PARENT_PIN, pin).apply();
     }
 
     /**

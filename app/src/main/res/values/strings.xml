@@ -37,8 +37,13 @@
     <string name="home_parent_entry">Parent Centre</string>
 
     <!-- ===== M3 · 首次引导（§7.20，家长操作 → 英文） ===== -->
-    <string name="ob_step_1">1 / 2</string>
-    <string name="ob_step_2">2 / 2</string>
+    <string name="ob_step_1">1 / 3</string>
+    <string name="ob_step_2">3 / 3</string>
+    <string name="ob_step_pin">2 / 3</string>
+    <string name="ob_pin_title">Set a parent PIN</string>
+    <string name="ob_pin_sub">Keeps little ones out of Parent Centre.</string>
+    <string name="ob_pin_hint">4 digits</string>
+    <string name="ob_pin_next">Save &amp; continue</string>
     <string name="ob_title_setup">Two quick things</string>
     <string name="ob_subtitle_setup">You can change these later in Parent Centre.</string>
     <string name="ob_age_label">How old is your child?</string>
@@ -150,11 +155,13 @@
     <!-- ===== M6 · 家长区（全英文） ===== -->
     <string name="pg_top">Parents</string>
     <string name="pg_title">Parents only</string>
-    <string name="pg_sub">Please answer this question</string>
-    <string name="pg_hint1">This area is for grown-ups; a wrong answer simply gives a new question.</string>
+    <string name="pg_sub">Enter your PIN to continue</string>
+    <string name="pg_hint1">This area is for grown-ups. A wrong PIN simply clears — try again.</string>
     <string name="pg_hint2">Inside: learning records, screen time and reminders.</string>
     <string name="pg_confirm">OK</string>
-    <string name="pg_answer_hint">Answer</string>
+    <string name="pg_answer_hint">PIN</string>
+    <string name="pg_pin_prompt">Enter your 4-digit PIN</string>
+    <string name="pg_pin_create">Create a 4-digit PIN</string>
 
     <string name="pd_top">Overview</string>
     <string name="pd_settings">Settings</string>

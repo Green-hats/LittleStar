@@ -91,7 +91,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- 算术卡 -->
+        <!-- PIN 提示卡（D31：密码登录） -->
         <com.littlestar.app.core.ui.BlockLayout
             style="@style/Widget.LS.Block.Secondary"
             android:layout_width="match_parent"
@@ -105,8 +105,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAppearance="@style/TextAppearance.LS.Display"
-                android:textSize="34sp" />
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.LS.Title"
+                android:textSize="22sp" />
         </com.littlestar.app.core.ui.BlockLayout>
 
         <!-- 输入框 -->
@@ -119,7 +120,8 @@
             android:hint="@string/pg_answer_hint"
             android:imeOptions="actionDone"
             android:importantForAutofill="no"
-            android:inputType="number"
+            android:inputType="numberPassword"
+            android:maxLength="4"
             android:paddingStart="@dimen/ls_card_pad"
             android:paddingEnd="@dimen/ls_card_pad"
             android:textAppearance="@style/TextAppearance.LS.Title" />

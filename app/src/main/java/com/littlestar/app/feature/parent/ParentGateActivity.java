@@ -7,17 +7,17 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
 
+import com.littlestar.app.R;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.core.ui.ParentActivity;
 import com.littlestar.app.databinding.ActivityParentGateBinding;
-import com.littlestar.app.domain.ParentChallenge;
-
-import java.util.Random;
 
 /**
- * 家长验证（§7.12 / §9.12）：两位数进位加法 / 一位数乘法。
- * 答错抖动 + 清空 + 换新题，不锁定；答对 → target 并 finish 自己。
+ * 家长验证（D31：PIN 登录取代算术题）。
+ * 已设 PIN → 输入验证，错了抖动 + 清空，不锁定；
+ * 未设 PIN（旧数据/跳过引导）→ 首次进入即创建（4 位数字）。
+ * 通过 → target 并 finish 自己。
  */
 public final class ParentGateActivity extends ParentActivity {
 
@@ -35,8 +35,7 @@ public final class ParentGateActivity extends ParentActivity {
     }
 
     private ActivityParentGateBinding binding;
-    private ParentChallenge challenge;
-    private ParentChallenge.Challenge current;
+    private boolean createMode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,8 +44,9 @@ public final class ParentGateActivity extends ParentActivity {
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
 
-        challenge = new ParentChallenge(new Random());
-        nextQuestion();
+        createMode = !container().settings.isPinSet();
+        binding.questionText.setText(createMode
+                ? R.string.pg_pin_create : R.string.pg_pin_prompt);
 
         binding.btnBack.setOnClickListener(v -> finish());
         binding.btnConfirm.setOnClickListener(v -> submit());
@@ -59,24 +59,26 @@ public final class ParentGateActivity extends ParentActivity {
         });
     }
 
-    private void nextQuestion() {
-        current = challenge.next();
-        binding.questionText.setText(current.questionText());
-    }
-
     private void submit() {
-        String input = binding.answerInput.getText().toString();
-        if (ParentChallenge.check(input, current)) {
-            dispatch();
-        } else {
-            // 答错：抖动 + 清空 + 换新题，不锁定
+        String input = binding.answerInput.getText().toString().trim();
+        if (input.length() != 4) {
             Motion.shake(binding.answerInput);
             binding.answerInput.setText("");
-            nextQuestion();
+            return;
+        }
+        if (createMode) {
+            container().settings.setParentPin(input);
+            dispatch();
+        } else if (input.equals(container().settings.getParentPin())) {
+            dispatch();
+        } else {
+            // 错了：抖动 + 清空，不锁定
+            Motion.shake(binding.answerInput);
+            binding.answerInput.setText("");
         }
     }
 
-    /** 答对 → target（默认 Dashboard），finish 自己（§5.3）。 */
+    /** 通过 → target（默认 Dashboard），finish 自己（§5.3）。 */
     private void dispatch() {
         String target = getIntent().getStringExtra(EXTRA_TARGET);
         Class<? extends Activity> dest;
