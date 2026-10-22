@@ -98,7 +98,7 @@ public final class ParentRecordsActivity extends ParentActivity {
         public void onBindViewHolder(@NonNull Holder h, int position) {
             ParentRecordsViewModel.DayRecord d = days.get(position);
             String[] weekdays = getResources().getStringArray(R.array.weekday_short);
-            h.b.recordDate.setText(d.date.format(DateTimeFormatter.ofPattern("M月d日"))
+            h.b.recordDate.setText(d.date.format(DateTimeFormatter.ofPattern("MMM d", java.util.Locale.ENGLISH))
                     + " " + weekdays[d.date.getDayOfWeek().getValue() - 1]);
             h.b.recordDetail.setText(getString(R.string.pr_row_fmt,
                     d.learnedCount, d.quizCorrect, d.quizTotal, d.minutes));

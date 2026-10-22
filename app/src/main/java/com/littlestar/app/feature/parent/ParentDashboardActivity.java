@@ -54,7 +54,7 @@ public final class ParentDashboardActivity extends ParentActivity {
         String[] weekdays = getResources().getStringArray(R.array.weekday_short);
         java.time.LocalDate today = container().clock.today();
         binding.todayDate.setText(getString(R.string.pd_date_fmt,
-                today.format(java.time.format.DateTimeFormatter.ofPattern("M月d日")),
+                today.format(java.time.format.DateTimeFormatter.ofPattern("MMM d", java.util.Locale.ENGLISH)),
                 weekdays[today.getDayOfWeek().getValue() - 1]));
 
         binding.statMinutes.setText(String.valueOf(s.todayMinutes));

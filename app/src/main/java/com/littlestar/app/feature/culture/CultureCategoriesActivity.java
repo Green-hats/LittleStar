@@ -84,8 +84,12 @@ public final class CultureCategoriesActivity extends ChildActivity {
         if (nameEn != null) {
             nameEn.setText(c.nameEn);
         }
-        String unit = getString("songs".equals(c.id) || "poems".equals(c.id)
-                ? R.string.cul_unit_shou : R.string.cul_unit_ge);
+        int unitRes = switch (c.id) {
+            case "songs" -> R.string.cul_unit_shou;
+            case "poems" -> R.string.cul_unit_poems;
+            default -> R.string.cul_unit_ge;
+        };
+        String unit = getString(unitRes);
         countView.setText(getString(R.string.cul_count_fmt, count, unit));
         block.setOnClickListener(v -> {
             startActivity(CultureListActivity.intent(this, c.id));
