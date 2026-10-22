@@ -14,6 +14,7 @@
   <img alt="Tests" src="https://img.shields.io/badge/Tests-43%20unit%20%C2%B7%204%20instrumented-brightgreen" />
   <img alt="APK" src="https://img.shields.io/badge/APK-5.8%20MB-informational" />
   <img alt="License" src="https://img.shields.io/badge/License-MIT-blue" />
+  <a href="https://github.com/Green-hats/LittleStar/releases/latest"><img alt="Download" src="https://img.shields.io/badge/Download-APK%20preview-8957e5" /></a>
   <img alt="CI" src="https://github.com/Green-hats/LittleStar/actions/workflows/ci.yml/badge.svg" />
   <a href="https://github.com/Green-hats/LittleStar/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Green-hats/LittleStar?style=social" /></a>
 </p>
@@ -128,8 +129,10 @@ flowchart LR
 
 ## 快速开始
 
+**最快的方式**：直接从 [Releases](https://github.com/Green-hats/LittleStar/releases/latest) 下载 `LittleStar-0.1.0-preview.apk`（debug 签名预览包，Android 8.0+）。
+
 ```bash
-# 需要 JDK 17 与 Android SDK（compileSdk 36，minSdk 26）
+# 从源码：需要 JDK 17+ 与 Android SDK（compileSdk 36，minSdk 26）
 git clone https://github.com/Green-hats/LittleStar.git
 cd LittleStar
 echo "sdk.dir=$HOME/Library/Android/sdk" > local.properties   # 或写你自己的 SDK 路径
