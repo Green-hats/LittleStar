@@ -6,6 +6,8 @@
 
 **给海外华裔孩子的识字 App —— 每天 3 个字，一屏只做一件事。**
 
+<sub>A Chinese-literacy app for heritage kids growing up in English-speaking homes.</sub>
+
 <p>
   <a href="https://github.com/Green-hats/LittleStar/releases/latest"><img alt="Download" src="https://img.shields.io/badge/Download-APK-8957e5" /></a>
   <img alt="Android" src="https://img.shields.io/badge/Android-8.0%2B-3DDC84?logo=android&logoColor=white" />
@@ -16,7 +18,7 @@
   <a href="https://github.com/Green-hats/LittleStar/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/Green-hats/LittleStar?style=social" /></a>
 </p>
 
-<img src="docs/screenshots/readme/hero_3up.png" width="760" alt="首页 / 识字卡 / 奖励" />
+<a href="docs/screenshots/readme/gallery_8up.png"><img src="docs/screenshots/readme/hero_3up.png" width="760" alt="首页 / 识字卡 / 奖励" /></a>
 
 </div>
 
