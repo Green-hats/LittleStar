@@ -5,3 +5,10 @@ local.properties
 *.iml
 .idea/
 .DS_Store
+
+# Android Studio / Gradle 额外产物
+.cxx/
+captures/
+.externalNativeBuild/
+*.log
+*.hprof
