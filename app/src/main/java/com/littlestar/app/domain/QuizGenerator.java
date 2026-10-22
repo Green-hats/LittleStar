@@ -74,7 +74,8 @@ public final class QuizGenerator {
             }
         }
 
-        List<String> picked = new ArrayList<>(distractors).subList(0, 3);
+        // 兜底：全库不同汉字不足 4 个时按实际数量出题（不越界）
+        List<String> picked = new ArrayList<>(distractors).subList(0, Math.min(3, distractors.size()));
         List<String> options = new ArrayList<>(picked);
         options.add(word.hanzi);
         Collections.shuffle(options, random);

@@ -1,6 +1,7 @@
 package com.littlestar.app.feature.parent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
@@ -89,14 +90,14 @@ public final class ParentRecordsViewModel extends ViewModel {
         // 按天收集：有学习或有用量的日子
         List<LocalDate> dates = new ArrayList<>();
         for (ProgressState.Session s : ps.sessions) {
-            LocalDate d = LocalDate.parse(s.date);
-            if (!dates.contains(d)) {
+            LocalDate d = parseDateOrNull(s.date);
+            if (d != null && !dates.contains(d)) {
                 dates.add(d);
             }
         }
         for (String key : ps.usage.keySet()) {
-            LocalDate d = LocalDate.parse(key);
-            if (!dates.contains(d)) {
+            LocalDate d = parseDateOrNull(key);
+            if (d != null && !dates.contains(d)) {
                 dates.add(d);
             }
         }
@@ -136,6 +137,19 @@ public final class ParentRecordsViewModel extends ViewModel {
         }
         state.setValue(new UiState(weekLearned, weekQuiz, lastWeekLearned,
                 Collections.unmodifiableList(days), sort));
+    }
+
+    /** 坏数据（非法日期串）不崩家长页：跳过该行。 */
+    @Nullable
+    private static LocalDate parseDateOrNull(@Nullable String iso) {
+        if (iso == null) {
+            return null;
+        }
+        try {
+            return LocalDate.parse(iso);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 
     @NonNull

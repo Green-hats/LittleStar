@@ -79,7 +79,14 @@ public final class PlaybackService extends MediaSessionService {
         if (deadline == null || player == null) {
             return;
         }
-        long delay = Math.max(0, deadline.toEpochMilli() - System.currentTimeMillis());
+        long delay = deadline.toEpochMilli() - System.currentTimeMillis();
+        if (delay <= 0) {
+            // 陈旧 deadline（服务销毁后重建，定时早已过期）：清掉，不触发停止流程
+            if (sleepTimer != null) {
+                sleepTimer.cancel();
+            }
+            return;
+        }
         stopRunnable = this::onSleepDeadlineReached;
         main.postDelayed(stopRunnable, delay);
     }

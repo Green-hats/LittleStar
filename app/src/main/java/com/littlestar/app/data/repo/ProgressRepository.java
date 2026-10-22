@@ -46,7 +46,9 @@ public final class ProgressRepository {
 
     /** 纯函数：主题 6 个字里 learnedAt != null 的个数。 */
     public int countThemeLearned(@NonNull ProgressState state, @NonNull String themeId) {
-        content.ensureLoaded();
+        if (!content.isLoaded()) {
+            return 0;   // 内容未就绪：先返回 0，等 load 回调后再算（避免主线程文件 IO）
+        }
         int n = 0;
         for (com.littlestar.app.data.content.model.Word w : content.wordsOfTheme(themeId)) {
             ProgressState.WordProgress wp = state.words.get(w.id);

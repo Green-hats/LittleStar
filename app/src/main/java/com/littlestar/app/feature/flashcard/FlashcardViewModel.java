@@ -67,12 +67,17 @@ public final class FlashcardViewModel extends ViewModel {
         this.container = container;
     }
 
-    /** Activity 在 content 加载完成后调用一次。 */
+    /** Activity 在 content 加载完成后调用一次。先过滤无效 id，再夹 index（防止越界）。 */
     public void init(@NonNull Mode mode, @NonNull List<String> wordIds, int startIndex, long sessionId) {
         this.mode = mode;
-        this.wordIds = new ArrayList<>(wordIds);
+        this.wordIds = new ArrayList<>();
+        for (String id : wordIds) {
+            if (container.content.wordById(id) != null) {
+                this.wordIds.add(id);
+            }
+        }
         this.sessionId = sessionId;
-        this.index = Math.max(0, Math.min(startIndex, wordIds.size() - 1));
+        this.index = Math.max(0, Math.min(startIndex, this.wordIds.size() - 1));
         publish();
     }
 
@@ -84,6 +89,9 @@ public final class FlashcardViewModel extends ViewModel {
             if (w != null) {
                 words.add(w);
             }
+        }
+        if (index >= words.size()) {
+            index = Math.max(0, words.size() - 1);
         }
         Word cur = words.isEmpty() ? null : words.get(index);
         boolean learned = false;
@@ -100,7 +108,7 @@ public final class FlashcardViewModel extends ViewModel {
 
     /** 翻页（ViewPager2 回调）。 */
     public void onPageSelected(int position) {
-        if (position != index && position >= 0 && position < wordIds.size()) {
+        if (position != index && position >= 0 && position < this.wordIds.size()) {
             index = position;
             publish();
         }

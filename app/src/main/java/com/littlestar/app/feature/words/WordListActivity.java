@@ -86,6 +86,12 @@ public final class WordListActivity extends ChildActivity {
 
     /** Quiz 入口：建 THEME 会话（立即落盘）→ QuizActivity(THEME)。 */
     private void startThemeQuiz() {
+        // 防连点：双击不重复建会话
+        if (!binding.btnQuiz.isEnabled()) {
+            return;
+        }
+        binding.btnQuiz.setEnabled(false);
+        binding.btnQuiz.postDelayed(() -> binding.btnQuiz.setEnabled(true), 800);
         container().store.update(state -> {
             ProgressState.Session s = container().sessionBuilder.buildThemeSession(state, themeId);
             long id = s.id;

@@ -46,6 +46,7 @@ public final class TimeUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        androidx.activity.EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         kind = Kind.valueOf(getIntent().getStringExtra(EXTRA_KIND) == null
                 ? Kind.REST.name() : getIntent().getStringExtra(EXTRA_KIND));

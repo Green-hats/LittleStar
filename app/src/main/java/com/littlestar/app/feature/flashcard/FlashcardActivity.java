@@ -25,6 +25,7 @@ import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.data.store.ProgressState;
 import com.littlestar.app.databinding.ActivityFlashcardBinding;
 import com.littlestar.app.databinding.PageFlashcardBinding;
+import com.littlestar.app.domain.SessionBuilder;
 import com.littlestar.app.feature.quiz.QuizActivity;
 
 import java.util.ArrayList;
@@ -72,12 +73,21 @@ public final class FlashcardActivity extends ChildActivity {
     /** 页面滑动来源标记：next() 按钮触发的翻页不重复朗读（render 里已处理）。 */
     private boolean firstPageSpoken;
 
+    private static final String STATE_SESSION_ID = "state_session_id";
+    private static final String STATE_INITIALIZED = "state_initialized";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityFlashcardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
+
+        // 进程被杀重建：恢复已建会话，不重复 buildSession（孤儿 session 会堆积）
+        if (savedInstanceState != null) {
+            sessionId = savedInstanceState.getLong(STATE_SESSION_ID, -1);
+            initialized = savedInstanceState.getBoolean(STATE_INITIALIZED, false);
+        }
 
         vm = new ViewModelProvider(this,
                 ViewModelFactory.of(() -> new FlashcardViewModel(container())))
@@ -146,17 +156,38 @@ public final class FlashcardActivity extends ChildActivity {
     }
 
     private void initAfterContent() {
-        if (initialized || isFinishing()) {
+        if (isFinishing()) {
+            return;
+        }
+        if (mode == FlashcardViewModel.Mode.SESSION && sessionId < 0 && !initialized) {
+            initialized = true;
+            buildSession();
+            return;
+        }
+        if (initialized && mode == FlashcardViewModel.Mode.SESSION) {
+            // 恢复路径：从 store 读回该会话的新字列表（quizWordIds 在会话创建时已固定）
+            initialized = true;
+            ProgressState ps = container().store.observe().getValue();
+            ProgressState.Session s = ps == null ? null : SessionBuilder.sessionById(ps, sessionId);
+            if (s != null) {
+                vm.init(mode, new ArrayList<>(s.newWordIds), 0, sessionId);
+            } else {
+                // 极端情况：上次 buildSession 在回主线程前被杀（session 已落盘但丢了 id）→ 重建
+                buildSession();
+            }
             return;
         }
         initialized = true;
-        if (mode == FlashcardViewModel.Mode.SESSION && sessionId < 0) {
-            buildSession();
-        } else {
-            List<String> ids = getIntent().getStringArrayListExtra(EXTRA_WORD_IDS);
-            vm.init(mode, ids != null ? ids : new ArrayList<>(),
-                    getIntent().getIntExtra(EXTRA_START_INDEX, 0), sessionId);
-        }
+        List<String> ids = getIntent().getStringArrayListExtra(EXTRA_WORD_IDS);
+        vm.init(mode, ids != null ? ids : new ArrayList<>(),
+                getIntent().getIntExtra(EXTRA_START_INDEX, 0), sessionId);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(STATE_SESSION_ID, sessionId);
+        outState.putBoolean(STATE_INITIALIZED, initialized);
     }
 
     /** SESSION 模式：在 diskIO 线程建会话并立即落盘，回主线程初始化。 */
@@ -172,7 +203,10 @@ public final class FlashcardActivity extends ChildActivity {
                     return;
                 }
                 sessionId = id;
-                if (newIds.isEmpty()) {
+                if (s.quizWordIds.isEmpty()) {
+                    // 极端兜底：没有新字也没有复习字（不会发生，但不允许软锁）
+                    finish();
+                } else if (newIds.isEmpty()) {
                     // REVIEW 会话：跳过识字卡直接进测验（§7.2）
                     startActivity(QuizActivity.sessionIntent(this, id));
                     Motion.childEnter(this);

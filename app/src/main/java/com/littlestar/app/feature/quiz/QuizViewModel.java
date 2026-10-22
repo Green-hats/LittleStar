@@ -126,15 +126,20 @@ public final class QuizViewModel extends ViewModel {
         return ps == null ? null : SessionBuilder.sessionById(ps, sessionId);
     }
 
-    /** 进程恢复：当前题若已有答案，恢复已答状态。返回是否恢复为已答。 */
+    /** 进程恢复：当前题若已有答案，恢复已答状态（含选中项，标 clay/mint）。返回是否恢复为已答。 */
     private boolean restoreAnswered(@Nullable ProgressState.Session session) {
         if (session == null) {
             return false;
         }
         int idx = index();
         if (idx < session.answers.size()) {
+            ProgressState.Answer a = session.answers.get(idx);
             justAnswered = true;
-            justAnsweredCorrect = session.answers.get(idx).correct;
+            justAnsweredCorrect = a.correct;
+            QuizGenerator.QuizQuestion q = idx < questions.size() ? questions.get(idx) : null;
+            if (q != null) {
+                justChosenIndex = q.options().indexOf(a.chosen);
+            }
             publish(session);
             return true;
         }

@@ -181,6 +181,13 @@ public final class HomeActivity extends ChildActivity {
 
     /** START：进会话。会话由 Flashcard(SESSION) 进入时用 SessionBuilder 创建。 */
     private void startSession() {
+        // 防连点：双击 START 不重复建会话（#10）
+        if (!binding.btnStart.isEnabled()) {
+            return;
+        }
+        binding.btnStart.setEnabled(false);
+        binding.btnStart.postDelayed(() -> binding.btnStart.setEnabled(true), 800);
+
         HomeViewModel.UiState s = vm.state().getValue();
         if (s != null && s.mode == HomeModeResolver.Mode.CULTURE) {
             // 文态 LISTEN → 播放器（推荐条目，queue = 同类全部）

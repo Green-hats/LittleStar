@@ -86,9 +86,15 @@ public final class FavouritesViewModel extends ViewModel {
             return;
         }
         List<String> ids = new ArrayList<>(lastIds);
-        // 排序切换在内存做：重新按收藏时间排
+        // 点红心取消收藏：行不立刻消失——把本次会话内取消的 id 合并回来（离开页面后自然移除）
+        for (String id : pendingUnfav) {
+            if (!ids.contains(id)) {
+                ids.add(id);
+            }
+        }
+        // 排序切换在内存做：observeIds 默认 NEWEST，反转为最早；被取消的排最后
         if (sort == FavouriteRepository.Sort.OLDEST) {
-            Collections.reverse(ids);   // observeIds 默认 NEWEST；反转为最早
+            Collections.reverse(ids);
         }
         List<Row> rows = new ArrayList<>();
         for (String id : ids) {

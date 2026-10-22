@@ -166,3 +166,20 @@
 - 问题：用户要求家长区改为密码登录，密码在首次引导时设置。
 - 做法：引导从 2 步变 3 步（年龄目标 → 设 4 位 PIN → 提醒）；PIN 存 SettingsStore（parent_pin）；ParentGate 改为 numberPassword 输入，错误抖动清空不锁定；旧安装（未设 PIN）首次进 Gate 时引导创建 PIN。ParentChallenge 类与其单测删除。
 - 理由：用户明确需求；算术题对会算数的二孩无阻隔作用，PIN 更直观。
+
+## D32 · 2026-10-22 · 全量 bug 审查与修复（静态审查 + 自测）
+静态审查（79 个文件）+ 自测发现并修复：
+- [crash] FlashcardViewModel 过滤无效 id 后仍按 wordIds 下标取词 → 越界；改为先过滤再夹 index。
+- [数据] FlashcardActivity 进程重建重复 buildSession（孤儿 session）；改为 savedInstanceState 保存 sessionId/initialized 复用；极端情况 session 丢失则重建。
+- [数据] PlaybackService 重建时陈旧 deadline 立即触发「开播即停 + 误发晚安通知」；过期 deadline 直接 cancel 不调度。
+- [数据] QuizViewModel 进程恢复不恢复 chosenIndex（错选项不标 clay）；恢复时从 answers 反查。
+- [体验] PlayerViewModel observeForever 累积泄漏；改为换歌时解绑旧 observer + onCleared 移除。
+- [体验] PlayerActivity 自动播放竞态（controller 早于 vm.init）→ 首次 render 补一次 start。
+- [体验] Favourites「取消收藏不消失」失效：pendingUnfav 合并回列表。
+- [体验] Player subtitle 可空导致显示 "null"。
+- [体验] TimeUpActivity 补 EdgeToEdge。
+- [体验] 首页 START / 词表 Quiz 双击防抖（800ms）。
+- [隐患] ParentRecords 主线程 LocalDate.parse 坏数据崩溃 → 跳过坏行。
+- [隐患] QuizGenerator 干扰项 < 3 时 subList 越界 → 按实际数量。
+- [隐患] ProgressRepository 主线程 ensureLoaded → 未加载返回 0（ContentRepository.isLoaded）。
+- 未修（记录）：diskIO 单线程拥堵（量级可接受）、PIN 明文 SharedPreferences（儿童锁定位，可接受）、ParentActivity 用 wall clock 判 60s。

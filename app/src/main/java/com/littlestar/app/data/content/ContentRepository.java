@@ -80,6 +80,11 @@ public final class ContentRepository {
         });
     }
 
+    /** 是否已解析（不会触发加载；主线程安全）。 */
+    public boolean isLoaded() {
+        return themes != null;
+    }
+
     /** 同步确保已解析。只能在 diskIO 线程或测试线程调用。 */
     public synchronized void ensureLoaded() {
         if (themes != null) {

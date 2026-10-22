@@ -62,6 +62,8 @@ public final class PlayerActivity extends ChildActivity {
     private MediaController controller;
     @Nullable
     private ListenableFuture<MediaController> controllerFuture;
+    /** 本次进入是否已把播放队列交给控制器（防止 vm/controller 谁先就绪的竞态导致不自动播）。 */
+    private boolean playbackStarted;
 
     private final Runnable progressTick = new Runnable() {
         @Override
@@ -183,16 +185,22 @@ public final class PlayerActivity extends ChildActivity {
         c.setMediaItems(mediaItems, s.queueIndex, 0);
         c.prepare();
         c.play();
+        playbackStarted = true;
     }
 
     private void render(PlayerViewModel.UiState s) {
         if (s == null) {
             return;
         }
+        if (!playbackStarted) {
+            // vm.init 晚于 controller 连接时补一次自动播放（竞态修复）
+            startPlaybackIfNeeded();
+        }
         binding.playerTitle.setText(s.item.titleZh);
         binding.songTitle.setText(s.item.titleZh);
         binding.coverGlyph.setText(s.item.glyph);
-        binding.songSubtitle.setText(getString(R.string.player_subtitle_fmt, s.item.subtitle,
+        binding.songSubtitle.setText(getString(R.string.player_subtitle_fmt,
+                s.item.subtitle == null ? "" : s.item.subtitle,
                 CultureListActivity.formatDuration(s.item.durationSec)));
 
         binding.favIcon.setColorFilter(ContextCompat.getColor(this,
