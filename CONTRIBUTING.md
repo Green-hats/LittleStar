@@ -1,6 +1,6 @@
 # 一起做 LittleStar
 
-欢迎。这份文档只写「怎么把这件事做对」，不写背景——背景在 [设计书](LittleStar_设计书_v3.md) 和 [工程文档](LittleStar_工程技术文档.md)。
+欢迎。这份文档只写「怎么把这件事做对」，不写背景——背景在 [设计书](docs/DESIGN.md) 和 [工程文档](docs/ENGINEERING.md)。
 
 ## 环境
 

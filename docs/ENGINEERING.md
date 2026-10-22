@@ -1,7 +1,7 @@
 # LittleStar 工程技术文档
 
 > 版本 1.0 · 2026-10-21
-> 依据：[LittleStar_设计书_v3.md](LittleStar_设计书_v3.md)（视觉与交互）+ [LittleStar_设计评审_v3.md](LittleStar_设计评审_v3.md)（修订意见）
+> 依据：[设计书 v3](DESIGN.md)（视觉与交互）
 > 读者：负责实现的 coding agent / 开发者。本文是**施工图**：照着做就能从空目录做出可验收的 APK。
 > **开发语言：Java 17。** 工程中不允许出现 Kotlin 源文件、Kotlin 插件或 `-ktx` 依赖。
 > **数据存储：不使用数据库。** 学习数据存成一个 JSON 文件（`AtomicFile` 原子写入），设置用 SharedPreferences。
@@ -27,7 +27,7 @@
 - **颜色、尺寸、字号、文案不写死。** 颜色只在 `colors.xml` 里出现十六进制；尺寸只在 `dimens.xml`；文案只在 `strings.xml`。布局和 Java 代码里出现 `#` 色值或 `"中文"` 字面量都算缺陷（内容 JSON 除外）。
 - **孩子区不出现系统对话框**（AlertDialog、Toast）。反馈一律用页面内状态、动效和声音。家长区可以用 Snackbar 和 MaterialTimePicker。
 - **每完成一屏**，用模拟器截图，和对应的设计图并排对比；截图存到 `docs/screenshots/<milestone>/`。
-- **不确定时不要发明需求。** 在 `docs/DECISIONS.md` 记一条「问题 / 采用的做法 / 理由」，然后按最保守的做法继续。
+- **不确定时不要发明需求。** 在 [`docs/DECISIONS.md`](DECISIONS.md) 记一条「问题 / 采用的做法 / 理由」，然后按最保守的做法继续。
 - 每个里程碑结束时提交一次 git commit，提交信息用 `M<n>: <摘要>`。
 - **Java 编码约定：** 4 空格缩进；类默认 `final`（需要继承的除外）；字段 `private final` 优先；不用 Lombok；不在 `onCreate` 里做磁盘 IO；匿名内部类持有 Activity 时注意泄漏（Handler 回调用静态内部类 + `WeakReference`，或在 `onDestroy` 里 `removeCallbacksAndMessages(null)`）。
 
@@ -1384,7 +1384,7 @@ public final class ScreenTimeTracker {
 
 ### M8 打磨与验收（1 天）
 - 深色 / 1.3 倍 / 小屏 / TalkBack 全屏走查；动效与「减少动态效果」；性能（冷启动 < 1.5s，列表无掉帧）。
-- 跑 §15 验收清单，结果写进 `docs/ACCEPTANCE.md`。
+- 跑 §15 验收清单，结果写进 [`docs/ACCEPTANCE.md`](ACCEPTANCE.md)。
 - ✅ 清单全部打勾；release 构建（R8 开启）能正常运行，Gson 模型（内容 JSON + `ProgressState`）的 keep 规则正确：release 包里学习进度能保存、重启后能读回。
 
 ---
@@ -1452,7 +1452,7 @@ public final class ScreenTimeTracker {
 下面这段可以直接作为第一条任务发给 coding agent：
 
 > 你要用 **Java 17** 实现 Android 应用 LittleStar（不允许使用 Kotlin，构建脚本用 Groovy DSL）。工作目录里有三份文档：
-> `LittleStar_工程技术文档.md`（施工图，最高优先级）、`LittleStar_设计评审_v3.md`（修订意见）、`LittleStar_设计书_v3.md`（视觉与交互）。设计图在 `assets/screens/`。
+> 本文 `docs/ENGINEERING.md`（施工图，最高优先级）、[设计书 v3](DESIGN.md)（视觉与交互）。设计图在 `docs/assets/screens/`。
 >
 > 1. 先完整阅读工程技术文档的 §0、§5、§13、§14。
 > 2. 在 `LittleStar/` 目录下新建 Android 工程，只做 **M0**。
