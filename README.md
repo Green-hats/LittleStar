@@ -36,7 +36,7 @@
 - **完全离线** —— 没有 `INTERNET` 权限，字库、录音、插画全部内置
 - **到点就停** —— 每日时长上限、连续 15 分钟休息页、睡前「播完这首再停」
 
-<img src="docs/screenshots/readme/gallery_8up.png" width="900" alt="八个界面" />
+<p align="center"><img src="docs/screenshots/readme/gallery_8up.png" width="880" alt="八个界面" /></p>
 
 ## 快速开始
 
@@ -51,25 +51,40 @@ echo "sdk.dir=$HOME/Library/Android/sdk" > local.properties
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-## 技术
+## 架构
 
-**Java 17** · XML View + ViewBinding · MVVM + LiveData · Media3 ExoPlayer · Gson + AtomicFile
-零 Kotlin · 无数据库 · 无注解处理器 · 43 个 JVM 单测 + 4 个真机用例
+<p align="center"><img src="docs/screenshots/readme/architecture.png" width="900" alt="LittleStar 架构：UI → ViewModel → Repository / domain → 存储" /></p>
+
+<p align="center">
+  <b>Java 17</b> · XML View + ViewBinding · MVVM + LiveData · Media3 ExoPlayer · Gson + AtomicFile<br/>
+  <sub>零 Kotlin · 无数据库 · 无注解处理器 · 43 个 JVM 单测 + 4 个真机用例</sub>
+</p>
 
 <details>
-<summary><b>几个实现细节（点开）</b></summary>
+<summary><b>几个实现细节</b></summary>
 
-- **不用数据库**：一年数据只有几百 KB。`progress.json` 原子写 + 2 秒防抖 + 每日备份 + 损坏回退，查询就是普通 Java 循环。
-- **磁盘单线程**：所有读写投递到同一个线程，状态只在那里改，天然免锁；一次 `update()` 就是一次事务。
-- **硬影自己画**：`BlockLayout` 用 Canvas 画 4dp 墨线 + 6dp 硬影，按下时内容下沉、影子不动、只剩 2dp——`elevation` 做不到。
-- **汉字子集字体**：从 Noto Sans SC 抽出 195 个用到的字（43KB），保证「月」「骨」的写法不随厂商变。
-- **先图后字**：孩子区正文不超过 3 行；答对/答错都同时有颜色、图形和声音三种反馈。
+<br/>
+
+- **不用数据库** — 一年数据只有几百 KB。`progress.json` 原子写 + 2 秒防抖 + 每日备份 + 损坏回退，查询就是普通 Java 循环。
+- **磁盘单线程** — 所有读写投递到同一个线程，状态只在那里改，天然免锁；一次 `update()` 就是一次事务。
+- **硬影自己画** — `BlockLayout` 用 Canvas 画 4dp 墨线 + 6dp 硬影，按下时内容下沉、影子不动、只剩 2dp；`elevation` 做不到。
+- **汉字子集字体** — 从 Noto Sans SC 抽出 195 个用到的字（43KB），保证「月」「骨」的写法不随厂商变。
+- **先图后字** — 孩子区正文不超过 3 行；答对 / 答错同时有颜色、图形、声音三种反馈。
 
 </details>
 
 ## 文档
 
-[设计书](LittleStar_设计书_v3.md) · [工程文档](LittleStar_工程技术文档.md) · [验收清单](docs/ACCEPTANCE.md) · [决策记录](docs/DECISIONS.md)（32 条「为什么不那样做」）· [逐屏截图](docs/screenshots)
+| 文档 | 里面有什么 |
+|---|---|
+| [**设计书 v3**](LittleStar_设计书_v3.md) | 每屏的「目的 / 结构 / 交互 / 状态 / 不要」，31 张整屏设计图 |
+| [**工程技术文档**](LittleStar_工程技术文档.md) | 数据模型、业务逻辑、组件规格、逐屏实现要点——照着能写出可验收的 APK |
+| [**验收清单**](docs/ACCEPTANCE.md) | 20 项 checklist 与证据：对比度、权限、进程恢复、release 体积 |
+| [**决策记录**](docs/DECISIONS.md) | 32 条「为什么不那样做」：从配色到 PIN，再到数据存储 |
+| [**协作指南**](CONTRIBUTING.md) | 怎么跑起来、提交前必跑的四件事、代码约定 |
+| [**逐屏截图**](docs/screenshots) | M1 → M8 每屏的浅色 / 深色真机截图 |
+
+<sub>设计与工程文档在仓库根目录，可当产品与实现的完整交接材料。</sub>
 
 ## License
 
