@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="timeup_rest_title">该休息啦</string>
-    <string name="timeup_rest_subtitle">今天已经看了 %1$d 分钟</string>
-    <string name="timeup_rest_countdown">%1$d 秒后可以继续</string>
-    <string name="timeup_rest_done">可以继续啦</string>
-    <string name="timeup_limit_title">今天看完啦，明天见</string>
-    <string name="timeup_ok">好的</string>
-    <string name="timeup_parent_entry">家长：今天再给 10 分钟</string>
+    <string name="timeup_rest_title">Time for a break</string>
+    <string name="timeup_rest_subtitle">%1$d minutes watched today</string>
+    <string name="timeup_rest_countdown">Continue in %1$d s</string>
+    <string name="timeup_rest_done">You can continue now</string>
+    <string name="timeup_limit_title">All done for today. See you tomorrow!</string>
+    <string name="timeup_ok">OK</string>
+    <string name="timeup_parent_entry">Parents: add 10 more minutes</string>
 </resources>

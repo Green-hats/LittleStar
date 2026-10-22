@@ -26,34 +26,34 @@
     </style>
 
     <style name="TextAppearance.LS.Display" parent="">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/littlestar_latin</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">28sp</item>
         <item name="android:textColor">@color/ls_ink</item>
     </style>
 
     <style name="TextAppearance.LS.Title" parent="">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/littlestar_latin</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/ls_ink</item>
     </style>
 
     <style name="TextAppearance.LS.Headline" parent="">
-        <item name="fontFamily">sans-serif</item>
+        <item name="fontFamily">@font/littlestar_latin</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/ls_ink</item>
     </style>
 
     <style name="TextAppearance.LS.Body" parent="">
-        <item name="fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">@font/littlestar_latin</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/ls_ink</item>
     </style>
 
     <style name="TextAppearance.LS.Caption" parent="">
-        <item name="fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">@font/littlestar_latin</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/ls_muted</item>
     </style>

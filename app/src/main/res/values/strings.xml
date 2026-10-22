@@ -2,234 +2,234 @@
 <resources>
     <string name="app_name">LittleStar</string>
 
-    <!-- 组件无障碍 / 组件内文案 -->
-    <string name="ls_seg_progress_desc">已学 %1$d / %2$d</string>
+    <!-- 组件无障碍 / 组件内文案（D30：UI 外壳英文；教学内容中文在 JSON） -->
+    <string name="ls_seg_progress_desc">%1$d of %2$d learned</string>
     <string name="ls_stamp_char">会</string>
-    <string name="ls_stamp_learned_desc">已学会</string>
-    <string name="ls_stamp_not_learned_desc">还没学会</string>
+    <string name="ls_stamp_learned_desc">Learned</string>
+    <string name="ls_stamp_not_learned_desc">Not learned yet</string>
     <string name="ls_stepper_minus">−</string>
     <string name="ls_stepper_plus">+</string>
-    <string name="ls_stepper_decrease_desc">减少</string>
-    <string name="ls_stepper_increase_desc">增加</string>
-    <string name="ls_bar_chart_desc">最近七天的学习分钟数</string>
-    <string name="ls_speaking_desc">正在朗读</string>
+    <string name="ls_stepper_decrease_desc">Decrease</string>
+    <string name="ls_stepper_increase_desc">Increase</string>
+    <string name="ls_bar_chart_desc">Learning minutes for the last 7 days</string>
+    <string name="ls_speaking_desc">Reading aloud</string>
 
-    <string name="nav_back">返回</string>
+    <string name="nav_back">Back</string>
 
     <!-- ===== M3 · Home ===== -->
-    <string name="home_panda_desc">熊猫盼盼</string>
-    <string name="home_star_capsule_desc">%1$d 颗星星</string>
+    <string name="home_panda_desc">Panpan the panda</string>
+    <string name="home_star_capsule_desc">%1$d stars</string>
     <string name="home_mode_word">字</string>
     <string name="home_mode_culture">文</string>
-    <string name="home_today_words">今天 · 识字</string>
-    <string name="home_today_culture">今天 · 文化</string>
-    <string name="home_today_done">今天 · 学完啦</string>
+    <string name="home_today_words">Today · Words</string>
+    <string name="home_today_culture">Today · Culture</string>
+    <string name="home_today_done">All done today!</string>
     <string name="home_start">START</string>
-    <string name="home_review">复习一下</string>
+    <string name="home_review">REVIEW</string>
     <string name="home_listen">LISTEN</string>
-    <string name="home_listen_desc">听发音</string>
+    <string name="home_listen_desc">Listen to the sound</string>
     <string name="home_today_progress">Today %1$d / %2$d words</string>
-    <string name="home_progress_done">今天学完啦</string>
+    <string name="home_progress_done">All done for today!</string>
     <string name="home_module_words_title">Words</string>
     <string name="home_module_words_sub">Cards · Quiz</string>
     <string name="home_module_culture_title">Culture</string>
     <string name="home_module_culture_sub">Songs · Stories · Poems</string>
     <string name="home_parent_entry">Parent Centre</string>
 
-    <!-- ===== M3 · 首次引导（§7.20）===== -->
+    <!-- ===== M3 · 首次引导（§7.20，家长操作 → 英文） ===== -->
     <string name="ob_step_1">1 / 2</string>
     <string name="ob_step_2">2 / 2</string>
-    <string name="ob_title_setup">先设好两件事</string>
-    <string name="ob_subtitle_setup">之后可以在家长中心修改。</string>
-    <string name="ob_age_label">孩子几岁？</string>
-    <string name="ob_age_years">%1$d 岁</string>
-    <string name="ob_goal_label">每天学几个字？</string>
-    <string name="ob_goal_words">%1$d 个字</string>
-    <string name="ob_suggestion">建议：%1$d 岁 · 每天 %2$d 个字</string>
-    <string name="ob_suggestion_sub">约 5–10 分钟 / 天</string>
-    <string name="ob_slogan">每天一点点</string>
-    <string name="ob_slogan_sub">就会亮起来</string>
-    <string name="ob_next">下一步</string>
-    <string name="ob_skip">跳过</string>
-    <string name="ob_title_notify">每天提醒一次</string>
-    <string name="ob_subtitle_notify">到点提醒，不打扰。</string>
-    <string name="ob_notify_time">每天 19:30</string>
-    <string name="ob_notify_desc">提醒孩子学 %1$d 个字</string>
-    <string name="ob_notify_preview">小星星 · 该学汉字啦</string>
-    <string name="ob_notify_note">只在设定时间提醒，不用于促活。</string>
-    <string name="ob_allow">允许提醒</string>
-    <string name="ob_later">先不用</string>
-    <string name="ob_notify_footer">系统会再弹一次权限窗口，之后可在家长中心关闭。</string>
+    <string name="ob_title_setup">Two quick things</string>
+    <string name="ob_subtitle_setup">You can change these later in Parent Centre.</string>
+    <string name="ob_age_label">How old is your child?</string>
+    <string name="ob_age_years">%1$d</string>
+    <string name="ob_goal_label">New characters per day?</string>
+    <string name="ob_goal_words">%1$d</string>
+    <string name="ob_suggestion">Suggested: age %1$d · %2$d characters a day</string>
+    <string name="ob_suggestion_sub">About 5–10 minutes a day</string>
+    <string name="ob_slogan">Little by little,</string>
+    <string name="ob_slogan_sub">the stars light up</string>
+    <string name="ob_next">Next</string>
+    <string name="ob_skip">Skip</string>
+    <string name="ob_title_notify">A daily reminder</string>
+    <string name="ob_subtitle_notify">On time, never pushy.</string>
+    <string name="ob_notify_time">Every day at 19:30</string>
+    <string name="ob_notify_desc">Reminds your child to learn %1$d characters</string>
+    <string name="ob_notify_preview">LittleStar · Time for Chinese!</string>
+    <string name="ob_notify_note">Only at your set time. No marketing.</string>
+    <string name="ob_allow">Allow reminders</string>
+    <string name="ob_later">Not now</string>
+    <string name="ob_notify_footer">Android will ask once more for notification permission.</string>
 
     <!-- ===== M3 · Flashcard ===== -->
-    <string name="fc_session_title">今天 · 识字</string>
+    <string name="fc_session_title">Today · Words</string>
     <string name="fc_counter">%1$d/%2$d</string>
     <string name="fc_next">NEXT</string>
-    <string name="fc_done">完成</string>
+    <string name="fc_done">DONE</string>
     <string name="fc_stamp_label">I learned it</string>
-    <string name="fc_reading">朗读中</string>
-    <string name="fc_audio_missing_title">发音暂时没有</string>
-    <string name="fc_audio_missing_msg">可以先看字形，等会儿再试</string>
-    <string name="fc_audio_continue">继续</string>
-    <string name="fc_audio_retry">重试</string>
+    <string name="fc_reading">Reading…</string>
+    <string name="fc_audio_missing_title">No audio yet</string>
+    <string name="fc_audio_missing_msg">Look at the character for now, and try again later</string>
+    <string name="fc_audio_continue">Continue</string>
+    <string name="fc_audio_retry">Retry</string>
 
     <!-- ===== M3 · Quiz ===== -->
-    <string name="quiz_title">Quiz 测验</string>
-    <string name="quiz_listen_hint">听一听</string>
+    <string name="quiz_title">Quiz</string>
+    <string name="quiz_listen_hint">Listen</string>
     <string name="quiz_counter">%1$d / %2$d</string>
-    <string name="quiz_feedback_correct">答对啦！</string>
-    <string name="quiz_feedback_wrong">再听一次，答案是「%1$s」</string>
+    <string name="quiz_feedback_correct">Correct!</string>
+    <string name="quiz_feedback_wrong">Listen again — it\'s 「%1$s」</string>
     <string name="quiz_next">NEXT</string>
-    <string name="quiz_done">完成</string>
+    <string name="quiz_done">DONE</string>
 
     <!-- ===== M3 · Reward ===== -->
-    <string name="reward_title">太棒了！</string>
-    <string name="reward_subtitle">你学会了 %1$d 个字</string>
-    <string name="reward_subtitle_review">复习完成！</string>
+    <string name="reward_title">Great job!</string>
+    <string name="reward_subtitle">You learned %1$d characters</string>
+    <string name="reward_subtitle_review">Review complete!</string>
     <string name="reward_stamp_text">学会</string>
-    <string name="reward_done">完成</string>
-    <string name="reward_again">再来一次</string>
-    <string name="reward_star_desc">第 %1$d 颗星</string>
+    <string name="reward_done">DONE</string>
+    <string name="reward_again">Play again</string>
+    <string name="reward_star_desc">Star %1$d</string>
 
     <!-- ===== M4 · 字模块 ===== -->
-    <string name="themes_top">Words 字</string>
-    <string name="themes_title">选一个主题</string>
-    <string name="themes_subtitle">6 themes · 6 words each</string>
-    <string name="themes_order_hint">从 1 开始，按推荐顺序学</string>
-    <string name="themes_words_count">%1$d 个字</string>
-    <string name="themes_learned">已学 %1$d/%2$d</string>
-    <string name="themes_badge_desc">第 %1$d 个主题</string>
+    <string name="themes_top">Words</string>
+    <string name="themes_title">Pick a theme</string>
+    <string name="themes_subtitle">6 themes · 6 characters each</string>
+    <string name="themes_order_hint">Start from 1 — recommended order</string>
+    <string name="themes_words_count">%1$d characters</string>
+    <string name="themes_learned">%1$d/%2$d learned</string>
+    <string name="themes_badge_desc">Theme %1$d</string>
     <string name="wl_quiz">Quiz</string>
     <string name="wl_learned">%1$d / %2$d learned</string>
-    <string name="wl_hint">点一个字，听发音</string>
-    <string name="wl_learned_desc">已学会</string>
+    <string name="wl_hint">Tap a character to hear it</string>
+    <string name="wl_learned_desc">Learned</string>
 
     <!-- ===== M5 · 文化模块 ===== -->
-    <string name="cul_top">Culture 文</string>
-    <string name="cul_title">选一类</string>
-    <string name="cul_subtitle">儿歌 · 故事 · 古诗</string>
-    <string name="cul_unit_shou">首</string>
-    <string name="cul_unit_ge">个</string>
+    <string name="cul_top">Culture</string>
+    <string name="cul_title">Pick one</string>
+    <string name="cul_subtitle">Songs · Stories · Poems</string>
+    <string name="cul_unit_shou">songs</string>
+    <string name="cul_unit_ge">items</string>
     <string name="cul_count_fmt">%1$d %2$s</string>
-    <string name="cul_fav_row">Favourites 收藏</string>
-    <string name="cul_slogan">每天听一点</string>
+    <string name="cul_fav_row">Favourites</string>
+    <string name="cul_slogan">Listen a little every day</string>
     <string name="cul_slogan_sub">10 minutes a day</string>
     <string name="cul_list_header_fmt">%1$s · %2$d</string>
     <string name="sleep_timer">Sleep timer</string>
     <string name="sleep_timer_off">Off</string>
     <string name="sleep_timer_remaining">%1$d:%2$02d</string>
 
-    <string name="player_desc_play">播放</string>
-    <string name="player_desc_pause">暂停</string>
-    <string name="player_desc_prev">上一首</string>
-    <string name="player_desc_next">下一首</string>
-    <string name="player_desc_fav">收藏</string>
+    <string name="player_desc_play">Play</string>
+    <string name="player_desc_pause">Pause</string>
+    <string name="player_desc_prev">Previous</string>
+    <string name="player_desc_next">Next</string>
+    <string name="player_desc_fav">Favourite</string>
     <string name="player_time_fmt">%1$d:%2$02d</string>
     <string name="player_subtitle_fmt">%1$s · %2$s</string>
 
-    <string name="st_headline">播完这首就睡</string>
-    <string name="st_sub">到时间会轻轻停下来，不吵醒孩子。</string>
-    <string name="st_minutes">%1$d 分钟</string>
-    <string name="st_minute_debug">1 分钟</string>
-    <string name="st_finish">播完当前这首再停</string>
-    <string name="st_finish_sub">不会突然切断故事</string>
-    <string name="st_start">开始计时</string>
-    <string name="st_cancel">取消</string>
-    <string name="st_running">还剩 %1$d:%2$02d</string>
-    <string name="st_cancel_timer">取消计时</string>
+    <string name="st_headline">Sleep when this one ends</string>
+    <string name="st_sub">It stops gently — never wakes your child.</string>
+    <string name="st_minutes">%1$d min</string>
+    <string name="st_minute_debug">1 min</string>
+    <string name="st_finish">Finish the current track first</string>
+    <string name="st_finish_sub">Never cuts a story short</string>
+    <string name="st_start">Start timer</string>
+    <string name="st_cancel">Cancel</string>
+    <string name="st_running">%1$d:%2$02d left</string>
+    <string name="st_cancel_timer">Cancel timer</string>
 
-    <string name="fav_top">Favourites 收藏</string>
-    <string name="fav_count">%1$d 个收藏</string>
-    <string name="fav_sort_new">最新</string>
-    <string name="fav_sort_old">最早</string>
-    <string name="fav_empty_title">还没有收藏</string>
-    <string name="fav_empty_sub">听到喜欢的，点红心就收起来。</string>
-    <string name="fav_empty_cta">去听一首</string>
+    <string name="fav_top">Favourites</string>
+    <string name="fav_count">%1$d favourites</string>
+    <string name="fav_sort_new">Newest</string>
+    <string name="fav_sort_old">Oldest</string>
+    <string name="fav_empty_title">No favourites yet</string>
+    <string name="fav_empty_sub">Tap the heart when you love one.</string>
+    <string name="fav_empty_cta">Listen to one</string>
 
-    <!-- ===== M6 · 家长区 ===== -->
+    <!-- ===== M6 · 家长区（全英文） ===== -->
     <string name="pg_top">Parents</string>
-    <string name="pg_title">家长验证</string>
-    <string name="pg_sub">请完成下面的题目</string>
-    <string name="pg_hint1">仅家长可以进入；答错会回到上一页。</string>
-    <string name="pg_hint2">进入后可查看学习记录、设置时长与提醒。</string>
-    <string name="pg_confirm">确认</string>
-    <string name="pg_answer_hint">答案</string>
+    <string name="pg_title">Parents only</string>
+    <string name="pg_sub">Please answer this question</string>
+    <string name="pg_hint1">This area is for grown-ups; a wrong answer simply gives a new question.</string>
+    <string name="pg_hint2">Inside: learning records, screen time and reminders.</string>
+    <string name="pg_confirm">OK</string>
+    <string name="pg_answer_hint">Answer</string>
 
     <string name="pd_top">Overview</string>
     <string name="pd_settings">Settings</string>
-    <string name="pd_greeting">今天学得不错</string>
-    <string name="pd_date_fmt">%1$s · 周%2$s</string>
-    <string name="pd_today_minutes">今日时长</string>
-    <string name="pd_unit_min">分钟</string>
-    <string name="pd_today_learned">今日识字</string>
-    <string name="pd_unit_ge">个</string>
-    <string name="pd_quiz_percent">测验正确率</string>
+    <string name="pd_greeting">Good progress today</string>
+    <string name="pd_date_fmt">%1$s · %2$s</string>
+    <string name="pd_today_minutes">Screen time</string>
+    <string name="pd_unit_min">min</string>
+    <string name="pd_today_learned">Characters</string>
+    <string name="pd_unit_ge">today</string>
+    <string name="pd_quiz_percent">Quiz accuracy</string>
     <string name="pd_quiz_none">–</string>
-    <string name="pd_week">本周学习</string>
-    <string name="pd_week_fmt">%1$d 个字</string>
-    <string name="pd_row_time">使用时长</string>
-    <string name="pd_row_time_sub_fmt">每天 %1$d 分钟 · 休息提醒%2$s</string>
-    <string name="pd_row_plan">学习计划</string>
-    <string name="pd_row_plan_sub_fmt">每天 %1$d 个字 · %2$s 提醒</string>
-    <string name="pd_row_records">学习记录</string>
-    <string name="pd_row_records_sub">查看每天学了什么</string>
-    <string name="pd_on">开</string>
-    <string name="pd_off">关</string>
+    <string name="pd_week">This week</string>
+    <string name="pd_week_fmt">%1$d characters</string>
+    <string name="pd_row_time">Screen time</string>
+    <string name="pd_row_time_sub_fmt">%1$d min a day · rest reminder %2$s</string>
+    <string name="pd_row_plan">Learning plan</string>
+    <string name="pd_row_plan_sub_fmt">%1$d characters a day · reminder %2$s</string>
+    <string name="pd_row_records">Records</string>
+    <string name="pd_row_records_sub">See what was learned each day</string>
+    <string name="pd_on">on</string>
+    <string name="pd_off">off</string>
 
     <string name="pt_top">Limits</string>
-    <string name="pt_title">每天可以看多久？</string>
-    <string name="pt_minutes_fmt">%1$d 分钟</string>
-    <string name="pt_rest">休息提醒</string>
-    <string name="pt_rest_sub">连续玩 15 分钟提醒一次</string>
-    <string name="pt_extra">今天已达上限，可以再给 10 分钟</string>
-    <string name="pt_extra_btn">再给 10 分钟</string>
-    <string name="pt_save">保存</string>
-    <string name="pt_cancel">取消</string>
-    <string name="pt_saved">已保存</string>
+    <string name="pt_title">How much screen time per day?</string>
+    <string name="pt_minutes_fmt">%1$d min</string>
+    <string name="pt_rest">Break reminder</string>
+    <string name="pt_rest_sub">Remind after 15 minutes of continuous play</string>
+    <string name="pt_extra">Limit reached — you can add 10 more minutes</string>
+    <string name="pt_extra_btn">Add 10 minutes</string>
+    <string name="pt_save">Save</string>
+    <string name="pt_cancel">Cancel</string>
+    <string name="pt_saved">Saved</string>
 
     <string name="pp_top">Plan</string>
-    <string name="pp_title">每天学几个字？</string>
-    <string name="pp_reminder">提醒时间</string>
-    <string name="pp_weekly_fmt">本周目标：%1$d 个字</string>
-    <string name="pp_weekly_sub_fmt">每天 %1$d 个 × %2$d 天</string>
-    <string name="pp_saved">已保存，明天起生效</string>
-    <string name="pp_need_day">至少选一天</string>
-    <string name="pp_notif_off">通知已关闭，去设置打开</string>
-    <string name="pp_notif_rationale">到点提醒孩子学习，需要通知权限。</string>
+    <string name="pp_title">New characters per day?</string>
+    <string name="pp_reminder">Reminder time</string>
+    <string name="pp_weekly_fmt">Weekly goal: %1$d characters</string>
+    <string name="pp_weekly_sub_fmt">%1$d a day × %2$d days</string>
+    <string name="pp_saved">Saved — takes effect tomorrow</string>
+    <string name="pp_need_day">Pick at least one day</string>
+    <string name="pp_notif_off">Notifications are off — enable them in Settings</string>
+    <string name="pp_notif_rationale">A daily reminder needs notification permission.</string>
 
     <string name="pr_top">Records</string>
-    <string name="pr_week_fmt">本周 %1$d 个字 · %2$d 次测验</string>
-    <string name="pr_compare_more">比上周多 %1$d 个字</string>
-    <string name="pr_compare_less">比上周少 %1$d 个字</string>
-    <string name="pr_compare_same">与上周一样</string>
-    <string name="pr_row_fmt">%1$d 个字 · 测验 %2$d/%3$d · %4$d 分钟</string>
-    <string name="pr_empty">还没有记录</string>
-    <string name="pr_empty_cta">回首页</string>
-    <string name="pr_privacy">所有数据只保存在这台设备上</string>
+    <string name="pr_week_fmt">This week: %1$d characters · %2$d quizzes</string>
+    <string name="pr_compare_more">%1$d more characters than last week</string>
+    <string name="pr_compare_less">%1$d fewer characters than last week</string>
+    <string name="pr_compare_same">Same as last week</string>
+    <string name="pr_row_fmt">%1$d characters · quiz %2$d/%3$d · %4$d min</string>
+    <string name="pr_empty">No records yet</string>
+    <string name="pr_empty_cta">Back home</string>
+    <string name="pr_privacy">All data stays on this device</string>
 
-    <string name="ss_sound">声音</string>
-    <string name="ss_sound_sub">音效与朗读</string>
-    <string name="ss_english">双语提示</string>
-    <string name="ss_english_sub">测验里显示英文</string>
-    <string name="ss_reset">重置进度</string>
-    <string name="ss_reset_sub">清空所有学习数据</string>
-    <string name="ss_reset_title">重置进度？</string>
-    <string name="ss_reset_msg">会清空所有学习进度与星星，不能恢复。确定吗？</string>
-    <string name="ss_reset_confirm">重置</string>
-    <string name="ss_cancel">取消</string>
-    <string name="ss_privacy">隐私</string>
-    <string name="ss_privacy_text">所有数据只保存在这台设备上，不上传。</string>
-    <string name="ss_about">关于</string>
-    <string name="ss_version_fmt">版本 %1$s · 离线 · 无广告 · 无账号</string>
-    <string name="ss_reset_done">已重置</string>
+    <string name="ss_sound">Sound</string>
+    <string name="ss_sound_sub">Sound effects and read-aloud</string>
+    <string name="ss_english">English hints</string>
+    <string name="ss_english_sub">Show English in the quiz</string>
+    <string name="ss_reset">Reset progress</string>
+    <string name="ss_reset_sub">Erase all learning data</string>
+    <string name="ss_reset_title">Reset progress?</string>
+    <string name="ss_reset_msg">This erases all learning progress and stars. It cannot be undone.</string>
+    <string name="ss_reset_confirm">Reset</string>
+    <string name="ss_cancel">Cancel</string>
+    <string name="ss_privacy">Privacy</string>
+    <string name="ss_privacy_text">All data stays on this device. Nothing is uploaded.</string>
+    <string name="ss_about">About</string>
+    <string name="ss_version_fmt">Version %1$s · Offline · No ads · No accounts</string>
+    <string name="ss_reset_done">Progress reset</string>
 
     <string-array name="weekday_short">
-        <item>一</item>
-        <item>二</item>
-        <item>三</item>
-        <item>四</item>
-        <item>五</item>
-        <item>六</item>
-        <item>日</item>
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+        <item>S</item>
     </string-array>
 </resources>

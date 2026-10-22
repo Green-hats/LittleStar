@@ -153,3 +153,11 @@
 - 问题：§15 要求 debug 开启 StrictMode 检测主线程磁盘 IO。开启后发现 SharedPreferences 首次读取（主线程）触发 DiskReadViolation。
 - 做法：AppContainer 构造后在 diskIO 线程预热 settings（首次文件加载在后台完成）；HomeActivity「当天首次朗读」的日期检查改到 diskIO→main 回调。残留违规全部是框架内部路径（布局膨胀 mmap、startActivity、输入子系统 KeyCharacterMap、ColorOS Hans），与应用数据文件无关。
 - 理由：§15 的核心是 progress.json 不上主线程；框架内部 mmap 读取不属于缺陷。
+
+## D30 · 2026-10-22 · 中英文占比策略（用户反馈：中文含量过多）
+- 问题：目标用户是澳洲学中文的 3–6 岁孩子（尚不识汉字、日常环境英文），但 UI 外壳中文过多。
+- 做法（三层策略）：
+  1. **UI 外壳（按钮、导航、提示、反馈、家长区、通知、无障碍描述）= 英文。** 孩子不识字，靠图标+位置+声音；家长是英文环境。
+  2. **教学内容 = 中文为主。** 汉字大字、拼音、主题中文名、文化条目标题、歌词保持中文（这是被学的内容），英文以 gloss/副标题辅助。
+  3. **标识性字形保留中文**：「字/文」切换、印章「会」、分类字形块（儿/故/诗）——它们是「汉字积木」的视觉语言，不承担阅读任务。
+- 配套：TextAppearance 的 Display/Title/Headline/Body/Caption 改用 Poppins（latin 字族），汉字外观不变。

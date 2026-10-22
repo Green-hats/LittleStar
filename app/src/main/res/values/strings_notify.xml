@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="notif_channel_reminder">每日学习提醒</string>
-    <string name="notif_channel_rest">休息提醒</string>
-    <string name="notif_channel_bedtime">睡前故事</string>
+    <string name="notif_channel_reminder">Daily learning reminder</string>
+    <string name="notif_channel_rest">Break reminder</string>
+    <string name="notif_channel_bedtime">Bedtime stories</string>
 
     <string name="notif_reminder_title">LittleStar</string>
-    <string name="notif_reminder_text">该学汉字啦：今天还有 %1$d 个字</string>
+    <string name="notif_reminder_text">Time for Chinese: %1$d characters left today</string>
     <string name="notif_rest_title">LittleStar</string>
-    <string name="notif_rest_text">眼睛累了吧？休息 5 分钟</string>
+    <string name="notif_rest_text">Tired eyes? Take a 5-minute break</string>
     <string name="notif_bedtime_title">LittleStar</string>
-    <string name="notif_bedtime_text">故事讲完啦，晚安</string>
+    <string name="notif_bedtime_text">The story is finished. Good night</string>
 </resources>
