@@ -40,11 +40,15 @@
 
 ## 快速开始
 
-```bash
-# 直接把预览版装到手机（Android 8.0+）
-open https://github.com/Green-hats/LittleStar/releases/latest
+**直接装到手机** —— 下载 [LittleStar-0.1.0-preview.apk](https://github.com/Green-hats/LittleStar/releases/latest)，或用 adb：
 
-# 或者从源码构建（JDK 17+ / Android SDK 36）
+```bash
+adb install -r LittleStar-0.1.0-preview.apk
+```
+
+**从源码构建**（JDK 17+ / Android SDK 36）
+
+```bash
 git clone https://github.com/Green-hats/LittleStar.git && cd LittleStar
 echo "sdk.dir=$HOME/Library/Android/sdk" > local.properties
 ./gradlew assembleDebug
