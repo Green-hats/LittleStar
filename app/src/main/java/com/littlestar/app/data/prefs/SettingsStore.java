@@ -11,14 +11,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * SharedPreferences 封装：家长设置。每个键一个 getter / setter，写入用 apply()。
+ * SharedPreferences 封装：学习任务与应用配置。每个键一个 getter / setter，写入用 apply()。
  */
 public final class SettingsStore {
 
     /** 键名集中在这里。 */
     public static final class Keys {
-        public static final String DAILY_LIMIT_MIN = "daily_limit_min";
-        public static final String REST_REMINDER = "rest_reminder";
         public static final String DAILY_GOAL = "daily_goal";
         public static final String REMINDER_TIME = "reminder_time";     // HH:mm
         public static final String REMINDER_DAYS = "reminder_days";     // ISO 星期，逗号分隔
@@ -38,22 +36,6 @@ public final class SettingsStore {
 
     public SettingsStore(@NonNull SharedPreferences prefs) {
         this.prefs = prefs;
-    }
-
-    public int getDailyLimitMin() {
-        return prefs.getInt(Keys.DAILY_LIMIT_MIN, 30);
-    }
-
-    public void setDailyLimitMin(int minutes) {
-        prefs.edit().putInt(Keys.DAILY_LIMIT_MIN, minutes).apply();
-    }
-
-    public boolean isRestReminder() {
-        return prefs.getBoolean(Keys.REST_REMINDER, true);
-    }
-
-    public void setRestReminder(boolean on) {
-        prefs.edit().putBoolean(Keys.REST_REMINDER, on).apply();
     }
 
     public int getDailyGoal() {

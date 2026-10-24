@@ -222,11 +222,6 @@ public final class QuizActivity extends ChildActivity {
     }
 
     @Override
-    public boolean deferTimeUp() {
-        return true;
-    }
-
-    @Override
     protected void onDestroy() {
         container().speech.stop();
         super.onDestroy();

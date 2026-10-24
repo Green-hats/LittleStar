@@ -33,10 +33,12 @@ public final class SmokeTest {
         c.settings.setOnboarded(false);
         c.settings.setDailyGoal(3);
         c.settings.setEnglishHint(false);
+        c.settings.setParentPin("");
         c.store.update(state -> {
             state.words.clear();
             state.sessions.clear();
             state.dailyPlans.clear();
+            state.usage.clear();
             state.nextSessionId = 1;
         });
         c.store.flushNow();

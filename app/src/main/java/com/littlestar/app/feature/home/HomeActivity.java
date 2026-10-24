@@ -25,7 +25,7 @@ import com.littlestar.app.feature.flashcard.FlashcardActivity;
 
 /**
  * 首页（§7.1）。字态主流程：今日字 + START → Flashcard(SESSION)。
- * firstLaunch=true 时盖首次引导（§7.20）。模块与家长入口 M3 不导航（见 DECISIONS）。
+ * firstLaunch=true 时盖首次引导（§7.20）；设置入口经过 PIN 验证。
  */
 public final class HomeActivity extends ChildActivity {
 
@@ -62,7 +62,7 @@ public final class HomeActivity extends ChildActivity {
         binding.btnListen.setOnClickListener(v -> speakHero());
         binding.heroCard.setOnClickListener(v -> speakHero());
 
-        // 模块与家长入口：M3 不导航（ThemesActivity / CultureCategoriesActivity / ParentGate 后续里程碑）
+        // 内容模块与受 PIN 保护的设置入口。
         binding.moduleWords.setOnClickListener(v -> {
             startActivity(new Intent(this,
                     com.littlestar.app.feature.words.ThemesActivity.class));
@@ -74,12 +74,19 @@ public final class HomeActivity extends ChildActivity {
             Motion.childEnter(this);
         });
         binding.parentEntry.setOnClickListener(v -> {
-            startActivity(com.littlestar.app.feature.parent.ParentGateActivity.intent(this,
-                    com.littlestar.app.feature.parent.ParentGateActivity.TARGET_DASHBOARD));
+            startActivity(com.littlestar.app.feature.parent.ParentGateActivity.intent(this));
             Motion.parentFade(this);
         });
 
         setupOnboarding();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (vm != null) {
+            vm.refresh();
+        }
     }
 
     // ---------- 正常首页 ----------
@@ -232,19 +239,8 @@ public final class HomeActivity extends ChildActivity {
         selectGoal(obGoal, goalChips, goals);
 
         binding.onboarding.obNext.setOnClickListener(v -> {
-            // 第一步 → 第二步（家长 PIN，D31）
+            // PIN 移至首次打开设置时创建；引导仅保留目标与提醒。
             binding.onboarding.obStep1.setVisibility(View.GONE);
-            binding.onboarding.obStepPin.setVisibility(View.VISIBLE);
-        });
-        binding.onboarding.obPinNext.setOnClickListener(v -> {
-            // 第二步 → 第三步（提醒）；PIN 必须 4 位数字
-            String pin = binding.onboarding.obPinInput.getText().toString().trim();
-            if (pin.length() != 4) {
-                Motion.shake(binding.onboarding.obPinInput);
-                return;
-            }
-            container().settings.setParentPin(pin);
-            binding.onboarding.obStepPin.setVisibility(View.GONE);
             binding.onboarding.obStep2.setVisibility(View.VISIBLE);
             binding.onboarding.obNotifyDesc.setText(getString(R.string.ob_notify_desc, obGoal));
         });

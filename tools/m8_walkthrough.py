@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""M8 走查驱动：adb 点按 + 截图。用法: python3 tools/m8_walkthrough.py <variant>"""
+"""历史 M8 走查驱动（对应 D33 精简前的页面，不用于当前回归）。
+当前回归：./gradlew :app:connectedDebugAndroidTest。
+历史用法: python3 tools/m8_walkthrough.py <variant>
+"""
 import json
 import re
 import subprocess

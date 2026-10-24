@@ -12,26 +12,19 @@ import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.core.ui.ParentActivity;
 import com.littlestar.app.databinding.ActivityParentGateBinding;
+import com.littlestar.app.feature.settings.SettingsActivity;
 
 /**
  * 家长验证（D31：PIN 登录取代算术题）。
  * 已设 PIN → 输入验证，错了抖动 + 清空，不锁定；
  * 未设 PIN（旧数据/跳过引导）→ 首次进入即创建（4 位数字）。
- * 通过 → target 并 finish 自己。
+ * 通过 → Settings 并 finish 自己。
  */
 public final class ParentGateActivity extends ParentActivity {
 
-    /** 验证后跳转目标（extra）。TimeUpActivity(M7) 也引用这些常量。 */
-    public static final String EXTRA_TARGET = "target";
-    public static final String TARGET_DASHBOARD = "dashboard";
-    public static final String TARGET_TIME = "time";
-
     @androidx.annotation.NonNull
-    public static Intent intent(@androidx.annotation.NonNull Activity from,
-                                @androidx.annotation.NonNull String target) {
-        Intent i = new Intent(from, ParentGateActivity.class);
-        i.putExtra(EXTRA_TARGET, target);
-        return i;
+    public static Intent intent(@androidx.annotation.NonNull Activity from) {
+        return new Intent(from, ParentGateActivity.class);
     }
 
     private ActivityParentGateBinding binding;
@@ -61,7 +54,7 @@ public final class ParentGateActivity extends ParentActivity {
 
     private void submit() {
         String input = binding.answerInput.getText().toString().trim();
-        if (input.length() != 4) {
+        if (!input.matches("[0-9]{4}")) {
             Motion.shake(binding.answerInput);
             binding.answerInput.setText("");
             return;
@@ -78,16 +71,9 @@ public final class ParentGateActivity extends ParentActivity {
         }
     }
 
-    /** 通过 → target（默认 Dashboard），finish 自己（§5.3）。 */
+    /** 通过后只进入设置页。 */
     private void dispatch() {
-        String target = getIntent().getStringExtra(EXTRA_TARGET);
-        Class<? extends Activity> dest;
-        if (TARGET_TIME.equals(target)) {
-            dest = ParentTimeActivity.class;
-        } else {
-            dest = ParentDashboardActivity.class;
-        }
-        startActivity(new Intent(this, dest));
+        startActivity(new Intent(this, SettingsActivity.class));
         Motion.parentFade(this);
         finish();
     }

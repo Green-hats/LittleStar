@@ -26,28 +26,30 @@
 
 一个给三到六岁、在英语环境里长大的孩子学汉字的 Android App。
 
-界面是英文的，学的内容是中文的——孩子还不识字，靠图标、位置和声音操作。除了认字，还能听儿歌、故事和古诗；家长区管时长上限、每日计划和按天记录。
+界面是英文的，学的内容是中文的——孩子还不识字，靠图标、位置和声音操作。除了认字，还能听儿歌、故事和古诗；家长通过 PIN 进入学习任务页，设置每天学几个字、几点和星期几提醒。
 
-## 三个模块
+## 两个内容模块
 
 <table>
 <tr>
-<td align="center" width="33%"><img src="docs/screenshots/readme/feature_quiz.png" width="230" /><br/>
+<td align="center" width="50%"><img src="docs/screenshots/readme/feature_quiz.png" width="230" /><br/>
 <b>字</b><br/><sub>识字卡 → 四选一测验 → 星星。答错变陶土色，直接给答案。</sub></td>
-<td align="center" width="33%"><img src="docs/screenshots/readme/feature_player.png" width="230" /><br/>
+<td align="center" width="50%"><img src="docs/screenshots/readme/feature_player.png" width="230" /><br/>
 <b>文</b><br/><sub>儿歌、故事、古诗。锁屏能听，歌词逐句高亮，睡前自动停。</sub></td>
-<td align="center" width="33%"><img src="docs/screenshots/readme/feature_parent.png" width="230" /><br/>
-<b>家长</b><br/><sub>PIN 进入。今日时长、学会字数、测验正确率、近七天。</sub></td>
 </tr>
 </table>
+
+首页 Learning plan → PIN 验证 → 每日识字目标、学习提醒时间与星期。首次引导只保留目标和提醒；第一次打开任务页才创建 PIN。学习历史继续保存在本机，不再提供限时、休息、加时、统计和按天记录页面（[D33](docs/DECISIONS.md#d33--2026-10-24--家长页仅配置学习任务)）。
+
+任务页预览：[浅色](docs/screenshots/learning-plan/learning_plan_light.png) · [深色](docs/screenshots/learning-plan/learning_plan_dark.png)。
 
 ## 设计上的五个选择
 
 - **一屏一个实心按钮** —— 孩子不会点错，也不会有第二个「现在该做什么」
 - **答错不惩罚** —— 陶土色 + 轻轻抖一下 + 直接告诉答案，没有红屏，不扣星
-- **星星只做奖励** —— 进度用字块表示；家长区只谈数据
+- **星星只做奖励** —— 进度用字块表示，完成一轮再发星星
 - **完全离线** —— 没有 `INTERNET` 权限，字库、录音、插画全部内置
-- **到点就停** —— 每日时长上限、连续 15 分钟休息页、睡前「播完这首再停」
+- **任务可调整** —— 每天 1–10 个新字，每轮最多 3 个；目标修改次日生效
 
 ## 架构
 
@@ -55,7 +57,7 @@
 
 <p align="center">
   <sub><b>Java 17</b> · XML View + ViewBinding · MVVM + LiveData · Media3 ExoPlayer · Gson + AtomicFile<br/>
-  零 Kotlin · 无数据库 · 43 个 JVM 单测 + 4 个真机用例</sub>
+  零 Kotlin · 无数据库 · 36 个 JVM 单测 + 9 个设备用例</sub>
 </p>
 
 <details>

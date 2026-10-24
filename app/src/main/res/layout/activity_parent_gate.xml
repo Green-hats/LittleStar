@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- §7.12 家长验证：算术卡 + 红描边输入框 + 确认；adjustResize 保证键盘不遮按钮 -->
+<!-- §7.12 设置验证：PIN + 红描边输入框 + 确认；adjustResize 保证键盘不遮按钮 -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/gateRoot"
