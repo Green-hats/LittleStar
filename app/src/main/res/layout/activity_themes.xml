@@ -46,19 +46,6 @@
                 android:text="@string/themes_top"
                 android:textAppearance="@style/TextAppearance.LS.Title" />
 
-            <ImageView
-                android:layout_width="@dimen/ls_icon"
-                android:layout_height="@dimen/ls_icon"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_star"
-                app:tint="@color/ls_yellow" />
-
-            <TextView
-                android:id="@+id/starCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/ls_gap_sm"
-                android:textAppearance="@style/TextAppearance.LS.Title" />
         </LinearLayout>
 
         <TextView

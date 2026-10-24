@@ -12,7 +12,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * 短音效播放器（§8.9）：SoundPool maxStreams=4，启动时预加载 5 个 < 1s 音效。
+ * 短音效播放器（§8.9）：SoundPool maxStreams=4，启动时预加载 4 个 < 1s 音效。
  * 音量跟随媒体音量；{@code soundEnabled} 为 false 时不播放（家长区 / 设置关声音）。
  */
 public final class SfxPlayer {
@@ -22,8 +22,7 @@ public final class SfxPlayer {
         TAP,
         FLIP,
         CORRECT,
-        WRONG,
-        STAR
+        WRONG
     }
 
     /** 声音开关（SettingsStore.isSoundEnabled 的方法引用）。 */
@@ -48,7 +47,6 @@ public final class SfxPlayer {
         soundIds.put(Sfx.FLIP, pool.load(context, R.raw.sfx_flip, 1));
         soundIds.put(Sfx.CORRECT, pool.load(context, R.raw.sfx_correct, 1));
         soundIds.put(Sfx.WRONG, pool.load(context, R.raw.sfx_wrong, 1));
-        soundIds.put(Sfx.STAR, pool.load(context, R.raw.sfx_star, 1));
     }
 
     /** 声音关闭时不播放；加载未完成时 SoundPool 静默忽略。 */

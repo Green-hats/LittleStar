@@ -59,15 +59,6 @@ public final class ProgressRepository {
         return n;
     }
 
-    /** 累计星星 = sessions 里 stars 求和。 */
-    public static int totalStars(@NonNull ProgressState state) {
-        int total = 0;
-        for (ProgressState.Session s : state.sessions) {
-            total += s.stars;
-        }
-        return total;
-    }
-
     /** 某天学会字数 = words 里 learnedAt 落在当天的个数。 */
     public static int learnedOn(@NonNull ProgressState state, @NonNull LocalDate date, @NonNull AppClock clock) {
         long dayStart = date.atStartOfDay(clock.zone()).toInstant().toEpochMilli();
@@ -117,14 +108,13 @@ public final class ProgressRepository {
         });
     }
 
-    /** 写星星 + 完成时间；只在 completedAt 为空时写一次（Reward 页调用后 flushNow）。 */
-    public void completeSession(long sessionId, int stars) {
+    /** 记录完成时间；只在 completedAt 为空时写一次，并立即保存。 */
+    public void completeSession(long sessionId) {
         long now = clock.now().toEpochMilli();
         store.update(state -> {
             ProgressState.Session s = findSession(state, sessionId);
             if (s != null && s.completedAt == null) {
                 s.completedAt = now;
-                s.stars = stars;
             }
         });
         store.flushNow();

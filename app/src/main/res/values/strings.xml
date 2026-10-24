@@ -18,7 +18,6 @@
 
     <!-- ===== M3 · Home ===== -->
     <string name="home_panda_desc">Panpan the panda</string>
-    <string name="home_star_capsule_desc">%1$d stars</string>
     <string name="home_mode_word">字</string>
     <string name="home_mode_culture">文</string>
     <string name="home_today_words">Today · Words</string>
@@ -48,7 +47,7 @@
     <string name="ob_suggestion">Suggested: age %1$d · %2$d characters a day</string>
     <string name="ob_suggestion_sub">About 5–10 minutes a day</string>
     <string name="ob_slogan">Little by little,</string>
-    <string name="ob_slogan_sub">the stars light up</string>
+    <string name="ob_slogan_sub">we learn together</string>
     <string name="ob_next">Next</string>
     <string name="ob_skip">Skip</string>
     <string name="ob_title_notify">A daily reminder</string>
@@ -85,11 +84,10 @@
     <!-- ===== M3 · Reward ===== -->
     <string name="reward_title">Great job!</string>
     <string name="reward_subtitle">You learned %1$d characters</string>
-    <string name="reward_subtitle_review">Review complete!</string>
+    <string name="reward_subtitle_review">Practice complete!</string>
     <string name="reward_stamp_text">学会</string>
     <string name="reward_done">DONE</string>
     <string name="reward_again">Play again</string>
-    <string name="reward_star_desc">Star %1$d</string>
 
     <!-- ===== M4 · 字模块 ===== -->
     <string name="themes_top">Words</string>
@@ -113,8 +111,7 @@
     <string name="cul_unit_poems">poems</string>
     <string name="cul_count_fmt">%1$d %2$s</string>
     <string name="cul_fav_row">Favourites</string>
-    <string name="cul_slogan">Listen a little every day</string>
-    <string name="cul_slogan_sub">10 minutes a day</string>
+    <string name="cul_slogan">A little listening, every day.</string>
     <string name="cul_list_header_fmt">%1$s · %2$d</string>
     <string name="sleep_timer">Sleep timer</string>
     <string name="sleep_timer_off">Off</string>

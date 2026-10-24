@@ -31,20 +31,6 @@ public final class Motion {
                 .start();
     }
 
-    /** 得星：scale 0.6 → 1.15 → 1，400ms。 */
-    public static void popStar(@NonNull View v) {
-        if (!animatorsEnabled()) {
-            v.setScaleX(1f);
-            v.setScaleY(1f);
-            return;
-        }
-        v.setScaleX(0.6f);
-        v.setScaleY(0.6f);
-        v.animate().scaleX(1.15f).scaleY(1.15f).setDuration(220).withEndAction(() ->
-                v.animate().scaleX(1f).scaleY(1f).setDuration(180)
-                        .setInterpolator(new OvershootInterpolator(1.2f)).start()).start();
-    }
-
     /** 勾图标 scale 0 → 1，300ms。 */
     public static void popIn(@NonNull View v) {
         if (!animatorsEnabled()) {

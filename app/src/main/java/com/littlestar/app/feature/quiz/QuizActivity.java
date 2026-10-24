@@ -44,7 +44,7 @@ public final class QuizActivity extends ChildActivity {
         return i;
     }
 
-    /** 词表 Quiz 入口（M4）：THEME 会话不发星星。 */
+    /** 词表 Quiz 入口：创建 THEME 会话。 */
     @NonNull
     public static Intent themeIntent(@NonNull Activity from, long sessionId) {
         Intent i = new Intent(from, QuizActivity.class);

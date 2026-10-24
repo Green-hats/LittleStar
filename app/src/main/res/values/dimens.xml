@@ -42,7 +42,6 @@
     <dimen name="ls_feedback_height">48dp</dimen>
     <dimen name="ls_reward_stage">180dp</dimen>
     <dimen name="ls_reward_panda">100dp</dimen>
-    <dimen name="ls_star">40dp</dimen>
     <dimen name="ls_confetti">10dp</dimen>
     <dimen name="ls_wave">40dp</dimen>
     <dimen name="ls_wave_height">24dp</dimen>

@@ -11,8 +11,6 @@ import com.littlestar.app.core.ui.ChildActivity;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.CultureCategory;
-import com.littlestar.app.data.repo.ProgressRepository;
-import com.littlestar.app.data.store.ProgressState;
 import com.littlestar.app.databinding.ActivityCultureCategoriesBinding;
 import com.littlestar.app.feature.favourites.FavouritesActivity;
 
@@ -51,8 +49,6 @@ public final class CultureCategoriesActivity extends ChildActivity {
     }
 
     private void render(List<CultureCategoriesViewModel.CategoryItem> items) {
-        ProgressState ps = container().store.observe().getValue();
-        binding.starCount.setText(String.valueOf(ps == null ? 0 : ProgressRepository.totalStars(ps)));
         for (CultureCategoriesViewModel.CategoryItem item : items) {
             CultureCategory c = item.category;
             switch (c.id) {

@@ -60,12 +60,7 @@ public final class ThemesActivity extends ChildActivity {
             return;
         }
         adapter.setItems(items);
-        int stars = 0;
-        com.littlestar.app.data.store.ProgressState ps = container().store.observe().getValue();
-        if (ps != null) {
-            stars = com.littlestar.app.data.repo.ProgressRepository.totalStars(ps);
-        }
-        binding.starCount.setText(String.valueOf(stars));
+
     }
 
     /** 网格横向间距（纵向由 item 的 marginBottom 提供）。 */

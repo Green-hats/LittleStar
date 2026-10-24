@@ -56,7 +56,6 @@ public final class ProgressState {
         public long startedAt;
         @Nullable
         public Long completedAt;
-        public int stars;
         public int correct;
         public int total;
         public List<Answer> answers = new ArrayList<>();

@@ -106,7 +106,6 @@ public final class SettingsFlowTest {
         container.store.update(state -> {
             ProgressState.Session session = new ProgressState.Session();
             session.id = 42;
-            session.stars = 2;
             session.completedAt = 1L;
             state.sessions.add(session);
         });
@@ -121,8 +120,8 @@ public final class SettingsFlowTest {
             int[] snapshot = readState(state -> new int[]{
                     state.dailyPlans.get(container.clock.today().toString()).goal,
                     state.dailyPlans.get(container.clock.today().toString()).newWordIds.size(),
-                    (int) state.sessions.get(0).id, state.sessions.get(0).stars});
-            assertArrayEquals(new int[]{3, 3, 42, 2}, snapshot);
+                    (int) state.sessions.get(0).id, state.sessions.get(0).completedAt.intValue()});
+            assertArrayEquals(new int[]{3, 3, 42, 1}, snapshot);
         }
     }
 

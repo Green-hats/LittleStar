@@ -51,7 +51,7 @@ public final class CultureCategoriesViewModel extends ViewModel {
         return categories;
     }
 
-    /** 收藏数（顶栏星星位旁的小计数可选；当前用于收藏行角标）。 */
+    /** 收藏数，用于收藏行角标。 */
     @NonNull
     public LiveData<Integer> favouriteCount() {
         return androidx.lifecycle.Transformations.map(container.store.observe(),

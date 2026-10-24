@@ -152,9 +152,6 @@ public final class HomeActivity extends ChildActivity {
                 ? getString(R.string.home_progress_done)
                 : getString(R.string.home_today_progress, s.learnedToday, s.goal));
 
-        // 星星胶囊（不可点）
-        binding.starCount.setText(String.valueOf(s.totalStars));
-        binding.starCapsule.setContentDescription(getString(R.string.home_star_capsule_desc, s.totalStars));
     }
 
     /** 进入时当天第一次自动朗读今日字（§9.1）。 */

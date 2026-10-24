@@ -1,5 +1,24 @@
 # LittleStar 验收清单（§15）
 
+## 2026-10-24 · 文化分类页提示行调整
+
+- 将贴底的大标题、时长副标题和黄色熊猫圆章，改为收藏入口下方的小熊猫与单行提示。
+- 页面支持垂直滚动，小屏与放大字体时仍可访问收藏和提示行。
+- `:app:testDebugUnitTest`、`assembleDebug`、内容校验、对比度检查均通过。
+- 页面截图：[浅色](screenshots/culture-footer/light.png)、[深色](screenshots/culture-footer/dark.png)、[360×640 / 1.3 倍字体](screenshots/culture-footer/small_font13.png)。
+
+## 2026-10-24 · 移除星星奖励（D34）
+
+设备：Pixel 10 Pro 临时只读模拟器（Android 17）。
+
+- `:app:testDebugUnitTest`：35/35 通过，覆盖旧星星存档迁移、学习历史保留和会话完成幂等保存。
+- `assembleDebug`：通过。
+- `:app:connectedDebugAndroidTest`：10/10 通过，覆盖完整学习流程、完成页重建、学习任务设置及原子文件存储。
+- `validate_content.py` 与 `contrast_check.py`：通过。
+- 首页、识字主题和文化分类均移除累计星星；完成页保留本轮汉字、鼓励反馈、完成和再来一次。
+- 存档升级至 v2，只移除旧会话的 `stars` 字段，保留识字进度、每日计划、答题记录和完成时间。
+- 页面目视检查：[首页](screenshots/no-stars/home_light.png)、[主题](screenshots/no-stars/themes_light.png)、[文化分类](screenshots/no-stars/culture_light.png)、[完成页浅色](screenshots/no-stars/completion_light.png)、[深色](screenshots/no-stars/completion_dark.png)、[360×640 / 1.3 倍字体](screenshots/no-stars/completion_small_font13.png)、[小屏底部](screenshots/no-stars/completion_small_font13_bottom.png)。小屏可滚动访问两个按钮。
+
 ## 2026-10-24 · 家长页精简为学习任务（D33）
 
 设备：Pixel 10 Pro 模拟器（Android 17）。

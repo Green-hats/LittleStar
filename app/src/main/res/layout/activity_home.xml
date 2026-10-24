@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- §7.1 首页：顶栏（熊猫 + LittleStar + 星星胶囊）/ 主角卡（字文切换 + 今日字 + 听块）/
+<!-- §7.1 首页：顶栏（熊猫 + LittleStar）/ 主角卡（字文切换 + 今日字 + 听块）/
      START / 今日进度 / 字文模块 / 家长入口。firstLaunch 时盖上引导态。 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -52,41 +52,6 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1" />
-
-                <!-- 星星胶囊：只展示，不可点 -->
-                <com.littlestar.app.core.ui.BlockLayout
-                    android:id="@+id/starCapsule"
-                    style="@style/Widget.LS.Block.Icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/ls_btn_icon"
-                    android:clickable="false"
-                    android:importantForAccessibility="yes"
-                    app:ls_fill="@color/ls_yellow">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingStart="@dimen/ls_gap"
-                        android:paddingEnd="@dimen/ls_gap">
-
-                        <ImageView
-                            android:layout_width="@dimen/ls_icon"
-                            android:layout_height="@dimen/ls_icon"
-                            android:importantForAccessibility="no"
-                            android:src="@drawable/ic_star"
-                            app:tint="@color/ls_on_yellow" />
-
-                        <TextView
-                            android:id="@+id/starCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/ls_gap_sm"
-                            android:textAppearance="@style/TextAppearance.LS.Title"
-                            android:textColor="@color/ls_on_yellow" />
-                    </LinearLayout>
-                </com.littlestar.app.core.ui.BlockLayout>
             </LinearLayout>
 
             <!-- 主角卡 -->

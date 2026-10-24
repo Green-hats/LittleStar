@@ -167,7 +167,7 @@ def architecture():
     y, h = 160, 172
     panel(X0, y, LW, h, "01", "界面", "12 Activity · ViewBinding", RED)
     cw = (IW - 3 * 16) // 4
-    for i, (t, s) in enumerate([("孩子区", "首页 · 识字卡 · 测验 · 奖励"),
+    for i, (t, s) in enumerate([("孩子区", "首页 · 识字卡 · 测验 · 完成"),
                                 ("学习任务", "PIN · 每日字数 · 学习提醒"),
                                 ("内容区", "主题 · 字表 · 儿歌 · 故事"),
                                 ("组件库", "BlockLayout · 6 个自绘 View")]):
@@ -201,10 +201,9 @@ def architecture():
     for i, (t, s) in enumerate([("SessionBuilder", "组一轮会话"),
                                 ("ReviewScheduler", "Leitner 复习"),
                                 ("QuizGenerator", "四选一干扰项"),
-                                ("StarCalculator", "本轮星星"),
                                 ("HomeModeResolver", "字 / 文规则")]):
         r, c = divmod(i, 3)
-        card(dx + c * (dw + 12), y + 86 + r * 74, dw, 66, t, s, ts=13, ss=12)
+        card(dx + c * (dw + 12), y + 86 + r * 74, dw, 66, t, s, ts=12, ss=12)
     txt(INNER, y + h - 44, "页面不直接碰 progress.json：所有读写都经过 Repository", nr(13), MUTED)
     arrow(X0 + LW // 2, y + h, 936, "读 / 写")
 

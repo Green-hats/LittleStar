@@ -35,13 +35,12 @@ public final class HomeViewModel extends ViewModel {
         public final Word nextWord;            // 今日下一个未学的字
         @Nullable
         public final CultureItem featured;     // 推荐文化条目
-        public final int totalStars;
         public final boolean allDone;          // 全部学完
         public final boolean firstLaunch;      // 首次引导态
 
         public UiState(boolean loading, HomeModeResolver.Mode mode, boolean bedtimeOnly,
                        int goal, int learnedToday, @Nullable Word nextWord,
-                       @Nullable CultureItem featured, int totalStars,
+                       @Nullable CultureItem featured,
                        boolean allDone, boolean firstLaunch) {
             this.loading = loading;
             this.mode = mode;
@@ -50,14 +49,13 @@ public final class HomeViewModel extends ViewModel {
             this.learnedToday = learnedToday;
             this.nextWord = nextWord;
             this.featured = featured;
-            this.totalStars = totalStars;
             this.allDone = allDone;
             this.firstLaunch = firstLaunch;
         }
 
         UiState with(HomeModeResolver.Mode newMode, @Nullable CultureItem newFeatured) {
             return new UiState(loading, newMode, bedtimeOnly, goal, learnedToday, nextWord,
-                    newFeatured, totalStars, allDone, firstLaunch);
+                    newFeatured, allDone, firstLaunch);
         }
     }
 
@@ -83,7 +81,7 @@ public final class HomeViewModel extends ViewModel {
         this.progress = container.progress;
         state.setValue(new UiState(true, HomeModeResolver.resolve(clock.localTime()),
                 HomeModeResolver.bedtimeOnly(clock.localTime()),
-                settings.getDailyGoal(), 0, null, null, 0, false, !settings.isOnboarded()));
+                settings.getDailyGoal(), 0, null, null, false, !settings.isOnboarded()));
         // 内容先在 diskIO 线程解析，回调到主线程后再计算（不在主线程做 IO）
         content.load(container.executors, () -> {
             contentReady = true;
@@ -131,7 +129,7 @@ public final class HomeViewModel extends ViewModel {
         boolean bedtimeOnly = HomeModeResolver.bedtimeOnly(clock.localTime());
         CultureItem featured = pickFeatured(bedtimeOnly);
         state.setValue(new UiState(false, mode, bedtimeOnly, goal, k, next, featured,
-                ProgressRepository.totalStars(ps), allDone, !settings.isOnboarded()));
+                allDone, !settings.isOnboarded()));
     }
 
     /** 首页展示用的计划预览：不写入 state（只读首页不写库）。 */
@@ -191,7 +189,7 @@ public final class HomeViewModel extends ViewModel {
         UiState cur = state.getValue();
         if (cur != null) {
             state.setValue(new UiState(cur.loading, cur.mode, cur.bedtimeOnly, goal,
-                    cur.learnedToday, cur.nextWord, cur.featured, cur.totalStars, cur.allDone, false));
+                    cur.learnedToday, cur.nextWord, cur.featured, cur.allDone, false));
         }
     }
 }

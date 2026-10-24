@@ -109,7 +109,7 @@ public final class SessionBuilder {
         return s;
     }
 
-    /** THEME 会话：从该主题 6 字里随机取 5 题；不发星星，不影响今日进度，但会更新字进度。 */
+    /** THEME 会话：从该主题 6 字里随机取 5 题；不影响今日进度，但会更新字进度。 */
     @NonNull
     public ProgressState.Session buildThemeSession(@NonNull ProgressState state, @NonNull String themeId) {
         content.ensureLoaded();

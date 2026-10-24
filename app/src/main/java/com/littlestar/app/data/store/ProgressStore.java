@@ -28,7 +28,7 @@ import java.util.function.Function;
  */
 public final class ProgressStore {
 
-    public static final int CURRENT_VERSION = 1;
+    public static final int CURRENT_VERSION = 2;
     private static final String TAG = "ProgressStore";
     private static final long SAVE_DEBOUNCE_MS = 2_000;
     /** sessions 只保留最近 180 天；dailyPlans 只保留最近 30 天 */
@@ -101,7 +101,7 @@ public final class ProgressStore {
         });
     }
 
-    /** 立即保存（App 退到后台、会话完成、Reward 写星星、家长延长时间时调用）。 */
+    /** 立即保存（App 退到后台、会话创建与完成时调用）。 */
     public void flushNow() {
         executors.diskIO().execute(() -> {
             ensureLoaded();

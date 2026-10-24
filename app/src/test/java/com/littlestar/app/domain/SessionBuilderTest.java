@@ -120,7 +120,7 @@ public final class SessionBuilderTest {
         assertEquals(5, p3.newWordIds.size());                      // 第二天生效
     }
 
-    /** THEME 会话：5 题、kind=THEME、不发星星（stars 由 StarCalculator 算 0）。 */
+    /** THEME 会话：5 题、kind=THEME，不影响今日计划。 */
     @Test
     public void themeSession_fiveQuestions() {
         FakeClock clock = new FakeClock(T1);
@@ -131,7 +131,6 @@ public final class SessionBuilderTest {
         assertEquals(SessionBuilder.KIND_THEME, s.kind);
         assertEquals("animals", s.themeId);
         assertEquals(5, s.quizWordIds.size());
-        assertEquals(0, StarCalculator.compute(s.kind, s.newWordIds, s.answers));
         // 不影响今日计划
         assertTrue(state.dailyPlans.isEmpty());
     }

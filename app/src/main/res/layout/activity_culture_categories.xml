@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- §7.7 文化分类：MVP 3 类（2 + 古诗宽卡），统一青绿字形块；收藏行；盼盼页脚 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- §7.7 文化分类：MVP 3 类（2 + 古诗宽卡），统一青绿字形块；收藏行；轻量聆听提示 -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cultureRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ls_paper"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:maxWidth="@dimen/ls_content_max_width"
         android:orientation="vertical"
         android:padding="@dimen/ls_margin">
@@ -46,19 +45,6 @@
                 android:text="@string/cul_top"
                 android:textAppearance="@style/TextAppearance.LS.Title" />
 
-            <ImageView
-                android:layout_width="@dimen/ls_icon"
-                android:layout_height="@dimen/ls_icon"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_star"
-                app:tint="@color/ls_yellow" />
-
-            <TextView
-                android:id="@+id/starCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/ls_gap_sm"
-                android:textAppearance="@style/TextAppearance.LS.Title" />
         </LinearLayout>
 
         <TextView
@@ -316,50 +302,26 @@
             </LinearLayout>
         </com.littlestar.app.core.ui.BlockLayout>
 
-        <Space
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <!-- 盼盼页脚 -->
+        <!-- 轻量提示跟随内容，不固定在屏幕底部 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/ls_section"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_panda" />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/cul_slogan"
-                    android:textAppearance="@style/TextAppearance.LS.Title" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/cul_slogan_sub"
-                    android:textAppearance="@style/TextAppearance.LS.Caption"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="@dimen/ls_stamp"
-                android:layout_height="@dimen/ls_stamp"
-                android:background="@drawable/bg_circle_yellow">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/home_panda_desc"
-                    android:padding="@dimen/ls_gap_sm"
-                    android:src="@drawable/ic_panda" />
-            </FrameLayout>
+                android:layout_marginStart="@dimen/ls_gap_sm"
+                android:text="@string/cul_slogan"
+                android:textAppearance="@style/TextAppearance.LS.Caption" />
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>
