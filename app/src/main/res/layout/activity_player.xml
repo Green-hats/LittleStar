@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- §7.9 播放器：封面 + 标题 + 进度条 + 三键 + Sleep timer 行 + 歌词卡 -->
+<!-- §7.9 播放器：封面 + 标题 + 进度条 + 三键 + 歌词卡 -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/playerRoot"
@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:padding="@dimen/ls_margin">
 
-        <!-- 顶栏：返回 + 标题 + 收藏 -->
+        <!-- 顶栏：返回 + 标题 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,21 +46,6 @@
                 android:layout_weight="1"
                 android:textAppearance="@style/TextAppearance.LS.Title" />
 
-            <com.littlestar.app.core.ui.BlockLayout
-                android:id="@+id/btnFav"
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="@dimen/ls_btn_icon"
-                android:layout_height="@dimen/ls_btn_icon"
-                android:contentDescription="@string/player_desc_fav">
-
-                <ImageView
-                    android:id="@+id/favIcon"
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:layout_gravity="center"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_heart" />
-            </com.littlestar.app.core.ui.BlockLayout>
         </LinearLayout>
 
         <!-- 蓝色封面 -->
@@ -181,53 +166,6 @@
                     android:src="@drawable/ic_next" />
             </com.littlestar.app.core.ui.BlockLayout>
         </LinearLayout>
-
-        <!-- Sleep timer 行 -->
-        <com.littlestar.app.core.ui.BlockLayout
-            android:id="@+id/sleepRow"
-            style="@style/Widget.LS.Block.Parent"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_icon"
-            android:layout_marginTop="@dimen/ls_section">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="@dimen/ls_gap"
-                android:paddingEnd="@dimen/ls_gap">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_moon" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/ls_gap"
-                    android:layout_weight="1"
-                    android:text="@string/sleep_timer"
-                    android:textAppearance="@style/TextAppearance.LS.Body" />
-
-                <TextView
-                    android:id="@+id/sleepState"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sleep_timer_off"
-                    android:textAppearance="@style/TextAppearance.LS.Caption"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_chevron"
-                    app:tint="@color/ls_muted" />
-            </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
 
         <!-- 歌词卡：当前句黄底高亮，后两句 muted；无歌词隐藏 -->
         <com.littlestar.app.core.ui.BlockLayout

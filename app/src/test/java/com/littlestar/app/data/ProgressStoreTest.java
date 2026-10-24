@@ -169,7 +169,7 @@ public final class ProgressStoreTest {
         ProgressStore store = newStore(file, new FakeClock(T1), 50);
         store.ensureLoaded();
         store.read(state -> state, state -> {
-            assertEquals(2, state.schemaVersion);
+            assertEquals(ProgressStore.CURRENT_VERSION, state.schemaVersion);
             assertEquals(2, state.words.get("mao").box);
             assertEquals(Long.valueOf(123), state.words.get("mao").learnedAt);
             assertEquals(3, state.dailyPlans.get("2026-10-21").goal);
@@ -208,4 +208,30 @@ public final class ProgressStoreTest {
             assertEquals(3, session.total);
         });
     }
+    @Test
+    public void version2Save_removesFavourites_andKeepsLearningHistory() {
+        FileStateFile file = new FileStateFile(tmp.getRoot());
+        file.write("""
+                {"schemaVersion":2,"favourites":{"xiaoxingxing":123},
+                 "words":{"mao":{"learnedAt":123,"box":2}},
+                 "dailyPlans":{"2026-10-21":{"goal":3,"newWordIds":["mao"]}},
+                 "sessions":[{"id":7,"date":"2026-10-21","kind":"DAILY",
+                   "completedAt":456,"correct":1,"total":1,
+                   "answers":[{"wordId":"mao","chosen":"猫","correct":true,"firstTry":true}]}],
+                 "nextSessionId":8}
+                """);
+        ProgressStore store = newStore(file, new FakeClock(T1), 50);
+        store.ensureLoaded();
+        store.read(state -> state, state -> {
+            assertEquals(ProgressStore.CURRENT_VERSION, state.schemaVersion);
+            assertEquals(Long.valueOf(123), state.words.get("mao").learnedAt);
+            assertEquals(2, state.words.get("mao").box);
+            assertEquals(3, state.dailyPlans.get("2026-10-21").goal);
+            assertEquals(Long.valueOf(456), state.sessions.get(0).completedAt);
+            assertEquals("猫", state.sessions.get(0).answers.get(0).chosen);
+            assertEquals(8, state.nextSessionId);
+        });
+        assertTrue(!JsonParser.parseString(file.read()).getAsJsonObject().has("favourites"));
+    }
+
 }

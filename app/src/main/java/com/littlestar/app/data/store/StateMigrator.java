@@ -29,6 +29,12 @@ public final class StateMigrator {
                 }
             }
             raw.addProperty("schemaVersion", 2);
+            version = 2;
+        }
+        if (version == 2) {
+            // v3 移除收藏；识字进度、每日计划及作答记录保持原样。
+            raw.remove("favourites");
+            raw.addProperty("schemaVersion", 3);
         }
         return raw;
     }

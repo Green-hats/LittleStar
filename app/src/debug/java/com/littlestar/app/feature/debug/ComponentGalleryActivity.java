@@ -36,13 +36,13 @@ public final class ComponentGalleryActivity extends AppCompatActivity {
     private static final int[] ICONS = {
             R.drawable.ic_back, R.drawable.ic_chevron, R.drawable.ic_play, R.drawable.ic_pause,
             R.drawable.ic_prev, R.drawable.ic_next, R.drawable.ic_speaker,
-            R.drawable.ic_check, R.drawable.ic_close, R.drawable.ic_lock, R.drawable.ic_heart,
-            R.drawable.ic_moon, R.drawable.ic_clock, R.drawable.ic_calendar, R.drawable.ic_history,
+            R.drawable.ic_check, R.drawable.ic_close, R.drawable.ic_lock,
+            R.drawable.ic_clock, R.drawable.ic_calendar, R.drawable.ic_history,
             R.drawable.ic_quiz, R.drawable.ic_music, R.drawable.ic_book, R.drawable.ic_scroll
     };
     private static final String[] ICON_NAMES = {
             "back", "chevron", "play", "pause", "prev", "next", "speaker",
-            "check", "close", "lock", "heart", "moon", "clock", "calendar", "history",
+            "check", "close", "lock", "clock", "calendar", "history",
             "quiz", "music", "book", "scroll"
     };
     private static final int ICONS_PER_ROW = 5;

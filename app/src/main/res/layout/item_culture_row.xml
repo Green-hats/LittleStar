@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 文化行（列表 / 收藏共用）：56dp 封面 + 标题 + 类型·时长 + 播放钮（列表）或红心（收藏） -->
+<!-- 文化列表行：56dp 封面 + 标题 + 类型·时长 + 播放钮 -->
 <com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rowBlock"
@@ -74,14 +74,5 @@
                 app:tint="@color/ls_on_blue" />
         </com.littlestar.app.core.ui.BlockLayout>
 
-        <ImageView
-            android:id="@+id/btnHeart"
-            android:layout_width="@dimen/ls_module_glyph"
-            android:layout_height="@dimen/ls_module_glyph"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/player_desc_fav"
-            android:padding="@dimen/ls_gap_sm"
-            android:src="@drawable/ic_heart"
-            android:visibility="gone" />
     </LinearLayout>
 </com.littlestar.app.core.ui.BlockLayout>

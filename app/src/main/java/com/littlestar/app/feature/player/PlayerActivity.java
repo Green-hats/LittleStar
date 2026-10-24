@@ -27,17 +27,15 @@ import com.littlestar.app.data.content.model.CultureItem;
 import com.littlestar.app.data.content.model.LyricLine;
 import com.littlestar.app.databinding.ActivityPlayerBinding;
 import com.littlestar.app.feature.culture.CultureListActivity;
-import com.littlestar.app.feature.sleep.SleepTimerSheet;
 import com.littlestar.app.playback.PlaybackService;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 /**
  * 播放器（§7.9 / §9.9）：MediaController 连 PlaybackService，不在本页持有 ExoPlayer。
- * 进度 250ms 刷新；歌词当前句黄底、后两句 muted；收藏红心；Sleep timer 行。
+ * 进度 250ms 刷新；歌词当前句黄底、后两句 muted。
  */
 public final class PlayerActivity extends ChildActivity {
 
@@ -92,7 +90,6 @@ public final class PlayerActivity extends ChildActivity {
             finish();
             Motion.childExit(this);
         });
-        binding.btnFav.setOnClickListener(v -> vm.toggleFavourite());
         binding.btnPlay.setOnClickListener(v -> {
             MediaController c = controller;
             if (c != null) {
@@ -121,11 +118,7 @@ public final class PlayerActivity extends ChildActivity {
                 c.seekTo(pos);
             }
         });
-        binding.sleepRow.setOnClickListener(v ->
-                new SleepTimerSheet().show(getSupportFragmentManager(), "sleep"));
-
         vm.state().observe(this, this::render);
-        container().sleepTimer.remaining().observe(this, this::renderSleepState);
 
         List<String> queue = getIntent().getStringArrayListExtra(EXTRA_QUEUE);
         String itemId = getIntent().getStringExtra(EXTRA_ITEM_ID);
@@ -203,9 +196,6 @@ public final class PlayerActivity extends ChildActivity {
                 s.item.subtitle == null ? "" : s.item.subtitle,
                 CultureListActivity.formatDuration(s.item.durationSec)));
 
-        binding.favIcon.setColorFilter(ContextCompat.getColor(this,
-                s.favourite ? R.color.ls_red : R.color.ls_ink));
-
         binding.playIcon.setImageResource(s.playing ? R.drawable.ic_pause : R.drawable.ic_play);
         binding.btnPlay.setContentDescription(
                 getString(s.playing ? R.string.player_desc_pause : R.string.player_desc_play));
@@ -250,15 +240,6 @@ public final class PlayerActivity extends ChildActivity {
             if (english != null) {
                 english.setVisibility(View.GONE);
             }
-        }
-    }
-
-    private void renderSleepState(Duration left) {
-        if (left != null && !left.isZero() && container().sleepTimer.isRunning()) {
-            binding.sleepState.setText(getString(R.string.sleep_timer_remaining,
-                    left.toMinutes(), left.toSecondsPart()));
-        } else {
-            binding.sleepState.setText(R.string.sleep_timer_off);
         }
     }
 

@@ -19,11 +19,8 @@ import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.CultureItem;
 import com.littlestar.app.databinding.ActivityCultureListBinding;
 import com.littlestar.app.databinding.ItemCultureRowBinding;
-import com.littlestar.app.feature.favourites.FavouritesActivity;
 import com.littlestar.app.feature.player.PlayerActivity;
-import com.littlestar.app.feature.sleep.SleepTimerSheet;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,15 +59,7 @@ public final class CultureListActivity extends ChildActivity {
             finish();
             Motion.childExit(this);
         });
-        binding.btnFav.setOnClickListener(v -> {
-            startActivity(FavouritesActivity.intent(this));
-            Motion.childEnter(this);
-        });
-        binding.sleepRow.setOnClickListener(v ->
-                new SleepTimerSheet().show(getSupportFragmentManager(), "sleep"));
-
         vm.state().observe(this, this::render);
-        container().sleepTimer.remaining().observe(this, this::renderSleepState);
         container().content.load(container().executors,
                 () -> vm.init(getIntent().getStringExtra(EXTRA_CATEGORY_ID)));
     }
@@ -84,15 +73,6 @@ public final class CultureListActivity extends ChildActivity {
         binding.categoryCount.setText(
                 getString(R.string.cul_list_header_fmt, s.category.nameEn, s.items.size()));
         adapter.setItems(s.items);
-    }
-
-    private void renderSleepState(Duration left) {
-        if (left != null && !left.isZero() && container().sleepTimer.isRunning()) {
-            binding.sleepState.setText(getString(R.string.sleep_timer_remaining,
-                    left.toMinutes(), left.toSecondsPart()));
-        } else {
-            binding.sleepState.setText(R.string.sleep_timer_off);
-        }
     }
 
     private void openPlayer(int index) {

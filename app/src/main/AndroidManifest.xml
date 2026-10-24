@@ -58,10 +58,6 @@
             android:name=".feature.player.PlayerActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".feature.favourites.FavouritesActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
 
         <!-- §10.2 播放服务 -->
         <service

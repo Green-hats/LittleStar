@@ -12,11 +12,10 @@ import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.CultureCategory;
 import com.littlestar.app.databinding.ActivityCultureCategoriesBinding;
-import com.littlestar.app.feature.favourites.FavouritesActivity;
 
 import java.util.List;
 
-/** 文化分类（§7.7 / §9.7）：MVP 3 类 = 儿歌/故事两块 + 古诗宽卡；收藏行；统一青绿。 */
+/** 文化分类（§7.7 / §9.7）：MVP 3 类 = 儿歌/故事两块 + 古诗宽卡；统一青绿。 */
 public final class CultureCategoriesActivity extends ChildActivity {
 
     private ActivityCultureCategoriesBinding binding;
@@ -37,14 +36,7 @@ public final class CultureCategoriesActivity extends ChildActivity {
             finish();
             Motion.childExit(this);
         });
-        binding.favRow.setOnClickListener(v -> {
-            startActivity(FavouritesActivity.intent(this));
-            Motion.childEnter(this);
-        });
-
         vm.categories().observe(this, this::render);
-        vm.favouriteCount().observe(this, n ->
-                binding.favCount.setText(getString(R.string.fav_count, n)));
         container().content.load(container().executors, () -> vm.load());
     }
 

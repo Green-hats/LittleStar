@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- §7.8 文化列表：类别头 + 80dp 行 + 底部 Sleep timer 行 -->
+<!-- §7.8 文化列表：类别头 + 80dp 行 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cultureListRoot"
@@ -46,21 +46,6 @@
                 android:text="@string/cul_top"
                 android:textAppearance="@style/TextAppearance.LS.Title" />
 
-            <com.littlestar.app.core.ui.BlockLayout
-                android:id="@+id/btnFav"
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="@dimen/ls_btn_icon"
-                android:layout_height="@dimen/ls_btn_icon"
-                android:contentDescription="@string/player_desc_fav">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:layout_gravity="center"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_heart"
-                    app:tint="@color/ls_red" />
-            </com.littlestar.app.core.ui.BlockLayout>
         </LinearLayout>
 
         <!-- 类别头 -->
@@ -117,51 +102,5 @@
             android:clipToPadding="false"
             android:overScrollMode="never" />
 
-        <!-- Sleep timer 行 -->
-        <com.littlestar.app.core.ui.BlockLayout
-            android:id="@+id/sleepRow"
-            style="@style/Widget.LS.Block.Parent"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_icon"
-            android:layout_marginTop="@dimen/ls_gap_sm">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="@dimen/ls_gap"
-                android:paddingEnd="@dimen/ls_gap">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_moon" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/ls_gap"
-                    android:layout_weight="1"
-                    android:text="@string/sleep_timer"
-                    android:textAppearance="@style/TextAppearance.LS.Body" />
-
-                <TextView
-                    android:id="@+id/sleepState"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sleep_timer_off"
-                    android:textAppearance="@style/TextAppearance.LS.Caption"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_chevron"
-                    app:tint="@color/ls_muted" />
-            </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
     </LinearLayout>
 </LinearLayout>
