@@ -165,11 +165,11 @@ def architecture():
 
     # ---- 01 界面 ----
     y, h = 160, 172
-    panel(X0, y, LW, h, "01", "界面", "16 Activity · ViewBinding", RED)
+    panel(X0, y, LW, h, "01", "界面", "12 Activity · ViewBinding", RED)
     cw = (IW - 3 * 16) // 4
     for i, (t, s) in enumerate([("孩子区", "首页 · 识字卡 · 测验 · 奖励"),
-                                ("家长区", "PIN · 概览 · 时长 · 计划"),
-                                ("系统页", "休息页 / 上限页"),
+                                ("学习任务", "PIN · 每日字数 · 学习提醒"),
+                                ("内容区", "主题 · 字表 · 儿歌 · 故事"),
                                 ("组件库", "BlockLayout · 6 个自绘 View")]):
         card(INNER + i * (cw + 16), y + 56, cw, 98, t, s)
     arrow(X0 + LW // 2, y + h, 386, "点击 → 事件")
@@ -191,7 +191,7 @@ def architecture():
     dw_all = IW - repo_w - 24
     txt(INNER, y + 56, "Repository", nb(16), MUTED)
     rw = (repo_w - 2 * 14) // 3
-    for i, t in enumerate(["Progress", "Usage", "Favourite"]):
+    for i, t in enumerate(["Progress", "Content", "Favourite"]):
         card(INNER + i * (rw + 14), y + 86, rw, 68, t + "Repository", "LiveData 派生数据",
              ts=16, ss=13)
 
@@ -202,7 +202,6 @@ def architecture():
                                 ("ReviewScheduler", "Leitner 复习"),
                                 ("QuizGenerator", "四选一干扰项"),
                                 ("StarCalculator", "本轮星星"),
-                                ("ScreenTimePolicy", "休息 / 上限"),
                                 ("HomeModeResolver", "字 / 文规则")]):
         r, c = divmod(i, 3)
         card(dx + c * (dw + 12), y + 86 + r * 74, dw, 66, t, s, ts=13, ss=12)
@@ -215,7 +214,7 @@ def architecture():
     sw = (IW - 2 * 16) // 3
     for i, (t, s, m) in enumerate([("progress.json", "原子写 · 防抖 · 备份", "AtomicFile"),
                                    ("assets/content", "36 字 · 11 条文化", "只读"),
-                                   ("SharedPreferences", "PIN · 时长 · 计划", "设置")]):
+                                   ("SharedPreferences", "PIN · 每日目标 · 提醒", "设置")]):
         card(INNER + i * (sw + 16), y + 50, sw, 86, t, s, meta=m, ts=17, ss=12)
 
     # ---- 05 运行时（右栏）----
@@ -226,7 +225,7 @@ def architecture():
     for t, s in [("锁屏播放", "Media3 ExoPlayer + MediaSessionService"),
                  ("睡前定时", "播完当前音轨 → 晚安通知"),
                  ("每日提醒", "AlarmManager · 19:30 · 可设星期"),
-                 ("通知渠道", "reminder / rest / bedtime")]:
+                 ("通知渠道", "reminder / bedtime")]:
         d.rounded_rectangle([RX + 24, yy, RX + 24 + iw, yy + 76], radius=12,
                             fill=CARD, outline=CARD_LINE, width=2)
         txt(RX + 40, yy + 12, t, nb(17), INK)

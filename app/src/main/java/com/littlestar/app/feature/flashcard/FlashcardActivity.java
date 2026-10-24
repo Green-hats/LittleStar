@@ -307,11 +307,6 @@ public final class FlashcardActivity extends ChildActivity {
     }
 
     @Override
-    public boolean deferTimeUp() {
-        return true;
-    }
-
-    @Override
     protected void onDestroy() {
         container().speech.setFailureListener(null);
         container().speech.stop();

@@ -183,3 +183,12 @@
 - [隐患] QuizGenerator 干扰项 < 3 时 subList 越界 → 按实际数量。
 - [隐患] ProgressRepository 主线程 ensureLoaded → 未加载返回 0（ContentRepository.isLoaded）。
 - 未修（记录）：diskIO 单线程拥堵（量级可接受）、PIN 明文 SharedPreferences（儿童锁定位，可接受）、ParentActivity 用 wall clock 判 60s。
+
+## D33 · 2026-10-24 · 家长页仅配置学习任务
+- 问题：当前 36 字学习产品的家长概览、周图表、按天记录和多层设置增加维护成本；用户明确要求删除休息提醒和每日限时，只保留任务配置与学习提醒。
+- 做法：家长入口为 Learning plan，经 PIN 验证后仅配置每日识字数（1–10）、学习提醒时间和星期。删除统计、记录、通用设置入口及限时/休息/加时页面与逻辑，移除孩子页面的时长采集和拦截。
+- PIN 保护保留：已有 PIN 继续有效；首次引导为目标 → 提醒两步，首次打开任务页时才创建 PIN。
+- 目标与提醒统一点 Save 生效，返回或 Cancel 放弃编辑；daily_plan 当天固定，目标次日生效。选空提醒日表示关闭每日学习提醒。
+- 兼容：学习历史和旧 usage 字段继续保存在原文件中；旧时长设置不再读取，旧休息通知及渠道在升级启动时清理。儿歌/故事的睡前定时仍属于播放功能。
+- 理由：优先维护识字闭环，让家长只需配置学习任务。
+- 验证配套：模拟器 Android 17 暴露 Espresso 3.6.1 的 InputManager.getInstance 反射异常；仅升级测试依赖为 Espresso 3.7.0 / ext.junit 1.3.0 / runner 1.7.0，不修改运行时依赖。修复依据：[AndroidX Test 发布说明](https://developer.android.com/jetpack/androidx/releases/test#espresso-3.7.0-alpha04)。

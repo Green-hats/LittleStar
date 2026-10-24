@@ -10,7 +10,7 @@ import com.littlestar.app.AppContainer;
 import com.littlestar.app.LittleStarApp;
 
 /**
- * 家长区基类：Theme.LittleStar.Parent；不计入孩子时长；
+ * 家长任务配置基类：Theme.LittleStar.Parent；
  * 退到后台超过 60 秒，回来时跳回 ParentGate 重新验证。
  */
 public abstract class ParentActivity extends AppCompatActivity {
@@ -41,8 +41,7 @@ public abstract class ParentActivity extends AppCompatActivity {
 
     /** 后台超时后需要重新验证（§5.3）：跳回 ParentGate 并关掉当前家长页。 */
     protected void onReauthRequired() {
-        startActivity(com.littlestar.app.feature.parent.ParentGateActivity.intent(this,
-                com.littlestar.app.feature.parent.ParentGateActivity.TARGET_DASHBOARD));
+        startActivity(com.littlestar.app.feature.parent.ParentGateActivity.intent(this));
         finish();
     }
 

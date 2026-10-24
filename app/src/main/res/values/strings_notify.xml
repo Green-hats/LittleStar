@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notif_channel_reminder">Daily learning reminder</string>
-    <string name="notif_channel_rest">Break reminder</string>
     <string name="notif_channel_bedtime">Bedtime stories</string>
 
     <string name="notif_reminder_title">LittleStar</string>
     <string name="notif_reminder_text">Time for Chinese: %1$d characters left today</string>
-    <string name="notif_rest_title">LittleStar</string>
-    <string name="notif_rest_text">Tired eyes? Take a 5-minute break</string>
     <string name="notif_bedtime_title">LittleStar</string>
     <string name="notif_bedtime_text">The story is finished. Good night</string>
 </resources>

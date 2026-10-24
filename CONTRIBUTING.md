@@ -62,10 +62,10 @@ python3 tools/validate_content.py
 ## 目录导览
 
 ```
-core/       组件与基础设施（BlockLayout、AppClock、音频、时长）
+core/       组件与基础设施（BlockLayout、AppClock、音频）
 data/       内容、progress.json、SharedPreferences、Repository
 domain/     纯 Java 业务逻辑（100% 可单测，不 import android.*）
-feature/    16 个 Activity 对应的界面层
+feature/    各 Activity 对应的界面层；settings/ 仅配置每日任务和学习提醒，parent/ 保留 PIN 验证
 playback/   Media3 播放服务与睡前定时
 notify/     通知与每日提醒
 ```
@@ -75,7 +75,7 @@ notify/     通知与每日提醒
 有些事 CI 做不了，PR 里请附结果：
 
 - 真机截图（改动涉及界面时）：浅色 + 深色各一张。
-- 涉及时长 / 通知的改动：说明怎么复现（例如把每日上限设成 debug 专用的 1 分钟）。
+- 涉及学习提醒 / 睡前定时的改动：说明触发时间、系统通知权限及复现步骤。
 - 进程恢复类改动：`adb shell am kill` 后重进验证。
 
 ## 发布

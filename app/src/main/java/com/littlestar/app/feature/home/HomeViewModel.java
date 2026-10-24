@@ -108,6 +108,7 @@ public final class HomeViewModel extends ViewModel {
         if (plan == null) {
             plan = previewPlan(ps, goal);
         }
+        goal = plan.goal;
         int k = SessionBuilder.learnedTodayCount(ps, plan);
 
         Word next = null;
@@ -177,6 +178,11 @@ public final class HomeViewModel extends ViewModel {
     @NonNull
     public LiveData<UiState> state() {
         return state;
+    }
+
+    /** 从设置返回后刷新；已生成计划仍使用当天固定的目标。 */
+    public void refresh() {
+        onProgress(lastProgress);
     }
 
     public void completeOnboarding(int goal) {

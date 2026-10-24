@@ -63,11 +63,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name=".feature.timeup.TimeUpActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-
         <!-- §10.2 播放服务 -->
         <service
             android:name=".playback.PlaybackService"
@@ -92,30 +87,16 @@
             </intent-filter>
         </receiver>
 
-        <!-- M6 家长区 -->
+        <!-- PIN 保护的单页设置 -->
         <activity
             android:name=".feature.parent.ParentGateActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.LittleStar.Parent"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
-            android:name=".feature.parent.ParentDashboardActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.LittleStar.Parent" />
-        <activity
-            android:name=".feature.parent.ParentTimeActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.LittleStar.Parent" />
-        <activity
-            android:name=".feature.parent.ParentPlanActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.LittleStar.Parent" />
-        <activity
-            android:name=".feature.parent.ParentRecordsActivity"
+            android:name=".feature.settings.SettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.LittleStar.Parent" />

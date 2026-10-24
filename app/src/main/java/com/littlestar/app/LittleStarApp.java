@@ -9,7 +9,6 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.littlestar.app.core.audio.SfxPlayer;
 import com.littlestar.app.core.ui.BlockLayout;
-import com.littlestar.app.feature.timeup.TimeUpActivity;
 
 /** Application 入口：持有 {@link AppContainer}。 */
 public final class LittleStarApp extends Application {
@@ -27,10 +26,6 @@ public final class LittleStarApp extends Application {
         }
         // 硬影块按下音效（BlockLayout 不直接依赖 AppContainer）
         BlockLayout.setPressSoundHook(() -> container.sfx.play(SfxPlayer.Sfx.TAP));
-        // 时长到点 → 休息页 / 上限页（§10.1）
-        container.screenTime.setTimeUpLauncher((activity, kind) ->
-                TimeUpActivity.start(activity, kind == com.littlestar.app.core.screentime.ScreenTimeTracker.Kind.LIMIT
-                        ? TimeUpActivity.Kind.LIMIT : TimeUpActivity.Kind.REST));
         // 通知渠道 + 每日提醒重排（§10.4：App 启动是重排时机之一）
         container.notifier.ensureChannels();
         container.reminders.reschedule();

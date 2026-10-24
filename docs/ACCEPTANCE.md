@@ -1,5 +1,20 @@
 # LittleStar 验收清单（§15）
 
+## 2026-10-24 · 家长页精简为学习任务（D33）
+
+设备：Pixel 10 Pro 模拟器（Android 17）。
+
+- `:app:testDebugUnitTest`：36/36 通过；已删除功能对应的时长策略测试随实现移除。
+- `assembleDebug`：通过。
+- `:app:connectedDebugAndroidTest`：9/9 通过，含 PIN 创建/验证、编辑取消、保存后今日计划和历史不变、页面重建保留草稿、关闭学习提醒、旧限时配置不再阻止学习、完整识字到奖励流程、原子文件存储。
+- `validate_content.py` 与 `contrast_check.py`：通过。
+- 页面目视检查：[浅色](screenshots/learning-plan/learning_plan_light.png)、[深色](screenshots/learning-plan/learning_plan_dark.png)、[360×640 / 1.3 倍字体](screenshots/learning-plan/learning_plan_small_font13.png)、[小屏滚动到底部](screenshots/learning-plan/learning_plan_small_font13_bottom.png)。文字与星期选项可读，保存和取消可访问。
+- 家长页仅提供每日识字目标、学习提醒时间及星期；PIN 保留。应用不再采集孩子使用时长，不再触发休息、限时或加时页面；旧学习历史保留。
+
+## 历史验收 · 2026-10-21
+
+以下为功能精简前的验收记录，其中限时、休息及家长统计相关条目不再适用于当前版本。
+
 日期：2026-10-21 ｜ 设备：一加 8T（KB2000，1080×2400，ColorOS Android 15）
 构建：debug `com.littlestar.app.debug` + release `com.littlestar.app`（R8 开启，验收用 debug 签名 D27）
 
