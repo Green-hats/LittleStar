@@ -1,12 +1,9 @@
 <div align="center">
 
-<img src="docs/assets/illustrations/panda_v3.png" width="92" alt="LittleStar" />
-
-# LittleStar
-
-**汉字积木 · 给海外华裔孩子的识字 App**
-
-<sub>A Chinese-literacy app for heritage kids growing up in English-speaking homes.</sub>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner_dark.png">
+  <img src="docs/assets/banner.png" width="880" alt="LittleStar — 汉字积木，给海外华裔孩子的识字 App" />
+</picture>
 
 <p>
   <a href="https://github.com/Green-hats/LittleStar/releases/latest"><img alt="Download" src="https://img.shields.io/badge/Download-APK-8957e5?style=flat-square" /></a>
