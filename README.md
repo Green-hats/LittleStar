@@ -5,8 +5,6 @@
   <img src="docs/assets/banner.png?v=20261026" width="880" alt="LittleStar — 汉字积木，给海外华裔孩子的识字 App" />
 </picture>
 
-# LittleStar
-
 **汉字积木 · 给海外华裔孩子的识字 App**
 
 <sub>A Chinese-literacy app for heritage kids growing up in English-speaking homes.</sub>
