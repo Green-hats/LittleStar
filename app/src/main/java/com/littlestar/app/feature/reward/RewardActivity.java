@@ -29,6 +29,7 @@ import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.data.store.ProgressState;
 import com.littlestar.app.databinding.ActivityRewardBinding;
 import com.littlestar.app.feature.flashcard.FlashcardActivity;
+import com.littlestar.app.feature.review.RoundReviewActivity;
 
 import java.io.IOException;
 import java.util.Random;
@@ -70,6 +71,11 @@ public final class RewardActivity extends ChildActivity {
                 .get(RewardViewModel.class);
         sessionId = getIntent().getLongExtra(EXTRA_SESSION_ID, -1);
 
+        binding.btnReview.setVisibility(sessionId > 0 ? View.VISIBLE : View.GONE);
+        binding.btnReview.setOnClickListener(v -> {
+            startActivity(RoundReviewActivity.intent(this, sessionId));
+            Motion.childEnter(this);
+        });
         binding.btnDone.setOnClickListener(v -> vm.finish());
         binding.btnAgain.setOnClickListener(v -> vm.playAgain());
         // 返回键 = 完成（回 Home）

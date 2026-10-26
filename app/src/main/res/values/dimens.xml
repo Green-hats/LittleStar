@@ -59,6 +59,7 @@
     <dimen name="ls_theme_tile_height">176dp</dimen>
     <dimen name="ls_tile_ill">64dp</dimen>
     <dimen name="ls_row_culture">80dp</dimen>
+    <dimen name="ls_row_review">96dp</dimen>
     <dimen name="ls_cover">56dp</dimen>
     <dimen name="ls_play_big">76dp</dimen>
     <dimen name="ls_player_cover">200dp</dimen>

@@ -159,4 +159,35 @@
         <item>Sa</item>
         <item>Su</item>
     </string-array>
+
+    <!-- ===== A1 · Help ===== -->
+    <string name="help_title">Help</string>
+    <string name="help_icon">?</string>
+    <string name="help_desc">Help</string>
+    <string name="help_intro">LittleStar works offline. Here is how reminders and daily practice fit together.</string>
+    <string name="help_reminders_title">Daily reminder</string>
+    <string name="help_reminders_body">Choose a time and weekdays in Learning plan. LittleStar sends one reminder on those days and stays quiet once the daily goal is complete.</string>
+    <string name="help_test_notification">Send test notification</string>
+    <string name="help_test_sent">Test notification sent</string>
+    <string name="help_notification_off">Notifications are off. Allow them in system settings to see the reminder.</string>
+    <string name="help_permission_hint">Android asks for notification permission the first time. You can change this later in system settings.</string>
+    <string name="help_offline_title">Offline by design</string>
+    <string name="help_offline_body">All characters, audio and illustrations are built in. LittleStar does not request Internet access and does not send learning data anywhere.</string>
+    <string name="help_about">About LittleStar</string>
+    <string name="help_about_title">LittleStar</string>
+    <string name="help_about_message">Version %1$s\nOffline Chinese literacy for heritage kids.\nNo ads, no account, no network access.</string>
+    <string name="help_menu_test">Send test notification</string>
+    <string name="help_menu_about">About</string>
+
+    <!-- ===== A1 · Round review ===== -->
+    <string name="review_title">Review this round</string>
+    <string name="review_summary">%1$d / %2$d correct</string>
+    <string name="review_empty">No quiz answers in this round.</string>
+    <string name="review_correct">Correct</string>
+    <string name="review_wrong">You chose %1$s · answer %2$s</string>
+    <string name="review_no_answer">—</string>
+    <string name="review_correct_desc">Correct answer</string>
+    <string name="review_wrong_desc">Wrong answer</string>
+    <string name="review_play_desc">Play %1$s</string>
+    <string name="reward_review">Review this round</string>
 </resources>

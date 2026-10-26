@@ -97,5 +97,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.LittleStar.Parent" />
 
+        <!-- A1：帮助页（菜单 + 测试通知） -->
+        <activity
+            android:name=".feature.help.HelpActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- A1：本轮答题回顾（Reward → Review） -->
+        <activity
+            android:name=".feature.review.RoundReviewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
     </application>
 </manifest>

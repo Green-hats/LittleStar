@@ -94,6 +94,37 @@
             android:layout_marginTop="@dimen/ls_section"
             android:orientation="horizontal" />
 
+        <!-- 次入口：本轮答题回顾（A1） -->
+        <com.littlestar.app.core.ui.BlockLayout
+            android:id="@+id/btnReview"
+            style="@style/Widget.LS.Block.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ls_btn_secondary"
+            android:layout_marginTop="@dimen/ls_section">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/ls_icon"
+                    android:layout_height="@dimen/ls_icon"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_quiz" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ls_gap_sm"
+                    android:text="@string/reward_review"
+                    android:textAppearance="@style/TextAppearance.LS.Body"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.littlestar.app.core.ui.BlockLayout>
+
         <Space
             android:layout_width="1dp"
             android:layout_height="0dp"

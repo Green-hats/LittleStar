@@ -84,7 +84,7 @@
 adb install -r LittleStar-0.1.0-preview.apk
 ```
 
-**从源码构建** —— JDK 17+ / Android SDK 36
+**从源码构建** —— JDK 17+ / Android SDK 37
 
 ```bash
 git clone https://github.com/Green-hats/LittleStar.git && cd LittleStar

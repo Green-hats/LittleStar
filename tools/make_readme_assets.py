@@ -151,7 +151,7 @@ def architecture():
     txt(84, 44, "LittleStar architecture", pb(42), INK)
     txt(84, 100, "从一次点击到本地文件：单向数据流，全程离线", nr(19), MUTED)
 
-    pill = "Android 8.0+ · minSdk 26"
+    pill = "Android 11.0+ · minSdk 30"
     tw = d.textlength(pill, font=nr(14))
     d.rounded_rectangle([W - 56 - tw - 56, 54, W - 56, 92], radius=19,
                         fill=tint(GREEN, 0.10), outline=line_of(GREEN, 0.30), width=2)
@@ -165,7 +165,7 @@ def architecture():
 
     # ---- 01 界面 ----
     y, h = 160, 172
-    panel(X0, y, LW, h, "01", "界面", "11 Activity · ViewBinding", RED)
+    panel(X0, y, LW, h, "01", "界面", "13 Activity · ViewBinding", RED)
     cw = (IW - 3 * 16) // 4
     for i, (t, s) in enumerate([("孩子区", "首页 · 识字卡 · 测验 · 完成"),
                                 ("学习任务", "PIN · 每日字数 · 学习提醒"),

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A1 回顾行：汉字 + 拼音/英文 + 所选/正确答案 + 发音 -->
+<com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/answerRow"
+    style="@style/Widget.LS.Block.Secondary"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/ls_row_review"
+    android:layout_marginBottom="@dimen/ls_gap"
+    app:ls_pressable="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/ls_gap"
+        android:paddingEnd="@dimen/ls_gap">
+
+        <com.littlestar.app.core.ui.HanziTextView
+            android:id="@+id/rowHanzi"
+            android:layout_width="@dimen/ls_cover"
+            android:layout_height="@dimen/ls_cover"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.LS.HanziTile"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ls_gap"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/rowPinyin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.LS.Pinyin.Small" />
+
+            <TextView
+                android:id="@+id/rowEnglish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.LS.English.Small" />
+
+            <TextView
+                android:id="@+id/rowAnswer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.LS.Caption" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/rowStatus"
+            android:layout_width="@dimen/ls_icon"
+            android:layout_height="@dimen/ls_icon"
+            android:layout_marginStart="@dimen/ls_gap_sm"
+            android:contentDescription="@string/review_correct_desc" />
+
+        <com.littlestar.app.core.ui.BlockLayout
+            android:id="@+id/btnSpeak"
+            style="@style/Widget.LS.Block.Icon"
+            android:layout_width="@dimen/ls_module_glyph"
+            android:layout_height="@dimen/ls_module_glyph"
+            android:layout_marginStart="@dimen/ls_gap_sm"
+            android:contentDescription="@string/player_desc_play">
+
+            <ImageView
+                android:layout_width="@dimen/ls_icon"
+                android:layout_height="@dimen/ls_icon"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_speaker"
+                app:tint="@color/ls_ink" />
+        </com.littlestar.app.core.ui.BlockLayout>
+    </LinearLayout>
+</com.littlestar.app.core.ui.BlockLayout>

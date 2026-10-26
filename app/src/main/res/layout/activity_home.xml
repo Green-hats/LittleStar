@@ -52,6 +52,23 @@
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1" />
+
+                <com.littlestar.app.core.ui.BlockLayout
+                    android:id="@+id/btnHelp"
+                    style="@style/Widget.LS.Block.Icon"
+                    android:layout_width="@dimen/ls_btn_icon"
+                    android:layout_height="@dimen/ls_btn_icon"
+                    android:contentDescription="@string/help_desc">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:importantForAccessibility="no"
+                        android:text="@string/help_icon"
+                        android:textAppearance="@style/TextAppearance.LS.Title"
+                        android:textSize="20sp" />
+                </com.littlestar.app.core.ui.BlockLayout>
             </LinearLayout>
 
             <!-- 主角卡 -->

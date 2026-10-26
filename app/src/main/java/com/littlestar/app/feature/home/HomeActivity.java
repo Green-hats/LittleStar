@@ -22,6 +22,7 @@ import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.databinding.ActivityHomeBinding;
 import com.littlestar.app.domain.HomeModeResolver;
 import com.littlestar.app.feature.flashcard.FlashcardActivity;
+import com.littlestar.app.feature.help.HelpActivity;
 
 /**
  * 首页（§7.1）。字态主流程：今日字 + START → Flashcard(SESSION)。
@@ -76,6 +77,10 @@ public final class HomeActivity extends ChildActivity {
         binding.parentEntry.setOnClickListener(v -> {
             startActivity(com.littlestar.app.feature.parent.ParentGateActivity.intent(this));
             Motion.parentFade(this);
+        });
+        binding.btnHelp.setOnClickListener(v -> {
+            startActivity(HelpActivity.intent(this));
+            Motion.childEnter(this);
         });
 
         setupOnboarding();

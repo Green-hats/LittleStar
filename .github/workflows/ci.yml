@@ -28,7 +28,7 @@ jobs:
           SDKMGR="$(find "$SDK_ROOT/cmdline-tools" -name sdkmanager -type f | sort | tail -1)"
           echo "sdkmanager: $SDKMGR"
           yes | "$SDKMGR" --licenses > /dev/null || true
-          "$SDKMGR" "platforms;android-36" "build-tools;35.0.0" > /dev/null
+          "$SDKMGR" "platforms;android-37.0" "build-tools;37.0.0" > /dev/null
           echo "$(dirname "$SDKMGR")" >> "$GITHUB_PATH"
 
       - name: Validate Gradle wrapper

@@ -8,8 +8,8 @@
 |---|---|
 | JDK | 21（源码与字节码目标 17） |
 | Android Studio | 任意近期版本（Ladybug 以上） |
-| Android SDK | compileSdk 36，minSdk 26 |
-| 真机 | Android 8.0+，开启 USB 调试（模拟器也可，但本项目按真机验收） |
+| Android SDK | compileSdk 37，minSdk 30 |
+| 真机 | Android 11.0+，开启 USB 调试（模拟器也可，但本项目按真机验收） |
 
 第一次跑起来：
 

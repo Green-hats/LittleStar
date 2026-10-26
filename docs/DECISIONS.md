@@ -26,6 +26,7 @@
 - 问题：文档规定 compileSdk 35，但最新稳定版 androidx.core 1.17.0 等要求 compileSdk ≥ 36。
 - 做法：compileSdk 36，targetSdk 仍为 35（edge-to-edge 行为不变），minSdk 26 不变。
 - 理由：「取最新稳定版依赖」与「compileSdk 35」冲突，升级 compileSdk 只影响编译期 API 可见性，不改变运行时行为；是最保守的解法。
+- 2026-10-26 更新：已被 D37 取代，当前为 minSdk 30 / compileSdk 37 / targetSdk 37。
 
 ## D6 · 2026-10-21 · 子集字体已生成；占位图与占位音频
 - 问题：M0 时临时用了全量 NotoSansSC-Bold.otf（8.3MB）。
@@ -212,3 +213,16 @@
 - 定时：移除列表和播放器中的定时入口、SleepTimerSheet、SleepTimerController、倒计时观察、播完再停和淡出停止逻辑。PlaybackService 仅负责媒体播放与会话。
 - 通知：启动时清理旧 bedtime 渠道及晚安通知，保留 reminder 渠道和 Media3 媒体通知。
 - 边界：首页按时间切换字/文与睡前内容推荐属于独立功能，本次保留。
+
+## D37 · 2026-10-26 · 对齐 A1：minSdk 30 / compileSdk 37 / targetSdk 37
+- 问题：A1 明确要求 Minimum SDK API 30、Target / Compilation SDK 最新；此前为 minSdk 26、targetSdk 35、compileSdk 36。
+- 做法：`minSdk 30`、`compileSdk 37`、`targetSdk 37`；CI 改为安装 `platforms;android-37.0` 与 `build-tools;37.0.0`，README / CONTRIBUTING / ENGINEERING 同步。
+- 理由：对齐作业硬性设置；代码用到的 API 在 API 30 上均可用。
+- 影响：最低支持 Android 11（API 30），安装范围收窄；需在 API 30+ 设备回归。
+- 验证：`:app:assembleDebug` 与 `:app:testDebugUnitTest` 通过；`aapt2` 显示 minSdk 30 / targetSdk 37 / compileSdk 37。
+
+## D38 · 2026-10-26 · A1 补到 13 页：Help + Round review
+- 问题：A1 要求 13 个 Activity，当前只有 11 个正式页面；同时菜单和通知演示仍缺。
+- 做法：新增 `HelpActivity`（Toolbar options menu、测试通知、About 对话框）和 `RoundReviewActivity`（Reward → 本轮逐题回顾，只读 `Session.answers`）。Home 顶栏加 `?` 入口；Reward 加 “Review this round” 入口。
+- 理由：两页都有真实入口和数据，不用空壳凑数；Help 一页同时补齐菜单与通知演示，Review 强化页面传值和复习闭环。
+- 验证：manifest 13 个正式 Activity；模拟器 Android 17 / API 37.2 实测 Help 菜单、测试通知、About、Reward → Review；`:app:assembleDebug`、`:app:assembleRelease`、`:app:testDebugUnitTest` 通过。

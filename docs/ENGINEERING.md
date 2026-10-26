@@ -90,11 +90,11 @@
 | 长音频 | **Media3 ExoPlayer + MediaSessionService** | 后台播放、通知控制、睡前定时 |
 | 短音效 | `SoundPool` | 「嗒」「叮」等 < 1s 音效，低延迟 |
 | 字音 | 预录 `.ogg`，用一个单独的 ExoPlayer 实例播放 | 离线、发音标准；TTS 只做开发期兜底 |
-| 时间 | `java.time` + 可注入的 `Clock` | minSdk 26 原生可用；方便测试 |
+| 时间 | `java.time` + 可注入的 `Clock` | minSdk 30 原生可用；方便测试 |
 | 提醒 | `AlarmManager.setWindow`（非精确）+ `BOOT_COMPLETED` 重排 | 不需要精确闹钟权限 |
 | 测试 | JUnit4、`androidx.arch.core:core-testing`（`InstantTaskExecutorRule`）、Espresso；Mockito 只在必要时用 | 存储层用临时文件在 JVM 上直接测 |
 
-**SDK：** `minSdk 26`、`targetSdk 35`、`compileSdk 35`。JDK 17。
+**SDK：** `minSdk 30`、`targetSdk 37`、`compileSdk 37`。JDK 17。
 **依赖版本：** 用 `gradle/libs.versions.toml` 管理，取写代码时 AndroidX / Media3 的最新稳定版。不要用 alpha/beta。
 
 需要的库（**全部用非 `-ktx` 版本**）：`androidx.core:core`、`appcompat`、`activity`、`material`（M3）、`constraintlayout`、`recyclerview`、`viewpager2`、`lifecycle-viewmodel`、`lifecycle-livedata`、`lifecycle-process`、`media3-exoplayer`、`media3-session`、`core-splashscreen`、`com.google.code.gson:gson`、`androidx.annotation`。
@@ -106,11 +106,11 @@ plugins { id 'com.android.application' }   // 不要 org.jetbrains.kotlin.androi
 
 android {
     namespace 'com.littlestar.app'
-    compileSdk 35
+    compileSdk 37
     defaultConfig {
         applicationId 'com.littlestar.app'
-        minSdk 26
-        targetSdk 35
+        minSdk 30
+        targetSdk 37
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -343,7 +343,7 @@ public interface AppClock {
 
 ## 5. 页面清单与导航
 
-### 5.1 16 个 Activity + 2 个 BottomSheet
+### 5.1 13 个 Activity
 
 | # | 类 | 区 | 设计书 | 设计图 | 入参（extras） |
 |---|---|---|---|---|---|
@@ -356,41 +356,35 @@ public interface AppClock {
 | 7 | `CultureCategoriesActivity` | 孩子 | 7.7 | culture_categories | — |
 | 8 | `CultureListActivity` | 孩子 | 7.8 | culture_stories | `categoryId` |
 | 9 | `PlayerActivity` | 孩子 | 7.9 / 7.24 | player / player_paused | `itemId`、`queue: String[]` |
-| 10 | `FavouritesActivity` | 孩子 | 7.10 | favourites / favourites_empty | — |
-| 11 | `ParentGateActivity` | 家长 | 7.12 | parent_gate | `target`（进入后跳转的页面，默认 Dashboard） |
-| 12 | `ParentDashboardActivity` | 家长 | 7.13 | parent_dashboard | — |
-| 13 | `ParentTimeActivity` | 家长 | 7.14 | parent_time | — |
-| 14 | `ParentPlanActivity` | 家长 | 7.15 | parent_plan | — |
-| 15 | `ParentRecordsActivity` | 家长 | 7.16 | parent_records | — |
-| 16 | `TimeUpActivity` | 系统 | 7.17 | time_up / limit | `kind`(REST/LIMIT) |
-| — | `SleepTimerSheet`（BottomSheetDialogFragment） | 孩子 | 7.11 | sleep_timer | 由 CultureList / Player 打开 |
-| — | `SettingsSheet`（BottomSheetDialogFragment） | 家长 | 7.25 | parent_settings | 由 ParentDashboard 右上 Settings 打开 |
+| 10 | `ParentGateActivity` | 家长 | 7.12 | parent_gate | — |
+| 11 | `SettingsActivity` | 家长 | 7.15 | learning_plan | — |
+| 12 | `HelpActivity` | 孩子 | A1 帮助页 | help | —（菜单：测试通知 / About） |
+| 13 | `RoundReviewActivity` | 孩子 | A1 本轮回顾 | round_review | `sessionId` |
 
 额外：`ComponentGalleryActivity` 只放在 `src/debug/`，release 不打包。
 
-首次引导 = `HomeActivity` 的 `firstLaunch` 态；音频缺失 = Flashcard 对话框；REST / LIMIT = TimeUp 的 `kind`。都不新增 Activity。
+首次引导 = `HomeActivity` 的 `firstLaunch` 态；音频缺失 = Flashcard 对话框。都不新增 Activity。
 
 ### 5.2 导航图
 
 ```
-Home ──START──▶ Flashcard(SESSION) ──完成──▶ Quiz(SESSION) ──完成──▶ Reward ──完成──▶ Home
+Home ──START──▶ Flashcard(SESSION) ──完成──▶ Quiz(SESSION) ──完成──▶ Reward ──Review──▶ RoundReview
   │                                                            └─再来一次──▶ Flashcard(SESSION,新会话)
   ├──字模块──▶ Themes ──▶ WordList ──点字──▶ Flashcard(BROWSE)
-  │                          └──Quiz──▶ Quiz(THEME) ──▶ Reward(无星)
+  │                          └──Quiz──▶ Quiz(THEME) ──▶ Reward
   ├──文模块──▶ CultureCategories ──▶ CultureList ──▶ Player
-  │                 └──收藏──▶ Favourites ──▶ Player
   ├──LISTEN(文态)──▶ Player
-  └──家长入口──▶ ParentGate ──▶ Dashboard ──▶ Time / Plan / Records
-任意孩子页 ──(时长到)──▶ TimeUp
+  ├──?──▶ Help ──菜单──▶ Send test notification / About
+  └──家长入口──▶ ParentGate ──▶ Settings
 ```
 
 ### 5.3 返回栈规则
 
 - 会话链 `Flashcard → Quiz → Reward`：前进时 `finish()` 前一页，所以 Reward 按返回直接回 Home。会话中途按返回：**直接退出到 Home，不弹确认**；已标记学会的字保留，会话记为未完成。
 - Reward「完成」：`finish()`，回到栈里的 Home。
-- 家长区：Gate 通过后 `finish()` 自己再启动 Dashboard。从家长区返回到孩子区后，下次再进必须重新验证。家长区退到后台超过 60 秒，回来时跳回 Gate。
-- `TimeUpActivity(LIMIT)`：`FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK`；系统返回键等价于「好的」（`finishAffinity()`）。**不要拦截返回键把孩子困住。**
-- `TimeUpActivity(REST)`：普通启动，倒计时期间屏蔽返回（`OnBackPressedCallback`），结束后 `finish()` 回原页。
+- Reward「Review this round」：进入 `RoundReviewActivity`；返回回到 Reward。
+- 家长区：Gate 通过后 `finish()` 自己再启动 Settings。从家长区返回到孩子区后，下次再进必须重新验证。家长区退到后台超过 60 秒，回来时跳回 Gate。
+- `SettingsActivity` 的 Save / Cancel / 返回都回到 Home；目标与提醒只在 Save 时写入。
 
 ### 5.4 Activity 基类
 
@@ -401,10 +395,6 @@ public abstract class ChildActivity extends AppCompatActivity {
         super.onCreate(b);
         // 子类 setContentView 后调用 Insets.applySystemBarPadding(binding.getRoot())（见 §8.7）
     }
-    @Override protected void onResume()  { super.onResume(); container().screenTime.onChildResumed(this); }
-    @Override protected void onPause()   { container().screenTime.onChildPaused(); super.onPause(); }
-    /** 会话中（Flashcard / Quiz）返回 true：到时不打断，等奖励页结束再弹。 */
-    protected boolean deferTimeUp() { return false; }
     protected final AppContainer container() { return ((LittleStarApp) getApplication()).container(); }
 }
 
@@ -413,8 +403,6 @@ public abstract class ParentActivity extends AppCompatActivity {
     // onStop 记录时间戳，onStart 时若后台超过 60 秒则跳回 ParentGateActivity 并 finish()
 }
 ```
-
-`TimeUpActivity` 继承 `AppCompatActivity`，不计时。
 
 ---
 
@@ -1032,7 +1020,7 @@ public class BlockLayout extends FrameLayout {
 
 ### 8.7 Edge-to-edge 与安全区
 
-- `targetSdk 35` 会强制 edge-to-edge。每个 Activity `enableEdgeToEdge()`。
+- `targetSdk 35+` 会强制 edge-to-edge。每个 Activity `enableEdgeToEdge()`。
 - 根布局用 `ViewCompat.setOnApplyWindowInsetsListener` 把 `systemBars` 的 inset 加到 padding 上（`Insets.java` 提供 `View.applySystemBarPadding()`）。
 - 底部主按钮距离手势条至少 16dp。
 - 状态栏图标颜色：浅色主题深色图标，深色主题浅色图标（`WindowInsetsControllerCompat.isAppearanceLightStatusBars`）。

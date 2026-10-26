@@ -22,6 +22,9 @@ public final class Notifier {
 
     public static final int ID_REMINDER = 1001;
 
+    /** 帮助页「发送测试通知」专用；与每日提醒分开，避免覆盖。 */
+    public static final int ID_TEST = 1099;
+
     private final Context app;
     private final NotificationManager nm;
 
@@ -46,6 +49,13 @@ public final class Notifier {
     public void reminder(int remainingWords, @NonNull Intent tapIntent) {
         String text = app.getString(R.string.notif_reminder_text, remainingWords);
         notify(ID_REMINDER, CHANNEL_REMINDER, app.getString(R.string.notif_reminder_title), text, tapIntent);
+    }
+
+    /** 帮助页的测试通知：立即展示，用于确认通知权限和渠道正常。 */
+    public void test(@NonNull Intent tapIntent) {
+        notify(ID_TEST, CHANNEL_REMINDER,
+                app.getString(R.string.notif_test_title),
+                app.getString(R.string.notif_test_text), tapIntent);
     }
 
     private void notify(int id, @NonNull String channel, @NonNull String title, @NonNull String text,
