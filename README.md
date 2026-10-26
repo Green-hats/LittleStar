@@ -17,6 +17,8 @@
   <img alt="License" src="https://img.shields.io/badge/License-MIT-1F6FD0?style=flat-square" />
 </p>
 
+<hr />
+
 <a href="#架构"><img src="docs/screenshots/readme/hero.png?v=20261026" width="880" alt="首页 / 识字卡 / 完成" /></a>
 
 <sub>每天 3 个新字 + 2 个复习字：学 3 分钟，测 2 分钟，回顾本轮汉字，然后结束。</sub>
