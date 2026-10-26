@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner_dark.png">
-  <img src="docs/assets/banner.png" width="880" alt="LittleStar — 汉字积木，给海外华裔孩子的识字 App" />
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner_dark.png?v=20261026">
+  <img src="docs/assets/banner.png?v=20261026" width="880" alt="LittleStar — 汉字积木，给海外华裔孩子的识字 App" />
 </picture>
 
 <p>
@@ -13,7 +13,7 @@
   <img alt="License" src="https://img.shields.io/badge/License-MIT-1F6FD0?style=flat-square" />
 </p>
 
-<a href="#架构"><img src="docs/screenshots/readme/hero.png" width="880" alt="首页 / 识字卡 / 完成" /></a>
+<a href="#架构"><img src="docs/screenshots/readme/hero.png?v=20261026" width="880" alt="首页 / 识字卡 / 完成" /></a>
 
 <sub>每天 3 个新字 + 2 个复习字：学 3 分钟，测 2 分钟，回顾本轮汉字，然后结束。</sub>
 
@@ -29,9 +29,9 @@
 
 <table>
 <tr>
-<td align="center" width="50%"><img src="docs/screenshots/readme/feature_quiz.png" width="230" alt="测验：答错显示陶土色并直接给出答案" /><br/>
+<td align="center" width="50%"><img src="docs/screenshots/readme/feature_quiz.png?v=20261026" width="230" alt="测验：答错显示陶土色并直接给出答案" /><br/>
 <b>字</b><br/><sub>识字卡 → 四选一测验 → 学习完成。答错变陶土色，直接给答案。</sub></td>
-<td align="center" width="50%"><img src="docs/screenshots/readme/feature_player.png" width="230" alt="播放器：歌词逐句高亮" /><br/>
+<td align="center" width="50%"><img src="docs/screenshots/readme/feature_player.png?v=20261026" width="230" alt="播放器：歌词逐句高亮" /><br/>
 <b>文</b><br/><sub>儿歌、故事、古诗。锁屏能听，歌词逐句高亮，支持暂停、切歌和拖动进度。</sub></td>
 </tr>
 </table>
@@ -42,7 +42,7 @@
 
 ## 架构
 
-<p align="center"><img src="docs/screenshots/readme/architecture.png" width="880" alt="LittleStar 架构" /></p>
+<p align="center"><img src="docs/screenshots/readme/architecture.png?v=20261026" width="880" alt="LittleStar 架构" /></p>
 
 <p align="center">
   <sub><b>Java 17</b> · XML View + ViewBinding · MVVM + LiveData · Media3 ExoPlayer · Gson + AtomicFile<br/>
