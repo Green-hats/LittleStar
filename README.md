@@ -56,7 +56,7 @@
 </p>
 
 <details>
-<summary><sub><b>几个实现细节</b></sub></summary>
+<summary><b>🧩 几个实现细节</b> &nbsp;<sub>数据库 · 磁盘 · 硬影 · 字体</sub></summary>
 
 <br/>
 
