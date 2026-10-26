@@ -231,20 +231,6 @@ public final class ContentRepository {
         return id == null ? null : requireLoaded(itemIndex).get(id);
     }
 
-    /** 睡前条目（22:00–05:59 首页只推这些）。 */
-    @NonNull
-    public List<CultureItem> bedtimeItems() {
-        List<CultureItem> result = new ArrayList<>();
-        for (List<CultureItem> list : requireLoaded(itemsByCategory).values()) {
-            for (CultureItem it : list) {
-                if (it.bedtime) {
-                    result.add(it);
-                }
-            }
-        }
-        return Collections.unmodifiableList(result);
-    }
-
     /** 今天 featured 区间内的条目（节日置顶用）。 */
     @NonNull
     public List<CultureItem> featuredToday(@NonNull LocalDate today) {

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notif_channel_reminder">Daily learning reminder</string>
-    <string name="notif_channel_bedtime">Bedtime stories</string>
 
     <string name="notif_reminder_title">LittleStar</string>
     <string name="notif_reminder_text">Time for Chinese: %1$d characters left today</string>
     <string name="notif_test_title">Test reminder</string>
     <string name="notif_test_text">This is what a LittleStar learning reminder looks like.</string>
-    <string name="notif_bedtime_title">LittleStar</string>
-    <string name="notif_bedtime_text">The story is finished. Good night</string>
 </resources>

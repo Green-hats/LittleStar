@@ -28,7 +28,6 @@ public final class HomeViewModel extends ViewModel {
     public static final class UiState {
         public final boolean loading;
         public final HomeModeResolver.Mode mode;
-        public final boolean bedtimeOnly;
         public final int goal;                 // 每日目标 N
         public final int learnedToday;         // k
         @Nullable
@@ -38,13 +37,12 @@ public final class HomeViewModel extends ViewModel {
         public final boolean allDone;          // 全部学完
         public final boolean firstLaunch;      // 首次引导态
 
-        public UiState(boolean loading, HomeModeResolver.Mode mode, boolean bedtimeOnly,
+        public UiState(boolean loading, HomeModeResolver.Mode mode,
                        int goal, int learnedToday, @Nullable Word nextWord,
                        @Nullable CultureItem featured,
                        boolean allDone, boolean firstLaunch) {
             this.loading = loading;
             this.mode = mode;
-            this.bedtimeOnly = bedtimeOnly;
             this.goal = goal;
             this.learnedToday = learnedToday;
             this.nextWord = nextWord;
@@ -54,7 +52,7 @@ public final class HomeViewModel extends ViewModel {
         }
 
         UiState with(HomeModeResolver.Mode newMode, @Nullable CultureItem newFeatured) {
-            return new UiState(loading, newMode, bedtimeOnly, goal, learnedToday, nextWord,
+            return new UiState(loading, newMode, goal, learnedToday, nextWord,
                     newFeatured, allDone, firstLaunch);
         }
     }
@@ -80,7 +78,6 @@ public final class HomeViewModel extends ViewModel {
         this.content = container.content;
         this.progress = container.progress;
         state.setValue(new UiState(true, HomeModeResolver.resolve(clock.localTime()),
-                HomeModeResolver.bedtimeOnly(clock.localTime()),
                 settings.getDailyGoal(), 0, null, null, false, !settings.isOnboarded()));
         // 内容先在 diskIO 线程解析，回调到主线程后再计算（不在主线程做 IO）
         content.load(container.executors, () -> {
@@ -123,12 +120,10 @@ public final class HomeViewModel extends ViewModel {
         }
         boolean allDone = plan.newWordIds.isEmpty();
 
-        UiState cur = state.getValue();
         HomeModeResolver.Mode mode = manualMode != null ? manualMode
                 : HomeModeResolver.resolve(clock.localTime());
-        boolean bedtimeOnly = HomeModeResolver.bedtimeOnly(clock.localTime());
-        CultureItem featured = pickFeatured(bedtimeOnly);
-        state.setValue(new UiState(false, mode, bedtimeOnly, goal, k, next, featured,
+        CultureItem featured = pickFeatured();
+        state.setValue(new UiState(false, mode, goal, k, next, featured,
                 allDone, !settings.isOnboarded()));
     }
 
@@ -150,14 +145,10 @@ public final class HomeViewModel extends ViewModel {
     }
 
     @Nullable
-    private CultureItem pickFeatured(boolean bedtimeOnly) {
+    private CultureItem pickFeatured() {
         List<CultureItem> featured = content.featuredToday(clock.today());
         if (!featured.isEmpty()) {
             return featured.get(0);
-        }
-        if (bedtimeOnly) {
-            List<CultureItem> bedtime = content.bedtimeItems();
-            return bedtime.isEmpty() ? null : bedtime.get(0);
         }
         // 默认：儿歌类第一条
         List<CultureItem> songs = content.itemsOfCategory("songs");
@@ -169,7 +160,7 @@ public final class HomeViewModel extends ViewModel {
         manualMode = mode;
         UiState cur = state.getValue();
         if (cur != null && !cur.loading) {
-            state.setValue(cur.with(mode, pickFeatured(cur.bedtimeOnly)));
+            state.setValue(cur.with(mode, pickFeatured()));
         }
     }
 
@@ -188,7 +179,7 @@ public final class HomeViewModel extends ViewModel {
         settings.setOnboarded(true);
         UiState cur = state.getValue();
         if (cur != null) {
-            state.setValue(new UiState(cur.loading, cur.mode, cur.bedtimeOnly, goal,
+            state.setValue(new UiState(cur.loading, cur.mode, goal,
                     cur.learnedToday, cur.nextWord, cur.featured, cur.allDone, false));
         }
     }

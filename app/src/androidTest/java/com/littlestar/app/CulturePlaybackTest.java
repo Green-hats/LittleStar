@@ -6,12 +6,8 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +22,6 @@ import androidx.media3.session.SessionToken;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.littlestar.app.feature.culture.CultureCategoriesActivity;
-import com.littlestar.app.notify.Notifier;
 import com.littlestar.app.playback.PlaybackService;
 
 import org.junit.Test;
@@ -92,18 +87,6 @@ public final class CulturePlaybackTest {
             }
             context.stopService(new Intent(context, PlaybackService.class));
         }
-    }
-
-    @Test
-    public void oldBedtimeChannelRemoved_learningReminderChannelPreserved() {
-        LittleStarApp app = ApplicationProvider.getApplicationContext();
-        NotificationManager manager = app.getSystemService(NotificationManager.class);
-        manager.createNotificationChannel(new NotificationChannel(
-                "bedtime", "Legacy bedtime", NotificationManager.IMPORTANCE_LOW));
-        assertNotNull(manager.getNotificationChannel("bedtime"));
-        app.container().notifier.ensureChannels();
-        assertNull(manager.getNotificationChannel("bedtime"));
-        assertNotNull(manager.getNotificationChannel(Notifier.CHANNEL_REMINDER));
     }
 
     private static void onMain(Runnable action) {

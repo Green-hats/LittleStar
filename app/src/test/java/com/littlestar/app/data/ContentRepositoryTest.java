@@ -40,7 +40,6 @@ public final class ContentRepositoryTest {
                 + repo.itemsOfCategory("stories").size()
                 + repo.itemsOfCategory("poems").size());
         assertNotNull(repo.itemById("xiaoxingxing"));
-        assertTrue(repo.bedtimeItems().stream().anyMatch(i -> i.id.equals("xiaoxingxing")));
     }
 
     @Test

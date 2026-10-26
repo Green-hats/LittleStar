@@ -60,7 +60,7 @@
 | 字 | 5 个主题 × 6 个字 = 30 字（动物 / 水果 / 颜色 / 数字 / 家人）；Nature 自然作为第 6 个主题，**时间允许就做**（首页示例「月」来自 Nature；如果不做，首页示例换成已有主题的字） |
 | 文 | 3 类：儿歌 / 故事 / 古诗，每类 3–4 条 |
 | 家长 | 验证、概览、时长、计划、记录 |
-| 系统 | 每日时长限制、休息页、每日提醒通知、睡前定时、深色模式、1.3 倍字体 |
+| 系统 | 每日提醒通知、深色模式、1.3 倍字体 |
 
 ### 1.2 增强项（MVP 之后）
 
@@ -87,7 +87,7 @@
 | 设置 | **SharedPreferences**，封装在 `SettingsStore` | DataStore 在 Java 里要配 RxJava，不划算；设置项少，SharedPreferences 足够 |
 | 内容 | `assets/content/*.json` + **Gson** | 内容和代码分离，便于加字；POJO 映射简单 |
 | 空安全 | `androidx.annotation.@NonNull / @Nullable` 标注所有公开方法的参数和返回值 | 弥补 Java 没有空安全；开启 Lint nullability 检查 |
-| 长音频 | **Media3 ExoPlayer + MediaSessionService** | 后台播放、通知控制、睡前定时 |
+| 长音频 | **Media3 ExoPlayer + MediaSessionService** | 后台播放、通知控制 |
 | 短音效 | `SoundPool` | 「嗒」「叮」等 < 1s 音效，低延迟 |
 | 字音 | 预录 `.ogg`，用一个单独的 ExoPlayer 实例播放 | 离线、发音标准；TTS 只做开发期兜底 |
 | 时间 | `java.time` + 可注入的 `Clock` | minSdk 30 原生可用；方便测试 |
@@ -476,7 +476,6 @@ public abstract class ParentActivity extends AppCompatActivity {
       "glyph": "星",
       "audio": "audio/culture/xiaoxingxing.ogg",
       "durationSec": 150,
-      "bedtime": true,
       "featured": [],
       "lyrics": [
         { "startMs": 0,    "hanzi": "一闪一闪亮晶晶", "pinyin": "yì shǎn yì shǎn liàng jīng jīng", "english": "Twinkle, twinkle, little star" },
@@ -675,8 +674,6 @@ public final class ProgressStore {
 | `daily_goal` | Int | 3 | 1–10 |
 | `reminder_time` | String | "19:30" | HH:mm |
 | `reminder_days` | String | "1,2,3,4,5" | ISO 星期 |
-| `sleep_default_min` | Int | 20 | |
-| `sleep_finish_track` | Bool | true | 播完当前这首再停 |
 | `onboarded` | Bool | false | |
 | `notif_rationale_shown` | Bool | false | |
 
@@ -694,7 +691,7 @@ public final class ProgressStore {
 
 ```
 06:00–16:59 → WORDS
-17:00–05:59 → CULTURE（22:00 后主角卡只推 bedtime=true 的条目）
+17:00–05:59 → CULTURE
 ```
 
 手动切换：点「字」或「文」模块后，模式存在 `HomeViewModel` 内存里（**不写 SharedPreferences**）。下次冷启动按时间规则重新算。进程被杀也算冷启动。
@@ -1300,7 +1297,7 @@ public final class ScreenTimeTracker {
 
 | 类 | 关键用例 |
 |---|---|
-| `HomeModeResolver` | 05:59 → CULTURE；06:00 → WORDS；16:59 → WORDS；17:00 → CULTURE；22:30 → CULTURE 且 bedtimeOnly |
+| `HomeModeResolver` | 05:59 → CULTURE；06:00 → WORDS；16:59 → WORDS；17:00 → CULTURE；22:30 → CULTURE |
 | `ReviewScheduler` | 首学 box1 / due+1；答对升盒，box5 封顶；答错回 box1，learnedAt 不变；pickReviews 排序稳定、遵守 limit 和 exclude |
 | `SessionBuilder` | N=3,k=0 → 3 新 + 2 复习；N=5,k=3 → 2 新 + 3 复习；k=N → REVIEW；全部学完 → 新字为空；daily_plan 当天不变；改 N 当天不生效 |
 | `QuizGenerator` | 干扰项不含答案、不重复；同主题不够时跨主题补；正确位置分布均匀 |

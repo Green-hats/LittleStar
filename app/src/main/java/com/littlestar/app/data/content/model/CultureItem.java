@@ -13,7 +13,6 @@ public final class CultureItem {
     public String glyph;
     public String audio;
     public int durationSec;
-    public boolean bedtime;
     public List<DateRange> featured = new ArrayList<>();
     public List<LyricLine> lyrics = new ArrayList<>();
 

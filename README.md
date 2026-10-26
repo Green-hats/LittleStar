@@ -52,7 +52,7 @@
 
 <p align="center">
   <sub><b>Java 17</b> · XML View + ViewBinding · MVVM + LiveData · Media3 ExoPlayer · Gson + AtomicFile<br/>
-  零 Kotlin · 无数据库 · 37 个 JVM 单测 + 12 个设备用例</sub>
+  零 Kotlin · 无数据库 · 36 个 JVM 单测 + 11 个设备用例</sub>
 </p>
 
 <details>

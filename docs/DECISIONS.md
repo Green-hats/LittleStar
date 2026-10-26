@@ -212,7 +212,8 @@
 - 收藏：移除分类收藏入口、列表与播放器红心、收藏列表及排序、FavouriteRepository 和相关资源。存档 v2 → v3 删除根级 favourites；v1 可逐级升级到 v3，识字进度、每日计划与作答记录继续保留。
 - 定时：移除列表和播放器中的定时入口、SleepTimerSheet、SleepTimerController、倒计时观察、播完再停和淡出停止逻辑。PlaybackService 仅负责媒体播放与会话。
 - 通知：启动时清理旧 bedtime 渠道及晚安通知，保留 reminder 渠道和 Media3 媒体通知。
-- 边界：首页按时间切换字/文与睡前内容推荐属于独立功能，本次保留。
+- 边界：首页按时间切换字/文与睡前内容推荐属于独立功能，本次保留。2026-10-26 更新：睡前内容推荐已由 D39 删除。
+- 2026-10-26 更新：bedtime 渠道清理、sleep 配置、bedtime 字段与睡前推荐均已由 D39 删除。
 
 ## D37 · 2026-10-26 · 对齐 A1：minSdk 30 / compileSdk 37 / targetSdk 37
 - 问题：A1 明确要求 Minimum SDK API 30、Target / Compilation SDK 最新；此前为 minSdk 26、targetSdk 35、compileSdk 36。
@@ -226,3 +227,9 @@
 - 做法：新增 `HelpActivity`（Toolbar options menu、测试通知、About 对话框）和 `RoundReviewActivity`（Reward → 本轮逐题回顾，只读 `Session.answers`）。Home 顶栏加 `?` 入口；Reward 加 “Review this round” 入口。
 - 理由：两页都有真实入口和数据，不用空壳凑数；Help 一页同时补齐菜单与通知演示，Review 强化页面传值和复习闭环。
 - 验证：manifest 13 个正式 Activity；模拟器 Android 17 / API 37.2 实测 Help 菜单、测试通知、About、Reward → Review；`:app:assembleDebug`、`:app:assembleRelease`、`:app:testDebugUnitTest` 通过。
+
+## D39 · 2026-10-26 · 删除 Bedtime 残留
+- 背景：D36 删除睡前定时后，首页仍在 22:00–05:59 过滤 bedtime 推荐；SettingsStore 还保留 sleep 配置，Notifier 还清理旧 bedtime 渠道，测试也覆盖这些分支。
+- 做法：删除 `HomeModeResolver.bedtimeOnly`、`HomeViewModel.UiState.bedtimeOnly`、`ContentRepository.bedtimeItems`、`CultureItem.bedtime`、`culture.json` 的 `bedtime` 字段、`SLEEP_*` 配置、`notif_bedtime` 文案、旧渠道清理及对应测试；首页只保留按时间切字/文。
+- 理由：A1 收口，去掉已删功能的残留分支和数据字段。
+- 验证：`:app:assembleDebug`、`:app:assembleDebugAndroidTest`、`:app:testDebugUnitTest` 通过；内容 JSON 校验通过。

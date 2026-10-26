@@ -1,8 +1,6 @@
 package com.littlestar.app.domain;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -31,20 +29,12 @@ public final class HomeModeResolverTest {
     }
 
     @Test
-    public void at2230_cultureAndBedtimeOnly() {
-        LocalTime t = LocalTime.of(22, 30);
-        assertEquals(HomeModeResolver.Mode.CULTURE, HomeModeResolver.resolve(t));
-        assertTrue(HomeModeResolver.bedtimeOnly(t));
+    public void at2230_isCulture() {
+        assertEquals(HomeModeResolver.Mode.CULTURE, HomeModeResolver.resolve(LocalTime.of(22, 30)));
     }
 
     @Test
-    public void at2159_notBedtimeOnly() {
-        assertFalse(HomeModeResolver.bedtimeOnly(LocalTime.of(21, 59)));
-    }
-
-    @Test
-    public void at0800_wordsNotBedtime() {
-        LocalTime t = LocalTime.of(8, 0);
-        assertEquals(HomeModeResolver.Mode.WORDS, HomeModeResolver.resolve(t));
+    public void at0800_isWords() {
+        assertEquals(HomeModeResolver.Mode.WORDS, HomeModeResolver.resolve(LocalTime.of(8, 0)));
     }
 }

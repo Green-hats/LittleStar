@@ -20,8 +20,6 @@ public final class SettingsStore {
         public static final String DAILY_GOAL = "daily_goal";
         public static final String REMINDER_TIME = "reminder_time";     // HH:mm
         public static final String REMINDER_DAYS = "reminder_days";     // ISO 星期，逗号分隔
-        public static final String SLEEP_DEFAULT_MIN = "sleep_default_min";
-        public static final String SLEEP_FINISH_TRACK = "sleep_finish_track";
         public static final String ONBOARDED = "onboarded";
         public static final String NOTIF_RATIONALE_SHOWN = "notif_rationale_shown";
         public static final String SOUND_ENABLED = "sound_enabled";
@@ -84,22 +82,6 @@ public final class SettingsStore {
             }
         }
         prefs.edit().putString(Keys.REMINDER_DAYS, sb.toString()).apply();
-    }
-
-    public int getSleepDefaultMin() {
-        return prefs.getInt(Keys.SLEEP_DEFAULT_MIN, 20);
-    }
-
-    public void setSleepDefaultMin(int minutes) {
-        prefs.edit().putInt(Keys.SLEEP_DEFAULT_MIN, minutes).apply();
-    }
-
-    public boolean isSleepFinishTrack() {
-        return prefs.getBoolean(Keys.SLEEP_FINISH_TRACK, true);
-    }
-
-    public void setSleepFinishTrack(boolean finishTrack) {
-        prefs.edit().putBoolean(Keys.SLEEP_FINISH_TRACK, finishTrack).apply();
     }
 
     public boolean isOnboarded() {

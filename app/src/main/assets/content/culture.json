@@ -52,7 +52,6 @@
       "glyph": "星",
       "audio": "audio/culture/xiaoxingxing.ogg",
       "durationSec": 13,
-      "bedtime": true,
       "featured": [],
       "lyrics": [
         {
@@ -102,7 +101,6 @@
       "glyph": "虎",
       "audio": "audio/culture/liangzhilaohu.ogg",
       "durationSec": 13,
-      "bedtime": false,
       "featured": [],
       "lyrics": [
         {
@@ -164,7 +162,6 @@
       "glyph": "卜",
       "audio": "audio/culture/baluobo.ogg",
       "durationSec": 13,
-      "bedtime": false,
       "featured": [],
       "lyrics": [
         {
@@ -214,7 +211,6 @@
       "glyph": "友",
       "audio": "audio/culture/zhaopengyou.ogg",
       "durationSec": 8,
-      "bedtime": false,
       "featured": [],
       "lyrics": [
         {
@@ -252,7 +248,6 @@
       "glyph": "月",
       "audio": "audio/culture/changebenyue.ogg",
       "durationSec": 47,
-      "bedtime": true,
       "featured": [],
       "lyrics": []
     },
@@ -265,7 +260,6 @@
       "glyph": "兔",
       "audio": "audio/culture/shouzhudaitu.ogg",
       "durationSec": 47,
-      "bedtime": false,
       "featured": [],
       "lyrics": []
     },
@@ -278,7 +272,6 @@
       "glyph": "龟",
       "audio": "audio/culture/guitusaipao.ogg",
       "durationSec": 34,
-      "bedtime": false,
       "featured": [],
       "lyrics": []
     },
@@ -291,7 +284,6 @@
       "glyph": "蛇",
       "audio": "audio/culture/huashetianzu.ogg",
       "durationSec": 39,
-      "bedtime": false,
       "featured": [],
       "lyrics": []
     },
@@ -304,7 +296,6 @@
       "glyph": "思",
       "audio": "audio/culture/jingyesi.ogg",
       "durationSec": 9,
-      "bedtime": true,
       "featured": [],
       "lyrics": [
         {
@@ -342,7 +333,6 @@
       "glyph": "鹅",
       "audio": "audio/culture/yonge.ogg",
       "durationSec": 9,
-      "bedtime": false,
       "featured": [],
       "lyrics": [
         {
@@ -380,7 +370,6 @@
       "glyph": "春",
       "audio": "audio/culture/chunxiao.ogg",
       "durationSec": 9,
-      "bedtime": false,
       "featured": [],
       "lyrics": [
         {

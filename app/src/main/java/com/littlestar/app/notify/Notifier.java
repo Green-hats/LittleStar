@@ -40,9 +40,6 @@ public final class Notifier {
         // 升级时清理已删除的休息提醒渠道及遗留通知。
         nm.cancel(1002);
         nm.deleteNotificationChannel("rest");
-        // 升级时清理已删除的睡前定时晚安通知和渠道。
-        nm.cancel(1003);
-        nm.deleteNotificationChannel("bedtime");
     }
 
     /** 每日学习提醒：「该学汉字啦：今天还有 N 个字」。 */
