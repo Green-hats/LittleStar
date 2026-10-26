@@ -35,7 +35,7 @@
 <td align="center" width="50%"><img src="docs/screenshots/readme/feature_quiz.png" width="230" /><br/>
 <b>字</b><br/><sub>识字卡 → 四选一测验 → 学习完成。答错变陶土色，直接给答案。</sub></td>
 <td align="center" width="50%"><img src="docs/screenshots/readme/feature_player.png" width="230" /><br/>
-<b>文</b><br/><sub>儿歌、故事、古诗。锁屏能听，歌词逐句高亮，睡前自动停。</sub></td>
+<b>文</b><br/><sub>儿歌、故事、古诗。锁屏能听，歌词逐句高亮，支持暂停、切歌和拖动进度。</sub></td>
 </tr>
 </table>
 
@@ -44,6 +44,8 @@
 任务页预览：[浅色](docs/screenshots/learning-plan/learning_plan_light.png) · [深色](docs/screenshots/learning-plan/learning_plan_dark.png)。
 
 完成页预览：[浅色](docs/screenshots/no-stars/completion_light.png) · [深色](docs/screenshots/no-stars/completion_dark.png)。星星展示、累计及音效已移除；已有识字进度和学习记录保留。
+
+文化播放已精简：删除收藏和睡前定时，保留分类浏览、歌词及后台播放（[查看新版播放器](docs/screenshots/simple-playback/player_light.png) · [D36](docs/DECISIONS.md#d36--2026-10-24--删除收藏与睡前定时)）。
 
 ## 设计上的五个选择
 
@@ -59,7 +61,7 @@
 
 <p align="center">
   <sub><b>Java 17</b> · XML View + ViewBinding · MVVM + LiveData · Media3 ExoPlayer · Gson + AtomicFile<br/>
-  零 Kotlin · 无数据库 · 35 个 JVM 单测 + 10 个设备用例</sub>
+  零 Kotlin · 无数据库 · 37 个 JVM 单测 + 12 个设备用例</sub>
 </p>
 
 <details>
@@ -98,7 +100,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 | [**设计书**](docs/DESIGN.md) | 每屏的目的 / 结构 / 交互 / 状态 / 不要，31 张整屏设计图 |
 | [**工程技术文档**](docs/ENGINEERING.md) | 数据模型、业务逻辑、组件规格、逐屏实现要点 |
 | [**验收清单**](docs/ACCEPTANCE.md) | 20 项结果与证据：对比度、权限、进程恢复、APK 体积 |
-| [**决策记录**](docs/DECISIONS.md) | 34 条「为什么不那样做」 |
+| [**决策记录**](docs/DECISIONS.md) | 36 条「为什么不那样做」 |
 | [**协作指南**](CONTRIBUTING.md) | 环境、提交前自检、代码约定 |
 | [**截图归档**](docs/screenshots) | M1 → M8 每屏的浅色 / 深色真机截图 |
 

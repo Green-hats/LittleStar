@@ -18,8 +18,8 @@ OUT = ROOT / "docs/screenshots/readme"
 SRC = OUT / "src"
 
 # ---- palette（与 App 的 colors.xml 同源）----
-PAPER = (248, 239, 221)
-BG = (255, 250, 240)
+PAPER = (250, 249, 246)
+BG = (250, 249, 246)
 INK = (33, 29, 24)
 MUTED = (122, 110, 94)
 HAIR = (226, 214, 192)
@@ -165,7 +165,7 @@ def architecture():
 
     # ---- 01 界面 ----
     y, h = 160, 172
-    panel(X0, y, LW, h, "01", "界面", "12 Activity · ViewBinding", RED)
+    panel(X0, y, LW, h, "01", "界面", "11 Activity · ViewBinding", RED)
     cw = (IW - 3 * 16) // 4
     for i, (t, s) in enumerate([("孩子区", "首页 · 识字卡 · 测验 · 完成"),
                                 ("学习任务", "PIN · 每日字数 · 学习提醒"),
@@ -190,8 +190,8 @@ def architecture():
     repo_w = 560
     dw_all = IW - repo_w - 24
     txt(INNER, y + 56, "Repository", nb(16), MUTED)
-    rw = (repo_w - 2 * 14) // 3
-    for i, t in enumerate(["Progress", "Content", "Favourite"]):
+    rw = (repo_w - 14) // 2
+    for i, t in enumerate(["Progress", "Content"]):
         card(INNER + i * (rw + 14), y + 86, rw, 68, t + "Repository", "LiveData 派生数据",
              ts=16, ss=13)
 
@@ -222,9 +222,8 @@ def architecture():
     yy = y + 58
     iw = RW - 48
     for t, s in [("锁屏播放", "Media3 ExoPlayer + MediaSessionService"),
-                 ("睡前定时", "播完当前音轨 → 晚安通知"),
                  ("每日提醒", "AlarmManager · 19:30 · 可设星期"),
-                 ("通知渠道", "reminder / bedtime")]:
+                 ("通知渠道", "reminder + 系统媒体通知")]:
         d.rounded_rectangle([RX + 24, yy, RX + 24 + iw, yy + 76], radius=12,
                             fill=CARD, outline=CARD_LINE, width=2)
         txt(RX + 40, yy + 12, t, nb(17), INK)

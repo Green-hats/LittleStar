@@ -13,16 +13,14 @@ import androidx.core.app.NotificationCompat;
 import com.littlestar.app.R;
 
 /**
- * 通知出口（§10.3）。学习提醒与晚安通知 + Media3 自己的媒体通知。
+ * 通知出口（§10.3）。每日学习提醒；媒体通知由 Media3 管理。
  * 文案进 strings.xml；小图标 ic_stat_panda。
  */
 public final class Notifier {
 
     public static final String CHANNEL_REMINDER = "reminder";
-    public static final String CHANNEL_BEDTIME = "bedtime";
 
     public static final int ID_REMINDER = 1001;
-    public static final int ID_BEDTIME = 1003;
 
     private final Context app;
     private final NotificationManager nm;
@@ -39,22 +37,15 @@ public final class Notifier {
         // 升级时清理已删除的休息提醒渠道及遗留通知。
         nm.cancel(1002);
         nm.deleteNotificationChannel("rest");
-        NotificationChannel bedtime = new NotificationChannel(CHANNEL_BEDTIME,
-                app.getString(R.string.notif_channel_bedtime), NotificationManager.IMPORTANCE_LOW);
-        bedtime.setSound(null, null);
-        nm.createNotificationChannel(bedtime);
+        // 升级时清理已删除的睡前定时晚安通知和渠道。
+        nm.cancel(1003);
+        nm.deleteNotificationChannel("bedtime");
     }
 
     /** 每日学习提醒：「该学汉字啦：今天还有 N 个字」。 */
     public void reminder(int remainingWords, @NonNull Intent tapIntent) {
         String text = app.getString(R.string.notif_reminder_text, remainingWords);
         notify(ID_REMINDER, CHANNEL_REMINDER, app.getString(R.string.notif_reminder_title), text, tapIntent);
-    }
-
-    /** 睡前故事结束：「故事讲完啦，晚安」。 */
-    public void bedtime(@NonNull Intent tapIntent) {
-        notify(ID_BEDTIME, CHANNEL_BEDTIME, app.getString(R.string.notif_bedtime_title),
-                app.getString(R.string.notif_bedtime_text), tapIntent);
     }
 
     private void notify(int id, @NonNull String channel, @NonNull String title, @NonNull String text,

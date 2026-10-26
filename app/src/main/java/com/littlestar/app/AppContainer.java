@@ -11,7 +11,6 @@ import com.littlestar.app.core.time.AppClock;
 import com.littlestar.app.core.time.SystemAppClock;
 import com.littlestar.app.data.content.ContentRepository;
 import com.littlestar.app.data.prefs.SettingsStore;
-import com.littlestar.app.data.repo.FavouriteRepository;
 import com.littlestar.app.data.repo.ProgressRepository;
 import com.littlestar.app.data.store.AtomicStateFile;
 import com.littlestar.app.data.store.ProgressStore;
@@ -20,7 +19,6 @@ import com.littlestar.app.domain.ReviewScheduler;
 import com.littlestar.app.domain.SessionBuilder;
 import com.littlestar.app.notify.Notifier;
 import com.littlestar.app.notify.ReminderScheduler;
-import com.littlestar.app.playback.SleepTimerController;
 
 import java.io.File;
 import java.util.Random;
@@ -37,12 +35,10 @@ public final class AppContainer {
     public final SettingsStore settings;
     public final ContentRepository content;
     public final ProgressRepository progress;
-    public final FavouriteRepository favourites;
     public final ReviewScheduler scheduler;
     public final SessionBuilder sessionBuilder;
     public final SfxPlayer sfx;
     public final SpeechPlayer speech;
-    public final SleepTimerController sleepTimer;
     public final Notifier notifier;
     public final ReminderScheduler reminders;
 
@@ -53,12 +49,10 @@ public final class AppContainer {
         settings = new SettingsStore(app.getSharedPreferences("settings", Context.MODE_PRIVATE));
         content = new ContentRepository(app.getAssets(), gson);
         progress = new ProgressRepository(store, content, clock);
-        favourites = new FavouriteRepository(store, clock);
         scheduler = new ReviewScheduler();
         sessionBuilder = new SessionBuilder(content, scheduler, clock, new Random());
         sfx = new SfxPlayer(app, settings::isSoundEnabled);
         speech = new SpeechPlayer(app);
-        sleepTimer = new SleepTimerController(clock);
         notifier = new Notifier(app);
         reminders = new ReminderScheduler(app, settings, clock);
         store.loadAsync();   // 后台线程读入 progress.json

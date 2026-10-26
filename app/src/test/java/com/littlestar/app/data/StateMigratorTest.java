@@ -9,7 +9,7 @@ import com.littlestar.app.data.store.StateMigrator;
 
 import org.junit.Test;
 
-/** v1 → v2 只去掉奖励字段，保留学习记录。 */
+/** 旧版存档逐级移除奖励与收藏字段，保留学习记录。 */
 public final class StateMigratorTest {
 
     @Test
@@ -17,11 +17,13 @@ public final class StateMigratorTest {
         JsonObject original = JsonParser.parseString("""
                 {"schemaVersion":1,"words":{"mao":{"learnedAt":123,"box":2}},
                  "dailyPlans":{"2026-10-24":{"goal":3,"newWordIds":["mao"]}},
+                 "favourites":{"song":123},
                  "sessions":[{"id":1,"stars":3,"correct":2,"completedAt":456,
                    "answers":[{"wordId":"mao","correct":true,"firstTry":true}]}]}
                 """).getAsJsonObject();
         JsonObject expected = original.deepCopy();
-        expected.addProperty("schemaVersion", 2);
+        expected.addProperty("schemaVersion", 3);
+        expected.remove("favourites");
         expected.getAsJsonArray("sessions").get(0).getAsJsonObject().remove("stars");
 
         JsonObject migrated = StateMigrator.migrate(original, 1);
@@ -32,15 +34,31 @@ public final class StateMigratorTest {
     @Test
     public void version1_withoutSessions_upgradesSafely() {
         JsonObject migrated = StateMigrator.migrate(new JsonObject(), 1);
-        assertEquals(2, migrated.get("schemaVersion").getAsInt());
+        assertEquals(3, migrated.get("schemaVersion").getAsInt());
         assertFalse(migrated.has("sessions"));
     }
 
     @Test
-    public void version2_preservesExistingData() {
+    public void version2_removesFavourites_preservesLearningHistory() {
+        JsonObject original = JsonParser.parseString("""
+                {"schemaVersion":2,"nextSessionId":5,"favourites":{"song":123},
+                 "words":{"mao":{"learnedAt":123,"box":2}},
+                 "dailyPlans":{"2026-10-24":{"goal":3,"newWordIds":["mao"]}},
+                 "sessions":[{"id":4,"correct":2,"completedAt":456}]}
+                """).getAsJsonObject();
+        JsonObject expected = original.deepCopy();
+        expected.remove("favourites");
+        expected.addProperty("schemaVersion", 3);
+        assertEquals(expected, StateMigrator.migrate(original, 2));
+        assertFalse(original.has("favourites"));
+        assertEquals(expected, StateMigrator.migrate(original, 3));
+    }
+
+    @Test
+    public void version3_preservesExistingData() {
         JsonObject original = JsonParser.parseString(
-                "{\"schemaVersion\":2,\"nextSessionId\":5,\"favourites\":{\"song\":123}}")
+                "{\"schemaVersion\":3,\"nextSessionId\":5,\"words\":{}}")
                 .getAsJsonObject();
-        assertEquals(original.deepCopy(), StateMigrator.migrate(original, 2));
+        assertEquals(original.deepCopy(), StateMigrator.migrate(original, 3));
     }
 }

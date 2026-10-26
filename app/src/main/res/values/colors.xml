@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 中性 -->
-    <color name="ls_paper">#F8EFDD</color>
-    <color name="ls_card">#FFFDF6</color>
+    <color name="ls_paper">#FAF9F6</color>
+    <color name="ls_card">#FFFFFF</color>
     <color name="ls_ink">#211D18</color>
     <color name="ls_muted">#6E6252</color>
     <color name="ls_stroke">#211D18</color>

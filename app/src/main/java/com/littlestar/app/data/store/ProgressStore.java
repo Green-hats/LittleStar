@@ -28,7 +28,7 @@ import java.util.function.Function;
  */
 public final class ProgressStore {
 
-    public static final int CURRENT_VERSION = 2;
+    public static final int CURRENT_VERSION = 3;
     private static final String TAG = "ProgressStore";
     private static final long SAVE_DEBOUNCE_MS = 2_000;
     /** sessions 只保留最近 180 天；dailyPlans 只保留最近 30 天 */

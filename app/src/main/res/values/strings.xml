@@ -110,39 +110,15 @@
     <string name="cul_unit_ge">stories</string>
     <string name="cul_unit_poems">poems</string>
     <string name="cul_count_fmt">%1$d %2$s</string>
-    <string name="cul_fav_row">Favourites</string>
     <string name="cul_slogan">A little listening, every day.</string>
     <string name="cul_list_header_fmt">%1$s · %2$d</string>
-    <string name="sleep_timer">Sleep timer</string>
-    <string name="sleep_timer_off">Off</string>
-    <string name="sleep_timer_remaining">%1$d:%2$02d</string>
 
     <string name="player_desc_play">Play</string>
     <string name="player_desc_pause">Pause</string>
     <string name="player_desc_prev">Previous</string>
     <string name="player_desc_next">Next</string>
-    <string name="player_desc_fav">Favourite</string>
     <string name="player_time_fmt">%1$d:%2$02d</string>
     <string name="player_subtitle_fmt">%1$s · %2$s</string>
-
-    <string name="st_headline">Sleep when this one ends</string>
-    <string name="st_sub">It stops gently — never wakes your child.</string>
-    <string name="st_minutes">%1$d min</string>
-    <string name="st_minute_debug">1 min</string>
-    <string name="st_finish">Finish the current track first</string>
-    <string name="st_finish_sub">Never cuts a story short</string>
-    <string name="st_start">Start timer</string>
-    <string name="st_cancel">Cancel</string>
-    <string name="st_running">%1$d:%2$02d left</string>
-    <string name="st_cancel_timer">Cancel timer</string>
-
-    <string name="fav_top">Favourites</string>
-    <string name="fav_count">%1$d favourites</string>
-    <string name="fav_sort_new">Newest</string>
-    <string name="fav_sort_old">Oldest</string>
-    <string name="fav_empty_title">No favourites yet</string>
-    <string name="fav_empty_sub">Tap the heart when you love one.</string>
-    <string name="fav_empty_cta">Listen to one</string>
 
     <!-- ===== 设置验证（全英文） ===== -->
     <string name="pg_top">Learning plan</string>

@@ -2,7 +2,7 @@ package com.littlestar.app.feature.culture;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.littlestar.app.AppContainer;
@@ -26,7 +26,7 @@ public final class CultureCategoriesViewModel extends ViewModel {
     }
 
     private final AppContainer container;
-    private final MediatorLiveData<List<CategoryItem>> categories = new MediatorLiveData<>();
+    private final MutableLiveData<List<CategoryItem>> categories = new MutableLiveData<>();
     private boolean attached;
 
     public CultureCategoriesViewModel(@NonNull AppContainer container) {
@@ -51,10 +51,4 @@ public final class CultureCategoriesViewModel extends ViewModel {
         return categories;
     }
 
-    /** 收藏数，用于收藏行角标。 */
-    @NonNull
-    public LiveData<Integer> favouriteCount() {
-        return androidx.lifecycle.Transformations.map(container.store.observe(),
-                ps -> ps == null ? 0 : ps.favourites.size());
-    }
 }

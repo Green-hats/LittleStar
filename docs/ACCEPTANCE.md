@@ -1,5 +1,20 @@
 # LittleStar 验收清单（§15）
 
+## 2026-10-24 · 删除收藏与睡前定时（D36）
+
+- `:app:testDebugUnitTest`：37/37 通过；覆盖 v1/v2 升级到 v3、收藏字段移除及学习记录保留。
+- `assembleDebug`：通过。
+- `:app:connectedDebugAndroidTest`：12/12 通过。新增分类 → 列表 → 播放器、暂停/恢复、上一首/下一首、退到后台继续播放，以及旧晚安渠道清理和学习提醒渠道保留测试。
+- 内容校验、浅深色对比度检查及 XML 解析通过。
+- 主程序 Java 文件由 68 个减少为 63 个；移除收藏页、收藏状态、睡前定时面板及控制器。
+- 页面截图：[分类浅色](screenshots/simple-playback/categories_light.png)、[分类深色](screenshots/simple-playback/categories_dark.png)、[内容列表](screenshots/simple-playback/list_light.png)、[播放器浅色](screenshots/simple-playback/player_light.png)、[深色](screenshots/simple-playback/player_dark.png)、[360×640 / 1.3 倍字体](screenshots/simple-playback/player_small_font13.png)、[小屏底部](screenshots/simple-playback/player_small_font13_bottom.png)。
+
+## 2026-10-24 · 暖白背景（D35）
+
+- 浅色背景 `#FAF9F6`、卡片 `#FFFFFF`；通过统一颜色资源应用到全局页面与启动背景。
+- `:app:testDebugUnitTest`、`assembleDebug`、内容校验、对比度检查均通过。
+- 实际页面：[首页](screenshots/warm-white/home_light.png)、[文化分类](screenshots/warm-white/culture_light.png)、[文化分类深色](screenshots/warm-white/culture_dark.png)。
+
 ## 2026-10-24 · 文化分类页提示行调整
 
 - 将贴底的大标题、时长副标题和黄色熊猫圆章，改为收藏入口下方的小熊猫与单行提示。

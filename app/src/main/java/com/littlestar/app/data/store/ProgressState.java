@@ -24,8 +24,6 @@ public final class ProgressState {
     public long nextSessionId = 1;
     /** key = ISO 日期 */
     public Map<String, DailyUsage> usage = new HashMap<>();
-    /** itemId → 收藏时间 epoch ms */
-    public Map<String, Long> favourites = new HashMap<>();
 
     public static final class WordProgress {
         @Nullable
