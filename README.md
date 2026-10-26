@@ -29,28 +29,16 @@
 
 <table>
 <tr>
-<td align="center" width="50%"><img src="docs/screenshots/readme/feature_quiz.png" width="230" /><br/>
+<td align="center" width="50%"><img src="docs/screenshots/readme/feature_quiz.png" width="230" alt="测验：答错显示陶土色并直接给出答案" /><br/>
 <b>字</b><br/><sub>识字卡 → 四选一测验 → 学习完成。答错变陶土色，直接给答案。</sub></td>
-<td align="center" width="50%"><img src="docs/screenshots/readme/feature_player.png" width="230" /><br/>
+<td align="center" width="50%"><img src="docs/screenshots/readme/feature_player.png" width="230" alt="播放器：歌词逐句高亮" /><br/>
 <b>文</b><br/><sub>儿歌、故事、古诗。锁屏能听，歌词逐句高亮，支持暂停、切歌和拖动进度。</sub></td>
 </tr>
 </table>
 
-首页 Learning plan → PIN 验证 → 每日识字目标、学习提醒时间与星期。首次引导只保留目标和提醒；第一次打开任务页才创建 PIN。学习历史继续保存在本机，不再提供限时、休息、加时、统计和按天记录页面（[D33](docs/DECISIONS.md#d33--2026-10-24--家长页仅配置学习任务)）。
+## 家长设置
 
-任务页预览：[浅色](docs/screenshots/learning-plan/learning_plan_light.png) · [深色](docs/screenshots/learning-plan/learning_plan_dark.png)。
-
-完成页预览：[浅色](docs/screenshots/no-stars/completion_light.png) · [深色](docs/screenshots/no-stars/completion_dark.png)。星星展示、累计及音效已移除；已有识字进度和学习记录保留。
-
-文化播放已精简：删除收藏和睡前定时，保留分类浏览、歌词及后台播放（[查看新版播放器](docs/screenshots/simple-playback/player_light.png) · [D36](docs/DECISIONS.md#d36--2026-10-24--删除收藏与睡前定时)）。
-
-## 设计上的五个选择
-
-- **一屏一个实心按钮** —— 孩子不会点错，也不会有第二个「现在该做什么」
-- **答错不惩罚** —— 陶土色 + 轻轻抖一下 + 直接告诉答案，没有红屏
-- **进度看得见** —— 用字块展示今日进度，完成一轮回顾本轮学过的字
-- **完全离线** —— 没有 `INTERNET` 权限，字库、录音、插画全部内置
-- **任务可调整** —— 每天 1–10 个新字，每轮最多 3 个；目标修改次日生效
+首页 **Learning plan** → PIN 验证 → 每日识字目标、学习提醒时间与星期。首次引导只保留目标和提醒；第一次打开任务页才创建 PIN。学习记录保存在本机。
 
 ## 架构
 
@@ -97,7 +85,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 | [**设计书**](docs/DESIGN.md) | 每屏的目的 / 结构 / 交互 / 状态 / 不要，31 张整屏设计图 |
 | [**工程技术文档**](docs/ENGINEERING.md) | 数据模型、业务逻辑、组件规格、逐屏实现要点 |
 | [**验收清单**](docs/ACCEPTANCE.md) | 20 项结果与证据：对比度、权限、进程恢复、APK 体积 |
-| [**决策记录**](docs/DECISIONS.md) | 36 条「为什么不那样做」 |
+| [**决策记录**](docs/DECISIONS.md) | 38 条「为什么不那样做」 |
 | [**协作指南**](CONTRIBUTING.md) | 环境、提交前自检、代码约定 |
 | [**截图归档**](docs/screenshots) | M1 → M8 每屏的浅色 / 深色真机截图 |
 
