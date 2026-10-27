@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cultureDetailRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ls_paper"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/ls_margin"
+        android:paddingEnd="@dimen/ls_margin"
+        android:paddingTop="@dimen/ls_gap">
+        <com.littlestar.app.core.ui.BlockLayout
+            android:id="@+id/btnBack"
+            style="@style/Widget.LS.Block.Icon"
+            android:layout_width="@dimen/ls_btn_icon"
+            android:layout_height="@dimen/ls_btn_icon"
+            android:contentDescription="@string/nav_back">
+            <ImageView
+                android:layout_width="@dimen/ls_icon"
+                android:layout_height="@dimen/ls_icon"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_back" />
+        </com.littlestar.app.core.ui.BlockLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ls_gap"
+            android:layout_weight="1"
+            android:text="@string/culture_detail_title"
+            android:textAppearance="@style/TextAppearance.LS.Title" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/detailScroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:maxWidth="@dimen/ls_content_max_width"
+            android:orientation="vertical"
+            android:padding="@dimen/ls_margin">
+            <TextView
+                android:id="@+id/detailStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityLiveRegion="polite"
+                android:text="@string/culture_detail_loading"
+                android:textAppearance="@style/TextAppearance.LS.Body" />
+            <LinearLayout
+                android:id="@+id/detailContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <com.littlestar.app.core.ui.BlockLayout
+                    style="@style/Widget.LS.Block.Hero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ls_pressable="false">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="@dimen/ls_card_pad">
+                        <com.littlestar.app.core.ui.HanziTextView
+                            android:id="@+id/detailGlyph"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:importantForAccessibility="no"
+                            android:textAppearance="@style/TextAppearance.LS.HanziHero"
+                            android:textColor="@color/ls_green" />
+                        <TextView
+                            android:id="@+id/detailTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.LS.Title" />
+                        <TextView
+                            android:id="@+id/detailSubtitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ls_gap_sm"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.LS.Caption" />
+                    </LinearLayout>
+                </com.littlestar.app.core.ui.BlockLayout>
+                <TextView
+                    android:id="@+id/detailSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_section"
+                    android:textAppearance="@style/TextAppearance.LS.Body" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_section"
+                    android:text="@string/culture_detail_focus"
+                    android:textAppearance="@style/TextAppearance.LS.Title" />
+                <TextView
+                    android:id="@+id/detailFocus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_gap_sm"
+                    android:textAppearance="@style/TextAppearance.LS.Body" />
+                <com.littlestar.app.core.ui.BlockLayout
+                    android:id="@+id/btnPreview"
+                    style="@style/Widget.LS.Block.Secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/ls_btn_secondary"
+                    android:layout_marginTop="@dimen/ls_section">
+                    <TextView
+                        android:id="@+id/previewLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/ls_gap"
+                        android:text="@string/culture_detail_read_together"
+                        android:textAppearance="@style/TextAppearance.LS.Body" />
+                </com.littlestar.app.core.ui.BlockLayout>
+                <TextView
+                    android:id="@+id/detailTranscript"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_gap"
+                    android:fontFamily="@font/noto_sans_sc_hanzi"
+                    android:textAppearance="@style/TextAppearance.LS.Body"
+                    android:textIsSelectable="true"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.littlestar.app.core.ui.BlockLayout
+        android:id="@+id/btnListen"
+        style="@style/Widget.LS.Block.Primary.Blue"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/ls_btn_primary"
+        android:layout_marginStart="@dimen/ls_margin"
+        android:layout_marginEnd="@dimen/ls_margin"
+        android:layout_marginBottom="@dimen/ls_gap"
+        android:enabled="false"
+        android:contentDescription="@string/culture_detail_listen">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/culture_detail_listen"
+            android:textAppearance="@style/TextAppearance.LS.Button"
+            android:textColor="@color/ls_on_blue" />
+    </com.littlestar.app.core.ui.BlockLayout>
+</LinearLayout>

@@ -22,7 +22,7 @@ import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.databinding.ActivityHomeBinding;
 import com.littlestar.app.domain.HomeModeResolver;
 import com.littlestar.app.feature.flashcard.FlashcardActivity;
-import com.littlestar.app.feature.help.HelpActivity;
+import com.littlestar.app.feature.culture.CultureDetailActivity;
 
 /**
  * 首页（§7.1）。字态主流程：今日字 + START → Flashcard(SESSION)。
@@ -61,7 +61,14 @@ public final class HomeActivity extends ChildActivity {
 
         binding.btnStart.setOnClickListener(v -> startSession());
         binding.btnListen.setOnClickListener(v -> speakHero());
-        binding.heroCard.setOnClickListener(v -> speakHero());
+        binding.heroCard.setOnClickListener(v -> {
+            HomeViewModel.UiState s = vm.state().getValue();
+            if (s != null && s.mode == HomeModeResolver.Mode.CULTURE) {
+                openCultureDetail(s);
+            } else {
+                speakHero();
+            }
+        });
 
         // 内容模块与受 PIN 保护的设置入口。
         binding.moduleWords.setOnClickListener(v -> {
@@ -77,10 +84,6 @@ public final class HomeActivity extends ChildActivity {
         binding.parentEntry.setOnClickListener(v -> {
             startActivity(com.littlestar.app.feature.parent.ParentGateActivity.intent(this));
             Motion.parentFade(this);
-        });
-        binding.btnHelp.setOnClickListener(v -> {
-            startActivity(HelpActivity.intent(this));
-            Motion.childEnter(this);
         });
 
         setupOnboarding();
@@ -130,7 +133,7 @@ public final class HomeActivity extends ChildActivity {
             binding.heroEnglish.setText(w != null ? w.english : "");
             maybeAutoSpeak(s);
         } else {
-            // 文态主角卡（M3 简化：展示推荐条目标题；播放进 Player 留 M5）
+            // 文态主角卡：展示推荐内容，点击后进入文化详情。
             CultureItem c = s.featured;
             binding.todayLabel.setText(R.string.home_today_culture);
             binding.todayLabel.setTextColor(ink);
@@ -139,10 +142,12 @@ public final class HomeActivity extends ChildActivity {
             binding.heroEnglish.setText(c != null && c.subtitle != null ? c.subtitle : "");
         }
 
-        // 主按钮：目标完成变「复习一下」（§7.21）；文态 LISTEN 蓝块（§7.1）
+        // 主按钮：字态 START / REVIEW，文态 EXPLORE 蓝块。
         binding.btnStartText.setText(wordMode
                 ? (done ? R.string.home_review : R.string.home_start)
-                : R.string.home_listen);
+                : R.string.home_culture_open);
+        binding.btnStartIcon.setImageResource(wordMode ? R.drawable.ic_play : R.drawable.ic_book);
+        binding.btnListen.setVisibility(wordMode ? View.VISIBLE : View.GONE);
         int blue = ContextCompat.getColor(this, R.color.ls_blue);
         int onRed = ContextCompat.getColor(this, R.color.ls_on_red);
         int onBlue = ContextCompat.getColor(this, R.color.ls_on_blue);
@@ -199,17 +204,7 @@ public final class HomeActivity extends ChildActivity {
 
         HomeViewModel.UiState s = vm.state().getValue();
         if (s != null && s.mode == HomeModeResolver.Mode.CULTURE) {
-            // 文态 LISTEN → 播放器（推荐条目，queue = 同类全部）
-            if (s.featured != null) {
-                java.util.List<String> queue = new java.util.ArrayList<>();
-                for (com.littlestar.app.data.content.model.CultureItem it
-                        : container().content.itemsOfCategory(s.featured.categoryId)) {
-                    queue.add(it.id);
-                }
-                startActivity(com.littlestar.app.feature.player.PlayerActivity.intent(
-                        this, s.featured.id, queue));
-                Motion.childEnter(this);
-            }
+            openCultureDetail(s);
             return;
         }
         startActivity(FlashcardActivity.sessionIntent(this));
@@ -217,6 +212,12 @@ public final class HomeActivity extends ChildActivity {
     }
 
     // ---------- 首次引导（§7.20） ----------
+    private void openCultureDetail(HomeViewModel.UiState s) {
+        if (s.featured != null && !s.loading) {
+            startActivity(CultureDetailActivity.intent(this, s.featured.id));
+            Motion.childEnter(this);
+        }
+    }
 
     private void setupOnboarding() {
         int[] ages = {3, 4, 5, 6};

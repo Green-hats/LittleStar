@@ -17,11 +17,20 @@ public abstract class ChildActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
+        // AppCompat 先应用本页深浅色配置，再选择系统栏图标颜色。
+        EdgeToEdge.enable(this);
     }
 
     protected final AppContainer container() {
         return ((LittleStarApp) getApplication()).container();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            Insets.syncSystemBarAppearance(this);
+        }
     }
 }

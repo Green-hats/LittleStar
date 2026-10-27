@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """内容校验：words.json / culture.json 与资源文件一一对应。
 检查：ID 唯一；每个 audio 文件存在；每个 image/cover 在 res/drawable 里有同名文件；
-distractors 里的字不等于正确答案；每主题恰好 6 字；歌词 startMs 递增。
+distractors 里的字不等于正确答案；每主题恰好 6 字；歌词 startMs 递增；文化详情文本齐全。
 用法：python3 tools/validate_content.py；任何一项失败以非零码退出。
 """
 import json
@@ -46,6 +46,9 @@ def check_culture() -> None:
     cat_ids = {c["id"] for c in data["categories"]}
     seen = set()
     for it in data["items"]:
+        for field in ("summary", "learningFocus", "transcript"):
+            if not isinstance(it.get(field), str) or not it[field].strip():
+                fail(f"{it['id']}: 缺详情字段 {field}")
         if it["id"] in seen:
             fail(f"culture id 重复: {it['id']}")
         seen.add(it["id"])

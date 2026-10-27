@@ -1,10 +1,13 @@
 package com.littlestar.app.feature.settings;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,11 +19,15 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
+import com.littlestar.app.BuildConfig;
 import com.littlestar.app.R;
 import com.littlestar.app.core.ui.BlockLayout;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.ParentActivity;
 import com.littlestar.app.databinding.ActivitySettingsBinding;
+import com.littlestar.app.feature.home.HomeActivity;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -40,12 +47,26 @@ public final class SettingsActivity extends ParentActivity {
     private final ActivityResultLauncher<String> notificationPermission =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> finish());
 
+    // 测试通知不保存表单、不关闭设置页，与保存计划的权限回调分开。
+    private final ActivityResultLauncher<String> testNotificationPermission =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
+                if (granted) {
+                    sendTestNotificationNow();
+                } else {
+                    showMessage(R.string.help_notification_off);
+                }
+            });
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
+        setSupportActionBar(binding.settingsToolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         var settings = container().settings;
         binding.goalStepper.setRange(1, 10);
@@ -69,6 +90,60 @@ public final class SettingsActivity extends ParentActivity {
         binding.btnBack.setOnClickListener(v -> finish());
         binding.btnCancel.setOnClickListener(v -> finish());
         binding.btnSave.setOnClickListener(v -> save());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_settings, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_help) {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.help_title)
+                    .setMessage(getString(R.string.settings_help_message,
+                            getString(R.string.help_reminders_body),
+                            getString(R.string.help_permission_hint),
+                            getString(R.string.help_offline_body)))
+                    .setPositiveButton(android.R.string.ok, null).show();
+            return true;
+        }
+        if (id == R.id.action_test_notification) {
+            if (Build.VERSION.SDK_INT >= 33
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                testNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS);
+            } else {
+                sendTestNotificationNow();
+            }
+            return true;
+        }
+        if (id == R.id.action_about) {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.help_about_title)
+                    .setMessage(getString(R.string.help_about_message, BuildConfig.VERSION_NAME))
+                    .setPositiveButton(android.R.string.ok, null).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void sendTestNotificationNow() {
+        android.app.NotificationManager manager = getSystemService(android.app.NotificationManager.class);
+        if (!manager.areNotificationsEnabled()) {
+            showMessage(R.string.help_notification_off);
+            return;
+        }
+        container().notifier.ensureChannels();
+        container().notifier.test(new Intent(this, HomeActivity.class));
+        showMessage(R.string.help_test_sent);
+    }
+
+    private void showMessage(int stringId) {
+        Snackbar.make(binding.getRoot(), stringId, Snackbar.LENGTH_LONG).show();
     }
 
     private void setupDays() {

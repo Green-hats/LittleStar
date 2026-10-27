@@ -1,5 +1,26 @@
 # LittleStar 验收清单（§15）
 
+## 2026-10-26 三人团队子系统与文化详情
+
+设备：Pixel 10 Pro 模拟器，Android 17。
+
+- 正式 Manifest 映射检查通过：A 识字 4 页、B 文化 4 页、C 计划与反馈 4 页，加共同 Home，共 13 页；独立 Help 已移除。
+- `testDebugUnitTest`：37/37 通过，无失败、无跳过。
+- `assembleDebug`、`assembleRelease`、设备测试包编译通过；release 保持既有课堂安装签名配置。
+- `connectedDebugAndroidTest`：14/14 通过，无失败、无跳过。
+- 设备回归覆盖：分类 → 列表 → 详情 → 播放、暂停/切歌、返回详情再播放、后台继续播放；详情重建保留条目与文本展开状态；无效 ID 禁用播放；设置 Help/About 菜单不丢失草稿；原学习、PIN、保存取消和数据用例继续通过。
+- 自动设备测试关闭动画；对话框断言限定 dialog root，避免菜单、主窗口和弹窗混淆。
+- 深色详情的状态栏和导航栏断言通过，最新原始截图确认浅色图标可见；共享基类在应用主题后启用 EdgeToEdge，并在获得窗口焦点时同步外观。
+- 内容校验、浅深色对比度、源 XML 解析与 `git diff --check` 通过。
+- 11 条文化内容均有简介、学习重点和文本预览；子集字体覆盖现有内容全部汉字，文件约 99KB。
+- 当前分工、用例、数据交接与真实材料待办见 [团队计划](TEAM_PLAN.md)；旧设计与工程说明已归档，当前文档与实现同步。
+
+原始截图：[详情浅色](screenshots/team-modules/culture_detail_light.png)、[展开文本](screenshots/team-modules/culture_detail_preview.png)、[详情深色](screenshots/team-modules/culture_detail_dark.png)、[设置菜单](screenshots/team-modules/settings_menu.png)。
+
+范围：本轮设备结果来自上述模拟器，没有覆盖 API 30 真机、小屏或全部放大字体配置。
+原词卡占位图、文化音频素材质量与七条歌词时间戳越界仍待后续处理，本轮没有修改音频或伪造同步验收结果。
+
+
 ## 2026-10-24 · 删除收藏与睡前定时（D36）
 
 - `:app:testDebugUnitTest`：37/37 通过；覆盖 v1/v2 升级到 v3、收藏字段移除及学习记录保留。

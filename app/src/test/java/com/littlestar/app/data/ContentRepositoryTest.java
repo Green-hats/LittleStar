@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import com.littlestar.app.data.content.ContentRepository;
 import com.littlestar.app.data.content.model.Theme;
 import com.littlestar.app.data.content.model.Word;
+import com.littlestar.app.data.content.model.CultureItem;
 import com.littlestar.app.util.TestContent;
 
 import org.junit.Test;
@@ -40,6 +41,25 @@ public final class ContentRepositoryTest {
                 + repo.itemsOfCategory("stories").size()
                 + repo.itemsOfCategory("poems").size());
         assertNotNull(repo.itemById("xiaoxingxing"));
+    }
+
+    @Test
+    public void everyCultureItem_hasLearningContextAndReadablePreview() {
+        ContentRepository repo = TestContent.load();
+        for (var category : repo.mvpCategories()) {
+            for (CultureItem item : repo.itemsOfCategory(category.id)) {
+                assertNotNull(item.summary);
+                assertTrue(item.summary, !item.summary.isBlank());
+                assertNotNull(item.learningFocus);
+                assertTrue(item.learningFocus, !item.learningFocus.isBlank());
+                assertNotNull(item.transcript);
+                assertTrue(item.transcript, !item.transcript.isBlank());
+                for (var line : item.lyrics) {
+                    assertTrue(item.id + ": preview is missing a lyric line",
+                            item.transcript.contains(line.hanzi));
+                }
+            }
+        }
     }
 
     @Test

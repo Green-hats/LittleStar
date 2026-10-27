@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 文化列表行：56dp 封面 + 标题 + 类型·时长 + 播放钮 -->
+<!-- 文化列表行：封面、标题、类型与时长，箭头进入详情。 -->
 <com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rowBlock"
@@ -59,7 +59,7 @@
         </LinearLayout>
 
         <com.littlestar.app.core.ui.BlockLayout
-            android:id="@+id/btnPlay"
+            android:id="@+id/btnDetail"
             style="@style/Widget.LS.Block.Icon"
             android:layout_width="@dimen/ls_module_glyph"
             android:layout_height="@dimen/ls_module_glyph"
@@ -70,7 +70,7 @@
                 android:layout_height="@dimen/ls_icon"
                 android:layout_gravity="center"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_play"
+                android:src="@drawable/ic_chevron"
                 app:tint="@color/ls_on_blue" />
         </com.littlestar.app.core.ui.BlockLayout>
 

@@ -1,6 +1,7 @@
 package com.littlestar.app;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -46,6 +47,9 @@ public final class CulturePlaybackTest {
             onView(withId(R.id.catSongs)).perform(click());
             waitForView(R.id.categoryName);
             onView(withText("小星星")).perform(click());
+            waitForView(R.id.detailTitle);
+            onView(withId(R.id.detailTitle)).check(matches(withText("小星星")));
+            onView(withId(R.id.btnListen)).perform(click());
             waitForView(R.id.songTitle);
             onMain(() -> future.set(new MediaController.Builder(context,
                     new SessionToken(context, new ComponentName(context, PlaybackService.class)))
@@ -68,6 +72,12 @@ public final class CulturePlaybackTest {
                     && "xiaoxingxing".equals(controller.getCurrentMediaItem().mediaId));
             onMain(() -> controller.seekTo(0));
             waitFor(controller::isPlaying);
+
+            pressBack();
+            waitForView(R.id.detailTitle);
+            onView(withId(R.id.detailTitle)).check(matches(withText("小星星")));
+            onView(withId(R.id.btnListen)).perform(click());
+            waitForView(R.id.songTitle);
 
             // Home 键使应用退到后台；用独立控制器确认服务仍在推进音频位置。
             InstrumentationRegistry.getInstrumentation().getUiAutomation()

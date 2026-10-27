@@ -233,3 +233,13 @@
 - 做法：删除 `HomeModeResolver.bedtimeOnly`、`HomeViewModel.UiState.bedtimeOnly`、`ContentRepository.bedtimeItems`、`CultureItem.bedtime`、`culture.json` 的 `bedtime` 字段、`SLEEP_*` 配置、`notif_bedtime` 文案、旧渠道清理及对应测试；首页只保留按时间切字/文。
 - 理由：A1 收口，去掉已删功能的残留分支和数据字段。
 - 验证：`:app:assembleDebug`、`:app:assembleDebugAndroidTest`、`:app:testDebugUnitTest` 通过；内容 JSON 校验通过。
+
+## D40 · 2026-10-26 · 三人团队子系统与页面责任
+- 依据：用户确认三人、尚无分工，并同意开始按 A 识字学习与测评、B 文化内容学习、C 学习计划与反馈调整。
+- 页面：A 为 Themes / WordList / Flashcard / Quiz；B 为 CultureCategories / CultureList / CultureDetail / Player；C 为 ParentGate / Settings / Reward / RoundReview；Home 共同负责。
+- 做法：新增 CultureDetail 介绍、学习重点与文本预览，列表与首页文化推荐先进入详情；详情携带同分类队列进入 Player。删除独立 HelpActivity，将帮助、关于和测试通知并入 PIN 保护的设置菜单。
+- 权限：测试通知使用独立权限回调，不保存草稿或关闭设置。帮助和关于同样不写配置。
+- 内容：为现有 11 条文化内容补全简介、学习重点和文本；更新子集字体收集范围。原音频和歌词时间戳保持原状，越界问题另列为内容验收待办。
+- 文档：旧设计与工程稿原样归档，当前 DESIGN / ENGINEERING 与 TEAM_PLAN 统一描述现行 13 页。A/B/C 仅为责任角色，不虚构成员姓名、历史作者或评审记录。
+- 视觉修正：共享基类在 AppCompat 应用主题后启用 EdgeToEdge，在获得窗口焦点时同步系统栏外观；避免仅设置局部深色而沿用前一窗口的黑色图标。
+- 验证：37 项 JVM 单测、14 项设备回归以及 debug/release 构建全部通过，详见 ACCEPTANCE.md。

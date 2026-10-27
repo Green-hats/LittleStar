@@ -90,7 +90,10 @@
           "pinyin": "mǎn tiān dōu shì xiǎo xīng xing",
           "english": "Stars all over the sky"
         }
-      ]
+      ],
+      "summary": "Look up at a sky full of little stars.",
+      "learningFocus": "Recognise 星 (star) and 天 (sky); notice the repeated lines.",
+      "transcript": "一闪一闪亮晶晶\n满天都是小星星\n挂在天上放光明\n好像许多小眼睛\n一闪一闪亮晶晶\n满天都是小星星"
     },
     {
       "id": "liangzhilaohu",
@@ -151,7 +154,10 @@
           "pinyin": "zhēn qí guài",
           "english": "How strange"
         }
-      ]
+      ],
+      "summary": "Meet two unusual tigers in a familiar rhyme.",
+      "learningFocus": "Listen for 两 (two) and 虎 (tiger); compare the two animals.",
+      "transcript": "两只老虎\n两只老虎\n跑得快\n跑得快\n一只没有耳朵\n一只没有尾巴\n真奇怪\n真奇怪"
     },
     {
       "id": "baluobo",
@@ -200,7 +206,10 @@
           "pinyin": "kuài lái bāng wǒ men bá luó bo",
           "english": "Come help us pull the radish"
         }
-      ]
+      ],
+      "summary": "Pull a big radish together, one helper at a time.",
+      "learningFocus": "Notice the repeated action 拔 (pull) and talk about helping.",
+      "transcript": "拔萝卜\n拔萝卜\n哎哟哎哟拔萝卜\n哎哟哎哟拔不动\n老婆婆快快来\n快来帮我们拔萝卜"
     },
     {
       "id": "zhaopengyou",
@@ -237,7 +246,10 @@
           "pinyin": "nǐ shì wǒ de hǎo péng you",
           "english": "You are my good friend"
         }
-      ]
+      ],
+      "summary": "Greet a friend with a wave and a handshake.",
+      "learningFocus": "Listen for 朋友 (friend); try the greeting actions together.",
+      "transcript": "找呀找呀找朋友\n找到一个好朋友\n敬个礼呀握握手\n你是我的好朋友"
     },
     {
       "id": "changebenyue",
@@ -249,7 +261,10 @@
       "audio": "audio/culture/changebenyue.ogg",
       "durationSec": 47,
       "featured": [],
-      "lyrics": []
+      "lyrics": [],
+      "summary": "Discover how Chang’e came to live on the moon.",
+      "learningFocus": "Notice 月 (moon) and 家 (home); talk about family reunions.",
+      "transcript": "嫦娥奔月。很久很久以前，天上有十个太阳，把大地烤得滚烫。英雄后羿射下九个太阳，救了大家。王母娘娘送给他一颗仙丹。后羿的妻子嫦娥，为了保护仙丹不被坏人抢走，一口吞下仙丹，身体轻飘飘地飞了起来，一直飞到月亮上。从此，嫦娥住在月亮的广寒宫里，只有一只小玉兔陪着她。每年八月十五，后羿就在院子里摆上嫦娥最爱吃的点心，望着月亮想念她。人们也在这天赏月、吃月饼，盼望家人团圆。"
     },
     {
       "id": "shouzhudaitu",
@@ -261,7 +276,10 @@
       "audio": "audio/culture/shouzhudaitu.ogg",
       "durationSec": 47,
       "featured": [],
-      "lyrics": []
+      "lyrics": [],
+      "summary": "A farmer waits for the same lucky accident to happen again.",
+      "learningFocus": "Listen for 兔 (rabbit); discuss why waiting cannot replace effort.",
+      "transcript": "守株待兔。从前，有个农夫在田里干活。忽然，一只兔子飞快地跑过来，一头撞在树桩上，撞晕了。农夫捡起兔子，高高兴兴地回家，美美地吃了一顿。他想，要是每天都有兔子自己撞上来，那该多好呀。第二天，他不再种地，天天坐在树桩旁边等兔子。等了一天又一天，兔子再也没有来过，田里的庄稼全都枯死了。这个故事告诉我们，不能把一次好运气当成天天都有的事，要靠自己的劳动才有收获。"
     },
     {
       "id": "guitusaipao",
@@ -273,7 +291,10 @@
       "audio": "audio/culture/guitusaipao.ogg",
       "durationSec": 34,
       "featured": [],
-      "lyrics": []
+      "lyrics": [],
+      "summary": "A steady tortoise races a very confident rabbit.",
+      "learningFocus": "Compare 快 (fast) and 慢 (slow); talk about keeping going.",
+      "transcript": "龟兔赛跑。一天，乌龟和兔子比赛跑步。兔子跑得飞快，一会儿就把乌龟甩得远远的。兔子回头一看，乌龟还在慢慢地爬呢。兔子想，我先睡一觉也来得及，就躺在大树下睡着了。乌龟不着急，一步一步，不停地往前爬。等兔子醒来一看，乌龟已经爬过终点线了。这个故事告诉我们，骄傲会落后，坚持才能赢。"
     },
     {
       "id": "huashetianzu",
@@ -285,7 +306,10 @@
       "audio": "audio/culture/huashetianzu.ogg",
       "durationSec": 39,
       "featured": [],
-      "lyrics": []
+      "lyrics": [],
+      "summary": "A drawing contest changes when someone adds too much.",
+      "learningFocus": "Notice 蛇 (snake) and 足 (foot); discuss when to stop adding things.",
+      "transcript": "画蛇添足。从前，有几个人一起画画比赛，谁先画好一条蛇，谁就能喝到一壶酒。有个人画得最快，他拿起酒壶，得意地说，我还能给蛇添上几只脚呢。可是他还没画完脚，另一个人已经画好了，一把抢过酒壶说，蛇本来就没有脚，你画的不是蛇。这个人只好眼睁睁看着别人把酒喝掉了。这个故事告诉我们，做了多余的事，反而会把事情弄坏。"
     },
     {
       "id": "jingyesi",
@@ -322,7 +346,10 @@
           "pinyin": "dī tóu sī gù xiāng",
           "english": "I bow my head and think of home"
         }
-      ]
+      ],
+      "summary": "A moonlit night reminds a traveller of home.",
+      "learningFocus": "Listen for 月 (moon) and 乡 (home town); notice the quiet mood.",
+      "transcript": "床前明月光\n疑是地上霜\n举头望明月\n低头思故乡"
     },
     {
       "id": "yonge",
@@ -359,7 +386,10 @@
           "pinyin": "hóng zhǎng bō qīng bō",
           "english": "Red feet paddle the clear waves"
         }
-      ]
+      ],
+      "summary": "Watch a white goose sing and swim through green water.",
+      "learningFocus": "Listen for 鹅 (goose), 白 (white) and 水 (water).",
+      "transcript": "鹅鹅鹅\n曲项向天歌\n白毛浮绿水\n红掌拨清波"
     },
     {
       "id": "chunxiao",
@@ -396,7 +426,10 @@
           "pinyin": "huā luò zhī duō shǎo",
           "english": "How many petals have fallen"
         }
-      ]
+      ],
+      "summary": "Wake up to birds after a night of spring rain.",
+      "learningFocus": "Listen for 春 (spring), 鸟 (bird) and 花 (flower).",
+      "transcript": "春眠不觉晓\n处处闻啼鸟\n夜来风雨声\n花落知多少"
     }
   ]
 }

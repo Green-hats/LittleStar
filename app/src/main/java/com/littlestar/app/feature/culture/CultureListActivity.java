@@ -19,12 +19,11 @@ import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.CultureItem;
 import com.littlestar.app.databinding.ActivityCultureListBinding;
 import com.littlestar.app.databinding.ItemCultureRowBinding;
-import com.littlestar.app.feature.player.PlayerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/** 文化列表（§7.8 / §9.8）：80dp 行；点行进 Player（queue = 本类全部 id）。 */
+/** 文化列表：选择内容后先查看简介和学习重点，再进入播放器。 */
 public final class CultureListActivity extends ChildActivity {
 
     private static final String EXTRA_CATEGORY_ID = "categoryId";
@@ -75,16 +74,12 @@ public final class CultureListActivity extends ChildActivity {
         adapter.setItems(s.items);
     }
 
-    private void openPlayer(int index) {
+    private void openDetail(int index) {
         CultureListViewModel.UiState s = vm.state().getValue();
-        if (s == null) {
+        if (s == null || index < 0 || index >= s.items.size()) {
             return;
         }
-        List<String> queue = new ArrayList<>();
-        for (CultureItem it : s.items) {
-            queue.add(it.id);
-        }
-        startActivity(PlayerActivity.intent(this, s.items.get(index).id, queue));
+        startActivity(CultureDetailActivity.intent(this, s.items.get(index).id));
         Motion.childEnter(this);
     }
 
@@ -110,8 +105,10 @@ public final class CultureListActivity extends ChildActivity {
             h.b.rowTitle.setText(item.titleZh);
             h.b.rowSub.setText(getString(R.string.player_subtitle_fmt, item.subtitle,
                     formatDuration(item.durationSec)));
-            h.b.rowBlock.setOnClickListener(v -> openPlayer(h.getBindingAdapterPosition()));
-            h.b.btnPlay.setOnClickListener(v -> openPlayer(h.getBindingAdapterPosition()));
+            h.b.rowBlock.setContentDescription(getString(R.string.culture_detail_open, item.titleZh));
+            h.b.btnDetail.setContentDescription(getString(R.string.culture_detail_open, item.titleZh));
+            h.b.rowBlock.setOnClickListener(v -> openDetail(h.getBindingAdapterPosition()));
+            h.b.btnDetail.setOnClickListener(v -> openDetail(h.getBindingAdapterPosition()));
         }
 
         @Override

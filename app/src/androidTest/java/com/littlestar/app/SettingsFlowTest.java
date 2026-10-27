@@ -2,12 +2,14 @@ package com.littlestar.app;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.closeSoftKeyboard;
+import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
@@ -153,6 +155,25 @@ public final class SettingsFlowTest {
             });
             assertTrue(container.settings.getReminderDays().isEmpty());
             assertEquals(-1, container.reminders.nextTriggerMillis());
+        }
+    }
+
+    @Test
+    public void helpAndAboutMenu_keepUnsavedPlanDraft() throws Exception {
+        try (ActivityScenario<SettingsActivity> scenario = ActivityScenario.launch(SettingsActivity.class)) {
+            scenario.onActivity(activity ->
+                    ((StepperView) activity.findViewById(R.id.goalStepper)).setValue(7));
+            openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
+            UiEvidence.capture("settings_menu");
+            onView(withText(R.string.help_title)).perform(click());
+            onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click());
+            openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
+            onView(withText(R.string.help_menu_about)).perform(click());
+            onView(withText(R.string.help_about_title)).inRoot(isDialog()).check(matches(isDisplayed()));
+            onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click());
+            scenario.onActivity(activity -> assertEquals(7,
+                    ((StepperView) activity.findViewById(R.id.goalStepper)).getValue()));
+            assertEquals(3, container.settings.getDailyGoal());
         }
     }
 

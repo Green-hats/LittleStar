@@ -35,6 +35,8 @@ def collect_chars() -> str:
         chars.update(it["titleZh"])
         chars.update(it.get("subtitle", ""))
         chars.update(it["glyph"])
+        chars.update(it.get("transcript", ""))
+        chars.update(it.get("learningFocus", ""))
         for line in it.get("lyrics", []):
             chars.update(line["hanzi"])
     return "".join(sorted(chars))

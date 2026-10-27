@@ -12,3 +12,9 @@ captures/
 .externalNativeBuild/
 *.log
 *.hprof
+
+# 本地工作产物与交付报告（不入库）
+work/
+outputs/
+__pycache__/
+*.pyc

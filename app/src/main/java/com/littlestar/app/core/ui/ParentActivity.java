@@ -21,8 +21,8 @@ public abstract class ParentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
     }
 
     @Override
@@ -47,5 +47,13 @@ public abstract class ParentActivity extends AppCompatActivity {
 
     protected final AppContainer container() {
         return ((LittleStarApp) getApplication()).container();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            Insets.syncSystemBarAppearance(this);
+        }
     }
 }

@@ -55,6 +55,10 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".feature.culture.CultureDetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".feature.player.PlayerActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -96,12 +100,6 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.LittleStar.Parent" />
-
-        <!-- A1：帮助页（菜单 + 测试通知） -->
-        <activity
-            android:name=".feature.help.HelpActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
 
         <!-- A1：本轮答题回顾（Reward → Review） -->
         <activity

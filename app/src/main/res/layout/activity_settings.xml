@@ -32,13 +32,21 @@
                     android:importantForAccessibility="no"
                     android:src="@drawable/ic_back" />
             </com.littlestar.app.core.ui.BlockLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/settingsToolbar"
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
                 android:layout_marginStart="@dimen/ls_gap"
-                android:text="@string/settings_title"
-                android:textAppearance="@style/TextAppearance.LS.Title"
-                android:id="@+id/settingsTitle" />
+                android:layout_weight="1"
+                app:contentInsetStart="0dp"
+                app:contentInsetEnd="0dp">
+                <TextView
+                    android:id="@+id/settingsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_title"
+                    android:textAppearance="@style/TextAppearance.LS.Title" />
+            </com.google.android.material.appbar.MaterialToolbar>
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"
