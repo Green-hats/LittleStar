@@ -67,4 +67,20 @@ public final class QuizGeneratorTest {
         long fromTheme = q.options().stream().filter(sameTheme::contains).count();
         assertEquals(4, fromTheme);   // 全部来自数字主题
     }
+
+    /** 相同 (sessionId, qIdx, wordId) 确定性种子在进程重建后生成的四选项顺序与正确答案索引完全一致。 */
+    @Test
+    public void deterministicSeed_preservesOptionPositionsOnRestore() {
+        ContentRepository content = TestContent.load();
+        long sessionId = 7L;
+        List<Word> words = content.wordsInOrder();
+        for (int qIdx = 0; qIdx < words.size(); qIdx++) {
+            Word w = words.get(qIdx);
+            long seed = sessionId * 10007L + (long) qIdx * 31L + w.id.hashCode();
+            QuizGenerator.QuizQuestion q1 = new QuizGenerator(content, new Random(seed)).generate(w);
+            QuizGenerator.QuizQuestion q2 = new QuizGenerator(content, new Random(seed)).generate(w);
+            assertEquals(q1.options(), q2.options());
+            assertEquals(q1.correctIndex(), q2.correctIndex());
+        }
+    }
 }

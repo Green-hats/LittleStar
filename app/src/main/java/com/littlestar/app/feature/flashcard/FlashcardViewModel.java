@@ -11,6 +11,7 @@ import com.littlestar.app.core.lifecycle.Event;
 import com.littlestar.app.data.content.ContentRepository;
 import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.data.store.ProgressState;
+import com.littlestar.app.domain.SessionBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,13 +63,98 @@ public final class FlashcardViewModel extends ViewModel {
     private long sessionId = -1;
     private List<String> wordIds = new ArrayList<>();
     private int index;
+    private boolean initialized;
+    /** 主线程 gate，覆盖 content load / store read / build 的完整异步链。 */
+    private boolean initializing;
+    private boolean cleared;
+
+    /** 只跨线程传递副本，绝不把 store 内可变 Session 暴露给主线程。 */
+    private record SessionResult(long id, List<String> newIds, boolean hasQuiz) {
+        static SessionResult copyOf(ProgressState.Session session) {
+            return new SessionResult(session.id, new ArrayList<>(session.newWordIds),
+                    !session.quizWordIds.isEmpty());
+        }
+    }
 
     public FlashcardViewModel(@NonNull AppContainer container) {
         this.container = container;
     }
 
-    /** Activity 在 content 加载完成后调用一次。先过滤无效 id，再夹 index（防止越界）。 */
+    /** Activity 每次创建均可调用。初始化中的重建复用同一条异步链及最终结果。 */
+    public void initialize(@NonNull Mode mode, @NonNull List<String> browseIds,
+                           int startIndex, long restoredSessionId) {
+        if (initialized || initializing || cleared) {
+            return;
+        }
+        initializing = true;
+        this.mode = mode;
+        this.sessionId = restoredSessionId;
+        this.index = Math.max(0, startIndex);
+        List<String> ids = new ArrayList<>(browseIds);
+        container.content.load(container.executors, () -> {
+            if (cleared) {
+                return;
+            }
+            if (mode == Mode.BROWSE) {
+                init(mode, ids, index, restoredSessionId);
+            } else if (restoredSessionId > 0) {
+                // 进程恢复：快照尚未发布不等于会话缺失，必须等 store 加载后查询。
+                container.store.read(progress -> {
+                    ProgressState.Session session = SessionBuilder.sessionById(progress, restoredSessionId);
+                    return session == null ? null : SessionResult.copyOf(session);
+                }, result -> {
+                    if (cleared) {
+                        return;
+                    }
+                    if (result == null) {
+                        buildSession();
+                    } else {
+                        acceptSession(result, index);
+                    }
+                });
+            } else {
+                buildSession();
+            }
+        });
+    }
+
+    /** 更新与落盘沿用 store 的串行 diskIO 约定；callback 不引用任何 Activity。 */
+    private void buildSession() {
+        container.store.update(progress -> {
+            SessionResult result = SessionResult.copyOf(container.sessionBuilder.buildDailySession(
+                    progress, container.settings.getDailyGoal()));
+            container.store.flushNow();
+            // flushNow 入队在前，随后这个 diskIO barrier 确保保存完成再交付结果。
+            container.executors.diskIO().execute(() ->
+                    container.executors.mainThread().execute(() -> {
+                        if (!cleared) {
+                            acceptSession(result, 0);
+                        }
+                    }));
+        });
+    }
+
+    private void acceptSession(@NonNull SessionResult result, int startIndex) {
+        sessionId = result.id();
+        if (!result.hasQuiz() || result.newIds().isEmpty()) {
+            initializing = false;
+            initialized = true;
+            effects.setValue(new Event<>(!result.hasQuiz()
+                    ? new Effect.Close() : new Effect.GoQuiz(result.id())));
+        } else {
+            init(Mode.SESSION, result.newIds(), startIndex, result.id());
+        }
+    }
+
+    @Override
+    protected void onCleared() {
+        cleared = true;
+    }
+
+    /** 内容加载后初始化。先过滤无效 id，再夹 index（防止越界）。 */
     public void init(@NonNull Mode mode, @NonNull List<String> wordIds, int startIndex, long sessionId) {
+        this.initializing = false;
+        this.initialized = true;
         this.mode = mode;
         this.wordIds = new ArrayList<>();
         for (String id : wordIds) {
@@ -79,6 +165,14 @@ public final class FlashcardViewModel extends ViewModel {
         this.sessionId = sessionId;
         this.index = Math.max(0, Math.min(startIndex, this.wordIds.size() - 1));
         publish();
+    }
+
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    public int currentIndex() {
+        return index;
     }
 
     private void publish() {
@@ -116,7 +210,9 @@ public final class FlashcardViewModel extends ViewModel {
 
     /** 数据刷新（学会状态）。 */
     public void refresh() {
-        publish();
+        if (initialized) {
+            publish();
+        }
     }
 
     /** 点印章：学会；再点不撤销。返回是否新学会（用于播放盖章动效/音效）。 */

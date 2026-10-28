@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 词块：配图占位 + 汉字 40sp + 拼音 14sp + 英文 12sp + 已学绿勾 -->
+<!-- 词块：配图 + 汉字 40sp + 拼音 14sp + 英文 12sp + 已学绿勾 -->
 <com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/wordTile"
@@ -36,6 +36,7 @@
             android:layout_height="@dimen/ls_tile_ill">
 
             <ImageView
+                android:id="@+id/wordIllustration"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:importantForAccessibility="no"

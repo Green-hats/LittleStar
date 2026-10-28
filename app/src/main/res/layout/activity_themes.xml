@@ -1,83 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- §7.2 主题选择：2 列 6 块（插画 + 序号徽章 + 中文名 + 英文 + 字数 + 已学数） -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- §7.2 主题选择：ConstraintLayout 响应式布局，2 列 6 块（插画 + 序号徽章 + 中文名 + 英文 + 字数 + 已学数） -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/themesRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ls_paper"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:background="@color/ls_paper">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:maxWidth="@dimen/ls_content_max_width"
-        android:orientation="vertical"
-        android:padding="@dimen/ls_margin">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/themesContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="@dimen/ls_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="@dimen/ls_content_max_width">
 
         <!-- 顶栏 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        <com.littlestar.app.core.ui.BlockLayout
+            android:id="@+id/btnBack"
+            style="@style/Widget.LS.Block.Icon"
+            android:layout_width="@dimen/ls_btn_icon"
+            android:layout_height="@dimen/ls_btn_icon"
+            android:contentDescription="@string/nav_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.littlestar.app.core.ui.BlockLayout
-                android:id="@+id/btnBack"
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="@dimen/ls_btn_icon"
-                android:layout_height="@dimen/ls_btn_icon"
-                android:contentDescription="@string/nav_back">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:layout_gravity="center"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_back" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/ls_gap"
-                android:layout_weight="1"
-                android:text="@string/themes_top"
-                android:textAppearance="@style/TextAppearance.LS.Title" />
-
-        </LinearLayout>
+            <ImageView
+                android:layout_width="@dimen/ls_icon"
+                android:layout_height="@dimen/ls_icon"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_back" />
+        </com.littlestar.app.core.ui.BlockLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/themesTopTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ls_gap"
+            android:text="@string/themes_top"
+            android:textAppearance="@style/TextAppearance.LS.Title"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnBack"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
+
+        <TextView
+            android:id="@+id/themesTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_section"
             android:text="@string/themes_title"
-            android:textAppearance="@style/TextAppearance.LS.Display" />
+            android:textAppearance="@style/TextAppearance.LS.Display"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/themesSubtitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_gap_sm"
             android:text="@string/themes_subtitle"
             android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/themesTitle" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/themesList"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/ls_section"
-            android:layout_weight="1"
+            android:layout_marginBottom="@dimen/ls_gap"
             android:clipToPadding="false"
-            android:overScrollMode="never" />
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toTopOf="@id/themesOrderHint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/themesSubtitle" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/themesOrderHint"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap"
             android:text="@string/themes_order_hint"
             android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textSize="14sp" />
-    </LinearLayout>
-</LinearLayout>
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

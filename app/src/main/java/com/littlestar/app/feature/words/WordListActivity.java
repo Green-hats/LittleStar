@@ -57,7 +57,9 @@ public final class WordListActivity extends ChildActivity {
         themeId = getIntent().getStringExtra(EXTRA_THEME_ID);
 
         adapter = new WordAdapter();
-        binding.wordGrid.setLayoutManager(new GridLayoutManager(this, 2));
+        int columns = getResources().getConfiguration().screenWidthDp < 360
+                || getResources().getConfiguration().fontScale >= 1.3f ? 1 : 2;
+        binding.wordGrid.setLayoutManager(new GridLayoutManager(this, columns));
         binding.wordGrid.addItemDecoration(new ThemesActivity.GapDecoration(
                 getResources().getDimensionPixelSize(R.dimen.ls_gap)));
         binding.wordGrid.setAdapter(adapter);
@@ -124,7 +126,17 @@ public final class WordListActivity extends ChildActivity {
         @Override
         public void onBindViewHolder(@NonNull Holder h, int position) {
             WordListViewModel.WordItem item = items.get(position);
-            h.b.wordGlyph.setText(item.word.hanzi);
+            int resId = item.word.image == null ? 0
+                    : getResources().getIdentifier(item.word.image, "drawable", getPackageName());
+            boolean hasDedicatedIllustration = resId != 0 && !"ill_placeholder".equals(item.word.image);
+            if (hasDedicatedIllustration) {
+                h.b.wordIllustration.setImageResource(resId);
+                h.b.wordGlyph.setVisibility(View.GONE);
+            } else {
+                h.b.wordIllustration.setImageResource(R.drawable.ill_placeholder);
+                h.b.wordGlyph.setVisibility(View.VISIBLE);
+                h.b.wordGlyph.setText(item.word.hanzi);
+            }
             h.b.wordHanzi.setText(item.word.hanzi);
             h.b.wordPinyin.setText(item.word.pinyin);
             h.b.wordEnglish.setText(item.word.english);

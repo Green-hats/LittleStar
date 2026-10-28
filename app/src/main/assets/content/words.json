@@ -14,7 +14,7 @@
           "hanzi": "猫",
           "pinyin": "māo",
           "english": "cat",
-          "image": "ill_placeholder",
+          "image": "ill_word_mao",
           "audio": "audio/words/mao.ogg",
           "distractors": [
             "狗",
@@ -27,7 +27,7 @@
           "hanzi": "狗",
           "pinyin": "gǒu",
           "english": "dog",
-          "image": "ill_placeholder",
+          "image": "ill_word_gou",
           "audio": "audio/words/gou.ogg",
           "distractors": [
             "猫",
@@ -40,7 +40,7 @@
           "hanzi": "鸟",
           "pinyin": "niǎo",
           "english": "bird",
-          "image": "ill_placeholder",
+          "image": "ill_word_niao",
           "audio": "audio/words/niao.ogg",
           "distractors": [
             "鱼",
@@ -53,7 +53,7 @@
           "hanzi": "鱼",
           "pinyin": "yú",
           "english": "fish",
-          "image": "ill_placeholder",
+          "image": "ill_word_yu",
           "audio": "audio/words/yu.ogg",
           "distractors": [
             "鸟",
@@ -66,7 +66,7 @@
           "hanzi": "马",
           "pinyin": "mǎ",
           "english": "horse",
-          "image": "ill_placeholder",
+          "image": "ill_word_ma",
           "audio": "audio/words/ma.ogg",
           "distractors": [
             "牛",
@@ -79,7 +79,7 @@
           "hanzi": "牛",
           "pinyin": "niú",
           "english": "cow",
-          "image": "ill_placeholder",
+          "image": "ill_word_niu",
           "audio": "audio/words/niu.ogg",
           "distractors": [
             "马",
@@ -102,7 +102,7 @@
           "hanzi": "果",
           "pinyin": "guǒ",
           "english": "fruit",
-          "image": "ill_placeholder",
+          "image": "ill_word_guo",
           "audio": "audio/words/guo.ogg",
           "distractors": [
             "瓜",
@@ -115,7 +115,7 @@
           "hanzi": "瓜",
           "pinyin": "guā",
           "english": "melon",
-          "image": "ill_placeholder",
+          "image": "ill_word_gua",
           "audio": "audio/words/gua.ogg",
           "distractors": [
             "果",
@@ -128,7 +128,7 @@
           "hanzi": "桃",
           "pinyin": "táo",
           "english": "peach",
-          "image": "ill_placeholder",
+          "image": "ill_word_tao",
           "audio": "audio/words/tao.ogg",
           "distractors": [
             "梨",
@@ -141,7 +141,7 @@
           "hanzi": "梨",
           "pinyin": "lí",
           "english": "pear",
-          "image": "ill_placeholder",
+          "image": "ill_word_li_2",
           "audio": "audio/words/li_2.ogg",
           "distractors": [
             "桃",
@@ -154,7 +154,7 @@
           "hanzi": "枣",
           "pinyin": "zǎo",
           "english": "jujube",
-          "image": "ill_placeholder",
+          "image": "ill_word_zao",
           "audio": "audio/words/zao.ogg",
           "distractors": [
             "李",
@@ -167,7 +167,7 @@
           "hanzi": "李",
           "pinyin": "lǐ",
           "english": "plum",
-          "image": "ill_placeholder",
+          "image": "ill_word_li_3",
           "audio": "audio/words/li_3.ogg",
           "distractors": [
             "梨",
@@ -190,7 +190,7 @@
           "hanzi": "红",
           "pinyin": "hóng",
           "english": "red",
-          "image": "ill_placeholder",
+          "image": "ill_word_hong",
           "audio": "audio/words/hong.ogg",
           "distractors": [
             "黄",
@@ -203,7 +203,7 @@
           "hanzi": "黄",
           "pinyin": "huáng",
           "english": "yellow",
-          "image": "ill_placeholder",
+          "image": "ill_word_huang",
           "audio": "audio/words/huang.ogg",
           "distractors": [
             "红",
@@ -216,7 +216,7 @@
           "hanzi": "蓝",
           "pinyin": "lán",
           "english": "blue",
-          "image": "ill_placeholder",
+          "image": "ill_word_lan",
           "audio": "audio/words/lan.ogg",
           "distractors": [
             "绿",
@@ -229,7 +229,7 @@
           "hanzi": "绿",
           "pinyin": "lǜ",
           "english": "green",
-          "image": "ill_placeholder",
+          "image": "ill_word_lv",
           "audio": "audio/words/lv.ogg",
           "distractors": [
             "蓝",
@@ -242,7 +242,7 @@
           "hanzi": "白",
           "pinyin": "bái",
           "english": "white",
-          "image": "ill_placeholder",
+          "image": "ill_word_bai",
           "audio": "audio/words/bai.ogg",
           "distractors": [
             "黑",
@@ -255,7 +255,7 @@
           "hanzi": "黑",
           "pinyin": "hēi",
           "english": "black",
-          "image": "ill_placeholder",
+          "image": "ill_word_hei",
           "audio": "audio/words/hei.ogg",
           "distractors": [
             "白",
@@ -278,7 +278,7 @@
           "hanzi": "一",
           "pinyin": "yī",
           "english": "one",
-          "image": "ill_placeholder",
+          "image": "ill_word_yi",
           "audio": "audio/words/yi.ogg",
           "distractors": [
             "二",
@@ -291,7 +291,7 @@
           "hanzi": "二",
           "pinyin": "èr",
           "english": "two",
-          "image": "ill_placeholder",
+          "image": "ill_word_er",
           "audio": "audio/words/er.ogg",
           "distractors": [
             "一",
@@ -304,7 +304,7 @@
           "hanzi": "三",
           "pinyin": "sān",
           "english": "three",
-          "image": "ill_placeholder",
+          "image": "ill_word_san",
           "audio": "audio/words/san.ogg",
           "distractors": [
             "二",
@@ -317,7 +317,7 @@
           "hanzi": "四",
           "pinyin": "sì",
           "english": "four",
-          "image": "ill_placeholder",
+          "image": "ill_word_si",
           "audio": "audio/words/si.ogg",
           "distractors": [
             "三",
@@ -330,7 +330,7 @@
           "hanzi": "五",
           "pinyin": "wǔ",
           "english": "five",
-          "image": "ill_placeholder",
+          "image": "ill_word_wu",
           "audio": "audio/words/wu.ogg",
           "distractors": [
             "四",
@@ -343,7 +343,7 @@
           "hanzi": "六",
           "pinyin": "liù",
           "english": "six",
-          "image": "ill_placeholder",
+          "image": "ill_word_liu",
           "audio": "audio/words/liu.ogg",
           "distractors": [
             "五",
@@ -366,7 +366,7 @@
           "hanzi": "爸",
           "pinyin": "bà",
           "english": "dad",
-          "image": "ill_placeholder",
+          "image": "ill_word_ba",
           "audio": "audio/words/ba.ogg",
           "distractors": [
             "妈",
@@ -379,7 +379,7 @@
           "hanzi": "妈",
           "pinyin": "mā",
           "english": "mum",
-          "image": "ill_placeholder",
+          "image": "ill_word_ma_5",
           "audio": "audio/words/ma_5.ogg",
           "distractors": [
             "爸",
@@ -392,7 +392,7 @@
           "hanzi": "哥",
           "pinyin": "gē",
           "english": "older brother",
-          "image": "ill_placeholder",
+          "image": "ill_word_ge",
           "audio": "audio/words/ge.ogg",
           "distractors": [
             "弟",
@@ -405,7 +405,7 @@
           "hanzi": "姐",
           "pinyin": "jiě",
           "english": "older sister",
-          "image": "ill_placeholder",
+          "image": "ill_word_jie",
           "audio": "audio/words/jie.ogg",
           "distractors": [
             "妹",
@@ -418,7 +418,7 @@
           "hanzi": "弟",
           "pinyin": "dì",
           "english": "younger brother",
-          "image": "ill_placeholder",
+          "image": "ill_word_di",
           "audio": "audio/words/di.ogg",
           "distractors": [
             "哥",
@@ -431,7 +431,7 @@
           "hanzi": "妹",
           "pinyin": "mèi",
           "english": "younger sister",
-          "image": "ill_placeholder",
+          "image": "ill_word_mei",
           "audio": "audio/words/mei.ogg",
           "distractors": [
             "姐",
@@ -454,7 +454,7 @@
           "hanzi": "月",
           "pinyin": "yuè",
           "english": "moon",
-          "image": "ill_placeholder",
+          "image": "ill_word_yue",
           "audio": "audio/words/yue.ogg",
           "distractors": [
             "星",
@@ -467,7 +467,7 @@
           "hanzi": "山",
           "pinyin": "shān",
           "english": "mountain",
-          "image": "ill_placeholder",
+          "image": "ill_word_shan",
           "audio": "audio/words/shan.ogg",
           "distractors": [
             "水",
@@ -480,7 +480,7 @@
           "hanzi": "水",
           "pinyin": "shuǐ",
           "english": "water",
-          "image": "ill_placeholder",
+          "image": "ill_word_shui",
           "audio": "audio/words/shui.ogg",
           "distractors": [
             "火",
@@ -493,7 +493,7 @@
           "hanzi": "火",
           "pinyin": "huǒ",
           "english": "fire",
-          "image": "ill_placeholder",
+          "image": "ill_word_huo",
           "audio": "audio/words/huo.ogg",
           "distractors": [
             "水",
@@ -506,7 +506,7 @@
           "hanzi": "木",
           "pinyin": "mù",
           "english": "wood",
-          "image": "ill_placeholder",
+          "image": "ill_word_mu",
           "audio": "audio/words/mu.ogg",
           "distractors": [
             "山",
@@ -519,7 +519,7 @@
           "hanzi": "星",
           "pinyin": "xīng",
           "english": "star",
-          "image": "ill_placeholder",
+          "image": "ill_word_xing",
           "audio": "audio/words/xing.ogg",
           "distractors": [
             "月",

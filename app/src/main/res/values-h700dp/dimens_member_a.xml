@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ls_quiz_card_height">200dp</dimen>
+    <dimen name="ls_quiz_prompt_ill">120dp</dimen>
+    <dimen name="ls_quiz_option_text">34sp</dimen>
+    <dimen name="ls_quiz_icon_padding">32dp</dimen>
+    <dimen name="ls_quiz_feedback_text">16sp</dimen>
+    <dimen name="ls_quiz_listen_bottom">20dp</dimen>
+</resources>

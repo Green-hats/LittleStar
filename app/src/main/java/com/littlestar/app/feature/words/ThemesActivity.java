@@ -41,7 +41,9 @@ public final class ThemesActivity extends ChildActivity {
                 .get(ThemesViewModel.class);
 
         adapter = new ThemeAdapter();
-        binding.themesList.setLayoutManager(new GridLayoutManager(this, 2));
+        int columns = getResources().getConfiguration().screenWidthDp < 360
+                || getResources().getConfiguration().fontScale >= 1.3f ? 1 : 2;
+        binding.themesList.setLayoutManager(new GridLayoutManager(this, columns));
         binding.themesList.addItemDecoration(new GapDecoration(
                 getResources().getDimensionPixelSize(R.dimen.ls_gap)));
         binding.themesList.setAdapter(adapter);
@@ -75,7 +77,10 @@ public final class ThemesActivity extends ChildActivity {
         public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
                                    @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
             int pos = parent.getChildAdapterPosition(view);
-            if (pos % 2 == 0) {
+            int columns = parent.getLayoutManager() instanceof GridLayoutManager
+                    ? ((GridLayoutManager) parent.getLayoutManager()).getSpanCount() : 2;
+            if (columns == 1 || pos == RecyclerView.NO_POSITION) return;
+            if (pos % columns == 0) {
                 outRect.right = gap / 2;
             } else {
                 outRect.left = gap / 2;

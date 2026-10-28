@@ -20,8 +20,7 @@ import java.util.Random;
 
 /**
  * 测验。一页一题；题目顺序在会话创建时写进 session.quizWordIds（恢复时按它重建，不重新随机）。
- * 当前题号写进 SavedStateHandle；已答结果以 session.answers 为准，
- * 进程被杀后回到同一题且已答状态可重建。
+ * 选项顺序按 (session.id, word.id) 确定性种子生成，确保进程重建后四选项位置稳定不变。
  */
 public final class QuizViewModel extends ViewModel {
 
@@ -68,7 +67,6 @@ public final class QuizViewModel extends ViewModel {
 
     private final AppContainer container;
     private final SavedStateHandle savedState;
-    private final QuizGenerator generator;
 
     private final MutableLiveData<UiState> state = new MutableLiveData<>();
     private final MutableLiveData<Event<Effect>> effects = new MutableLiveData<>();
@@ -86,7 +84,6 @@ public final class QuizViewModel extends ViewModel {
     public QuizViewModel(@NonNull AppContainer container, @NonNull SavedStateHandle savedState) {
         this.container = container;
         this.savedState = savedState;
-        this.generator = new QuizGenerator(container.content, new Random());
     }
 
     /** Activity 在 content + store 就绪后调用；会话还没读到时返回 false，稍后重试。 */
@@ -102,10 +99,13 @@ public final class QuizViewModel extends ViewModel {
         initialized = true;
         this.mode = mode;
         this.sessionId = sessionId;
-        for (String id : session.quizWordIds) {
+        for (int qIdx = 0; qIdx < session.quizWordIds.size(); qIdx++) {
+            String id = session.quizWordIds.get(qIdx);
             Word w = container.content.wordById(id);
             if (w != null) {
-                questions.add(generator.generate(w));
+                long seed = session.id * 10007L + (long) qIdx * 31L + id.hashCode();
+                QuizGenerator seededGen = new QuizGenerator(container.content, new Random(seed));
+                questions.add(seededGen.generate(w));
             }
         }
         publish(session);

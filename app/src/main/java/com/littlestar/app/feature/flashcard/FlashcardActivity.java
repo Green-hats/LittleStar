@@ -25,7 +25,6 @@ import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.data.store.ProgressState;
 import com.littlestar.app.databinding.ActivityFlashcardBinding;
 import com.littlestar.app.databinding.PageFlashcardBinding;
-import com.littlestar.app.domain.SessionBuilder;
 import com.littlestar.app.feature.quiz.QuizActivity;
 
 import java.util.ArrayList;
@@ -68,13 +67,13 @@ public final class FlashcardActivity extends ChildActivity {
 
     private FlashcardViewModel.Mode mode = FlashcardViewModel.Mode.SESSION;
     private long sessionId = -1;
-    private boolean initialized;
+    private int restoredIndex = -1;
     private boolean speaking;
     /** 页面滑动来源标记：next() 按钮触发的翻页不重复朗读（render 里已处理）。 */
     private boolean firstPageSpoken;
 
     private static final String STATE_SESSION_ID = "state_session_id";
-    private static final String STATE_INITIALIZED = "state_initialized";
+    private static final String STATE_CURRENT_INDEX = "state_current_index";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,10 +82,10 @@ public final class FlashcardActivity extends ChildActivity {
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
 
-        // 进程被杀重建：恢复已建会话，不重复 buildSession（孤儿 session 会堆积）
+        // 进程被杀或重建：恢复已建会话与当前字卡索引，不覆盖为 -1，也不重复 buildSession
         if (savedInstanceState != null) {
             sessionId = savedInstanceState.getLong(STATE_SESSION_ID, -1);
-            initialized = savedInstanceState.getBoolean(STATE_INITIALIZED, false);
+            restoredIndex = savedInstanceState.getInt(STATE_CURRENT_INDEX, -1);
         }
 
         vm = new ViewModelProvider(this,
@@ -97,7 +96,12 @@ public final class FlashcardActivity extends ChildActivity {
         if (m != null) {
             mode = FlashcardViewModel.Mode.valueOf(m);
         }
-        sessionId = getIntent().getLongExtra(EXTRA_SESSION_ID, -1);
+        if (sessionId < 0) {
+            sessionId = getIntent().getLongExtra(EXTRA_SESSION_ID, -1);
+        }
+        if (sessionId < 0 && vm.sessionId() > 0) {
+            sessionId = vm.sessionId();
+        }
 
         adapter = new CardAdapter();
         binding.pager.setAdapter(adapter);
@@ -151,71 +155,19 @@ public final class FlashcardActivity extends ChildActivity {
             updateReading();
         });
 
-        // 内容先解析，再建会话 / 初始化（不在主线程做 IO）
-        container().content.load(container().executors, this::initAfterContent);
-    }
-
-    private void initAfterContent() {
-        if (isFinishing()) {
-            return;
-        }
-        if (mode == FlashcardViewModel.Mode.SESSION && sessionId < 0 && !initialized) {
-            initialized = true;
-            buildSession();
-            return;
-        }
-        if (initialized && mode == FlashcardViewModel.Mode.SESSION) {
-            // 恢复路径：从 store 读回该会话的新字列表（quizWordIds 在会话创建时已固定）
-            initialized = true;
-            ProgressState ps = container().store.observe().getValue();
-            ProgressState.Session s = ps == null ? null : SessionBuilder.sessionById(ps, sessionId);
-            if (s != null) {
-                vm.init(mode, new ArrayList<>(s.newWordIds), 0, sessionId);
-            } else {
-                // 极端情况：上次 buildSession 在回主线程前被杀（session 已落盘但丢了 id）→ 重建
-                buildSession();
-            }
-            return;
-        }
-        initialized = true;
+        // 异步工作与结果归 retained VM 所有；重建只重新订阅，不重建会话。
+        int targetIndex = restoredIndex >= 0
+                ? restoredIndex : getIntent().getIntExtra(EXTRA_START_INDEX, 0);
         List<String> ids = getIntent().getStringArrayListExtra(EXTRA_WORD_IDS);
-        vm.init(mode, ids != null ? ids : new ArrayList<>(),
-                getIntent().getIntExtra(EXTRA_START_INDEX, 0), sessionId);
+        vm.initialize(mode, ids != null ? ids : new ArrayList<>(), targetIndex, sessionId);
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong(STATE_SESSION_ID, sessionId);
-        outState.putBoolean(STATE_INITIALIZED, initialized);
-    }
-
-    /** SESSION 模式：在 diskIO 线程建会话并立即落盘，回主线程初始化。 */
-    private void buildSession() {
-        container().store.update(state -> {
-            ProgressState.Session s = container().sessionBuilder.buildDailySession(
-                    state, container().settings.getDailyGoal());
-            long id = s.id;
-            List<String> newIds = new ArrayList<>(s.newWordIds);
-            container().store.flushNow();
-            container().executors.mainThread().execute(() -> {
-                if (isFinishing() || isDestroyed()) {
-                    return;
-                }
-                sessionId = id;
-                if (s.quizWordIds.isEmpty()) {
-                    // 极端兜底：没有新字也没有复习字（不会发生，但不允许软锁）
-                    finish();
-                } else if (newIds.isEmpty()) {
-                    // REVIEW 会话：跳过识字卡直接进测验（§7.2）
-                    startActivity(QuizActivity.sessionIntent(this, id));
-                    Motion.childEnter(this);
-                    finish();
-                } else {
-                    vm.init(mode, newIds, 0, id);
-                }
-            });
-        });
+        // VM 是权威来源：异步完成后 Activity 字段可能仍是旧入口值。
+        outState.putLong(STATE_SESSION_ID, vm != null ? vm.sessionId() : sessionId);
+        outState.putInt(STATE_CURRENT_INDEX, vm != null ? vm.currentIndex() : Math.max(0, restoredIndex));
     }
 
     private void render(FlashcardViewModel.UiState s) {
@@ -240,7 +192,6 @@ public final class FlashcardActivity extends ChildActivity {
         if (binding.pager.getCurrentItem() != s.index) {
             binding.pager.setCurrentItem(s.index, false);
         } else if (!firstPageSpoken) {
-            // 第一页不会触发 onPageSelected，进入时自动朗读
             firstPageSpoken = true;
             speakCurrent();
         }
@@ -313,7 +264,7 @@ public final class FlashcardActivity extends ChildActivity {
         super.onDestroy();
     }
 
-    /** 卡页 adapter：每页一张主角卡。 */
+    /** 卡页 adapter：每页一张主角卡。绑定专属词义配图并隐藏重复字形占位。 */
     private final class CardAdapter extends RecyclerView.Adapter<CardAdapter.Holder> {
 
         private List<Word> words = new ArrayList<>();
@@ -338,7 +289,17 @@ public final class FlashcardActivity extends ChildActivity {
         @Override
         public void onBindViewHolder(@NonNull Holder h, int position) {
             Word w = words.get(position);
-            h.binding.pageGlyph.setText(w.hanzi);
+            int resId = w.image == null ? 0
+                    : getResources().getIdentifier(w.image, "drawable", getPackageName());
+            boolean hasDedicatedIllustration = resId != 0 && !"ill_placeholder".equals(w.image);
+            if (hasDedicatedIllustration) {
+                h.binding.pageIllustration.setImageResource(resId);
+                h.binding.pageGlyph.setVisibility(View.GONE);
+            } else {
+                h.binding.pageIllustration.setImageResource(R.drawable.ill_placeholder);
+                h.binding.pageGlyph.setVisibility(View.VISIBLE);
+                h.binding.pageGlyph.setText(w.hanzi);
+            }
             h.binding.pageHanzi.setText(w.hanzi);
             h.binding.pagePinyin.setText(w.pinyin);
             h.binding.pageEnglish.setText(w.english);

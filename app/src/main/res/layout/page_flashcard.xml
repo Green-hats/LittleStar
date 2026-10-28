@@ -1,104 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- 识字卡单页（ViewPager2 page）：插图占位 + 字形 + 汉字 100sp + 拼音 + 英文 + 听块 + 声波 -->
-<com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/pageCard"
-    style="@style/Widget.LS.Block.Hero"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/ls_gap">
-
-    <FrameLayout
-        android:layout_width="@dimen/ls_ill_large"
-        android:layout_height="@dimen/ls_ill_large"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/ls_section_lg">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ill_placeholder" />
-
-        <com.littlestar.app.core.ui.HanziTextView
-            android:id="@+id/pageGlyph"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textAppearance="@style/TextAppearance.LS.HanziTile"
-            android:textColor="@color/ls_on_yellow" />
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <com.littlestar.app.core.ui.HanziTextView
-            android:id="@+id/pageHanzi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.LS.HanziHero" />
-
-        <TextView
-            android:id="@+id/pagePinyin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap_sm"
-            android:textAppearance="@style/TextAppearance.LS.Pinyin" />
-
-        <TextView
-            android:id="@+id/pageEnglish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap_sm"
-            android:textAppearance="@style/TextAppearance.LS.English" />
-    </LinearLayout>
+<?xml version='1.0' encoding='utf-8'?>
+<!-- 识字卡单页（ViewPager2 page）：插图 + 汉字 100sp + 拼音 + 英文 + 听块 + 声波 -->
+<com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/pageCard" style="@style/Widget.LS.Block.Hero" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginBottom="@dimen/ls_gap">
 
     <!-- 蓝色听块 + 声波（朗读中显示，不改布局） -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="@dimen/ls_card_pad"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+    <androidx.core.widget.NestedScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:clipToPadding="false"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal" android:padding="@dimen/ls_card_pad"><FrameLayout android:layout_width="@dimen/ls_ill_large" android:layout_height="@dimen/ls_ill_large">
 
-        <com.littlestar.app.core.ui.BlockLayout
-            android:id="@+id/btnListen"
-            style="@style/Widget.LS.Block.Icon"
-            android:layout_width="@dimen/ls_listen_block"
-            android:layout_height="@dimen/ls_listen_block"
-            android:contentDescription="@string/home_listen_desc"
-            app:ls_fill="@color/ls_blue">
+        <ImageView android:id="@+id/pageIllustration" android:layout_width="match_parent" android:layout_height="match_parent" android:importantForAccessibility="no" android:src="@drawable/ill_placeholder"/>
 
-            <ImageView
-                android:layout_width="@dimen/ls_icon"
-                android:layout_height="@dimen/ls_icon"
-                android:layout_gravity="center"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_speaker"
-                app:tint="@color/ls_on_blue" />
+        <com.littlestar.app.core.ui.HanziTextView android:id="@+id/pageGlyph" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:textAppearance="@style/TextAppearance.LS.HanziTile" android:textColor="@color/ls_on_yellow"/>
+    </FrameLayout>
+
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_horizontal" android:orientation="vertical" android:layout_marginTop="@dimen/ls_gap">
+
+        <com.littlestar.app.core.ui.HanziTextView android:id="@+id/pageHanzi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.LS.HanziHero"/>
+
+        <TextView android:id="@+id/pagePinyin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap_sm" android:textAppearance="@style/TextAppearance.LS.Pinyin"/>
+
+        <TextView android:id="@+id/pageEnglish" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap_sm" android:textAppearance="@style/TextAppearance.LS.English"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:layout_marginTop="@dimen/ls_gap">
+
+        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnListen" style="@style/Widget.LS.Block.Icon" android:layout_width="@dimen/ls_listen_block" android:layout_height="@dimen/ls_listen_block" android:contentDescription="@string/home_listen_desc" app:ls_fill="@color/ls_blue">
+
+            <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon" android:layout_gravity="center" android:importantForAccessibility="no" android:src="@drawable/ic_speaker" app:tint="@color/ls_on_blue"/>
         </com.littlestar.app.core.ui.BlockLayout>
 
-        <com.littlestar.app.core.ui.SoundWaveView
-            android:id="@+id/soundWave"
-            android:layout_width="@dimen/ls_wave"
-            android:layout_height="@dimen/ls_wave_height"
-            android:layout_marginStart="@dimen/ls_gap"
-            android:visibility="gone"
-            app:barColor="@color/ls_blue" />
+        <com.littlestar.app.core.ui.SoundWaveView android:id="@+id/soundWave" android:layout_width="@dimen/ls_wave" android:layout_height="@dimen/ls_wave_height" android:layout_marginStart="@dimen/ls_gap" android:visibility="gone" app:barColor="@color/ls_blue"/>
 
-        <TextView
-            android:id="@+id/readingLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ls_gap_sm"
-            android:text="@string/fc_reading"
-            android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textColor="@color/ls_blue"
-            android:visibility="gone" />
+        <TextView android:id="@+id/readingLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/ls_gap_sm" android:text="@string/fc_reading" android:textAppearance="@style/TextAppearance.LS.Caption" android:textColor="@color/ls_blue" android:visibility="gone"/>
     </LinearLayout>
-</com.littlestar.app.core.ui.BlockLayout>
+</LinearLayout></androidx.core.widget.NestedScrollView></com.littlestar.app.core.ui.BlockLayout>

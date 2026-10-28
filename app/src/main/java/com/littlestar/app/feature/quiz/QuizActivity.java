@@ -144,7 +144,10 @@ public final class QuizActivity extends ChildActivity {
         int card = ContextCompat.getColor(this, R.color.ls_card);
         int mint = ContextCompat.getColor(this, R.color.ls_mint);
         int clay = ContextCompat.getColor(this, R.color.ls_clay);
+        int ink = ContextCompat.getColor(this, R.color.ls_ink);
+        int muted = ContextCompat.getColor(this, R.color.ls_muted);
         int onMint = ContextCompat.getColor(this, R.color.ls_on_mint);
+        int onClay = ContextCompat.getColor(this, R.color.ls_on_clay);
 
         for (int i = 0; i < options.length; i++) {
             ViewQuizOptionBinding ob = options[i];
@@ -156,14 +159,22 @@ public final class QuizActivity extends ChildActivity {
 
             if (!s.answered) {
                 optionBlocks[i].setFillColor(card);
+                ob.optionHanzi.setTextColor(ink);
+                ob.optionPinyin.setTextColor(muted);
             } else if (i == s.question.correctIndex()) {
                 optionBlocks[i].setFillColor(mint);
+                ob.optionHanzi.setTextColor(onMint);
+                ob.optionPinyin.setTextColor(onMint);
                 showBadge(ob, true);
             } else if (i == s.chosenIndex) {
                 optionBlocks[i].setFillColor(clay);
+                ob.optionHanzi.setTextColor(onClay);
+                ob.optionPinyin.setTextColor(onClay);
                 showBadge(ob, false);
             } else {
                 optionBlocks[i].setFillColor(card);
+                ob.optionHanzi.setTextColor(ink);
+                ob.optionPinyin.setTextColor(muted);
             }
         }
 
@@ -173,12 +184,10 @@ public final class QuizActivity extends ChildActivity {
             binding.feedbackText.setText(s.lastAnswerCorrect
                     ? getString(R.string.quiz_feedback_correct)
                     : getString(R.string.quiz_feedback_wrong, s.question.hanzi()));
-            binding.feedbackText.setTextColor(ContextCompat.getColor(this,
-                    s.lastAnswerCorrect ? R.color.ls_on_mint : R.color.ls_on_clay));
+            binding.feedbackText.setTextColor(s.lastAnswerCorrect ? onMint : onClay);
             binding.feedbackIcon.setImageResource(
                     s.lastAnswerCorrect ? R.drawable.ic_check : R.drawable.ic_close);
-            binding.feedbackIcon.setColorFilter(s.lastAnswerCorrect ? onMint
-                    : ContextCompat.getColor(this, R.color.ls_on_clay));
+            binding.feedbackIcon.setColorFilter(s.lastAnswerCorrect ? onMint : onClay);
             binding.btnNextText.setText(s.isLast ? R.string.quiz_done : R.string.quiz_next);
             if (feedbackShownFor != s.index) {
                 feedbackShownFor = s.index;
