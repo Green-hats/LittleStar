@@ -17,7 +17,7 @@ import com.littlestar.app.feature.settings.SettingsActivity;
 /**
  * 家长验证（D31：PIN 登录取代算术题）。
  * 已设 PIN → 输入验证，错了抖动 + 清空，不锁定；
- * 未设 PIN（旧数据/跳过引导）→ 首次进入即创建（4 位数字）。
+ * 未设 PIN（旧数据/跳过引导）→ 首次进入创建并再次确认（4 位数字）。
  * 通过 → Settings 并 finish 自己。
  */
 public final class ParentGateActivity extends ParentActivity {
@@ -29,6 +29,8 @@ public final class ParentGateActivity extends ParentActivity {
 
     private ActivityParentGateBinding binding;
     private boolean createMode;
+    // Keep the unconfirmed PIN in memory only; recreation safely restarts setup.
+    private String pendingPin;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +62,24 @@ public final class ParentGateActivity extends ParentActivity {
             return;
         }
         if (createMode) {
-            container().settings.setParentPin(input);
-            dispatch();
+            if (pendingPin == null) {
+                pendingPin = input;
+                binding.answerInput.setText("");
+                binding.answerInput.setError(null);
+                binding.questionText.setText(R.string.peer_settings_pin_confirm);
+                binding.questionText.announceForAccessibility(
+                        getString(R.string.peer_settings_pin_confirm));
+            } else if (pendingPin.equals(input)) {
+                container().settings.setParentPin(input);
+                pendingPin = null;
+                dispatch();
+            } else {
+                pendingPin = null;
+                binding.questionText.setText(R.string.pg_pin_create);
+                binding.answerInput.setText("");
+                binding.answerInput.setError(getString(R.string.peer_settings_pin_mismatch));
+                Motion.shake(binding.answerInput);
+            }
         } else if (input.equals(container().settings.getParentPin())) {
             dispatch();
         } else {

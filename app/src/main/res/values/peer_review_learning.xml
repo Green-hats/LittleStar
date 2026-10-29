@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pr_stamp_optional">Optional mark</string>
+    <string name="pr_stamp_marked">Marked as learned</string>
+    <string name="pr_stamp_explanation">For parents: this records a learning action, not mastery.</string>
+    <string name="pr_stamp_action_desc">Mark this character as learned. Optional learning record.</string>
+    <string name="pr_stamp_marked_desc">Character marked as learned. This is a learning record, not mastery.</string>
+    <string name="pr_stamp_state_unmarked">Not marked</string>
+    <string name="pr_stamp_state_marked">Marked as learned</string>
+    <string name="pr_audio_title">Can’t play this sound</string>
+    <string name="pr_audio_message">Try again, or ask a parent for help.</string>
+    <string name="pr_audio_retry">Try again</string>
+    <string name="pr_audio_leave_quiz">Leave quiz</string>
+</resources>

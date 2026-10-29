@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="peer_settings_pin_confirm">Enter your PIN again to confirm</string>
+    <string name="peer_settings_pin_mismatch">The PINs did not match. Please create your PIN again.</string>
+    <string name="peer_settings_reminders_blocked_title">Plan saved · reminders are off</string>
+    <string name="peer_settings_reminders_blocked_message">Your learning plan is saved, but reminders cannot appear while notifications are blocked. In your device settings, allow notifications for LittleStar and enable the learning reminder notification category. Your learning records are unchanged.</string>
+</resources>

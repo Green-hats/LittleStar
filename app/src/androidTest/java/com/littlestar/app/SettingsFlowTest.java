@@ -83,8 +83,57 @@ public final class SettingsFlowTest {
         try (ActivityScenario<ParentGateActivity> scenario = ActivityScenario.launch(ParentGateActivity.class)) {
             onView(withId(R.id.questionText)).check(matches(withText(R.string.pg_pin_create)));
             enterPin();
+            onView(withId(R.id.questionText))
+                    .check(matches(withText(R.string.peer_settings_pin_confirm)));
+            assertEquals("", container.settings.getParentPin());
+            enterPin();
             waitFor(R.id.settingsTitle);
             assertEquals("1234", container.settings.getParentPin());
+            onView(withId(R.id.btnBack)).perform(click());
+        }
+    }
+
+    @Test
+    public void firstPin_mismatchDoesNotStore_andAllowsFreshPair() {
+        container.settings.setParentPin("");
+        try (ActivityScenario<ParentGateActivity> scenario = ActivityScenario.launch(ParentGateActivity.class)) {
+            enterPin();
+            onView(withId(R.id.answerInput)).perform(replaceText("9876"));
+            closeSoftKeyboard();
+            onView(withId(R.id.btnConfirm)).perform(click());
+            assertEquals("", container.settings.getParentPin());
+            onView(withId(R.id.questionText)).check(matches(withText(R.string.pg_pin_create)));
+            enterPin();
+            assertEquals("", container.settings.getParentPin());
+            enterPin();
+            waitFor(R.id.settingsTitle);
+            assertEquals("1234", container.settings.getParentPin());
+            onView(withId(R.id.btnBack)).perform(click());
+        }
+    }
+
+    @Test
+    public void firstPin_backBeforeConfirmationDoesNotStore() {
+        container.settings.setParentPin("");
+        try (ActivityScenario<ParentGateActivity> scenario = ActivityScenario.launch(ParentGateActivity.class)) {
+            enterPin();
+            onView(withId(R.id.btnBack)).perform(click());
+            assertEquals("", container.settings.getParentPin());
+        }
+    }
+
+    @Test
+    public void firstPin_recreationRestartsUnconfirmedSetup() {
+        container.settings.setParentPin("");
+        try (ActivityScenario<ParentGateActivity> scenario = ActivityScenario.launch(ParentGateActivity.class)) {
+            enterPin();
+            scenario.recreate();
+            onView(withId(R.id.questionText)).check(matches(withText(R.string.pg_pin_create)));
+            assertEquals("", container.settings.getParentPin());
+            enterPin();
+            assertEquals("", container.settings.getParentPin());
+            enterPin();
+            waitFor(R.id.settingsTitle);
             onView(withId(R.id.btnBack)).perform(click());
         }
     }
@@ -124,6 +173,65 @@ public final class SettingsFlowTest {
                     state.dailyPlans.get(container.clock.today().toString()).newWordIds.size(),
                     (int) state.sessions.get(0).id, state.sessions.get(0).completedAt.intValue()});
             assertArrayEquals(new int[]{3, 3, 42, 1}, snapshot);
+        }
+    }
+
+    /** Run with app notifications or the reminder channel disabled; no device settings changed here. */
+    @Test
+    public void save_blockedUnchangedReminderWarns_andKeepsSavedPlan() {
+        Context context = ApplicationProvider.getApplicationContext();
+        android.app.NotificationManager manager = context.getSystemService(android.app.NotificationManager.class);
+        android.app.NotificationChannel channel = manager.getNotificationChannel(
+                com.littlestar.app.notify.Notifier.CHANNEL_REMINDER);
+        org.junit.Assume.assumeTrue("Requires blocked app notifications or reminder channel",
+                !manager.areNotificationsEnabled() || (channel != null
+                        && channel.getImportance() == android.app.NotificationManager.IMPORTANCE_NONE));
+        container.settings.setReminderDays(Set.of(1, 3));
+        container.settings.setReminderTime("19:30");
+        try (ActivityScenario<SettingsActivity> scenario = ActivityScenario.launch(SettingsActivity.class)) {
+            scenario.onActivity(activity -> {
+                ((StepperView) activity.findViewById(R.id.goalStepper)).setValue(5);
+                activity.findViewById(R.id.btnSave).performClick();
+            });
+            onView(withText(R.string.peer_settings_reminders_blocked_message))
+                    .inRoot(isDialog()).check(matches(isDisplayed()));
+            assertEquals(5, container.settings.getDailyGoal());
+            assertEquals(Set.of(1, 3), container.settings.getReminderDays());
+            assertEquals("19:30", container.settings.getReminderTime());
+            scenario.recreate();
+            onView(withText(R.string.peer_settings_reminders_blocked_message))
+                    .inRoot(isDialog()).check(matches(isDisplayed()));
+            onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click());
+        }
+    }
+
+    /** Parent should run once in 12-hour mode and once in 24-hour mode. */
+    @Test
+    public void reminderTime_usesDeviceFormat_andPreserves24HourStorage() {
+        container.settings.setReminderTime("19:30");
+        try (ActivityScenario<SettingsActivity> scenario = ActivityScenario.launch(SettingsActivity.class)) {
+            scenario.onActivity(activity -> {
+                java.util.Calendar time = new java.util.GregorianCalendar(2000,
+                        java.util.Calendar.JANUARY, 1, 19, 30);
+                assertEquals(android.text.format.DateFormat.getTimeFormat(activity).format(time.getTime()),
+                        ((android.widget.TextView) activity.findViewById(R.id.timeValue)).getText().toString());
+            });
+            onView(withId(R.id.timeRow)).perform(click());
+            boolean is24Hour = android.text.format.DateFormat.is24HourFormat(
+                    ApplicationProvider.getApplicationContext());
+            if (is24Hour) {
+                onView(org.hamcrest.Matchers.allOf(
+                        withId(com.google.android.material.R.id.material_clock_period_toggle), isDisplayed()))
+                        .inRoot(isDialog()).check(androidx.test.espresso.assertion.ViewAssertions.doesNotExist());
+            } else {
+                onView(org.hamcrest.Matchers.allOf(
+                        withId(com.google.android.material.R.id.material_clock_period_toggle), isDisplayed()))
+                        .inRoot(isDialog()).check(matches(isDisplayed()));
+            }
+            onView(withId(com.google.android.material.R.id.material_timepicker_ok_button))
+                    .inRoot(isDialog()).perform(click());
+            onView(withId(R.id.btnSave)).perform(click());
+            assertEquals("19:30", container.settings.getReminderTime());
         }
     }
 

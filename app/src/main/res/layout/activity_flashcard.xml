@@ -20,13 +20,13 @@
         <androidx.viewpager2.widget.ViewPager2 android:id="@+id/pager" android:layout_width="0dp" android:layout_height="0dp" android:layout_marginTop="@dimen/ls_gap" android:layout_marginBottom="@dimen/ls_gap" app:layout_constraintBottom_toTopOf="@id/flashcardFooter" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/cardProgress"/>
 
         <!-- 底部：印章 + NEXT -->
-        <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/flashcardFooter" android:layout_width="0dp" android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
+        <LinearLayout android:id="@+id/flashcardFooter" android:layout_width="0dp" android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" android:orientation="vertical">
 
-            <com.littlestar.app.core.ui.StampView android:id="@+id/stamp" android:layout_width="@dimen/ls_stamp" android:layout_height="@dimen/ls_stamp" app:layout_constraintBottom_toTopOf="@id/stampLabel" app:layout_constraintEnd_toEndOf="@id/stampLabel" app:layout_constraintStart_toStartOf="@id/stampLabel" app:layout_constraintTop_toTopOf="parent"/>
+            <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="wrap_content"><com.littlestar.app.core.ui.StampView android:id="@+id/stamp" android:layout_width="@dimen/ls_stamp" android:layout_height="@dimen/ls_stamp" app:layout_constraintBottom_toTopOf="@id/stampLabel" app:layout_constraintEnd_toEndOf="@id/stampLabel" app:layout_constraintStart_toStartOf="@id/stampLabel" app:layout_constraintTop_toTopOf="parent"/>
 
-            <TextView android:id="@+id/stampLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap_sm" android:text="@string/fc_stamp_label" android:textAppearance="@style/TextAppearance.LS.Caption" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"/>
+            <TextView android:id="@+id/stampLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap_sm" android:text="@string/pr_stamp_optional" android:textAppearance="@style/TextAppearance.LS.Caption" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/stamp" app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnNext" style="@style/Widget.LS.Block.Primary" android:layout_width="0dp" android:layout_height="@dimen/ls_btn_primary" android:layout_marginStart="@dimen/ls_gap" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@id/stampLabel">
+            <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnNext" style="@style/Widget.LS.Block.Primary" android:layout_width="0dp" android:layout_height="@dimen/ls_btn_primary" android:layout_marginStart="@dimen/ls_gap" app:layout_constraintBottom_toBottomOf="@id/stampLabel" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@id/stampLabel">
 
                 <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:gravity="center_vertical" android:orientation="horizontal">
 
@@ -35,11 +35,11 @@
                     <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon" android:layout_marginStart="@dimen/ls_gap_sm" android:importantForAccessibility="no" android:src="@drawable/ic_chevron" app:tint="@color/ls_on_red"/>
                 </LinearLayout>
             </com.littlestar.app.core.ui.BlockLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout><TextView android:id="@+id/stampExplanation" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/pr_stamp_explanation" android:textAppearance="@style/TextAppearance.LS.Caption" android:textSize="12sp" android:accessibilityLiveRegion="polite"/></LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- 音频缺失遮罩 + 页面内对话框（§7.26） -->
-    <FrameLayout android:id="@+id/audioMissing" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+    <FrameLayout android:id="@+id/audioMissing" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" android:clickable="true" android:focusable="true">
 
         <View android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/ls_ink_scrim"/>
 
@@ -49,20 +49,20 @@
 
                 <ImageView android:layout_width="@dimen/ls_btn_icon" android:layout_height="@dimen/ls_btn_icon" android:importantForAccessibility="no" android:src="@drawable/ic_speaker" app:tint="@color/ls_muted"/>
 
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" android:text="@string/fc_audio_missing_title" android:textAppearance="@style/TextAppearance.LS.Title"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" android:text="@string/pr_audio_title" android:textAppearance="@style/TextAppearance.LS.Title"/>
 
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap_sm" android:text="@string/fc_audio_missing_msg" android:textAppearance="@style/TextAppearance.LS.Caption" android:textSize="14sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap_sm" android:text="@string/pr_audio_message" android:textAppearance="@style/TextAppearance.LS.Caption" android:textSize="14sp"/>
 
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" android:orientation="horizontal">
 
                     <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnAudioContinue" style="@style/Widget.LS.Block.Option" android:layout_width="0dp" android:layout_height="@dimen/ls_btn_icon" android:layout_weight="1">
 
-                        <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="@string/fc_audio_continue" android:textAppearance="@style/TextAppearance.LS.Body"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="@string/fc_audio_continue" android:textAppearance="@style/TextAppearance.LS.Body" android:id="@+id/audioContinueLabel"/>
                     </com.littlestar.app.core.ui.BlockLayout>
 
                     <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnAudioRetry" style="@style/Widget.LS.Block.Option" android:layout_width="0dp" android:layout_height="@dimen/ls_btn_icon" android:layout_marginStart="@dimen/ls_gap" android:layout_weight="1">
 
-                        <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="@string/fc_audio_retry" android:textAppearance="@style/TextAppearance.LS.Body"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="@string/pr_audio_retry" android:textAppearance="@style/TextAppearance.LS.Body"/>
                     </com.littlestar.app.core.ui.BlockLayout>
                 </LinearLayout>
             </LinearLayout>

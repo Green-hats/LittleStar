@@ -1,7 +1,10 @@
 package com.littlestar.app.feature.settings;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.text.format.DateFormat;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +31,7 @@ import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.ParentActivity;
 import com.littlestar.app.databinding.ActivitySettingsBinding;
 import com.littlestar.app.feature.home.HomeActivity;
+import com.littlestar.app.notify.Notifier;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -43,9 +47,14 @@ public final class SettingsActivity extends ParentActivity {
     private final List<BlockLayout> dayButtons = new ArrayList<>();
     private String reminderTime;
     private boolean saving;
+    private boolean awaitingNotificationPermission;
+    private androidx.appcompat.app.AlertDialog saveWarningDialog;
 
     private final ActivityResultLauncher<String> notificationPermission =
-            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> finish());
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
+                awaitingNotificationPermission = false;
+                finishSaveWithFeedback();
+            });
 
     // 测试通知不保存表单、不关闭设置页，与保存计划的权限回调分开。
     private final ActivityResultLauncher<String> testNotificationPermission =
@@ -83,9 +92,14 @@ public final class SettingsActivity extends ParentActivity {
             }
         }
         saving = savedInstanceState != null && savedInstanceState.getBoolean("saving");
+        awaitingNotificationPermission = savedInstanceState != null
+                && savedInstanceState.getBoolean("awaiting_notification_permission");
         binding.btnSave.setEnabled(!saving);
         setupDays();
-        binding.timeValue.setText(reminderTime);
+        renderTime();
+        if (saving && !awaitingNotificationPermission) {
+            binding.getRoot().post(this::finishSaveWithFeedback);
+        }
         binding.timeRow.setOnClickListener(v -> pickTime());
         binding.btnBack.setOnClickListener(v -> finish());
         binding.btnCancel.setOnClickListener(v -> finish());
@@ -132,8 +146,7 @@ public final class SettingsActivity extends ParentActivity {
     }
 
     private void sendTestNotificationNow() {
-        android.app.NotificationManager manager = getSystemService(android.app.NotificationManager.class);
-        if (!manager.areNotificationsEnabled()) {
+        if (reminderNotificationsBlocked()) {
             showMessage(R.string.help_notification_off);
             return;
         }
@@ -185,20 +198,37 @@ public final class SettingsActivity extends ParentActivity {
         }
     }
 
-    private void pickTime() {
-        LocalTime time;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        renderTime();
+    }
+
+    private LocalTime parsedReminderTime() {
         try {
-            time = LocalTime.parse(reminderTime);
+            return LocalTime.parse(reminderTime);
         } catch (RuntimeException ignored) {
-            time = LocalTime.of(19, 30);
+            return LocalTime.of(19, 30);
         }
+    }
+
+    private void renderTime() {
+        LocalTime time = parsedReminderTime();
+        java.util.Calendar displayTime = new java.util.GregorianCalendar(2000,
+                java.util.Calendar.JANUARY, 1, time.getHour(), time.getMinute());
+        binding.timeValue.setText(DateFormat.getTimeFormat(this).format(displayTime.getTime()));
+    }
+
+    private void pickTime() {
+        LocalTime time = parsedReminderTime();
         MaterialTimePicker picker = new MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setTimeFormat(DateFormat.is24HourFormat(this)
+                        ? TimeFormat.CLOCK_24H : TimeFormat.CLOCK_12H)
                 .setHour(time.getHour()).setMinute(time.getMinute()).build();
         picker.addOnPositiveButtonClickListener(v -> {
             reminderTime = String.format(java.util.Locale.ROOT, "%02d:%02d",
                     picker.getHour(), picker.getMinute());
-            binding.timeValue.setText(reminderTime);
+            renderTime();
         });
         picker.show(getSupportFragmentManager(), "reminder_time");
     }
@@ -220,10 +250,60 @@ public final class SettingsActivity extends ParentActivity {
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 != PackageManager.PERMISSION_GRANTED) {
             settings.setNotifRationaleShown(true);
+            awaitingNotificationPermission = true;
             notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS);
+        } else {
+            finishSaveWithFeedback();
+        }
+    }
+
+    private boolean reminderNotificationsBlocked() {
+        if (Build.VERSION.SDK_INT >= 33
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        if (!manager.areNotificationsEnabled()) {
+            return true;
+        }
+        NotificationChannel channel = manager.getNotificationChannel(Notifier.CHANNEL_REMINDER);
+        if (channel == null) {
+            container().notifier.ensureChannels();
+            channel = manager.getNotificationChannel(Notifier.CHANNEL_REMINDER);
+        }
+        if (channel == null || channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
+            return true;
+        }
+        // A blocked channel group also suppresses its otherwise enabled channels.
+        android.app.NotificationChannelGroup group = channel.getGroup() == null ? null
+                : manager.getNotificationChannelGroup(channel.getGroup());
+        return group != null && group.isBlocked();
+    }
+
+    private void finishSaveWithFeedback() {
+        if (isFinishing() || isDestroyed()
+                || (saveWarningDialog != null && saveWarningDialog.isShowing())) {
+            return;
+        }
+        if (!days.isEmpty() && reminderNotificationsBlocked()) {
+            saveWarningDialog = new MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.peer_settings_reminders_blocked_title)
+                    .setMessage(R.string.peer_settings_reminders_blocked_message)
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> finish())
+                    .setOnCancelListener(dialog -> finish())
+                    .show();
         } else {
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (saveWarningDialog != null) {
+            saveWarningDialog.dismiss();
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -233,5 +313,6 @@ public final class SettingsActivity extends ParentActivity {
         out.putString("time", reminderTime);
         out.putIntegerArrayList("days", new ArrayList<>(days));
         out.putBoolean("saving", saving);
+        out.putBoolean("awaiting_notification_permission", awaitingNotificationPermission);
     }
 }

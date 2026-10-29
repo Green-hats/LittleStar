@@ -113,7 +113,14 @@ public final class StampView extends View {
 
     private void updateDescription() {
         setContentDescription(getResources().getString(
-                learned ? R.string.ls_stamp_learned_desc : R.string.ls_stamp_not_learned_desc));
+                learned ? R.string.pr_stamp_marked_desc : R.string.pr_stamp_action_desc));
+        setStateDescription(getResources().getString(
+                learned ? R.string.pr_stamp_state_marked : R.string.pr_stamp_state_unmarked));
+    }
+
+    @Override
+    public CharSequence getAccessibilityClassName() {
+        return "android.widget.Button";
     }
 
     @Override

@@ -89,8 +89,9 @@ public final class RewardActivity extends ChildActivity {
         vm.state().observe(this, this::render);
         vm.effects().observe(this, this::onEffect);
 
-        // 会话可读后才 init（Reward 写库只写一次，由 ViewModel 保证）
-        tryInit();
+        // A cold process has a new content repository as well as a reloaded store.
+        // Load bundled words before init can resolve session.newWordIds.
+        container().content.load(container().executors, this::tryInit);
     }
 
     private void tryInit() {
