@@ -63,7 +63,7 @@
             style="@style/Widget.LS.Block.Icon"
             android:layout_width="@dimen/ls_module_glyph"
             android:layout_height="@dimen/ls_module_glyph"
-            app:ls_fill="@color/ls_blue">
+            app:ls_fill="@color/ls_card">
 
             <ImageView
                 android:layout_width="@dimen/ls_icon"
@@ -71,7 +71,7 @@
                 android:layout_gravity="center"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_chevron"
-                app:tint="@color/ls_on_blue" />
+                app:tint="@color/ls_ink" />
         </com.littlestar.app.core.ui.BlockLayout>
 
     </LinearLayout>

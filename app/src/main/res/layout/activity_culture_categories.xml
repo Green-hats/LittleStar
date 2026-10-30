@@ -54,14 +54,6 @@
             android:text="@string/cul_title"
             android:textAppearance="@style/TextAppearance.LS.Headline" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap_sm"
-            android:text="@string/cul_subtitle"
-            android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textSize="14sp" />
-
         <!-- 2 类方块 -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -240,6 +232,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.LS.Title" />
+
+                    <TextView
+                        android:id="@+id/namePoemsEn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.LS.English.Small" />
 
                     <TextView
                         android:id="@+id/countPoems"
