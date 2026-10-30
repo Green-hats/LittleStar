@@ -120,6 +120,7 @@
 
             <com.littlestar.app.core.ui.BlockLayout
                 android:id="@+id/btnPrev"
+                android:enabled="false"
                 style="@style/Widget.LS.Block.Icon"
                 android:layout_width="@dimen/ls_btn_icon"
                 android:layout_height="@dimen/ls_btn_icon"
@@ -153,6 +154,7 @@
 
             <com.littlestar.app.core.ui.BlockLayout
                 android:id="@+id/btnNext"
+                android:enabled="false"
                 style="@style/Widget.LS.Block.Icon"
                 android:layout_width="@dimen/ls_btn_icon"
                 android:layout_height="@dimen/ls_btn_icon"

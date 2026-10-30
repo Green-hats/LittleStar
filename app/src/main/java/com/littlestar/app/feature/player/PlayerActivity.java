@@ -119,6 +119,7 @@ public final class PlayerActivity extends ChildActivity {
             }
         });
         vm.state().observe(this, this::render);
+        updateTrackControls();
 
         List<String> queue = getIntent().getStringArrayListExtra(EXTRA_QUEUE);
         String itemId = getIntent().getStringExtra(EXTRA_ITEM_ID);
@@ -140,6 +141,11 @@ public final class PlayerActivity extends ChildActivity {
             }
             controller.addListener(new Player.Listener() {
                 @Override
+                public void onEvents(@NonNull Player player, @NonNull Player.Events events) {
+                    updateTrackControls();
+                }
+
+                @Override
                 public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
                     if (mediaItem != null) {
                         vm.onTrackChanged(mediaItem.mediaId);
@@ -147,6 +153,7 @@ public final class PlayerActivity extends ChildActivity {
                 }
             });
             startPlaybackIfNeeded();
+            updateTrackControls();
             handler.post(progressTick);
         }, ContextCompat.getMainExecutor(this));
     }
@@ -179,6 +186,27 @@ public final class PlayerActivity extends ChildActivity {
         c.prepare();
         c.play();
         playbackStarted = true;
+    }
+
+    /** Show whether a neighbouring item actually exists in the current category queue. */
+    private void updateTrackControls() {
+        MediaController c = controller;
+        boolean previous = c != null
+                && c.isCommandAvailable(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
+                && c.hasPreviousMediaItem();
+        boolean next = c != null
+                && c.isCommandAvailable(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
+                && c.hasNextMediaItem();
+        float unavailableAlpha = getResources().getFraction(
+                R.fraction.player_unavailable_alpha, 1, 1);
+        binding.btnPrev.setEnabled(previous);
+        binding.btnNext.setEnabled(next);
+        binding.btnPrev.setAlpha(previous ? 1f : unavailableAlpha);
+        binding.btnNext.setAlpha(next ? 1f : unavailableAlpha);
+        binding.btnPrev.setContentDescription(getString(previous
+                ? R.string.player_desc_prev : R.string.player_desc_prev_unavailable));
+        binding.btnNext.setContentDescription(getString(next
+                ? R.string.player_desc_next : R.string.player_desc_next_unavailable));
     }
 
     private void render(PlayerViewModel.UiState s) {
@@ -260,6 +288,7 @@ public final class PlayerActivity extends ChildActivity {
             controllerFuture = null;
             controller = null;
         }
+        updateTrackControls();
         super.onStop();
     }
 
