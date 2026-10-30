@@ -2,16 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
-        <!-- M1 组件画廊：仅 debug 构建。exported + LAUNCHER 便于真机直接启动 -->
+        <!-- M1 组件画廊：仅 debug 构建。不再作为 LAUNCHER 入口，避免桌面出现两个图标；
+             需要查看时可通过 Android Studio 的 Specified Activity 启动 -->
         <activity
             android:name=".feature.debug.ComponentGalleryActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.LittleStar.Child">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.LittleStar.Child" />
     </application>
 </manifest>
