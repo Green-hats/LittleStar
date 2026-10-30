@@ -176,6 +176,28 @@ public final class SettingsFlowTest {
         }
     }
 
+    /**
+     * The hint now names the condition: before the first session the number is a preview and
+     * follows the latest setting. The frozen case is covered by save_keepsTodaysPlanAndHistory.
+     */
+    @Test
+    public void goalChangeBeforeFirstSession_changesTodayPreview() throws InterruptedException {
+        container.settings.setDailyGoal(4);
+        container.store.update(state -> {
+            state.words.clear();
+            state.sessions.clear();
+            state.dailyPlans.clear();
+            state.nextSessionId = 1;
+        });
+        awaitStore();
+        try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
+            waitForText(progressText(0, 4));
+            container.settings.setDailyGoal(5);
+            scenario.recreate();
+            waitForText(progressText(0, 5));
+        }
+    }
+
     /** Run with app notifications or the reminder channel disabled; no device settings changed here. */
     @Test
     public void save_blockedUnchangedReminderWarns_andKeepsSavedPlan() {
@@ -323,6 +345,24 @@ public final class SettingsFlowTest {
         onView(withId(R.id.answerInput)).perform(replaceText("1234"));
         closeSoftKeyboard();
         onView(withId(R.id.btnConfirm)).perform(click());
+    }
+
+    private static String progressText(int learned, int goal) {
+        return ApplicationProvider.getApplicationContext()
+                .getString(R.string.home_today_progress, learned, goal);
+    }
+
+    private static void waitForText(String text) {
+        long deadline = SystemClock.elapsedRealtime() + 10_000;
+        do {
+            try {
+                onView(withId(R.id.todayProgressText)).check(matches(withText(text)));
+                return;
+            } catch (RuntimeException | AssertionError ignored) {
+                SystemClock.sleep(100);
+            }
+        } while (SystemClock.elapsedRealtime() < deadline);
+        onView(withId(R.id.todayProgressText)).check(matches(withText(text)));
     }
 
     private static void waitFor(int id) {
