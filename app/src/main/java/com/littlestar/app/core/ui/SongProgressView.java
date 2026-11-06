@@ -32,7 +32,8 @@ public final class SongProgressView extends View {
     private final RectF rect = new RectF();
 
     private long positionMs;
-    private long durationMs = 1;
+    private long durationMs;
+    private long playbackPositionMs;
     private boolean dragging;
     @Nullable
     private OnSeek onSeek;
@@ -57,21 +58,30 @@ public final class SongProgressView extends View {
     }
 
     public void setProgress(long position, long duration) {
+        long nextDuration = Math.max(0, duration);
+        playbackPositionMs = Math.max(0, Math.min(position, nextDuration));
+        if (dragging && durationMs != nextDuration) {
+            cancelDrag();
+        }
+        durationMs = nextDuration;
         if (!dragging) {
-            positionMs = position;
-            durationMs = Math.max(1, duration);
+            positionMs = playbackPositionMs;
             invalidate();
         }
     }
 
     public void setOnSeek(@Nullable OnSeek listener) {
         onSeek = listener;
+        if (listener == null) {
+            cancelDrag();
+        }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int w = MeasureSpec.getSize(widthMeasureSpec);
-        int h = getResources().getDimensionPixelSize(R.dimen.ls_thumb) * 2;
+        int h = Math.max(getResources().getDimensionPixelSize(R.dimen.ls_btn_icon),
+                getResources().getDimensionPixelSize(R.dimen.ls_thumb) * 2);
         setMeasuredDimension(w, resolveSize(h, heightMeasureSpec));
     }
 
@@ -82,7 +92,7 @@ public final class SongProgressView extends View {
         float cy = getHeight() / 2f;
         float left = thumb / 2f;
         float right = getWidth() - thumb / 2f;
-        float frac = Math.max(0f, Math.min(1f, (float) positionMs / (float) durationMs));
+        float frac = Math.max(0f, Math.min(1f, (float) positionMs / (float) Math.max(1, durationMs)));
         float cx = left + (right - left) * frac;
 
         // 轨道
@@ -97,28 +107,74 @@ public final class SongProgressView extends View {
         canvas.drawRoundRect(rect, thumb * 0.25f, thumb * 0.25f, thumbStroke);
     }
 
+    private void releaseParent() {
+        if (getParent() != null) {
+            getParent().requestDisallowInterceptTouchEvent(false);
+        }
+    }
+
+    private void cancelDrag() {
+        if (dragging) {
+            dragging = false;
+            positionMs = playbackPositionMs;
+            releaseParent();
+            invalidate();
+        }
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        if (!enabled) {
+            cancelDrag();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        cancelDrag();
+        super.onDetachedFromWindow();
+    }
+
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        return true;
+    }
+
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
+        if (!isEnabled() || durationMs <= 0 || onSeek == null
+                || getWidth() <= getResources().getDimension(R.dimen.ls_thumb)) {
+            cancelDrag();
+            return false;
+        }
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                getParent().requestDisallowInterceptTouchEvent(true);
+                if (getParent() != null) {
+                    getParent().requestDisallowInterceptTouchEvent(true);
+                }
                 dragging = true;
                 updateFromX(event.getX());
                 return true;
             case MotionEvent.ACTION_MOVE:
-                if (dragging) {
-                    updateFromX(event.getX());
+                if (!dragging) {
+                    return false;
                 }
+                updateFromX(event.getX());
                 return true;
             case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-                if (dragging) {
-                    dragging = false;
-                    updateFromX(event.getX());
-                    if (onSeek != null) {
-                        onSeek.onSeek(positionMs);
-                    }
+                if (!dragging) {
+                    return false;
                 }
+                updateFromX(event.getX());
+                dragging = false;
+                releaseParent();
+                onSeek.onSeek(positionMs);
+                performClick();
+                return true;
+            case MotionEvent.ACTION_CANCEL:
+                cancelDrag();
                 return true;
             default:
                 return super.onTouchEvent(event);

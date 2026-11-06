@@ -41,7 +41,9 @@ public final class PlayerActivity extends ChildActivity {
 
     private static final String EXTRA_ITEM_ID = "itemId";
     private static final String EXTRA_QUEUE = "queue";
+    private static final String STATE_PLAYBACK_STARTED = "playback_started";
     private static final long PROGRESS_TICK_MS = 250L;
+    private static final float DISABLED_ALPHA = 0.38f;
 
     @NonNull
     public static Intent intent(@NonNull Activity from, @NonNull String itemId,
@@ -62,15 +64,12 @@ public final class PlayerActivity extends ChildActivity {
     private ListenableFuture<MediaController> controllerFuture;
     /** 本次进入是否已把播放队列交给控制器（防止 vm/controller 谁先就绪的竞态导致不自动播）。 */
     private boolean playbackStarted;
+    private boolean controllerInitialized;
 
     private final Runnable progressTick = new Runnable() {
         @Override
         public void run() {
-            MediaController c = controller;
-            if (c != null) {
-                vm.onProgress(c.getCurrentPosition(),
-                        Math.max(0, c.getDuration()), c.isPlaying());
-            }
+            syncControllerState();
             handler.postDelayed(this, PROGRESS_TICK_MS);
         }
     };
@@ -92,12 +91,20 @@ public final class PlayerActivity extends ChildActivity {
         });
         binding.btnPlay.setOnClickListener(v -> {
             MediaController c = controller;
-            if (c != null) {
-                if (c.isPlaying()) {
+            if (c != null && c.getMediaItemCount() > 0) {
+                if (c.getPlayWhenReady() && c.getPlaybackState() != Player.STATE_ENDED
+                        && c.getPlayerError() == null) {
                     c.pause();
                 } else {
+                    if (c.getPlaybackState() == Player.STATE_ENDED) {
+                        c.seekTo(0);
+                    }
+                    if (c.getPlaybackState() == Player.STATE_IDLE || c.getPlayerError() != null) {
+                        c.prepare();
+                    }
                     c.play();
                 }
+                syncControllerState();
             }
         });
         binding.btnPrev.setOnClickListener(v -> {
@@ -118,35 +125,58 @@ public final class PlayerActivity extends ChildActivity {
                 c.seekTo(pos);
             }
         });
+        playbackStarted = savedInstanceState != null
+                && savedInstanceState.getBoolean(STATE_PLAYBACK_STARTED);
         vm.state().observe(this, this::render);
+        updateControls();
 
         List<String> queue = getIntent().getStringArrayListExtra(EXTRA_QUEUE);
         String itemId = getIntent().getStringExtra(EXTRA_ITEM_ID);
-        container().content.load(container().executors,
-                () -> vm.init(itemId, queue != null ? queue : new ArrayList<>()));
+        container().content.load(container().executors, () -> {
+            if (!isDestroyed()) {
+                if (itemId == null || container().content.itemById(itemId) == null) {
+                    finish();
+                } else {
+                    vm.init(itemId, queue != null ? queue : new ArrayList<>());
+                }
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        controllerInitialized = false;
         SessionToken token = new SessionToken(this,
                 new ComponentName(this, PlaybackService.class));
-        controllerFuture = new MediaController.Builder(this, token).buildAsync();
-        controllerFuture.addListener(() -> {
+        ListenableFuture<MediaController> future =
+                new MediaController.Builder(this, token).buildAsync();
+        controllerFuture = future;
+        future.addListener(() -> {
+            if (controllerFuture != future) {
+                return;
+            }
             try {
-                controller = controllerFuture.get();
-            } catch (Exception e) {
+                controller = future.get();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                updateControls();
+                return;
+            } catch (java.util.concurrent.ExecutionException
+                    | java.util.concurrent.CancellationException e) {
+                updateControls();
                 return;   // 连接失败：本页只读态可用，播放键无效（记 DECISIONS）
             }
             controller.addListener(new Player.Listener() {
                 @Override
-                public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
-                    if (mediaItem != null) {
-                        vm.onTrackChanged(mediaItem.mediaId);
+                public void onEvents(@NonNull Player player, @NonNull Player.Events events) {
+                    if (controllerInitialized) {
+                        syncControllerState();
                     }
                 }
             });
             startPlaybackIfNeeded();
+            handler.removeCallbacks(progressTick);
             handler.post(progressTick);
         }, ContextCompat.getMainExecutor(this));
     }
@@ -154,17 +184,23 @@ public final class PlayerActivity extends ChildActivity {
     /** 队列为空或与本次意图不同才重置（从后台回来不打断正在播的内容）。 */
     private void startPlaybackIfNeeded() {
         MediaController c = controller;
-        if (c == null) {
+        PlayerViewModel.UiState s = vm.state().getValue();
+        if (controllerInitialized || c == null || !c.isConnected() || s == null) {
             return;
         }
-        PlayerViewModel.UiState s = vm.state().getValue();
-        if (s == null) {
-            return;
+        controllerInitialized = true;
+        boolean sameQueue = c.getMediaItemCount() == s.queue.size();
+        for (int i = 0; sameQueue && i < s.queue.size(); i++) {
+            sameQueue = s.queue.get(i).equals(c.getMediaItemAt(i).mediaId);
         }
         MediaItem cur = c.getCurrentMediaItem();
-        if (cur != null && s.item.id.equals(cur.mediaId) && c.getMediaItemCount() == s.queue.size()) {
+        if (sameQueue && cur != null && (playbackStarted || s.item.id.equals(cur.mediaId))) {
+            playbackStarted = true;
+            syncControllerState();
             return;   // 已经在播同一首
         }
+        boolean resume = playbackStarted;
+        playbackStarted = true;
         List<MediaItem> mediaItems = new ArrayList<>();
         for (String id : s.queue) {
             CultureItem it = container().content.itemById(id);
@@ -175,19 +211,51 @@ public final class PlayerActivity extends ChildActivity {
                         .build());
             }
         }
-        c.setMediaItems(mediaItems, s.queueIndex, 0);
+        c.setMediaItems(mediaItems, s.queueIndex, resume ? s.positionMs : 0);
         c.prepare();
-        c.play();
-        playbackStarted = true;
+        c.setPlayWhenReady(!resume || s.playing);
+        syncControllerState();
+    }
+
+    private void syncControllerState() {
+        MediaController c = controller;
+        if (c != null && c.isConnected() && controllerInitialized
+                && vm.state().getValue() != null) {
+            MediaItem current = c.getCurrentMediaItem();
+            if (current != null) {
+                vm.onTrackChanged(current.mediaId);
+            }
+            vm.onProgress(Math.max(0, c.getCurrentPosition()), Math.max(0, c.getDuration()),
+                    c.getPlayWhenReady() && c.getPlaybackState() != Player.STATE_ENDED
+                            && c.getPlayerError() == null);
+        }
+        updateControls();
+    }
+
+    private void updateControls() {
+        MediaController c = controller;
+        boolean ready = c != null && c.isConnected() && controllerInitialized
+                && c.getMediaItemCount() > 0;
+        setControlEnabled(binding.btnPlay, ready);
+        setControlEnabled(binding.btnPrev, ready && c.hasPreviousMediaItem());
+        setControlEnabled(binding.btnNext, ready && c.hasNextMediaItem());
+        setControlEnabled(binding.progress,
+                ready && c.isCurrentMediaItemSeekable() && c.getDuration() > 0);
+    }
+
+    private static void setControlEnabled(View view, boolean enabled) {
+        view.setEnabled(enabled);
+        view.setAlpha(enabled ? 1f : DISABLED_ALPHA);
     }
 
     private void render(PlayerViewModel.UiState s) {
         if (s == null) {
             return;
         }
-        if (!playbackStarted) {
+        if (!controllerInitialized) {
             // vm.init 晚于 controller 连接时补一次自动播放（竞态修复）
             startPlaybackIfNeeded();
+            s = vm.state().getValue();
         }
         binding.playerTitle.setText(s.item.titleZh);
         binding.songTitle.setText(s.item.titleZh);
@@ -205,6 +273,7 @@ public final class PlayerActivity extends ChildActivity {
         binding.timeTotal.setText(formatMs(s.durationMs));
 
         renderLyrics(s);
+        updateControls();
     }
 
     /** 歌词：当前句黄底高亮，后两句 muted；无歌词隐藏卡（§9.9）。 */
@@ -253,12 +322,21 @@ public final class PlayerActivity extends ChildActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(@NonNull Bundle out) {
+        super.onSaveInstanceState(out);
+        out.putBoolean(STATE_PLAYBACK_STARTED, playbackStarted);
+    }
+
+    @Override
     protected void onStop() {
         handler.removeCallbacks(progressTick);
-        if (controllerFuture != null) {
-            MediaController.releaseFuture(controllerFuture);
-            controllerFuture = null;
-            controller = null;
+        ListenableFuture<MediaController> future = controllerFuture;
+        controllerFuture = null;
+        controller = null;
+        controllerInitialized = false;
+        updateControls();
+        if (future != null) {
+            MediaController.releaseFuture(future);
         }
         super.onStop();
     }

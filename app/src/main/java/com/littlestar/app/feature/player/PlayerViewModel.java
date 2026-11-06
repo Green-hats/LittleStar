@@ -59,22 +59,29 @@ public final class PlayerViewModel extends ViewModel {
     }
 
     /** 内容就绪后调用一次。 */
-    public void init(@NonNull String itemId, @NonNull List<String> queue) {
-        CultureItem item = container.content.itemById(itemId);
-        if (item == null) {
+    public void init(@Nullable String itemId, @NonNull List<String> queue) {
+        CultureItem item = itemId == null ? null : container.content.itemById(itemId);
+        if (item == null || state.getValue() != null) {
             return;
         }
-        List<String> q = new ArrayList<>(queue);
-        int idx = Math.max(0, q.indexOf(itemId));
-        if (state.getValue() == null) {
-            state.setValue(new UiState(item, Collections.unmodifiableList(q), idx, -1, 0, 0, false));
+        List<String> q = new ArrayList<>();
+        for (String id : queue) {
+            if (id != null && container.content.itemById(id) != null) {
+                q.add(id);
+            }
         }
+        if (!q.contains(itemId)) {
+            q.add(0, itemId);
+        }
+        state.setValue(new UiState(item, Collections.unmodifiableList(q), q.indexOf(itemId),
+                -1, 0, 0, false));
     }
 
     /** 当前条目切换（上一首/下一首）。 */
     public void onTrackChanged(@NonNull String itemId) {
         CultureItem item = container.content.itemById(itemId);
-        if (item == null) {
+        UiState current = state.getValue();
+        if (item == null || current == null || current.item.id.equals(itemId)) {
             return;
         }
         update(s -> s.withItem(item, Math.max(0, s.queue.indexOf(itemId))));

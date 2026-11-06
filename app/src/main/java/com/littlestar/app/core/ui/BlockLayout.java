@@ -56,6 +56,7 @@ public class BlockLayout extends FrameLayout {
     private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint shadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private float pressFraction;          // 0 = 抬起，1 = 按下
+    private boolean lastPressed;
     @Nullable
     private ValueAnimator pressAnim;
 
@@ -142,10 +143,10 @@ public class BlockLayout extends FrameLayout {
 
     @Override
     protected void drawableStateChanged() {
-        boolean wasPressed = isPressed();
         super.drawableStateChanged();
-        boolean pressed = isPressed();
-        if (pressable && pressed != wasPressed) {
+        boolean pressed = isPressed() && isEnabled();
+        if (pressable && pressed != lastPressed) {
+            lastPressed = pressed;
             if (pressed) {
                 Runnable hook = pressSoundHook;
                 if (hook != null) {
@@ -159,11 +160,12 @@ public class BlockLayout extends FrameLayout {
     }
 
     private void animatePress(float target) {
-        if (pressFraction == target) {
-            return;
-        }
         if (pressAnim != null) {
             pressAnim.cancel();
+            pressAnim = null;
+        }
+        if (pressFraction == target) {
+            return;
         }
         // 减少动态效果：直接跳变
         if (!ValueAnimator.areAnimatorsEnabled()) {
@@ -184,8 +186,19 @@ public class BlockLayout extends FrameLayout {
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (pressAnim != null) {
+            pressAnim.cancel();
+            pressAnim = null;
+        }
+        lastPressed = false;
+        pressFraction = 0f;
+    }
+
+    @Override
     public CharSequence getAccessibilityClassName() {
-        return Button.class.getName();
+        return isClickable() ? Button.class.getName() : super.getAccessibilityClassName();
     }
 
     public void setFill(@NonNull ColorStateList colors) {
@@ -215,7 +228,11 @@ public class BlockLayout extends FrameLayout {
     }
 
     public void setShadowOffset(float offset) {
-        shadowOffset = offset;
+        float clamped = Math.max(0f, offset);
+        int paddingDelta = (int) clamped - (int) shadowOffset;
+        shadowOffset = clamped;
+        setPadding(getPaddingLeft(), getPaddingTop(),
+                getPaddingRight() + paddingDelta, getPaddingBottom() + paddingDelta);
         requestLayout();
         invalidate();
     }
