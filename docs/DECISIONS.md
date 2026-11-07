@@ -256,3 +256,11 @@
   remain pending real audio/transcript alignment; do not compress timestamps to hide them.
 - Defer player connection/asset-error recovery to a separate change with focused tests.
   Existing invalid-content-ID handling remains in Discover.
+
+## D41 · 2026-11-06 · 动物词卡真实素材
+- 依据：用户要求用高质量 PNG 照片和真人音频替换占位素材，保持现有业务规则与流程。
+- 范围：先替换动物主题六个字词；不混同熊猫、操作图标与词卡内容插画，其他主题及文化音频待逐项核验。
+- 接入：保留词条 ID、资源名与音频路径；照片放 drawable-nodpi，真人字音沿用离线 SpeechPlayer。
+- 授权：清单随应用打包，既有 About 显示必要署名；改编音频保留原许可和版权信息。
+- 维护：占位音频脚本不覆盖已有文件；内容校验增加素材来源、校验和、PNG 预算与发音字段检查。
+- 详情：见 [MEDIA.md](MEDIA.md)。构建和静态检查不替代实际设备上的显示、播放与返回路径验收。

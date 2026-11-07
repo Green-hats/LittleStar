@@ -11,10 +11,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -23,6 +27,9 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.littlestar.app.feature.culture.CultureDetailActivity;
+import com.littlestar.app.data.content.model.CultureItem;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,12 +44,14 @@ public final class CultureDetailTest {
         Intent intent = new Intent(context, CultureDetailActivity.class).putExtra("itemId", "jingyesi");
         try (ActivityScenario<CultureDetailActivity> scenario = ActivityScenario.launch(intent)) {
             waitFor(R.id.detailTitle);
+            waitForCover(scenario, true);
             onView(withId(R.id.detailTitle)).check(matches(withText("静夜思")));
             UiEvidence.capture("culture_detail_light");
             onView(withId(R.id.btnPreview)).perform(scrollTo(), click());
             onView(withId(R.id.detailTranscript)).perform(scrollTo()).check(matches(isDisplayed()));
             scenario.recreate();
             waitFor(R.id.detailTitle);
+            waitForCover(scenario, true);
             onView(withId(R.id.detailTitle)).check(matches(withText("静夜思")));
             scenario.onActivity(activity -> assertEquals(android.view.View.VISIBLE,
                     activity.findViewById(R.id.detailTranscript).getVisibility()));
@@ -52,6 +61,7 @@ public final class CultureDetailTest {
             scenario.onActivity(activity -> activity.getDelegate()
                     .setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES));
             waitFor(R.id.detailTitle);
+            waitForCover(scenario, true);
             onView(withId(R.id.detailTitle)).perform(scrollTo());
             scenario.onActivity(activity -> {
                 assertEquals(android.content.res.Configuration.UI_MODE_NIGHT_YES,
@@ -64,6 +74,75 @@ public final class CultureDetailTest {
             });
             UiEvidence.capture("culture_detail_dark");
         }
+    }
+
+    @Test
+    public void allCovers_preserveGlyphTitleAndPlaybackEntry() {
+        Context context = ApplicationProvider.getApplicationContext();
+        AppContainer container = ((LittleStarApp) context).container();
+        container.content.ensureLoaded();
+        String[] ids = {"xiaoxingxing", "liangzhilaohu", "baluobo", "zhaopengyou",
+                "changebenyue", "shouzhudaitu", "guitusaipao", "huashetianzu",
+                "jingyesi", "yonge", "chunxiao"};
+        for (String id : ids) {
+            CultureItem item = container.content.itemById(id);
+            try (ActivityScenario<CultureDetailActivity> scenario = ActivityScenario.launch(
+                    new Intent(context, CultureDetailActivity.class).putExtra("itemId", id))) {
+                waitForCover(scenario, true);
+                scenario.onActivity(activity -> {
+                    assertEquals(item.titleZh, ((TextView) activity.findViewById(R.id.detailTitle)).getText().toString());
+                    assertEquals(item.glyph, ((TextView) activity.findViewById(R.id.detailGlyph)).getText().toString());
+                    assertEquals(View.VISIBLE, activity.findViewById(R.id.detailGlyph).getVisibility());
+                    assertEquals(item.summary, ((TextView) activity.findViewById(R.id.detailSummary)).getText().toString());
+                    assertTrue(activity.findViewById(R.id.btnListen).isEnabled());
+                    assertEquals(View.IMPORTANT_FOR_ACCESSIBILITY_NO,
+                            activity.findViewById(R.id.detailCover).getImportantForAccessibility());
+                });
+            }
+        }
+    }
+
+    @Test
+    public void missingOrNonBitmapCover_keepsExistingContentUsable() {
+        Context context = ApplicationProvider.getApplicationContext();
+        AppContainer container = ((LittleStarApp) context).container();
+        container.content.ensureLoaded();
+        CultureItem item = container.content.itemById("jingyesi");
+        String original = item.cover;
+        try {
+            for (String cover : new String[]{null, "ill_placeholder", "missing_cover", "ic_back"}) {
+                item.cover = cover;
+                try (ActivityScenario<CultureDetailActivity> scenario = ActivityScenario.launch(
+                        new Intent(context, CultureDetailActivity.class).putExtra("itemId", item.id))) {
+                    waitFor(R.id.detailTitle);
+                    waitForCover(scenario, false);
+                    onView(withId(R.id.detailTitle)).check(matches(withText(item.titleZh)));
+                    onView(withId(R.id.btnListen)).check(matches(isEnabled()));
+                    onView(withId(R.id.btnPreview)).perform(scrollTo(), click());
+                    onView(withId(R.id.detailTranscript)).perform(scrollTo()).check(matches(withText(item.transcript)));
+                }
+            }
+        } finally {
+            item.cover = original;
+        }
+    }
+
+    private static void waitForCover(ActivityScenario<CultureDetailActivity> scenario, boolean present) {
+        long deadline = SystemClock.uptimeMillis() + 10_000;
+        AtomicBoolean ready = new AtomicBoolean();
+        do {
+            scenario.onActivity(activity -> {
+                ImageView cover = activity.findViewById(R.id.detailCover);
+                ready.set(activity.findViewById(R.id.detailContent).getVisibility() == View.VISIBLE
+                        && (present ? cover.getVisibility() == View.VISIBLE && cover.getDrawable() != null
+                                    : cover.getVisibility() == View.GONE && cover.getDrawable() == null));
+            });
+            if (ready.get()) {
+                return;
+            }
+            SystemClock.sleep(50);
+        } while (SystemClock.uptimeMillis() < deadline);
+        throw new AssertionError("Cover did not reach expected state: " + present);
     }
 
     @Test

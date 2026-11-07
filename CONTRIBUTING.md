@@ -57,7 +57,11 @@ python3 tools/validate_content.py
 3. 跑 `python3 tools/validate_content.py`。
 4. 加了新汉字 → 跑 `python3 tools/subset_font.py` 重新生成子集字体（需要 `fonttools`）。
 
-开发期占位音频可以用 `bash tools/make_placeholder_audio.sh`（macOS `say` 生成，**正式版必须真人录音**）。
+开发期占位音频可以用 `bash tools/make_placeholder_audio.sh`（macOS `say` 生成，**正式版必须真人录音**）；脚本只补缺失文件，不覆盖已有录音。
+
+PNG 词卡使用 `res/drawable-nodpi/`，保留原资源名，移除同名旧矢量。
+替换为照片/真人录音时，同步维护来源清单和已有 About 中的署名，详见 [MEDIA.md](docs/MEDIA.md)。
+素材校验工具的回归测试：`python3 -m unittest discover -s tools -p 'test_*.py' -v`。
 
 ## 目录导览
 
