@@ -9,11 +9,9 @@ import androidx.annotation.NonNull;
 
 import com.littlestar.app.core.time.AppClock;
 import com.littlestar.app.data.prefs.SettingsStore;
+import com.littlestar.app.domain.ReminderSchedule;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
 import java.util.Set;
 
 /**
@@ -59,20 +57,7 @@ public final class ReminderScheduler {
         } catch (RuntimeException e) {
             time = LocalTime.of(19, 30);
         }
-        LocalDate today = clock.today();
-        LocalDateTime now = LocalDateTime.of(today, clock.localTime());
-        for (int d = 0; d < 8; d++) {
-            LocalDate date = today.plusDays(d);
-            int isoDow = date.getDayOfWeek().getValue();
-            if (!days.contains(isoDow)) {
-                continue;
-            }
-            LocalDateTime candidate = LocalDateTime.of(date, time);
-            if (candidate.isAfter(now)) {
-                return ZonedDateTime.of(candidate, clock.zone()).toInstant().toEpochMilli();
-            }
-        }
-        return -1;
+        return ReminderSchedule.nextTriggerMillis(clock, days, time);
     }
 
     @NonNull

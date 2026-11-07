@@ -34,6 +34,7 @@ public final class SongProgressView extends View {
     private long positionMs;
     private long durationMs = 1;
     private boolean dragging;
+    private long dragStartPosition;
     @Nullable
     private OnSeek onSeek;
 
@@ -101,7 +102,10 @@ public final class SongProgressView extends View {
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                getParent().requestDisallowInterceptTouchEvent(true);
+                if (getParent() != null) {
+                    getParent().requestDisallowInterceptTouchEvent(true);
+                }
+                dragStartPosition = positionMs;
                 dragging = true;
                 updateFromX(event.getX());
                 return true;
@@ -111,18 +115,31 @@ public final class SongProgressView extends View {
                 }
                 return true;
             case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
                 if (dragging) {
                     dragging = false;
                     updateFromX(event.getX());
-                    if (onSeek != null) {
-                        onSeek.onSeek(positionMs);
-                    }
+                    performClick();
+                }
+                return true;
+            case MotionEvent.ACTION_CANCEL:
+                if (dragging) {
+                    dragging = false;
+                    positionMs = dragStartPosition;
+                    invalidate();
                 }
                 return true;
             default:
                 return super.onTouchEvent(event);
         }
+    }
+
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        if (onSeek != null) {
+            onSeek.onSeek(positionMs);
+        }
+        return true;
     }
 
     private void updateFromX(float x) {

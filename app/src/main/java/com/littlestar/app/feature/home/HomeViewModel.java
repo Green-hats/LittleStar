@@ -7,6 +7,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.littlestar.app.AppContainer;
+import com.littlestar.app.AppExecutors;
 import com.littlestar.app.core.time.AppClock;
 import com.littlestar.app.data.content.ContentRepository;
 import com.littlestar.app.data.content.model.CultureItem;
@@ -28,7 +29,7 @@ public final class HomeViewModel extends ViewModel {
     public static final class UiState {
         public final boolean loading;
         public final HomeModeResolver.Mode mode;
-        public final int goal;                 // 每日目标 N
+        public final int goal;                 // 今日实际计划量，不改写配置目标
         public final int learnedToday;         // k
         @Nullable
         public final Word nextWord;            // 今日下一个未学的字
@@ -55,9 +56,13 @@ public final class HomeViewModel extends ViewModel {
             return new UiState(loading, newMode, goal, learnedToday, nextWord,
                     newFeatured, allDone, firstLaunch);
         }
+
+        public boolean isDailyComplete() {
+            return allDone || (goal > 0 && learnedToday >= goal);
+        }
     }
 
-    private final AppContainer container;
+    private final SessionBuilder sessionBuilder;
     private final AppClock clock;
     private final SettingsStore settings;
     private final ContentRepository content;
@@ -72,15 +77,21 @@ public final class HomeViewModel extends ViewModel {
     private boolean contentReady;
 
     public HomeViewModel(@NonNull AppContainer container) {
-        this.container = container;
-        this.clock = container.clock;
-        this.settings = container.settings;
-        this.content = container.content;
-        this.progress = container.progress;
+        this(container.clock, container.settings, container.content, container.progress,
+                container.sessionBuilder, container.executors);
+    }
+
+    HomeViewModel(AppClock clock, SettingsStore settings, ContentRepository content,
+                  ProgressRepository progress, SessionBuilder sessionBuilder, AppExecutors executors) {
+        this.clock = clock;
+        this.settings = settings;
+        this.content = content;
+        this.progress = progress;
+        this.sessionBuilder = sessionBuilder;
         state.setValue(new UiState(true, HomeModeResolver.resolve(clock.localTime()),
                 settings.getDailyGoal(), 0, null, null, false, !settings.isOnboarded()));
         // 内容先在 diskIO 线程解析，回调到主线程后再计算（不在主线程做 IO）
-        content.load(container.executors, () -> {
+        content.load(executors, () -> {
             contentReady = true;
             onProgress(lastProgress);
         });
@@ -96,14 +107,9 @@ public final class HomeViewModel extends ViewModel {
             return;
         }
         int goal = settings.getDailyGoal();
-        ProgressState.DailyPlan plan = null;
         // 注意：这里只读。计划由 SessionBuilder 在会话创建时写入；首页展示用「按同样规则算一遍」。
-        String today = clock.today().toString();
-        plan = ps.dailyPlans.get(today);
-        if (plan == null) {
-            plan = previewPlan(ps, goal);
-        }
-        goal = plan.goal;
+        ProgressState.DailyPlan plan = sessionBuilder.previewTodayPlan(ps, goal);
+        goal = Math.min(plan.goal, plan.newWordIds.size());
         int k = SessionBuilder.learnedTodayCount(ps, plan);
 
         Word next = null;
@@ -118,30 +124,20 @@ public final class HomeViewModel extends ViewModel {
         if (next == null && !plan.newWordIds.isEmpty()) {
             next = content.wordById(plan.newWordIds.get(plan.newWordIds.size() - 1));
         }
-        boolean allDone = plan.newWordIds.isEmpty();
+        List<Word> words = content.wordsInOrder();
+        boolean allDone = words.stream().allMatch(word -> {
+            ProgressState.WordProgress wp = ps.words.get(word.id);
+            return wp != null && wp.learnedAt != null;
+        });
+        if (next == null && allDone && !words.isEmpty()) {
+            next = words.get(words.size() - 1);
+        }
 
         HomeModeResolver.Mode mode = manualMode != null ? manualMode
                 : HomeModeResolver.resolve(clock.localTime());
         CultureItem featured = pickFeatured();
         state.setValue(new UiState(false, mode, goal, k, next, featured,
                 allDone, !settings.isOnboarded()));
-    }
-
-    /** 首页展示用的计划预览：不写入 state（只读首页不写库）。 */
-    @NonNull
-    private ProgressState.DailyPlan previewPlan(@NonNull ProgressState ps, int goal) {
-        ProgressState.DailyPlan plan = new ProgressState.DailyPlan();
-        plan.goal = goal;
-        for (Word w : content.wordsInOrder()) {
-            if (plan.newWordIds.size() >= goal) {
-                break;
-            }
-            ProgressState.WordProgress wp = ps.words.get(w.id);
-            if (wp == null || wp.learnedAt == null) {
-                plan.newWordIds.add(w.id);
-            }
-        }
-        return plan;
     }
 
     @Nullable

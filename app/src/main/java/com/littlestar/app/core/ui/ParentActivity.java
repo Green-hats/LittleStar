@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.littlestar.app.AppContainer;
 import com.littlestar.app.LittleStarApp;
@@ -15,27 +16,28 @@ import com.littlestar.app.LittleStarApp;
  */
 public abstract class ParentActivity extends AppCompatActivity {
 
-    private static final long REAUTH_AFTER_MS = 60_000;
-
-    private long stoppedAt;
+    private ParentAccessViewModel access;
+    private boolean restoredInstance;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        access = new ViewModelProvider(this).get(ParentAccessViewModel.class);
+        restoredInstance = savedInstanceState != null;
         EdgeToEdge.enable(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (stoppedAt > 0 && System.currentTimeMillis() - stoppedAt > REAUTH_AFTER_MS) {
+        if (access.requiresReauth(restoredInstance, container().clock.elapsedRealtimeMillis())) {
             onReauthRequired();
         }
     }
 
     @Override
     protected void onStop() {
-        stoppedAt = System.currentTimeMillis();
+        access.onStopped(container().clock.elapsedRealtimeMillis());
         super.onStop();
     }
 

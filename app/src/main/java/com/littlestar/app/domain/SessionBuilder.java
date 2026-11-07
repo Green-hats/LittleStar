@@ -49,6 +49,18 @@ public final class SessionBuilder {
     @NonNull
     public ProgressState.DailyPlan todayPlan(@NonNull ProgressState state, int dailyGoal) {
         String today = clock.today().toString();
+        ProgressState.DailyPlan plan = previewTodayPlan(state, dailyGoal, today);
+        state.dailyPlans.put(today, plan);
+        return plan;
+    }
+
+    /** 与创建会话相同的计划，但只读，不写入 state。 */
+    @NonNull
+    public ProgressState.DailyPlan previewTodayPlan(@NonNull ProgressState state, int dailyGoal) {
+        return previewTodayPlan(state, dailyGoal, clock.today().toString());
+    }
+
+    private ProgressState.DailyPlan previewTodayPlan(ProgressState state, int dailyGoal, String today) {
         ProgressState.DailyPlan plan = state.dailyPlans.get(today);
         if (plan != null) {
             return plan;
@@ -64,7 +76,6 @@ public final class SessionBuilder {
                 plan.newWordIds.add(w.id);
             }
         }
-        state.dailyPlans.put(today, plan);
         return plan;
     }
 
@@ -142,6 +153,11 @@ public final class SessionBuilder {
             }
         }
         return k;
+    }
+
+    public static int remainingTodayCount(@NonNull ProgressState state,
+                                          @NonNull ProgressState.DailyPlan plan) {
+        return Math.max(0, plan.newWordIds.size() - learnedTodayCount(state, plan));
     }
 
     @Nullable

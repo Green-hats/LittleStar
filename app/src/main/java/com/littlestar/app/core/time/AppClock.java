@@ -16,6 +16,9 @@ public interface AppClock {
     @NonNull
     Instant now();
 
+    /** 本次开机以来的经过时间，包含休眠，不受墙上时钟调整影响。 */
+    long elapsedRealtimeMillis();
+
     @NonNull
     ZoneId zone();
 

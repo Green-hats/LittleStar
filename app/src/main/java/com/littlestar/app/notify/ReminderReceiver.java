@@ -9,8 +9,7 @@ import androidx.annotation.NonNull;
 import com.littlestar.app.AppContainer;
 import com.littlestar.app.LittleStarApp;
 import com.littlestar.app.feature.home.HomeActivity;
-
-import java.time.LocalDate;
+import com.littlestar.app.domain.SessionBuilder;
 
 /**
  * 每日提醒触发：读今日计划算剩余字数（为 0 时当天不发），发通知，排下一次。
@@ -26,23 +25,9 @@ public final class ReminderReceiver extends BroadcastReceiver {
             try {
                 container.content.ensureLoaded();
                 int goal = container.settings.getDailyGoal();
-                LocalDate today = container.clock.today();
-                int remaining = container.store.<Integer>readBlocking(state -> {
-                    com.littlestar.app.data.store.ProgressState.DailyPlan plan =
-                            state.dailyPlans.get(today.toString());
-                    int total = plan == null ? goal : plan.newWordIds.size();
-                    int learned = 0;
-                    if (plan != null) {
-                        for (String id : plan.newWordIds) {
-                            com.littlestar.app.data.store.ProgressState.WordProgress wp =
-                                    state.words.get(id);
-                            if (wp != null && wp.learnedAt != null) {
-                                learned++;
-                            }
-                        }
-                    }
-                    return Math.max(0, total - learned);
-                });
+                int remaining = container.store.<Integer>readBlocking(state ->
+                        SessionBuilder.remainingTodayCount(state,
+                                container.sessionBuilder.previewTodayPlan(state, goal)));
                 if (remaining > 0) {
                     container.notifier.ensureChannels();
                     Intent tap = new Intent(context, HomeActivity.class);

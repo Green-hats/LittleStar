@@ -140,4 +140,33 @@ public final class SessionBuilderTest {
         ReviewScheduler.markLearned(wp, clock.now(), clock.today());
         state.words.put(wordId, wp);
     }
+
+    @Test public void previewCountsRemainingWithoutCreatingPlan() {
+        FakeClock clock = new FakeClock(T1);
+        ContentRepository content = TestContent.load();
+        SessionBuilder builder = newBuilder(clock, content);
+        ProgressState state = new ProgressState();
+        for (var word : content.wordsInOrder().subList(0, content.wordsInOrder().size() - 1)) {
+            learn(state, word.id, clock);
+        }
+        ProgressState.DailyPlan plan = builder.previewTodayPlan(state, 5);
+        assertEquals(5, plan.goal);
+        assertEquals(1, SessionBuilder.remainingTodayCount(state, plan));
+        assertTrue(state.dailyPlans.isEmpty());
+        learn(state, plan.newWordIds.get(0), clock);
+        assertEquals(0, SessionBuilder.remainingTodayCount(state, plan));
+        assertTrue(builder.previewTodayPlan(state, 5).newWordIds.isEmpty());
+    }
+
+    @Test public void previewUsesFrozenPlanEvenAfterGoalChanges() {
+        FakeClock clock = new FakeClock(T1);
+        SessionBuilder builder = newBuilder(clock, TestContent.load());
+        ProgressState state = new ProgressState();
+        var plan = builder.todayPlan(state, 3);
+        learn(state, plan.newWordIds.get(0), clock);
+        assertEquals(plan, builder.previewTodayPlan(state, 8));
+        assertEquals(2, SessionBuilder.remainingTodayCount(state,
+                builder.previewTodayPlan(state, 8)));
+        assertEquals(3, plan.goal);
+    }
 }

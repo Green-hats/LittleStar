@@ -42,6 +42,7 @@ public final class PlayerActivity extends ChildActivity {
     private static final String EXTRA_ITEM_ID = "itemId";
     private static final String EXTRA_QUEUE = "queue";
     private static final long PROGRESS_TICK_MS = 250L;
+    private static final String KEY_RESUME_PLAYBACK = "resumePlayback";
 
     @NonNull
     public static Intent intent(@NonNull Activity from, @NonNull String itemId,
@@ -62,6 +63,7 @@ public final class PlayerActivity extends ChildActivity {
     private ListenableFuture<MediaController> controllerFuture;
     /** 本次进入是否已把播放队列交给控制器（防止 vm/controller 谁先就绪的竞态导致不自动播）。 */
     private boolean playbackStarted;
+    private boolean resumePlayback;
 
     private final Runnable progressTick = new Runnable() {
         @Override
@@ -78,6 +80,8 @@ public final class PlayerActivity extends ChildActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        resumePlayback = savedInstanceState != null
+                && savedInstanceState.getBoolean(KEY_RESUME_PLAYBACK);
         binding = ActivityPlayerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
@@ -132,10 +136,14 @@ public final class PlayerActivity extends ChildActivity {
         super.onStart();
         SessionToken token = new SessionToken(this,
                 new ComponentName(this, PlaybackService.class));
-        controllerFuture = new MediaController.Builder(this, token).buildAsync();
-        controllerFuture.addListener(() -> {
+        ListenableFuture<MediaController> future = new MediaController.Builder(this, token).buildAsync();
+        controllerFuture = future;
+        future.addListener(() -> {
+            if (controllerFuture != future || isFinishing() || isDestroyed()) {
+                return;
+            }
             try {
-                controller = controllerFuture.get();
+                controller = future.get();
             } catch (Exception e) {
                 return;   // 连接失败：本页只读态可用，播放键无效（记 DECISIONS）
             }
@@ -169,8 +177,15 @@ public final class PlayerActivity extends ChildActivity {
             return;
         }
         MediaItem cur = c.getCurrentMediaItem();
-        if (cur != null && s.item.id.equals(cur.mediaId) && c.getMediaItemCount() == s.queue.size()) {
-            return;   // 已经在播同一首
+        List<String> activeQueue = new ArrayList<>();
+        for (int i = 0; i < c.getMediaItemCount(); i++) {
+            activeQueue.add(c.getMediaItemAt(i).mediaId);
+        }
+        if (vm.canKeepPlayback(activeQueue, cur == null ? null : cur.mediaId, resumePlayback)) {
+            playbackStarted = true;
+            vm.onTrackChanged(cur.mediaId);
+            vm.onProgress(c.getCurrentPosition(), Math.max(0, c.getDuration()), c.isPlaying());
+            return;
         }
         List<MediaItem> mediaItems = new ArrayList<>();
         for (String id : s.queue) {
@@ -182,10 +197,10 @@ public final class PlayerActivity extends ChildActivity {
                         .build());
             }
         }
+        playbackStarted = true;
         c.setMediaItems(mediaItems, s.queueIndex, 0);
         c.prepare();
         c.play();
-        playbackStarted = true;
     }
 
     /** Show whether a neighbouring item actually exists in the current category queue. */
@@ -281,13 +296,22 @@ public final class PlayerActivity extends ChildActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_RESUME_PLAYBACK, resumePlayback || playbackStarted);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onStop() {
+        resumePlayback |= playbackStarted;
         handler.removeCallbacks(progressTick);
-        if (controllerFuture != null) {
-            MediaController.releaseFuture(controllerFuture);
-            controllerFuture = null;
-            controller = null;
+        ListenableFuture<MediaController> future = controllerFuture;
+        controllerFuture = null;
+        controller = null;
+        if (future != null) {
+            MediaController.releaseFuture(future);
         }
+        playbackStarted = false;
         updateTrackControls();
         super.onStop();
     }
