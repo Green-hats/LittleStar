@@ -124,15 +124,16 @@ public final class ProgressStore {
         if (raw != null) {
             loadedState = parse(raw, false);
         }
-        if (loadedState == null && raw != null) {
-            // 主文件损坏：改名保留现场，尝试备份
-            file.rename(".corrupt-" + clock.now().toEpochMilli() + ".json");
+        if (loadedState == null) {
+            if (raw != null) {
+                file.rename(".corrupt-" + clock.now().toEpochMilli() + ".json");
+            }
             String backup = file.readBackup();
             if (backup != null) {
                 loadedState = parse(backup, true);
             }
-            if (loadedState == null) {
-                Log.e(TAG, "progress.json and backup both corrupt, starting fresh");
+            if (loadedState == null && (raw != null || backup != null)) {
+                Log.e(TAG, "No readable progress file or backup, starting fresh");
             }
         }
         state = loadedState != null ? loadedState : new ProgressState();
@@ -149,7 +150,18 @@ public final class ProgressStore {
             JsonObject obj = JsonParser.parseString(raw).getAsJsonObject();
             int version = obj.has("schemaVersion") ? obj.get("schemaVersion").getAsInt() : 1;
             JsonObject migrated = StateMigrator.migrate(obj, version);
-            return gson.fromJson(migrated, ProgressState.class);
+            ProgressState parsed = gson.fromJson(migrated, ProgressState.class);
+            if (parsed.words == null || parsed.dailyPlans == null || parsed.sessions == null
+                    || parsed.words.containsValue(null)
+                    || parsed.dailyPlans.values().stream()
+                            .anyMatch(plan -> plan != null && plan.newWordIds == null)
+                    || parsed.sessions.stream().anyMatch(session -> session == null
+                            || session.newWordIds == null || session.quizWordIds == null
+                            || session.answers == null || session.answers.contains(null))) {
+                Log.e(TAG, "Invalid progress structure (backup=" + fromBackup + ")");
+                return null;
+            }
+            return parsed;
         } catch (RuntimeException e) {
             Log.e(TAG, "parse failed (backup=" + fromBackup + ")", e);
             return null;
