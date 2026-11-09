@@ -48,13 +48,23 @@ public final class ContentRepositoryTest {
         ContentRepository repo = TestContent.load();
         for (var category : repo.mvpCategories()) {
             for (CultureItem item : repo.itemsOfCategory(category.id)) {
+                assertNotNull(item.titleEn);
+                assertTrue(item.id, !item.titleEn.isBlank());
+                assertNotNull(item.subtitleEn);
+                assertTrue(item.id, !item.subtitleEn.isBlank());
                 assertNotNull(item.summary);
                 assertTrue(item.summary, !item.summary.isBlank());
                 assertNotNull(item.learningFocus);
                 assertTrue(item.learningFocus, !item.learningFocus.isBlank());
                 assertNotNull(item.transcript);
                 assertTrue(item.transcript, !item.transcript.isBlank());
+                if (item.lyrics.isEmpty()) {
+                    assertNotNull(item.transcriptEn);
+                    assertTrue(item.id, !item.transcriptEn.isBlank());
+                }
                 for (var line : item.lyrics) {
+                    assertNotNull(line.english);
+                    assertTrue(item.id, !line.english.isBlank());
                     assertTrue(item.id + ": preview is missing a lyric line",
                             item.transcript.contains(line.hanzi));
                 }

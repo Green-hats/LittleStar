@@ -84,4 +84,19 @@
         <item name="android:textColor">@color/ls_on_red</item>
         <item name="android:maxLines">1</item>
     </style>
+    <style name="Widget.LS.Label.Control" parent="">
+        <item name="android:maxLines">1</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">@dimen/ls_control_label_min</item>
+        <item name="android:autoSizeMaxTextSize">@dimen/ls_control_label_max</item>
+        <item name="android:autoSizeStepGranularity">@dimen/ls_text_fit_step</item>
+    </style>
+
+    <style name="Widget.LS.Glyph.Decorative" parent="Widget.LS.Label.Control">
+        <item name="android:autoSizeMaxTextSize">@dimen/ls_decorative_glyph_max</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+    <style name="Widget.LS.Label.Navigation" parent="Widget.LS.Label.Control">
+        <item name="android:autoSizeMaxTextSize">@dimen/ls_navigation_label_max</item>
+    </style>
 </resources>

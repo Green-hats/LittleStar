@@ -40,6 +40,7 @@
 
             <TextView
                 android:id="@+id/playerTitle"
+                android:text="@string/player_heading"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/ls_gap"
@@ -83,6 +84,13 @@
             android:textAppearance="@style/TextAppearance.LS.Caption"
             android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/playerSummary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap"
+            android:textAppearance="@style/TextAppearance.LS.Body" />
+
         <!-- 进度条 + 时间 -->
         <com.littlestar.app.core.ui.SongProgressView
             android:id="@+id/progress"
@@ -109,64 +117,106 @@
                 android:textAppearance="@style/TextAppearance.LS.Caption" />
         </LinearLayout>
 
-        <!-- 控制：上一首 48 / 播放 76 / 下一首 48 -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/ls_gap"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-
-            <com.littlestar.app.core.ui.BlockLayout
-                android:id="@+id/btnPrev"
-                android:enabled="false"
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="@dimen/ls_btn_icon"
-                android:layout_height="@dimen/ls_btn_icon"
-                android:contentDescription="@string/player_desc_prev">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:layout_gravity="center"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+                <com.littlestar.app.core.ui.BlockLayout
+                    android:id="@+id/btnPrev"
+                    style="@style/Widget.LS.Block.Icon"
+                    android:layout_width="@dimen/ls_btn_icon"
+                    android:layout_height="@dimen/ls_btn_icon"
+                    android:contentDescription="@string/player_desc_prev"
+                    android:enabled="false">
+                    <ImageView
+                        android:layout_width="@dimen/ls_icon"
+                        android:layout_height="@dimen/ls_icon"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_prev" />
+                </com.littlestar.app.core.ui.BlockLayout>
+                <TextView
+                    android:id="@+id/previousLabel"
+                    style="@style/Widget.LS.Label.Control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_gap_sm"
+                    android:gravity="center"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_prev" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <com.littlestar.app.core.ui.BlockLayout
-                android:id="@+id/btnPlay"
-                style="@style/Widget.LS.Block.Primary.Blue"
-                android:layout_width="@dimen/ls_play_big"
-                android:layout_height="@dimen/ls_play_big"
-                android:layout_marginStart="@dimen/ls_section"
-                android:layout_marginEnd="@dimen/ls_section">
-
-                <ImageView
-                    android:id="@+id/playIcon"
-                    android:layout_width="@dimen/ls_section_lg"
-                    android:layout_height="@dimen/ls_section_lg"
-                    android:layout_gravity="center"
+                    android:text="@string/player_desc_prev"
+                    android:textAppearance="@style/TextAppearance.LS.Body" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+                <com.littlestar.app.core.ui.BlockLayout
+                    android:id="@+id/btnPlay"
+                    style="@style/Widget.LS.Block.Primary.Blue"
+                    android:layout_width="@dimen/ls_play_big"
+                    android:layout_height="@dimen/ls_play_big"
+                    android:contentDescription="@string/player_desc_play">
+                    <ImageView
+                        android:id="@+id/playIcon"
+                        android:layout_width="@dimen/ls_section_lg"
+                        android:layout_height="@dimen/ls_section_lg"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_play"
+                        app:tint="@color/ls_on_blue" />
+                </com.littlestar.app.core.ui.BlockLayout>
+                <TextView
+                    android:id="@+id/playLabel"
+                    style="@style/Widget.LS.Label.Control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_gap_sm"
+                    android:gravity="center"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_play"
-                    app:tint="@color/ls_on_blue" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <com.littlestar.app.core.ui.BlockLayout
-                android:id="@+id/btnNext"
-                android:enabled="false"
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="@dimen/ls_btn_icon"
-                android:layout_height="@dimen/ls_btn_icon"
-                android:contentDescription="@string/player_desc_next">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:layout_gravity="center"
+                    android:text="@string/player_desc_play"
+                    android:textAppearance="@style/TextAppearance.LS.Body" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+                <com.littlestar.app.core.ui.BlockLayout
+                    android:id="@+id/btnNext"
+                    style="@style/Widget.LS.Block.Icon"
+                    android:layout_width="@dimen/ls_btn_icon"
+                    android:layout_height="@dimen/ls_btn_icon"
+                    android:contentDescription="@string/player_desc_next"
+                    android:enabled="false">
+                    <ImageView
+                        android:layout_width="@dimen/ls_icon"
+                        android:layout_height="@dimen/ls_icon"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_next" />
+                </com.littlestar.app.core.ui.BlockLayout>
+                <TextView
+                    android:id="@+id/nextLabel"
+                    style="@style/Widget.LS.Label.Control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_gap_sm"
+                    android:gravity="center"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_next" />
-            </com.littlestar.app.core.ui.BlockLayout>
+                    android:text="@string/player_desc_next"
+                    android:textAppearance="@style/TextAppearance.LS.Body" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- 歌词卡：当前句黄底高亮，后两句 muted；无歌词隐藏 -->

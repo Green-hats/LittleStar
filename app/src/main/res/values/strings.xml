@@ -18,8 +18,10 @@
 
     <!-- ===== M3 · Home ===== -->
     <string name="home_panda_desc">Panpan the panda</string>
-    <string name="home_mode_word">字</string>
-    <string name="home_mode_culture">文</string>
+    <string name="home_mode_word">Words</string>
+    <string name="home_mode_culture">Culture</string>
+    <string name="home_words_glyph">字</string>
+    <string name="home_culture_glyph">文</string>
     <string name="home_today_words">Today · Words</string>
     <string name="home_today_culture">Today · Culture</string>
     <string name="home_today_done">All done today!</string>
@@ -74,18 +76,18 @@
 
     <!-- ===== M3 · Quiz ===== -->
     <string name="quiz_title">Quiz</string>
-    <string name="quiz_listen_hint">Listen</string>
+    <string name="quiz_listen_hint">Listen &amp; choose</string>
     <string name="quiz_counter">%1$d / %2$d</string>
     <string name="quiz_feedback_correct">Correct!</string>
-    <string name="quiz_feedback_wrong">Listen again — it\'s 「%1$s」</string>
+    <string name="quiz_feedback_wrong">Listen again: %1$s means %2$s</string>
     <string name="quiz_next">NEXT</string>
     <string name="quiz_done">DONE</string>
 
     <!-- ===== M3 · Reward ===== -->
     <string name="reward_title">Great job!</string>
-    <string name="reward_subtitle">You learned %1$d characters</string>
+    <string name="reward_subtitle">You practiced %1$d characters</string>
     <string name="reward_subtitle_review">Practice complete!</string>
-    <string name="reward_stamp_text">学会</string>
+    <string name="reward_stamp_text">Done!</string>
     <string name="reward_done">DONE</string>
     <string name="reward_again">Play again</string>
 
@@ -111,7 +113,7 @@
     <string name="cul_unit_poems">poems</string>
     <string name="cul_count_fmt">%1$d %2$s</string>
     <string name="cul_slogan">A little listening, every day.</string>
-    <string name="cul_list_header_fmt">%1$s · %2$d</string>
+    <string name="cul_list_header_fmt">%1$s · %2$d items</string>
 
     <string name="player_desc_play">Play</string>
     <string name="player_desc_pause">Pause</string>
@@ -137,6 +139,7 @@
     <string name="settings_goal_hint">A new goal applies from the next plan. If today’s practice has already started, today keeps its goal.</string>
     <string name="settings_reminders">Daily reminder</string>
     <string name="settings_reminder">Time</string>
+    <string name="settings_time_title">Choose a reminder time</string>
     <string name="settings_reminders_hint">Choose reminder days. Deselect all days to turn reminders off.</string>
     <string name="settings_save">Save</string>
     <string name="settings_cancel">Cancel</string>

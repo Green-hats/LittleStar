@@ -32,14 +32,21 @@ def drawable_exists(name: str) -> bool:
     return any(path.suffix in (".xml", ".png") for path in RES.glob(f"drawable*/{name}.*"))
 
 
+def check_english(owner: str, field: str, value) -> None:
+    if not isinstance(value, str) or not re.search(r"[A-Za-z]{2,}", value):
+        fail(f"{owner}: 缺英文支持 {field}")
+
+
 def check_words() -> None:
     data = json.loads((ASSETS / "content/words.json").read_text(encoding="utf-8"))
     seen = set()
     for theme in data["themes"]:
+        check_english(theme["id"], "nameEn", theme.get("nameEn"))
         words = theme["words"]
         if len(words) != 6:
             fail(f"主题 {theme['id']} 有 {len(words)} 字，应为 6")
         for w in words:
+            check_english(w["id"], "english", w.get("english"))
             if w["id"] in seen:
                 fail(f"word id 重复: {w['id']}")
             seen.add(w["id"])
@@ -57,7 +64,15 @@ def check_culture() -> None:
     data = json.loads((ASSETS / "content/culture.json").read_text(encoding="utf-8"))
     cat_ids = {c["id"] for c in data["categories"]}
     seen = set()
+    for category in data["categories"]:
+        check_english(category["id"], "nameEn", category.get("nameEn"))
     for it in data["items"]:
+        for field in ("titleEn", "subtitleEn", "summary", "learningFocus"):
+            check_english(it["id"], field, it.get(field))
+        if not it.get("lyrics"):
+            check_english(it["id"], "transcriptEn", it.get("transcriptEn"))
+        for index, line in enumerate(it.get("lyrics", [])):
+            check_english(f"{it['id']}: line {index + 1}", "english", line.get("english"))
         for field in ("summary", "learningFocus", "transcript"):
             if not isinstance(it.get(field), str) or not it[field].strip():
                 fail(f"{it['id']}: 缺详情字段 {field}")

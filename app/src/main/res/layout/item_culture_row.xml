@@ -5,14 +5,17 @@
     android:id="@+id/rowBlock"
     style="@style/Widget.LS.Block.Secondary"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/ls_row_culture"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/ls_row_culture"
     android:layout_marginBottom="@dimen/ls_gap">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:paddingTop="@dimen/ls_gap_sm"
+        android:paddingBottom="@dimen/ls_gap_sm"
         android:paddingStart="@dimen/ls_gap"
         android:paddingEnd="@dimen/ls_gap">
 
@@ -42,6 +45,13 @@
             android:layout_marginStart="@dimen/ls_gap"
             android:layout_weight="1"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/rowTitleEn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.LS.Body"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/rowTitle"

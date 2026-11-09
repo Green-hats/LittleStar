@@ -8,7 +8,9 @@ public final class CultureItem {
     public String id;
     public String categoryId;
     public String titleZh;
+    public String titleEn;
     public String subtitle;
+    public String subtitleEn;
     public String cover;
     public String glyph;
     public String audio;
@@ -16,6 +18,7 @@ public final class CultureItem {
     public String summary;
     public String learningFocus;
     public String transcript;
+    public String transcriptEn;
     public List<DateRange> featured = new ArrayList<>();
     public List<LyricLine> lyrics = new ArrayList<>();
 

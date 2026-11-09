@@ -202,7 +202,7 @@ public final class QuizActivity extends ChildActivity {
             binding.feedbackBar.setFillColor(s.lastAnswerCorrect ? mint : clay);
             binding.feedbackText.setText(s.lastAnswerCorrect
                     ? getString(R.string.quiz_feedback_correct)
-                    : getString(R.string.quiz_feedback_wrong, s.question.hanzi()));
+                    : getString(R.string.quiz_feedback_wrong, s.question.hanzi(), s.question.english()));
             binding.feedbackText.setTextColor(s.lastAnswerCorrect ? onMint : onClay);
             binding.feedbackIcon.setImageResource(
                     s.lastAnswerCorrect ? R.drawable.ic_check : R.drawable.ic_close);

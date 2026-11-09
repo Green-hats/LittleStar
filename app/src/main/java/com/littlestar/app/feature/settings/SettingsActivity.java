@@ -129,7 +129,7 @@ public final class SettingsActivity extends ParentActivity {
                             getString(R.string.help_reminders_body),
                             getString(R.string.help_permission_hint),
                             getString(R.string.help_offline_body)))
-                    .setPositiveButton(android.R.string.ok, null).show();
+                    .setPositiveButton(R.string.pg_confirm, null).show();
             return true;
         }
         if (id == R.id.action_test_notification) {
@@ -147,7 +147,7 @@ public final class SettingsActivity extends ParentActivity {
                     .setTitle(R.string.help_about_title)
                     .setMessage(getString(R.string.help_about_message, BuildConfig.VERSION_NAME,
                             getString(R.string.media_credits)))
-                    .setPositiveButton(android.R.string.ok, null).show();
+                    .setPositiveButton(R.string.pg_confirm, null).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -234,6 +234,9 @@ public final class SettingsActivity extends ParentActivity {
         }
         LocalTime time = parsedReminderTime();
         MaterialTimePicker picker = new MaterialTimePicker.Builder()
+                .setTitleText(R.string.settings_time_title)
+                .setPositiveButtonText(R.string.pg_confirm)
+                .setNegativeButtonText(R.string.settings_cancel)
                 .setTimeFormat(DateFormat.is24HourFormat(this)
                         ? TimeFormat.CLOCK_24H : TimeFormat.CLOCK_12H)
                 .setHour(time.getHour()).setMinute(time.getMinute()).build();
@@ -307,7 +310,7 @@ public final class SettingsActivity extends ParentActivity {
             saveWarningDialog = new MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.peer_settings_reminders_blocked_title)
                     .setMessage(R.string.peer_settings_reminders_blocked_message)
-                    .setPositiveButton(android.R.string.ok, (dialog, which) -> finish())
+                    .setPositiveButton(R.string.pg_confirm, (dialog, which) -> finish())
                     .setOnCancelListener(dialog -> finish())
                     .show();
         } else {

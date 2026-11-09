@@ -68,9 +68,9 @@ public final class CultureListActivity extends ChildActivity {
             return;
         }
         binding.categoryGlyph.setText(s.category.glyph);
-        binding.categoryName.setText(s.category.nameZh);
+        binding.categoryName.setText(s.category.nameEn);
         binding.categoryCount.setText(
-                getString(R.string.cul_list_header_fmt, s.category.nameEn, s.items.size()));
+                getString(R.string.cul_list_header_fmt, s.category.nameZh, s.items.size()));
         adapter.setItems(s.items);
     }
 
@@ -103,10 +103,11 @@ public final class CultureListActivity extends ChildActivity {
             CultureItem item = items.get(position);
             h.b.rowGlyph.setText(item.glyph);
             h.b.rowTitle.setText(item.titleZh);
-            h.b.rowSub.setText(getString(R.string.player_subtitle_fmt, item.subtitle,
+            h.b.rowTitleEn.setText(item.titleEn);
+            h.b.rowSub.setText(getString(R.string.player_subtitle_fmt, item.subtitleEn,
                     formatDuration(item.durationSec)));
-            h.b.rowBlock.setContentDescription(getString(R.string.culture_detail_open, item.titleZh));
-            h.b.btnDetail.setContentDescription(getString(R.string.culture_detail_open, item.titleZh));
+            h.b.rowBlock.setContentDescription(getString(R.string.culture_detail_open, item.titleEn));
+            h.b.btnDetail.setContentDescription(getString(R.string.culture_detail_open, item.titleEn));
             h.b.rowBlock.setOnClickListener(v -> openDetail(h.getBindingAdapterPosition()));
             h.b.btnDetail.setOnClickListener(v -> openDetail(h.getBindingAdapterPosition()));
         }
