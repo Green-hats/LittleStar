@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.MediaMetadata;
 import androidx.media3.common.Player;
 import androidx.media3.session.MediaController;
 import androidx.media3.session.SessionToken;
@@ -209,6 +210,12 @@ public final class PlayerActivity extends ChildActivity {
                 mediaItems.add(new MediaItem.Builder()
                         .setMediaId(it.id)
                         .setUri("asset:///" + it.audio)
+                        .setMediaMetadata(new MediaMetadata.Builder()
+                                .setTitle(it.titleEn)
+                                .setDisplayTitle(it.titleEn)
+                                .setSubtitle(it.titleZh)
+                                .setArtist(it.subtitleEn)
+                                .build())
                         .build());
             }
         }
@@ -280,13 +287,15 @@ public final class PlayerActivity extends ChildActivity {
             startPlaybackIfNeeded();
             s = vm.state().getValue();
         }
-        binding.playerTitle.setText(s.item.titleZh);
+        binding.playerTitle.setText(s.item.titleEn);
         binding.songTitle.setText(s.item.titleZh);
         binding.coverGlyph.setText(s.item.glyph);
         binding.songSubtitle.setText(getString(R.string.player_subtitle_fmt,
-                s.item.subtitle == null ? "" : s.item.subtitle,
+                s.item.subtitleEn == null ? "" : s.item.subtitleEn,
                 CultureListActivity.formatDuration(s.item.durationSec)));
 
+        binding.playerSummary.setText(s.item.summary);
+        binding.playLabel.setText(s.playing ? R.string.player_desc_pause : R.string.player_desc_play);
         binding.playIcon.setImageResource(s.playing ? R.drawable.ic_pause : R.drawable.ic_play);
         binding.btnPlay.setContentDescription(
                 getString(s.playing ? R.string.player_desc_pause : R.string.player_desc_play));

@@ -40,11 +40,11 @@ public final class CultureReviewChangesTest {
             waitForText(R.id.namePoemsEn, "Poems");
             UiEvidence.capture("review_categories_light");
             onView(withId(R.id.catPoems)).perform(click());
-            waitForText(R.id.categoryName, "古诗");
+            waitForText(R.id.categoryName, "Poems");
             onView(withId(R.id.categoryCount)).check(matches(withText(containsString("3"))));
             pressBack();
             onView(withId(R.id.catSongs)).perform(click());
-            waitForText(R.id.categoryName, "儿歌");
+            waitForText(R.id.categoryName, "Songs");
             UiEvidence.capture("review_song_list_light");
             onView(withText("小星星")).perform(click());
             waitForText(R.id.detailTitle, "小星星");

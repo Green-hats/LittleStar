@@ -19,6 +19,7 @@ import com.littlestar.app.core.ui.ChildActivity;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.databinding.ActivityCultureDetailBinding;
+import com.littlestar.app.data.content.CultureReadingText;
 import com.littlestar.app.feature.player.PlayerActivity;
 
 import java.util.Objects;
@@ -99,11 +100,12 @@ public final class CultureDetailActivity extends ChildActivity {
         renderCover(s.item.cover);
         binding.detailGlyph.setText(s.item.glyph);
         binding.detailTitle.setText(s.item.titleZh);
+        binding.detailTitleEn.setText(s.item.titleEn);
         binding.detailSubtitle.setText(getString(R.string.player_subtitle_fmt,
-                s.item.subtitle, CultureListActivity.formatDuration(s.item.durationSec)));
+                s.item.subtitleEn, CultureListActivity.formatDuration(s.item.durationSec)));
         binding.detailSummary.setText(s.item.summary);
         binding.detailFocus.setText(s.item.learningFocus);
-        binding.detailTranscript.setText(s.item.transcript);
+        binding.detailTranscript.setText(CultureReadingText.format(s.item));
         renderPreview();
     }
 

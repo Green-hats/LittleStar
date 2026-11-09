@@ -75,10 +75,11 @@
                 app:ls_fill="@color/ls_red"
                 app:ls_pressable="false">
 
-                <com.littlestar.app.core.ui.HanziTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.LS.Body"
                     android:text="@string/reward_stamp_text"
                     android:textColor="@color/ls_on_red"
                     android:textSize="18sp"

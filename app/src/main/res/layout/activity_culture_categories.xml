@@ -65,52 +65,64 @@
                 android:id="@+id/catSongs"
                 style="@style/Widget.LS.Block.Tile"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/ls_theme_tile_height"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/ls_theme_tile_height"
                 android:layout_weight="1">
 
-                <com.littlestar.app.core.ui.BlockLayout
-                    style="@style/Widget.LS.Block.Icon"
-                    android:layout_width="@dimen/ls_module_glyph"
-                    android:layout_height="@dimen/ls_module_glyph"
-                    android:layout_marginStart="@dimen/ls_gap"
-                    android:layout_marginTop="@dimen/ls_gap"
-                    app:ls_fill="@color/ls_green">
-
-                    <com.littlestar.app.core.ui.HanziTextView
-                        android:id="@+id/glyphSongs"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:textColor="@color/ls_on_green"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </com.littlestar.app.core.ui.BlockLayout>
-
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginStart="@dimen/ls_gap"
-                    android:layout_marginBottom="@dimen/ls_gap"
-                    android:orientation="vertical">
+                    android:minHeight="@dimen/ls_theme_tile_height"
+                    android:orientation="vertical"
+                    android:padding="@dimen/ls_gap">
 
-                    <TextView
-                        android:id="@+id/nameSongs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.LS.Title" />
+                    <com.littlestar.app.core.ui.BlockLayout
+                        style="@style/Widget.LS.Block.Icon"
+                        android:layout_width="@dimen/ls_module_glyph"
+                        android:layout_height="@dimen/ls_module_glyph"
+                        app:ls_fill="@color/ls_green">
 
-                    <TextView
-                        android:id="@+id/nameSongsEn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.LS.English.Small" />
+                        <com.littlestar.app.core.ui.HanziTextView
+                            android:id="@+id/glyphSongs"
+                            style="@style/Widget.LS.Glyph.Decorative"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:textColor="@color/ls_on_green"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </com.littlestar.app.core.ui.BlockLayout>
 
-                    <TextView
-                        android:id="@+id/countSongs"
-                        android:layout_width="wrap_content"
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.LS.Caption" />
+                        android:layout_marginTop="@dimen/ls_gap"
+                        android:paddingEnd="@dimen/ls_icon"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/nameSongs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.LS.Title" />
+
+                        <TextView
+                            android:id="@+id/nameSongsEn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.LS.English.Small" />
+
+                        <TextView
+                            android:id="@+id/countSongs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.LS.Caption" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <ImageView
@@ -127,53 +139,65 @@
                 android:id="@+id/catStories"
                 style="@style/Widget.LS.Block.Tile"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/ls_theme_tile_height"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/ls_theme_tile_height"
                 android:layout_marginStart="@dimen/ls_gap"
                 android:layout_weight="1">
 
-                <com.littlestar.app.core.ui.BlockLayout
-                    style="@style/Widget.LS.Block.Icon"
-                    android:layout_width="@dimen/ls_module_glyph"
-                    android:layout_height="@dimen/ls_module_glyph"
-                    android:layout_marginStart="@dimen/ls_gap"
-                    android:layout_marginTop="@dimen/ls_gap"
-                    app:ls_fill="@color/ls_green">
-
-                    <com.littlestar.app.core.ui.HanziTextView
-                        android:id="@+id/glyphStories"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:textColor="@color/ls_on_green"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </com.littlestar.app.core.ui.BlockLayout>
-
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginStart="@dimen/ls_gap"
-                    android:layout_marginBottom="@dimen/ls_gap"
-                    android:orientation="vertical">
+                    android:minHeight="@dimen/ls_theme_tile_height"
+                    android:orientation="vertical"
+                    android:padding="@dimen/ls_gap">
 
-                    <TextView
-                        android:id="@+id/nameStories"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.LS.Title" />
+                    <com.littlestar.app.core.ui.BlockLayout
+                        style="@style/Widget.LS.Block.Icon"
+                        android:layout_width="@dimen/ls_module_glyph"
+                        android:layout_height="@dimen/ls_module_glyph"
+                        app:ls_fill="@color/ls_green">
 
-                    <TextView
-                        android:id="@+id/nameStoriesEn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.LS.English.Small" />
+                        <com.littlestar.app.core.ui.HanziTextView
+                            android:id="@+id/glyphStories"
+                            style="@style/Widget.LS.Glyph.Decorative"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:textColor="@color/ls_on_green"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </com.littlestar.app.core.ui.BlockLayout>
 
-                    <TextView
-                        android:id="@+id/countStories"
-                        android:layout_width="wrap_content"
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.LS.Caption" />
+                        android:layout_marginTop="@dimen/ls_gap"
+                        android:paddingEnd="@dimen/ls_icon"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/nameStories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.LS.Title" />
+
+                        <TextView
+                            android:id="@+id/nameStoriesEn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.LS.English.Small" />
+
+                        <TextView
+                            android:id="@+id/countStories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.LS.Caption" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <ImageView
@@ -212,6 +236,7 @@
 
                     <com.littlestar.app.core.ui.HanziTextView
                         android:id="@+id/glyphPoems"
+                        style="@style/Widget.LS.Glyph.Decorative"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"

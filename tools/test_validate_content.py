@@ -21,11 +21,11 @@ class MediaValidationTest(unittest.TestCase):
         words = []
         for n in range(6):
             words.append({"id": str(n), "hanzi": "猫", "pinyin": "māo",
-                          "audio": f"audio/words/{n}.ogg", "image": f"ill_word_{n}"})
+                          "audio": f"audio/words/{n}.ogg", "image": f"ill_word_{n}", "english": "cat"})
             (self.assets / f"audio/words/{n}.ogg").write_bytes(b"OggS fixture")
             (self.res / f"drawable-nodpi/ill_word_{n}.png").touch()
         (self.assets / "content/words.json").write_text(json.dumps({
-            "themes": [{"id": "animals", "words": words}],
+            "themes": [{"id": "animals", "nameEn": "Animals", "words": words}],
         }))
         (self.assets / "content/culture.json").write_text(json.dumps({"items": [
             {"id": "poem", "cover": "ill_culture_poem", "audio": "audio/culture/poem.ogg",

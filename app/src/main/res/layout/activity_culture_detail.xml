@@ -90,6 +90,12 @@
                             android:textAppearance="@style/TextAppearance.LS.HanziHero"
                             android:textColor="@color/ls_green" />
                         <TextView
+                            android:id="@+id/detailTitleEn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textAppearance="@style/TextAppearance.LS.Title" />
+                        <TextView
                             android:id="@+id/detailTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -143,8 +149,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ls_gap"
-                    android:fontFamily="@font/noto_sans_sc_hanzi"
                     android:textAppearance="@style/TextAppearance.LS.Body"
+                    android:textLocale="zh-CN"
                     android:textIsSelectable="true"
                     android:visibility="gone" />
             </LinearLayout>

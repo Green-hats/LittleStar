@@ -139,7 +139,7 @@ public final class HomeActivity extends ChildActivity {
             binding.todayLabel.setTextColor(ink);
             binding.heroHanzi.setText(c != null ? c.glyph : "");
             binding.heroPinyin.setText(c != null ? c.titleZh : "");
-            binding.heroEnglish.setText(c != null && c.subtitle != null ? c.subtitle : "");
+            binding.heroEnglish.setText(c != null ? c.titleEn : "");
         }
 
         // 主按钮：字态 START / REVIEW，文态 EXPLORE 蓝块。
