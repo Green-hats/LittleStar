@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""对比度验收：解析 values/colors.xml 与 values-night/colors.xml，复算 WCAG 对比度。
+"""对比度验收：解析固定浅色主题的 values/colors.xml，复算 WCAG 对比度。
 任何一项 < 4.5 以非零码退出。用法：python3 tools/contrast_check.py
 """
 import re
@@ -70,7 +70,6 @@ def check(name: str, colors: dict) -> bool:
 def main() -> int:
     ok = True
     ok &= check("light", load_colors(RES / "values/colors.xml"))
-    ok &= check("night", load_colors(RES / "values-night/colors.xml"))
     return 0 if ok else 1
 
 

@@ -9,19 +9,19 @@ import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.WindowCompat;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -58,21 +58,16 @@ public final class CultureDetailTest {
             onView(withId(R.id.btnListen)).check(matches(isEnabled()));
             onView(withId(R.id.detailTitle)).perform(scrollTo());
             UiEvidence.capture("culture_detail_preview");
-            scenario.onActivity(activity -> activity.getDelegate()
-                    .setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES));
-            waitFor(R.id.detailTitle);
-            waitForCover(scenario, true);
-            onView(withId(R.id.detailTitle)).perform(scrollTo());
             scenario.onActivity(activity -> {
-                assertEquals(android.content.res.Configuration.UI_MODE_NIGHT_YES,
+                assertEquals(android.content.res.Configuration.UI_MODE_NIGHT_NO,
                         activity.getResources().getConfiguration().uiMode
                                 & android.content.res.Configuration.UI_MODE_NIGHT_MASK);
-                assertFalse(WindowCompat.getInsetsController(activity.getWindow(),
+                assertTrue(WindowCompat.getInsetsController(activity.getWindow(),
                         activity.getWindow().getDecorView()).isAppearanceLightStatusBars());
-                assertFalse(WindowCompat.getInsetsController(activity.getWindow(),
+                assertTrue(WindowCompat.getInsetsController(activity.getWindow(),
                         activity.getWindow().getDecorView()).isAppearanceLightNavigationBars());
             });
-            UiEvidence.capture("culture_detail_dark");
+            UiEvidence.capture("culture_detail_light_recreated");
         }
     }
 
@@ -119,7 +114,11 @@ public final class CultureDetailTest {
                     onView(withId(R.id.detailTitle)).check(matches(withText(item.titleZh)));
                     onView(withId(R.id.btnListen)).check(matches(isEnabled()));
                     onView(withId(R.id.btnPreview)).perform(scrollTo(), click());
-                    onView(withId(R.id.detailTranscript)).perform(scrollTo()).check(matches(withText(item.transcript)));
+                    String chinese = item.lyrics.isEmpty() ? item.transcript : item.lyrics.get(0).hanzi;
+                    String english = item.lyrics.isEmpty() ? item.transcriptEn : item.lyrics.get(0).english;
+                    onView(withId(R.id.detailTranscript)).perform(scrollTo())
+                            .check(matches(withText(containsString(chinese))))
+                            .check(matches(withText(containsString(english))));
                 }
             }
         } finally {
@@ -133,9 +132,12 @@ public final class CultureDetailTest {
         do {
             scenario.onActivity(activity -> {
                 ImageView cover = activity.findViewById(R.id.detailCover);
+                var drawable = cover.getDrawable();
+                boolean empty = drawable == null || drawable instanceof BitmapDrawable
+                        && ((BitmapDrawable) drawable).getBitmap() == null;
                 ready.set(activity.findViewById(R.id.detailContent).getVisibility() == View.VISIBLE
-                        && (present ? cover.getVisibility() == View.VISIBLE && cover.getDrawable() != null
-                                    : cover.getVisibility() == View.GONE && cover.getDrawable() == null));
+                        && (present ? cover.getVisibility() == View.VISIBLE && !empty
+                                    : cover.getVisibility() == View.GONE && empty));
             });
             if (ready.get()) {
                 return;

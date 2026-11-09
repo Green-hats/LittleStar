@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- M1 组件画廊：一页展示全部组件；顶部三个切换：浅色 / 深色 / 1.3 倍字体 -->
+<!-- M1 组件画廊：一页展示全部组件；顶部可切换 1.3 倍字体 -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/galleryRoot"
@@ -27,44 +27,10 @@
             android:orientation="horizontal">
 
             <com.littlestar.app.core.ui.BlockLayout
-                android:id="@+id/btnLight"
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/ls_btn_icon"
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.LS.Caption"
-                    android:textColor="@color/ls_ink"
-                    android:text="@string/gallery_light" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <com.littlestar.app.core.ui.BlockLayout
-                android:id="@+id/btnDark"
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/ls_btn_icon"
-                android:layout_marginStart="@dimen/ls_gap_sm"
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.LS.Caption"
-                    android:textColor="@color/ls_ink"
-                    android:text="@string/gallery_dark" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <com.littlestar.app.core.ui.BlockLayout
                 android:id="@+id/btnFont"
                 style="@style/Widget.LS.Block.Icon"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/ls_btn_icon"
-                android:layout_marginStart="@dimen/ls_gap_sm"
                 android:layout_weight="1">
 
                 <TextView

@@ -2,8 +2,6 @@
 <resources>
     <!-- M1 组件画廊（仅 debug） -->
     <string name="gallery_title">组件画廊</string>
-    <string name="gallery_light">浅色</string>
-    <string name="gallery_dark">深色</string>
     <string name="gallery_font">1.3×字</string>
 
     <string name="gallery_sec_blocks">硬影块 · 9 个样式</string>

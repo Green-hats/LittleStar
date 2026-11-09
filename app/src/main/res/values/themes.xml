@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.LittleStar" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.LittleStar" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:forceDarkAllowed">false</item>
         <item name="colorPrimary">@color/ls_red</item>
         <item name="colorOnPrimary">@color/ls_on_red</item>
         <item name="colorSecondary">@color/ls_blue</item>
@@ -29,6 +30,9 @@
 
     <!-- 启动画面 -->
     <style name="Theme.LittleStar.Splash" parent="Theme.SplashScreen.IconBackground">
+        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <item name="windowSplashScreenBackground">@color/ls_paper</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_panda</item>
         <item name="windowSplashScreenIconBackgroundColor">@color/ls_yellow</item>

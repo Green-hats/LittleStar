@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.littlestar.app.R;
 import com.littlestar.app.core.ui.Insets;
@@ -22,7 +21,7 @@ import com.littlestar.app.databinding.ActivityComponentGalleryBinding;
 
 /**
  * M1 组件画廊（仅 debug 构建）：一页展示全部组件。
- * 顶部三个切换：浅色 / 深色 / 1.3 倍字体（1.3 倍只作用于本页）。
+ * 顶部提供 1.3 倍字体切换（只作用于本页）。
  * 另有一个自动演示按下态的硬影块。
  */
 public final class ComponentGalleryActivity extends AppCompatActivity {
@@ -71,16 +70,12 @@ public final class ComponentGalleryActivity extends AppCompatActivity {
             config.fontScale = LARGE_FONT_SCALE;
             applyOverrideConfiguration(config);
         }
-        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         binding = ActivityComponentGalleryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
 
-        binding.btnLight.setOnClickListener(
-                v -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO));
-        binding.btnDark.setOnClickListener(
-                v -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES));
         binding.btnFont.setOnClickListener(v -> {
             largeFont = !largeFont;
             recreate();
