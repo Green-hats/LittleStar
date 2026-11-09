@@ -57,8 +57,14 @@ public final class Notifier {
 
     private void notify(int id, @NonNull String channel, @NonNull String title, @NonNull String text,
                         @NonNull Intent tapIntent) {
-        PendingIntent pi = PendingIntent.getActivity(app, id, tapIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        // A notification must show Home itself, not merely bring an existing
+        // task (which may have Settings on top) to the foreground.
+        Intent launchIntent = new Intent(tapIntent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        // UPDATE_CURRENT refreshes extras but can retain an older token's launch
+        // flags after an app update; recreate that token to apply this route.
+        PendingIntent pi = PendingIntent.getActivity(app, id, launchIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Notification n = new NotificationCompat.Builder(app, channel)
                 .setSmallIcon(R.drawable.ic_stat_panda)
                 .setContentTitle(title)

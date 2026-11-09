@@ -69,6 +69,7 @@ public final class FlashcardActivity extends ChildActivity {
     private long sessionId = -1;
     private int restoredIndex = -1;
     private boolean speaking;
+    private SpeechPlayer.FailureListener audioFailureListener;
     /** 页面滑动来源标记：next() 按钮触发的翻页不重复朗读（render 里已处理）。 */
     private boolean firstPageSpoken;
 
@@ -139,12 +140,20 @@ public final class FlashcardActivity extends ChildActivity {
         });
 
         // 音频缺失 / 损坏 → 页面内对话框（孩子区不用系统 AlertDialog）
-        container().speech.setFailureListener(new SpeechPlayer.FailureListener() {
+        audioFailureListener = new SpeechPlayer.FailureListener() {
             @Override
             public void onPlayFailed(@NonNull String wordId) {
-                runOnUiThread(() -> binding.audioMissing.setVisibility(View.VISIBLE));
+                runOnUiThread(() -> {
+                    FlashcardViewModel.UiState current = vm.state().getValue();
+                    if (current != null && current.current() != null
+                            && wordId.equals(current.current().id)) {
+                        binding.audioMissing.setVisibility(View.VISIBLE);
+                        binding.audioMissing.announceForAccessibility(getString(R.string.pr_audio_title));
+                    }
+                });
             }
-        });
+        };
+        container().speech.setFailureListener(audioFailureListener);
 
         vm.state().observe(this, this::render);
         vm.effects().observe(this, this::onEffect);
@@ -197,6 +206,8 @@ public final class FlashcardActivity extends ChildActivity {
         }
 
         binding.stamp.setLearned(s.currentLearned);
+        binding.stampLabel.setText(s.currentLearned
+                ? R.string.pr_stamp_marked : R.string.pr_stamp_optional);
         binding.btnNextText.setText(s.isLast ? R.string.fc_done : R.string.fc_next);
         updateReading();
     }
@@ -258,9 +269,16 @@ public final class FlashcardActivity extends ChildActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        container().speech.setFailureListener(null);
+    protected void onPause() {
         container().speech.stop();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (audioFailureListener != null) {
+            container().speech.clearFailureListener(audioFailureListener);
+        }
         super.onDestroy();
     }
 

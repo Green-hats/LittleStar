@@ -66,7 +66,10 @@ public final class RoundReviewActivity extends ChildActivity {
         });
 
         vm.state().observe(this, this::render);
-        vm.init(getIntent().getLongExtra(EXTRA_SESSION_ID, -1));
+        // The restored task may open this Activity in a fresh process. Resolve
+        // answer word IDs only after bundled content is loaded.
+        container().content.load(container().executors,
+                () -> vm.init(getIntent().getLongExtra(EXTRA_SESSION_ID, -1)));
     }
 
     private void render(RoundReviewViewModel.UiState s) {

@@ -59,7 +59,7 @@ public final class SettingsTimePickerRegressionTest {
     public void recreatedPicker_positiveStillUpdatesDraftAndSavePersists() {
         try (ActivityScenario<SettingsActivity> scenario =
                      ActivityScenario.launch(SettingsActivity.class)) {
-            onView(withId(R.id.timeValue)).check(matches(withText("19:30")));
+            onView(withId(R.id.timeValue)).check(matches(withText(displayTime(19, 30))));
             AtomicReference<SettingsActivity> activityRef = new AtomicReference<>();
             scenario.onActivity(activityRef::set);
             scenario.onActivity(activity ->
@@ -81,7 +81,7 @@ public final class SettingsTimePickerRegressionTest {
                         .findViewById(com.google.android.material.R.id.material_timepicker_ok_button)
                         .performClick();
             });
-            onView(withId(R.id.timeValue)).check(matches(withText("08:45")));
+            onView(withId(R.id.timeValue)).check(matches(withText(displayTime(8, 45))));
             assertEquals("19:30", container.settings.getReminderTime());
             scenario.onActivity(activity -> activity.findViewById(R.id.btnSave).performClick());
             assertEquals("08:45", container.settings.getReminderTime());
@@ -127,9 +127,16 @@ public final class SettingsTimePickerRegressionTest {
             onMain(() -> picker.requireDialog()
                     .findViewById(com.google.android.material.R.id.material_timepicker_cancel_button)
                     .performClick());
-            onView(withId(R.id.timeValue)).check(matches(withText("19:30")));
+            onView(withId(R.id.timeValue)).check(matches(withText(displayTime(19, 30))));
             assertEquals("19:30", container.settings.getReminderTime());
         }
+    }
+
+    private static String displayTime(int hour, int minute) {
+        java.util.Calendar time = new java.util.GregorianCalendar(2000,
+                java.util.Calendar.JANUARY, 1, hour, minute);
+        return android.text.format.DateFormat.getTimeFormat(
+                ApplicationProvider.getApplicationContext()).format(time.getTime());
     }
 
     private static MaterialTimePicker waitForPicker(

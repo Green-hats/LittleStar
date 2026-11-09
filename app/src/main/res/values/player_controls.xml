@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <fraction name="player_unavailable_alpha">45%</fraction>
+    <string name="player_desc_prev_unavailable">No previous item in this category</string>
+    <string name="player_desc_next_unavailable">No next item in this category</string>
+</resources>

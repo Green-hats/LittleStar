@@ -176,6 +176,7 @@ public final class PlayerActivity extends ChildActivity {
                 }
             });
             startPlaybackIfNeeded();
+            updateControls();
             handler.removeCallbacks(progressTick);
             handler.post(progressTick);
         }, ContextCompat.getMainExecutor(this));
@@ -237,8 +238,7 @@ public final class PlayerActivity extends ChildActivity {
         boolean ready = c != null && c.isConnected() && controllerInitialized
                 && c.getMediaItemCount() > 0;
         setControlEnabled(binding.btnPlay, ready);
-        setControlEnabled(binding.btnPrev, ready && c.hasPreviousMediaItem());
-        setControlEnabled(binding.btnNext, ready && c.hasNextMediaItem());
+        updateTrackControls();
         setControlEnabled(binding.progress,
                 ready && c.isCurrentMediaItemSeekable() && c.getDuration() > 0);
     }
@@ -246,6 +246,29 @@ public final class PlayerActivity extends ChildActivity {
     private static void setControlEnabled(View view, boolean enabled) {
         view.setEnabled(enabled);
         view.setAlpha(enabled ? 1f : DISABLED_ALPHA);
+    }
+
+    /** Show whether a neighbouring item actually exists in the current category queue. */
+    private void updateTrackControls() {
+        MediaController c = controller;
+        boolean ready = c != null && c.isConnected() && controllerInitialized
+                && c.getMediaItemCount() > 0;
+        boolean previous = ready
+                && c.isCommandAvailable(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
+                && c.hasPreviousMediaItem();
+        boolean next = ready
+                && c.isCommandAvailable(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
+                && c.hasNextMediaItem();
+        float unavailableAlpha = getResources().getFraction(
+                R.fraction.player_unavailable_alpha, 1, 1);
+        binding.btnPrev.setEnabled(previous);
+        binding.btnNext.setEnabled(next);
+        binding.btnPrev.setAlpha(previous ? 1f : unavailableAlpha);
+        binding.btnNext.setAlpha(next ? 1f : unavailableAlpha);
+        binding.btnPrev.setContentDescription(getString(previous
+                ? R.string.player_desc_prev : R.string.player_desc_prev_unavailable));
+        binding.btnNext.setContentDescription(getString(next
+                ? R.string.player_desc_next : R.string.player_desc_next_unavailable));
     }
 
     private void render(PlayerViewModel.UiState s) {

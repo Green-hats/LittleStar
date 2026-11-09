@@ -16,6 +16,7 @@ import androidx.lifecycle.viewmodel.CreationExtras;
 
 import com.littlestar.app.R;
 import com.littlestar.app.core.audio.SfxPlayer;
+import com.littlestar.app.core.audio.SpeechPlayer;
 import com.littlestar.app.core.lifecycle.Event;
 import com.littlestar.app.core.ui.BlockLayout;
 import com.littlestar.app.core.ui.ChildActivity;
@@ -60,6 +61,7 @@ public final class QuizActivity extends ChildActivity {
 
     private QuizViewModel.Mode mode = QuizViewModel.Mode.SESSION;
     private long sessionId = -1;
+    private SpeechPlayer.FailureListener audioFailureListener;
     /** 已滑入反馈条的题号（-1 = 当前题还没滑入）。 */
     private int feedbackShownFor = -1;
 
@@ -107,6 +109,23 @@ public final class QuizActivity extends ChildActivity {
         binding.btnListen.setOnClickListener(v -> vm.speakCurrent());
         binding.questionCard.setOnClickListener(v -> vm.speakCurrent());
         binding.btnNext.setOnClickListener(v -> vm.next());
+        binding.btnAudioRetry.setOnClickListener(v -> {
+            binding.audioMissing.setVisibility(View.GONE);
+            vm.speakCurrent();
+        });
+        binding.btnAudioContinue.setOnClickListener(v -> {
+            finish();
+            Motion.childExit(this);
+        });
+        audioFailureListener = wordId -> runOnUiThread(() -> {
+            QuizViewModel.UiState current = vm.state().getValue();
+            if (current != null && current.question != null
+                    && wordId.equals(current.question.wordId())) {
+                binding.audioMissing.setVisibility(View.VISIBLE);
+                binding.audioMissing.announceForAccessibility(getString(R.string.pr_audio_title));
+            }
+        });
+        container().speech.setFailureListener(audioFailureListener);
 
         vm.state().observe(this, this::render);
         vm.effects().observe(this, this::onEffect);
@@ -231,8 +250,16 @@ public final class QuizActivity extends ChildActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onPause() {
         container().speech.stop();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (audioFailureListener != null) {
+            container().speech.clearFailureListener(audioFailureListener);
+        }
         super.onDestroy();
     }
 }

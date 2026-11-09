@@ -243,3 +243,16 @@
 - 文档：旧设计与工程稿原样归档，当前 DESIGN / ENGINEERING 与 TEAM_PLAN 统一描述现行 13 页。A/B/C 仅为责任角色，不虚构成员姓名、历史作者或评审记录。
 - 视觉修正：共享基类在 AppCompat 应用主题后启用 EdgeToEdge，在获得窗口焦点时同步系统栏外观；避免仅设置局部深色而沿用前一窗口的黑色图标。
 - 验证：37 项 JVM 单测、14 项设备回归以及 debug/release 构建全部通过，详见 ACCEPTANCE.md。
+
+
+## B review follow-up 2026-10-29
+
+- Basis: AI-simulated A/C reviews, not completed teammate reviews.
+- Add the missing Poems English label and remove the repeated category subtitle.
+- Use the ordinary card/ink colours for the details arrow; keep blue for audio.
+- Disable and dim previous/next when the controller has no available neighbour;
+  give unavailable actions explicit accessibility descriptions.
+- Add a standalone strict Ogg/lyric timing audit. Existing seven timing defects
+  remain pending real audio/transcript alignment; do not compress timestamps to hide them.
+- Defer player connection/asset-error recovery to a separate change with focused tests.
+  Existing invalid-content-ID handling remains in Discover.

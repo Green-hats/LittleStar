@@ -53,7 +53,7 @@ public final class CultureCategoriesActivity extends ChildActivity {
                             binding.nameStoriesEn, binding.countStories, binding.catStories);
                     break;
                 case "poems":
-                    bind(c, item.count, binding.glyphPoems, binding.namePoems, null,
+                    bind(c, item.count, binding.glyphPoems, binding.namePoems, binding.namePoemsEn,
                             binding.countPoems, binding.catPoems);
                     break;
                 default:

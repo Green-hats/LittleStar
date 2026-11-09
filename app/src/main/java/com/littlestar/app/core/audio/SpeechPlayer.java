@@ -92,6 +92,13 @@ public final class SpeechPlayer {
         failureListener = listener;
     }
 
+    /** Remove only the listener owned by the Activity being destroyed. */
+    public void clearFailureListener(@NonNull FailureListener listener) {
+        if (failureListener == listener) {
+            failureListener = null;
+        }
+    }
+
     /** 播放一个字的读音。新请求打断旧的。 */
     public void play(@NonNull Word word) {
         pendingWordId = word.id;
