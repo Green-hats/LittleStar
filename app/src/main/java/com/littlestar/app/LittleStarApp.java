@@ -3,6 +3,7 @@ package com.littlestar.app;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ProcessLifecycleOwner;
@@ -18,6 +19,7 @@ public final class LittleStarApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         container = new AppContainer(this);
         // debug 构建开启 StrictMode（容器建好后开启：getFilesDir 等框架调用不算违规）（§15）
         if (BuildConfig.DEBUG) {

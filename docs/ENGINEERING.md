@@ -111,8 +111,9 @@ A 创建会话和保存作答；C 的完成与回顾根据同一 sessionId 读�
 
 ## 组件和内容资源
 
-BlockLayout 统一硬描边、阴影、按压动画；沿用已有深色和 sw600dp 尺寸覆盖。
-颜色在 values/colors.xml 与 values-night/colors.xml，尺寸在 dimens.xml，文案在 strings*.xml。
+BlockLayout 统一硬描边、阴影、按压动画；保留 sw600dp 尺寸覆盖。
+应用启动时固定 MODE_NIGHT_NO，Material3 使用 Light 主题并关闭 Force Dark，不提供深色入口或夜间色板。
+颜色在 values/colors.xml，尺寸在 dimens.xml，文案在 strings*.xml。
 新详情的中文预览使用汉字子集字体；subset_font.py 同时收集 transcript 和 learningFocus。
 更新文化内容后需运行内容检查，增加汉字时还需重建子集字体。
 

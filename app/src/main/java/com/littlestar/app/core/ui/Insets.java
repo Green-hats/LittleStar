@@ -1,7 +1,6 @@
 package com.littlestar.app.core.ui;
 
 import android.view.View;
-import android.content.res.Configuration;
 import android.app.Activity;
 
 import androidx.annotation.NonNull;
@@ -17,15 +16,13 @@ public final class Insets {
 
     /** 窗口取得焦点后，以本页主题同步系统栏，而不是沿用上一窗口的外观。 */
     public static void syncSystemBarAppearance(@NonNull Activity activity) {
-        boolean dark = (activity.getResources().getConfiguration().uiMode
-                & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
         var controller = WindowCompat.getInsetsController(activity.getWindow(),
                 activity.getWindow().getDecorView());
-        if (controller.isAppearanceLightStatusBars() == dark) {
-            controller.setAppearanceLightStatusBars(!dark);
+        if (!controller.isAppearanceLightStatusBars()) {
+            controller.setAppearanceLightStatusBars(true);
         }
-        if (controller.isAppearanceLightNavigationBars() == dark) {
-            controller.setAppearanceLightNavigationBars(!dark);
+        if (!controller.isAppearanceLightNavigationBars()) {
+            controller.setAppearanceLightNavigationBars(true);
         }
     }
 

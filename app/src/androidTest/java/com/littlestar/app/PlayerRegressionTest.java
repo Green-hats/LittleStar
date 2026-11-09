@@ -19,7 +19,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.SystemClock;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.Lifecycle;
@@ -281,7 +280,7 @@ public final class PlayerRegressionTest {
     }
 
     @Test
-    public void playerScreen_lightAndDarkEvidence() throws Exception {
+    public void playerScreen_keepsLightBarsAfterRecreation() throws Exception {
         try (ActivityScenario<PlayerActivity> scenario = ActivityScenario.launch(
                 playerIntent("xiaoxingxing", List.of("xiaoxingxing", "liangzhilaohu")))) {
             MediaController controller = connect().get(10, TimeUnit.SECONDS);
@@ -289,18 +288,13 @@ public final class PlayerRegressionTest {
                     || controller.getPlaybackState() == Player.STATE_READY);
             onMain(controller::pause);
             waitFor(() -> !controller.getPlayWhenReady());
-            scenario.onActivity(activity -> activity.getDelegate()
-                    .setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO));
             waitForView(R.id.songTitle);
-            waitForBarAppearance(scenario, false);
+            waitForLightBars(scenario);
             UiEvidence.capture("player_light");
-            scenario.onActivity(activity -> activity.getDelegate()
-                    .setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES));
+            scenario.recreate();
             waitForView(R.id.songTitle);
-            waitForBarAppearance(scenario, true);
-            UiEvidence.capture("player_dark");
-            scenario.onActivity(activity -> activity.getDelegate()
-                    .setLocalNightMode(AppCompatDelegate.MODE_NIGHT_UNSPECIFIED));
+            waitForLightBars(scenario);
+            UiEvidence.capture("player_light_recreated");
         }
     }
 
@@ -370,27 +364,25 @@ public final class PlayerRegressionTest {
         }
     }
 
-    private static void waitForBarAppearance(ActivityScenario<PlayerActivity> scenario,
-                                             boolean dark) {
+    private static void waitForLightBars(ActivityScenario<PlayerActivity> scenario) {
         long deadline = SystemClock.uptimeMillis() + 10_000;
         AtomicBoolean ready = new AtomicBoolean();
         do {
             scenario.onActivity(activity -> {
                 int mode = activity.getResources().getConfiguration().uiMode
                         & Configuration.UI_MODE_NIGHT_MASK;
-                boolean night = mode == Configuration.UI_MODE_NIGHT_YES;
                 WindowInsetsControllerCompat insets = WindowCompat.getInsetsController(
                         activity.getWindow(), activity.getWindow().getDecorView());
-                ready.set(night == dark
-                        && insets.isAppearanceLightStatusBars() == !dark
-                        && insets.isAppearanceLightNavigationBars() == !dark);
+                ready.set(mode == Configuration.UI_MODE_NIGHT_NO
+                        && insets.isAppearanceLightStatusBars()
+                        && insets.isAppearanceLightNavigationBars());
             });
             if (ready.get()) {
                 return;
             }
             SystemClock.sleep(100);
         } while (SystemClock.uptimeMillis() < deadline);
-        assertTrue("Timed out waiting for bar appearance dark=" + dark, ready.get());
+        assertTrue("Timed out waiting for light theme and dark system-bar icons", ready.get());
     }
 
     private static void waitForView(int id) {

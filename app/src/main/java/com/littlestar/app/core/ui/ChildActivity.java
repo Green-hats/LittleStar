@@ -18,7 +18,7 @@ public abstract class ChildActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // AppCompat 先应用本页深浅色配置，再选择系统栏图标颜色。
+        // AppCompat 先应用浅色主题，再选择系统栏图标颜色。
         EdgeToEdge.enable(this);
     }
 

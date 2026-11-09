@@ -2155,15 +2155,16 @@
       "kind": "theme-illustration",
       "mediaType": "illustration",
       "path": "res/drawable-nodpi/ill_theme_animals.png",
-      "sourceTitle": "OpenMoji 15.1.0: paw prints",
-      "sourcePage": "https://openmoji.org/library/emoji-1F43E/",
-      "sourceUrl": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/15.1.0/color/618x618/1F43E.png",
+      "sourceTitle": "OpenMoji 15.1.0: cat face",
+      "sourcePage": "https://openmoji.org/library/emoji-1F431/",
+      "sourceUrl": "https://raw.githubusercontent.com/hfg-gmuend/openmoji/15.1.0/color/618x618/1F431.png",
       "creator": "OpenMoji contributors",
       "license": "CC-BY-SA-4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
-      "sourceSha256": "b1a024deb6157c1719a040d8de2846f9d77094fe2eaa7676b6f28a769445f3cf",
-      "sha256": "b1a024deb6157c1719a040d8de2846f9d77094fe2eaa7676b6f28a769445f3cf",
-      "changes": "Unmodified official 618x618 RGBA PNG from the pinned OpenMoji 15.1.0 release; transparent background and original outlines retained. Bundled locally, no runtime download."
+      "sourceSha256": "ed043c8f1e420d9afca7598615a67d7f56a94963b9454d00f51996d8f1c9d84f",
+      "sha256": "ed043c8f1e420d9afca7598615a67d7f56a94963b9454d00f51996d8f1c9d84f",
+      "changes": "Unmodified official 618x618 RGBA PNG from the pinned OpenMoji 15.1.0 release; transparent background and original outlines retained. Bundled locally, no runtime download.",
+      "role": "Orange animal face selected after dark-mode device review to distinguish the Animals entry from its dark clay card background."
     },
     {
       "themeId": "fruits",

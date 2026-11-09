@@ -6,7 +6,7 @@
 - SVG 的 <g transform="translate(90 109.6) scale(0.274223)"> 映射为 VectorDrawable 的
   <group translateX/translateY/scaleX/scaleY>，path 数据原样保留；
 - panda_sleep.svg 的两个 <text>z</text> 用手写折线路径代替（VectorDrawable 不支持 text）；
-- 颜色一律引用 @color/ls_panda_*（values 与 values-night 保持一致）。
+- 颜色一律引用 @color/ls_panda_*（应用固定浅色）。
 
 用法：python3 tools/svg_to_vector.py
 """
