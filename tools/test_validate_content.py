@@ -25,8 +25,10 @@ class MediaValidationTest(unittest.TestCase):
             (self.assets / f"audio/words/{n}.ogg").write_bytes(b"OggS fixture")
             (self.res / f"drawable-nodpi/ill_word_{n}.png").touch()
         (self.assets / "content/words.json").write_text(json.dumps({
-            "themes": [{"id": "animals", "nameEn": "Animals", "words": words}],
+            "themes": [{"id": "animals", "nameEn": "Animals", "illustration": "ill_theme_animals",
+                        "words": words}],
         }))
+        (self.res / "drawable-nodpi/ill_theme_animals.png").touch()
         (self.assets / "content/culture.json").write_text(json.dumps({"items": [
             {"id": "poem", "cover": "ill_culture_poem", "audio": "audio/culture/poem.ogg",
              "transcript": "鹅鹅鹅"},
@@ -61,6 +63,12 @@ class MediaValidationTest(unittest.TestCase):
     def test_word_images_can_resolve_from_nodpi(self):
         validator.check_words()
         self.assertEqual([], validator.errors)
+
+    def test_missing_theme_illustration_is_rejected(self):
+        (self.res / "drawable-nodpi/ill_theme_animals.png").unlink()
+        with patch("builtins.print"):
+            validator.check_words()
+        self.assertTrue(any("缺主题图" in error for error in validator.errors))
 
     def test_changed_audio_requires_updated_checksum(self):
         self.save_manifest()
@@ -106,8 +114,8 @@ class MediaValidationTest(unittest.TestCase):
         self.save_manifest()
         with patch("builtins.print"):
             validator.check_media(require_complete=True)
-        self.assertTrue(any("未登记真实素材" in error and "poem" in error for error in validator.errors))
-        self.assertTrue(any("未登记真实素材" in error and "photo" in error for error in validator.errors))
+        self.assertTrue(any("未登记非占位素材" in error and "poem" in error for error in validator.errors))
+        self.assertTrue(any("未登记非占位素材" in error and "字词配图" in error for error in validator.errors))
 
     def test_source_checksum_must_be_sha256(self):
         self.entry["sourceSha256"] = "not-a-checksum"
@@ -206,6 +214,58 @@ class MediaValidationTest(unittest.TestCase):
             validator.check_media()
         self.assertTrue(any("Pexels" in error for error in validator.errors))
 
+    def test_word_illustration_obeys_image_integrity_checks(self):
+        self.entry = dict(self.photo_entry(), kind="word-illustration")
+        self.save_manifest()
+        validator.check_media()
+        self.assertEqual([], validator.errors)
+        (self.res / "drawable-nodpi/ill_word_0.png").write_bytes(b"broken PNG")
+        with patch("builtins.print"):
+            validator.check_media()
+        self.assertTrue(any("SHA-256" in error for error in validator.errors))
+        self.assertTrue(any("不是 PNG" in error for error in validator.errors))
+
+    def test_theme_illustration_must_match_theme_and_image_reference(self):
+        photo = self.photo_entry()
+        data = (self.res / "drawable-nodpi/ill_word_0.png").read_bytes()
+        (self.res / "drawable-nodpi/ill_theme_animals.png").write_bytes(data)
+        self.entry = dict(photo, kind="theme-illustration", themeId="animals",
+                          path="res/drawable-nodpi/ill_theme_animals.png")
+        del self.entry["wordId"]
+        self.save_manifest()
+        validator.check_media()
+        self.assertEqual([], validator.errors)
+        for change in ({"themeId": "unknown"}, {"path": "res/drawable-nodpi/ill_word_0.png"}):
+            with self.subTest(change=change):
+                validator.errors.clear()
+                self.save_manifest([dict(self.entry, **change)])
+                with patch("builtins.print"):
+                    validator.check_media()
+                self.assertTrue(validator.errors)
+
+    def test_placeholder_cannot_be_registered_as_a_theme_illustration(self):
+        photo = self.photo_entry()
+        words_path = self.assets / "content/words.json"
+        words = json.loads(words_path.read_text())
+        words["themes"][0]["illustration"] = "ill_placeholder"
+        words_path.write_text(json.dumps(words))
+        path = self.res / "drawable-nodpi/ill_placeholder.png"
+        path.write_bytes((self.res / "drawable-nodpi/ill_word_0.png").read_bytes())
+        theme = dict(photo, kind="theme-illustration", themeId="animals",
+                     path="res/drawable-nodpi/ill_placeholder.png")
+        del theme["wordId"]
+        self.save_manifest([theme])
+        with patch("builtins.print"):
+            validator.check_media(check_rights=False)
+        self.assertTrue(any("仍为占位" in error for error in validator.errors))
+
+    def test_photo_and_illustration_cannot_claim_the_same_path_twice(self):
+        photo = self.photo_entry()
+        self.save_manifest([photo, dict(photo, kind="word-illustration")])
+        with patch("builtins.print"):
+            validator.check_media()
+        self.assertTrue(any("重复" in error for error in validator.errors))
+
     def test_number_photo_requires_matching_count_and_non_overlapping_tiles(self):
         path = self.assets / "content/words.json"
         words = json.loads(path.read_text())
@@ -226,7 +286,7 @@ class MediaValidationTest(unittest.TestCase):
                     validator.check_media()
                 self.assertTrue(any("计数" in error for error in validator.errors))
 
-    def test_strict_mode_accepts_complete_words_and_culture(self):
+    def test_strict_mode_accepts_complete_themes_words_and_culture(self):
         png_header = b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR" + struct.pack(">II", 512, 512)
         entries = []
         for n in range(6):
@@ -245,7 +305,12 @@ class MediaValidationTest(unittest.TestCase):
         audio = dict(self.entry, cultureId="poem", kind="human-culture-audio",
                      path="assets/audio/culture/poem.ogg", transcript="鹅鹅鹅")
         del audio["wordId"]
-        self.save_manifest(entries + [cover, audio])
+        (self.res / "drawable-nodpi/ill_theme_animals.png").write_bytes(png_header)
+        theme = dict(cover, kind="theme-illustration", themeId="animals",
+                     path="res/drawable-nodpi/ill_theme_animals.png")
+        del theme["cultureId"]
+        entries[1]["kind"] = "word-illustration"
+        self.save_manifest(entries + [cover, audio, theme])
         with patch("builtins.print"):
             validator.check_media(require_complete=True)
         self.assertEqual([], validator.errors)

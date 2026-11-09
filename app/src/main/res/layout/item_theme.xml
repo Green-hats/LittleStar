@@ -10,10 +10,10 @@
 
     <ImageView android:id="@+id/badgeDone" android:layout_width="@dimen/ls_badge" android:layout_height="@dimen/ls_badge" android:layout_gravity="top|end" android:layout_marginTop="@dimen/ls_gap" android:layout_marginEnd="@dimen/ls_gap" android:background="@drawable/bg_badge_green" android:contentDescription="@string/wl_learned_desc" android:padding="@dimen/ls_badge_pad" android:src="@drawable/ic_check" android:visibility="gone" app:tint="@color/ls_on_green"/>
 
-    <!-- 插画占位 + 主题字形 -->
+    <!-- 主题图；缺图时回退为主题字形 -->
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal" android:padding="@dimen/ls_gap"><FrameLayout android:layout_width="@dimen/ls_tile_ill" android:layout_height="@dimen/ls_tile_ill">
 
-        <ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:importantForAccessibility="no" android:src="@drawable/ill_placeholder"/>
+        <ImageView android:id="@+id/themeIllustration" android:layout_width="match_parent" android:layout_height="match_parent" android:importantForAccessibility="no" android:scaleType="fitCenter" android:src="@drawable/ill_placeholder"/>
 
         <com.littlestar.app.core.ui.HanziTextView android:id="@+id/themeGlyph" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:textAppearance="@style/TextAppearance.LS.HanziTile" android:textColor="@color/ls_on_yellow" android:textSize="28sp"/>
     </FrameLayout>

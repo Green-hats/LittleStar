@@ -42,6 +42,8 @@ def check_words() -> None:
     seen = set()
     for theme in data["themes"]:
         check_english(theme["id"], "nameEn", theme.get("nameEn"))
+        if not drawable_exists(theme.get("illustration", "")):
+            fail(f"缺主题图: {theme['id']}")
         words = theme["words"]
         if len(words) != 6:
             fail(f"主题 {theme['id']} 有 {len(words)} 字，应为 6")
@@ -97,14 +99,17 @@ def check_media(require_complete: bool = False, check_rights: bool = True) -> No
     if not manifest.exists():
         fail("缺素材来源清单 media_sources.json")
         return
-    words = {word["id"]: word for theme in json.loads(
-        (ASSETS / "content/words.json").read_text(encoding="utf-8"))["themes"] for word in theme["words"]}
+    themes = {theme["id"]: theme for theme in json.loads(
+        (ASSETS / "content/words.json").read_text(encoding="utf-8"))["themes"]}
+    words = {word["id"]: word for theme in themes.values() for word in theme["words"]}
     culture = {item["id"]: item for item in json.loads(
         (ASSETS / "content/culture.json").read_text(encoding="utf-8"))["items"]}
     seen = set()
+    seen_paths = set()
     for entry in json.loads(manifest.read_text(encoding="utf-8"))["assets"]:
         is_culture = entry.get("kind") in ("culture-cover", "human-culture-audio")
-        id_key = "cultureId" if is_culture else "wordId"
+        is_theme = entry.get("kind") == "theme-illustration"
+        id_key = "themeId" if is_theme else "cultureId" if is_culture else "wordId"
         required = (id_key, "kind", "path", "sha256")
         if check_rights:
             required += ("sourceTitle", "sourcePage", "sourceUrl", "creator",
@@ -114,11 +119,12 @@ def check_media(require_complete: bool = False, check_rights: bool = True) -> No
             fail(f"不完整的{label}: {entry.get('path')}")
             continue
         key = (entry[id_key], entry["kind"])
-        word = (culture if is_culture else words).get(entry[id_key])
-        if key in seen or word is None:
+        word = (themes if is_theme else culture if is_culture else words).get(entry[id_key])
+        if key in seen or entry["path"] in seen_paths or word is None:
             fail(f"重复或未知内容素材: {key}")
             continue
         seen.add(key)
+        seen_paths.add(entry["path"])
         if check_rights:
             if entry.get("reviewPending", False) is not False:
                 fail(f"素材仍待审核: {entry['path']}")
@@ -193,20 +199,20 @@ def check_media(require_complete: bool = False, check_rights: bool = True) -> No
                 fail(f"文化音频与正文不匹配: {entry['cultureId']}")
             if not data.startswith(b"OggS"):
                 fail(f"文化音频不是 Ogg: {entry['path']}")
-        elif entry["kind"] in ("photo", "culture-cover"):
-            image = word["cover"] if is_culture else word["image"]
-            if is_culture and image == "ill_placeholder":
-                fail(f"文化封面仍为占位资源: {entry['cultureId']}")
+        elif entry["kind"] in ("photo", "word-illustration", "theme-illustration", "culture-cover"):
+            image = word["illustration"] if is_theme else word["cover"] if is_culture else word["image"]
+            if image == "ill_placeholder":
+                fail(f"配图仍为占位资源: {entry[id_key]}")
             if entry["path"] != f"res/drawable-nodpi/{image}.png":
-                fail(f"照片资源引用不匹配: {entry[id_key]}")
+                fail(f"配图资源引用不匹配: {entry[id_key]}")
             if len(data) < 24 or data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
-                fail(f"照片不是 PNG: {entry['path']}")
+                fail(f"配图不是 PNG: {entry['path']}")
                 continue
             width, height = struct.unpack(">II", data[16:24])
             if min(width, height) < 512 or max(width, height) > 1024 or len(data) > 4 * 1024 * 1024:
-                fail(f"照片尺寸或大小超出预算: {entry['path']}")
+                fail(f"配图尺寸或大小超出预算: {entry['path']}")
             number = (unicodedata.numeric(word["hanzi"], None)
-                      if not is_culture and len(word["hanzi"]) == 1 else None)
+                      if not is_culture and not is_theme and len(word["hanzi"]) == 1 else None)
             if number is not None:
                 tiles = entry.get("composition")
                 valid = (type(entry.get("objectCount")) is int and entry["objectCount"] == number
@@ -224,25 +230,26 @@ def check_media(require_complete: bool = False, check_rights: bool = True) -> No
                 if not valid:
                     fail(f"照片计数或拼图区域与数字不匹配: {entry[id_key]}")
             if len(list(RES.glob(f"drawable*/{image}.*"))) != 1:
-                fail(f"照片仍有重复资源变体: {entry[id_key]}")
+                fail(f"配图仍有重复资源变体: {entry[id_key]}")
         else:
             fail(f"未知素材类型: {entry['kind']}")
 
-    groups = (("字词照片", "photo", list(words)),
-              ("真人字音", "human-pronunciation", list(words)),
-              ("文化封面", "culture-cover", list(culture)),
-              ("文化真人音频", "human-culture-audio", list(culture)))
-    for label, kind, ids in groups:
-        missing = [item_id for item_id in ids if (item_id, kind) not in seen]
+    groups = (("字词配图（照片或插画）", ("photo", "word-illustration"), list(words)),
+              ("主题图", ("theme-illustration",), list(themes)),
+              ("真人字音", ("human-pronunciation",), list(words)),
+              ("文化封面", ("culture-cover",), list(culture)),
+              ("文化真人音频", ("human-culture-audio",), list(culture)))
+    for label, kinds, ids in groups:
+        missing = [item_id for item_id in ids if not any((item_id, kind) in seen for kind in kinds)]
         print(f"素材登记覆盖（不代表版权、真人或设备验收）: {label} {len(ids) - len(missing)}/{len(ids)}")
         if require_complete and missing:
-            fail(f"未登记真实素材 {kind}: {', '.join(missing)}")
+            fail(f"未登记非占位素材 {label}: {', '.join(missing)}")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--require-real-media", action="store_true",
-                        help="要求全部字词和文化内容有已登记的真实素材；未替换内容必须失败")
+                        help="要求全部主题、字词和文化内容有已登记的非占位配图及音频；插画不冒充照片")
     parser.add_argument("--skip-rights-checks", action="store_true",
                         help="跳过版权来源、许可及署名审核，仍检查资源、校验和与内容一致性")
     args = parser.parse_args()

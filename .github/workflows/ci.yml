@@ -48,7 +48,7 @@ jobs:
       - name: Content integrity & contrast checks
         run: |
           # Copyright/source review is not a CI gate; keep technical validation.
-          python3 tools/validate_content.py --skip-rights-checks
+          python3 tools/validate_content.py --require-real-media --skip-rights-checks
           python3 tools/contrast_check.py
 
       - name: Assert no Kotlin sources
