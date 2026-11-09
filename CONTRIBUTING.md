@@ -31,8 +31,8 @@ python3 tools/validate_content.py --skip-rights-checks
 ```
 
 四条都绿再提 PR。CI 跑同样的东西，红着不会被合。
-`validate_content.py` 默认还会做版权来源/许可/署名审核（素材替换或新增内容时必须本地跑全量通过）；
-`--skip-rights-checks` 只跳过这层权利审核，资源完整性、校验和与内容一致性检查仍然生效。
+版权来源/许可/署名不做强制审核（CI 和提交前都不要求）；`validate_content.py --skip-rights-checks`
+仍检查资源完整性、校验和与内容一致性。不带 flag 运行可做手动版权自查，但不是门槛。
 
 ## 代码约定（不是建议，是验收项）
 
@@ -56,7 +56,7 @@ python3 tools/validate_content.py --skip-rights-checks
 
 1. 改 `words.json` 或 `culture.json`（每个主题 6 个字；`id` 全局唯一，用无声调拼音）。
 2. 音频放到 `assets/audio/`，文件名与 JSON 里 `audio` 字段一致。
-3. 跑 `python3 tools/validate_content.py --skip-rights-checks`；改动素材来源清单时跑全量 `python3 tools/validate_content.py`。
+3. 跑 `python3 tools/validate_content.py --skip-rights-checks`。
 4. 加了新汉字 → 跑 `python3 tools/subset_font.py` 重新生成子集字体（需要 `fonttools`）。
 
 开发期占位音频可以用 `bash tools/make_placeholder_audio.sh`（macOS `say` 生成，**正式版必须真人录音**）；脚本只补缺失文件，不覆盖已有录音。

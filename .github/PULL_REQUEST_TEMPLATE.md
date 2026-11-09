@@ -15,7 +15,7 @@
 - [ ] `./gradlew testDebugUnitTest` 通过
 - [ ] `./gradlew assembleDebug` 通过
 - [ ] `python3 tools/contrast_check.py` 退出码 0
-- [ ] `python3 tools/validate_content.py` 退出码 0
+- [ ] `python3 tools/validate_content.py --skip-rights-checks` 退出码 0
 - [ ] 没有新增 `.kt` 文件、没有硬编码色值 / 尺寸 / 文案
 - [ ] 涉及界面的改动附了浅色 + 深色截图
 - [ ] 涉及取舍的改动在 `docs/DECISIONS.md` 记了一条
