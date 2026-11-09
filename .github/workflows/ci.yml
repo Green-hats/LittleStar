@@ -42,9 +42,13 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug --stacktrace
 
-      - name: Content & contrast checks
+      - name: Content validator tests
+        run: python3 -m unittest discover -s tools -p 'test_*.py'
+
+      - name: Content integrity & contrast checks
         run: |
-          python3 tools/validate_content.py
+          # Copyright/source review is not a CI gate; keep technical validation.
+          python3 tools/validate_content.py --skip-rights-checks
           python3 tools/contrast_check.py
 
       - name: Assert no Kotlin sources

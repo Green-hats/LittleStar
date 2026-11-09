@@ -81,6 +81,19 @@ class MediaValidationTest(unittest.TestCase):
         validator.check_media()
         self.assertEqual([], validator.errors)
 
+    def test_skip_rights_keeps_technical_media_checks(self):
+        entry = dict(self.entry, sourceTitle="", sourcePage="", sourceUrl="",
+                     creator="", license="NOASSERTION", licenseUrl=None,
+                     sourceSha256="", changes="", reviewPending=True)
+        self.save_manifest([entry])
+        with patch("builtins.print"):
+            validator.check_media(check_rights=False)
+        self.assertEqual([], validator.errors)
+        (self.assets / "audio/words/0.ogg").write_bytes(b"OggS changed")
+        with patch("builtins.print"):
+            validator.check_media(check_rights=False)
+        self.assertTrue(any("SHA-256" in error for error in validator.errors))
+
     def test_attribution_license_requires_packaged_credit(self):
         self.entry["license"] = "CC-BY-4.0"
         self.entry["licenseUrl"] = "https://creativecommons.org/licenses/by/4.0/"
@@ -248,6 +261,22 @@ class MediaValidationTest(unittest.TestCase):
         with patch("builtins.print"):
             validator.check_media()
         self.assertTrue(validator.errors)
+
+    def test_story_summary_culture_audio_uses_display_text(self):
+        (self.assets / "audio/culture").mkdir()
+        (self.assets / "audio/culture/poem.ogg").write_bytes(b"OggS fixture")
+        culture = json.loads((self.assets / "content/culture.json").read_text())
+        culture["items"][0]["transcript"] = "故事梗概（非逐字字幕）\n\n一只鹅。"
+        (self.assets / "content/culture.json").write_text(json.dumps(culture))
+        audio = dict(self.entry, cultureId="poem", kind="human-culture-audio",
+                     path="assets/audio/culture/poem.ogg",
+                     displayText=culture["items"][0]["transcript"],
+                     transcriptRole="story-summary")
+        del audio["wordId"]
+        del audio["transcript"]
+        self.save_manifest([audio])
+        validator.check_media(check_rights=False)
+        self.assertEqual([], validator.errors)
 
     def test_culture_recording_must_match_transcript_and_asset_path(self):
         (self.assets / "audio/culture").mkdir()

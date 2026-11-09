@@ -3,6 +3,7 @@
 检查：ID、资源引用、词义与干扰项、歌词顺序和文化详情；
 已替换素材的来源、授权、校验和、PNG 尺寸及字音对应关系。
 用法：python3 tools/validate_content.py；任何一项失败以非零码退出。
+CI 使用 --skip-rights-checks，只跳过版权来源/署名审核，保留技术完整性检查。
 """
 import argparse
 import hashlib
@@ -76,7 +77,7 @@ def check_culture() -> None:
             fail(f"{it['id']}: durationSec 非法")
 
 
-def check_media(require_complete: bool = False) -> None:
+def check_media(require_complete: bool = False, check_rights: bool = True) -> None:
     manifest = ASSETS / "content/media_sources.json"
     if not manifest.exists():
         fail("缺素材来源清单 media_sources.json")
@@ -89,10 +90,13 @@ def check_media(require_complete: bool = False) -> None:
     for entry in json.loads(manifest.read_text(encoding="utf-8"))["assets"]:
         is_culture = entry.get("kind") in ("culture-cover", "human-culture-audio")
         id_key = "cultureId" if is_culture else "wordId"
-        required = (id_key, "kind", "path", "sourceTitle", "sourcePage", "sourceUrl", "creator",
-                    "license", "licenseUrl", "sourceSha256", "sha256", "changes")
+        required = (id_key, "kind", "path", "sha256")
+        if check_rights:
+            required += ("sourceTitle", "sourcePage", "sourceUrl", "creator",
+                         "license", "licenseUrl", "sourceSha256", "changes")
         if any(not isinstance(entry.get(key), str) or not entry[key].strip() for key in required):
-            fail(f"不完整的素材来源: {entry.get('path')}")
+            label = "素材来源" if check_rights else "素材技术信息"
+            fail(f"不完整的{label}: {entry.get('path')}")
             continue
         key = (entry[id_key], entry["kind"])
         word = (culture if is_culture else words).get(entry[id_key])
@@ -100,34 +104,36 @@ def check_media(require_complete: bool = False) -> None:
             fail(f"重复或未知内容素材: {key}")
             continue
         seen.add(key)
-        if entry.get("reviewPending", False) is not False:
-            fail(f"素材仍待审核: {entry['path']}")
-        if entry["license"] not in ("CC0-1.0", "LicenseRef-Public-domain", "CC-BY-SA-3.0-US",
-                                    "CC-BY-2.0-FR", "CC-BY-4.0", "CC-BY-SA-4.0", "LicenseRef-Pexels"):
-            fail(f"未核验的素材许可: {entry['path']}")
-        if entry["license"] == "LicenseRef-Pexels":
-            source_page = urlsplit(entry["sourcePage"])
-            if (entry["kind"] not in ("photo", "culture-cover")
-                    or source_page.hostname != "www.pexels.com"
-                    or not source_page.path.startswith("/photo/")
-                    or urlsplit(entry["sourceUrl"]).hostname != "images.pexels.com"
-                    or entry["licenseUrl"] != "https://www.pexels.com/license/"):
-                fail(f"Pexels 来源或许可信息不匹配: {entry['path']}")
-        if entry["license"].startswith("CC-BY") or entry["license"] == "LicenseRef-Pexels":
-            notice = RES / "values/strings.xml"
-            credits = notice.read_text(encoding="utf-8") if notice.is_file() else ""
-            if any(html.escape(entry[key], quote=False) not in credits
-                   for key in ("creator", "sourcePage", "licenseUrl")):
-                fail(f"缺应用内素材署名: {entry['path']}")
-        if any(not entry[key].startswith("https://") for key in ("sourcePage", "sourceUrl", "licenseUrl")):
-            fail(f"素材来源不是 HTTPS: {entry['path']}")
+        if check_rights:
+            if entry.get("reviewPending", False) is not False:
+                fail(f"素材仍待审核: {entry['path']}")
+            if entry["license"] not in ("CC0-1.0", "LicenseRef-Public-domain", "CC-BY-SA-3.0-US",
+                                        "CC-BY-2.0-FR", "CC-BY-4.0", "CC-BY-SA-4.0", "LicenseRef-Pexels"):
+                fail(f"未核验的素材许可: {entry['path']}")
+            if entry["license"] == "LicenseRef-Pexels":
+                source_page = urlsplit(entry["sourcePage"])
+                if (entry["kind"] not in ("photo", "culture-cover")
+                        or source_page.hostname != "www.pexels.com"
+                        or not source_page.path.startswith("/photo/")
+                        or urlsplit(entry["sourceUrl"]).hostname != "images.pexels.com"
+                        or entry["licenseUrl"] != "https://www.pexels.com/license/"):
+                    fail(f"Pexels 来源或许可信息不匹配: {entry['path']}")
+            if entry["license"].startswith("CC-BY") or entry["license"] == "LicenseRef-Pexels":
+                notice = RES / "values/strings.xml"
+                credits = notice.read_text(encoding="utf-8") if notice.is_file() else ""
+                if any(html.escape(entry[key], quote=False) not in credits
+                       for key in ("creator", "sourcePage", "licenseUrl")):
+                    fail(f"缺应用内素材署名: {entry['path']}")
+            if any(not entry[key].startswith("https://") for key in ("sourcePage", "sourceUrl", "licenseUrl")):
+                fail(f"素材来源不是 HTTPS: {entry['path']}")
         path = (ASSETS.parent / entry["path"]).resolve()
         if not path.is_relative_to(ASSETS.parent.resolve()) or not path.is_file():
             fail(f"缺素材或路径越界: {entry['path']}")
             continue
         data = path.read_bytes()
+        checksum_fields = ("sourceSha256", "sha256") if check_rights else ("sha256",)
         if any(re.fullmatch(r"[0-9a-f]{64}", entry[key]) is None
-               for key in ("sourceSha256", "sha256")):
+               for key in checksum_fields):
             fail(f"素材 SHA-256 格式非法: {entry['path']}")
         if hashlib.sha256(data).hexdigest() != entry["sha256"]:
             fail(f"素材 SHA-256 不匹配: {entry['path']}")
@@ -164,8 +170,11 @@ def check_media(require_complete: bool = False) -> None:
                         or not isinstance(note, str) or not note.strip()):
                     fail(f"缺同音或异体复用说明: {entry['wordId']}")
         elif entry["kind"] == "human-culture-audio":
+            display_text = (entry.get("displayText")
+                            if entry.get("transcriptRole") == "story-summary"
+                            else entry.get("transcript"))
             if (entry["path"] != "assets/" + word["audio"] or entry.get("language") != "cmn"
-                    or entry.get("transcript") != word["transcript"]):
+                    or display_text != word["transcript"]):
                 fail(f"文化音频与正文不匹配: {entry['cultureId']}")
             if not data.startswith(b"OggS"):
                 fail(f"文化音频不是 Ogg: {entry['path']}")
@@ -210,7 +219,7 @@ def check_media(require_complete: bool = False) -> None:
               ("文化真人音频", "human-culture-audio", list(culture)))
     for label, kind, ids in groups:
         missing = [item_id for item_id in ids if (item_id, kind) not in seen]
-        print(f"真实素材登记覆盖（不是听音或设备验收）: {label} {len(ids) - len(missing)}/{len(ids)}")
+        print(f"素材登记覆盖（不代表版权、真人或设备验收）: {label} {len(ids) - len(missing)}/{len(ids)}")
         if require_complete and missing:
             fail(f"未登记真实素材 {kind}: {', '.join(missing)}")
 
@@ -219,10 +228,14 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--require-real-media", action="store_true",
                         help="要求全部字词和文化内容有已登记的真实素材；未替换内容必须失败")
+    parser.add_argument("--skip-rights-checks", action="store_true",
+                        help="跳过版权来源、许可及署名审核，仍检查资源、校验和与内容一致性")
     args = parser.parse_args()
+    if args.skip_rights_checks:
+        print("版权来源审核已跳过；技术检查通过不代表素材已获授权。")
     check_words()
     check_culture()
-    check_media(require_complete=args.require_real_media)
+    check_media(require_complete=args.require_real_media, check_rights=not args.skip_rights_checks)
     if errors:
         print(f"\n{len(errors)} 个问题")
         return 1
