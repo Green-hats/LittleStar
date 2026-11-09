@@ -13,6 +13,7 @@ import java.time.ZoneId;
 public final class FakeClock implements AppClock {
 
     private Instant now;
+    private long elapsed;
     private final ZoneId zone;
 
     public FakeClock(@NonNull LocalDateTime start) {
@@ -26,6 +27,7 @@ public final class FakeClock implements AppClock {
 
     public void advance(@NonNull Duration d) {
         now = now.plus(d);
+        elapsed += d.toMillis();
     }
 
     public void set(@NonNull LocalDateTime t) {
@@ -36,6 +38,11 @@ public final class FakeClock implements AppClock {
     @Override
     public Instant now() {
         return now;
+    }
+
+    @Override
+    public long elapsedRealtimeMillis() {
+        return elapsed;
     }
 
     @NonNull

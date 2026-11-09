@@ -7,12 +7,14 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.littlestar.app.AppContainer;
+import com.littlestar.app.data.content.ContentRepository;
 import com.littlestar.app.data.content.model.CultureItem;
 import com.littlestar.app.data.content.model.LyricLine;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.LinkedHashSet;
 
 /**
  * 播放器 UI 状态（播放控制走 MediaController，在 Activity 里）。
@@ -51,22 +53,26 @@ public final class PlayerViewModel extends ViewModel {
         }
     }
 
-    private final AppContainer container;
+    private final ContentRepository content;
     private final MutableLiveData<UiState> state = new MutableLiveData<>();
 
     public PlayerViewModel(@NonNull AppContainer container) {
-        this.container = container;
+        this(container.content);
+    }
+
+    PlayerViewModel(ContentRepository content) {
+        this.content = content;
     }
 
     /** 内容就绪后调用一次。 */
     public void init(@Nullable String itemId, @NonNull List<String> queue) {
-        CultureItem item = itemId == null ? null : container.content.itemById(itemId);
+        CultureItem item = itemId == null ? null : content.itemById(itemId);
         if (item == null || state.getValue() != null) {
             return;
         }
         List<String> q = new ArrayList<>();
-        for (String id : queue) {
-            if (id != null && container.content.itemById(id) != null) {
+        for (String id : new LinkedHashSet<>(queue)) {
+            if (id != null && content.itemById(id) != null) {
                 q.add(id);
             }
         }
@@ -79,17 +85,27 @@ public final class PlayerViewModel extends ViewModel {
 
     /** 当前条目切换（上一首/下一首）。 */
     public void onTrackChanged(@NonNull String itemId) {
-        CultureItem item = container.content.itemById(itemId);
-        UiState current = state.getValue();
-        if (item == null || current == null || current.item.id.equals(itemId)) {
+        CultureItem item = content.itemById(itemId);
+        if (item == null) {
             return;
         }
-        update(s -> s.withItem(item, Math.max(0, s.queue.indexOf(itemId))));
+        UiState current = state.getValue();
+        if (current != null && !current.item.id.equals(itemId) && current.queue.contains(itemId)) {
+            state.setValue(current.withItem(item, current.queue.indexOf(itemId)));
+        }
     }
 
     /** 每 250ms 由 Activity 用 MediaController 位置驱动。 */
     public void onProgress(long positionMs, long durationMs, boolean playing) {
         update(s -> s.with(lyricIndex(s.item, positionMs), positionMs, durationMs, playing));
+    }
+
+    /** 显式打开遵从选择；重连同一队列时遵从服务当前曲目。 */
+    public boolean canKeepPlayback(List<String> activeQueue, @Nullable String currentId,
+                                   boolean reconnecting) {
+        UiState s = state.getValue();
+        return s != null && currentId != null && s.queue.equals(activeQueue)
+                && s.queue.contains(currentId) && (reconnecting || s.item.id.equals(currentId));
     }
 
     /** 按 startMs 找当前句；无歌词返回 -1。 */

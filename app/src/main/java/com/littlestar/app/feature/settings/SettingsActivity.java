@@ -145,7 +145,8 @@ public final class SettingsActivity extends ParentActivity {
         if (id == R.id.action_about) {
             new MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.help_about_title)
-                    .setMessage(getString(R.string.help_about_message, BuildConfig.VERSION_NAME))
+                    .setMessage(getString(R.string.help_about_message, BuildConfig.VERSION_NAME,
+                            getString(R.string.media_credits)))
                     .setPositiveButton(android.R.string.ok, null).show();
             return true;
         }

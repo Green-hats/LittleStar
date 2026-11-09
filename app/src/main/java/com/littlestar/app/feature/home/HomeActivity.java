@@ -123,7 +123,7 @@ public final class HomeActivity extends ChildActivity {
         binding.modeCulture.setStrokeColor(wordMode ? stroke : green);
         binding.modeCultureText.setTextColor(wordMode ? ink : green);
 
-        boolean done = s.goal > 0 && s.learnedToday >= s.goal;
+        boolean done = s.isDailyComplete();
         if (wordMode) {
             Word w = s.nextWord;
             binding.todayLabel.setText(done ? R.string.home_today_done : R.string.home_today_words);

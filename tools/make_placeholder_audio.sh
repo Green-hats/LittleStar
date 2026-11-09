@@ -1,6 +1,7 @@
 #!/bin/bash
 # 开发期占位音频：macOS `say`(婷婷 zh_CN) + ffmpeg 转 ogg。
 # 正式版必须换成真人录音。用法：bash tools/make_placeholder_audio.sh
+# 仅补缺失文件，不覆盖已有素材（含真人录音）。
 set -euo pipefail
 cd "$(dirname "$0")/.."
 AUDIO_DIR="app/src/main/assets/audio"
@@ -10,6 +11,10 @@ trap 'rm -rf "$TMP"' EXIT
 gen() { # gen <输出相对路径> <朗读文本>
     local out="$AUDIO_DIR/$1"
     local text="$2"
+    if [[ -f "$out" ]]; then
+        echo "  keep existing: $1"
+        return
+    fi
     mkdir -p "$(dirname "$out")"
     say -v Tingting -r 150 -o "$TMP/x.aiff" "$text"
     ffmpeg -y -loglevel error -i "$TMP/x.aiff" -ac 2 -ar 44100 -strict -2 -c:a vorbis -q:a 3 "$out"

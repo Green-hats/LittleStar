@@ -256,3 +256,18 @@
   remain pending real audio/transcript alignment; do not compress timestamps to hide them.
 - Defer player connection/asset-error recovery to a separate change with focused tests.
   Existing invalid-content-ID handling remains in Discover.
+
+## D41 · 2026-11-06 · 动物词卡真实素材
+- 依据：用户要求用高质量 PNG 照片和真人音频替换占位素材，保持现有业务规则与流程。
+- 范围：先替换动物主题六个字词；不混同熊猫、操作图标与词卡内容插画，其他主题及文化音频待逐项核验。
+- 接入：保留词条 ID、资源名与音频路径；照片放 drawable-nodpi，真人字音沿用离线 SpeechPlayer。
+- 授权：清单随应用打包，既有 About 显示必要署名；改编音频保留原许可和版权信息。
+- 维护：占位音频脚本不覆盖已有文件；内容校验增加素材来源、校验和、PNG 预算与发音字段检查。
+- 详情：见 [MEDIA.md](MEDIA.md)。构建和静态检查不替代实际设备上的显示、播放与返回路径验收。
+
+## D42 · 2026-11-07 · 完成边界、提醒时区与页面恢复
+- 首页进度按当日实际计划量展示，配置目标与已生成计划字段不改写；全部学完时保留 REVIEW 入口。首页和提醒复用同一只读计划预览。
+- 提醒每个选中本地日期只有一个候选：回拨重复时刻沿用较早 offset，不存在的时刻沿用时区规则顺延；候选 Instant 已过就找下一天，不在第二个 offset 再提醒一次。
+- 家长区后台超时使用 AppClock 提供的含休眠单调时间；配置重建保留内存验证状态。进程重建无法证明仍在验证有效期内时保守地要求重新输入 PIN，不保存 PIN 或认证状态到 Bundle。
+- 播放器首次显式打开遵从所选曲目；已接入后重连同一队列时以服务当前曲目和进度为准，不重建队列、不强制播放暂停中的音轨。
+- 以上恢复路径仍需隔离 Android 设备验收，JVM 与构建结果不替代实际播放、通知和进程恢复。

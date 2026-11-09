@@ -153,7 +153,7 @@ public final class PlayerActivity extends ChildActivity {
                 new MediaController.Builder(this, token).buildAsync();
         controllerFuture = future;
         future.addListener(() -> {
-            if (controllerFuture != future) {
+            if (controllerFuture != future || isFinishing() || isDestroyed()) {
                 return;
             }
             try {
@@ -190,15 +190,15 @@ public final class PlayerActivity extends ChildActivity {
             return;
         }
         controllerInitialized = true;
-        boolean sameQueue = c.getMediaItemCount() == s.queue.size();
-        for (int i = 0; sameQueue && i < s.queue.size(); i++) {
-            sameQueue = s.queue.get(i).equals(c.getMediaItemAt(i).mediaId);
-        }
         MediaItem cur = c.getCurrentMediaItem();
-        if (sameQueue && cur != null && (playbackStarted || s.item.id.equals(cur.mediaId))) {
+        List<String> activeQueue = new ArrayList<>();
+        for (int i = 0; i < c.getMediaItemCount(); i++) {
+            activeQueue.add(c.getMediaItemAt(i).mediaId);
+        }
+        if (vm.canKeepPlayback(activeQueue, cur == null ? null : cur.mediaId, playbackStarted)) {
             playbackStarted = true;
             syncControllerState();
-            return;   // 已经在播同一首
+            return;   // 保留同一队列的当前曲目、进度和暂停状态
         }
         boolean resume = playbackStarted;
         playbackStarted = true;

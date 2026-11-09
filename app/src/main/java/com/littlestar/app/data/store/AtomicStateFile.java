@@ -9,6 +9,7 @@ import androidx.core.util.AtomicFile;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,10 +36,7 @@ public final class AtomicStateFile implements StateFile {
     @Nullable
     @Override
     public String read() {
-        if (!baseFile.exists()) {
-            return null;
-        }
-        try (InputStream in = new FileInputStream(baseFile);
+        try (InputStream in = atomicFile.openRead();
              ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             byte[] buf = new byte[8192];
             int n;
@@ -46,6 +44,11 @@ public final class AtomicStateFile implements StateFile {
                 out.write(buf, 0, n);
             }
             return out.toString(StandardCharsets.UTF_8.name());
+        } catch (FileNotFoundException e) {
+            if (baseFile.exists()) {
+                Log.e(TAG, "read failed", e);
+            }
+            return null;
         } catch (IOException e) {
             Log.e(TAG, "read failed", e);
             return null;

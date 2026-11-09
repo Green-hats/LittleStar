@@ -14,6 +14,11 @@ public final class SystemAppClock implements AppClock {
         return Instant.now();
     }
 
+    @Override
+    public long elapsedRealtimeMillis() {
+        return android.os.SystemClock.elapsedRealtime();
+    }
+
     @NonNull
     @Override
     public ZoneId zone() {

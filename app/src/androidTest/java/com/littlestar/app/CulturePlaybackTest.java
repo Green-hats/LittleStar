@@ -5,6 +5,7 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertTrue;
@@ -18,12 +19,14 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.lifecycle.Lifecycle;
 import androidx.media3.session.MediaController;
 import androidx.media3.session.SessionToken;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.littlestar.app.feature.culture.CultureCategoriesActivity;
 import com.littlestar.app.playback.PlaybackService;
+import com.littlestar.app.feature.player.PlayerActivity;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +39,49 @@ import java.util.function.BooleanSupplier;
 /** 精简后仍可从分类进入播放器、暂停/切歌并在后台继续播放。 */
 @RunWith(AndroidJUnit4.class)
 public final class CulturePlaybackTest {
+
+    @Test
+    public void reconnectAfterBackgroundTrackChange_keepsPausedTrackAndPosition() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        Intent intent = new Intent(context, PlayerActivity.class)
+                .putExtra("itemId", "xiaoxingxing")
+                .putStringArrayListExtra("queue", new java.util.ArrayList<>(
+                        java.util.List.of("xiaoxingxing", "liangzhilaohu")));
+        AtomicReference<ListenableFuture<MediaController>> future = new AtomicReference<>();
+        try (ActivityScenario<PlayerActivity> scenario = ActivityScenario.launch(intent)) {
+            onMain(() -> future.set(new MediaController.Builder(context,
+                    new SessionToken(context, new ComponentName(context, PlaybackService.class)))
+                    .buildAsync()));
+            MediaController controller = future.get().get(10, TimeUnit.SECONDS);
+            waitFor(() -> controller.isPlaying() && controller.getMediaItemCount() == 2);
+            scenario.moveToState(Lifecycle.State.CREATED);
+            onMain(() -> {
+                controller.pause();
+                controller.seekTo(1, 5_000);
+            });
+            waitFor(() -> controller.getCurrentMediaItem() != null
+                    && "liangzhilaohu".equals(controller.getCurrentMediaItem().mediaId)
+                    && !controller.isPlaying() && controller.getCurrentPosition() == 5_000);
+            scenario.moveToState(Lifecycle.State.RESUMED);
+            waitForReconnectedSecondTrack();
+            onMain(() -> {
+                org.junit.Assert.assertFalse(controller.isPlaying());
+                org.junit.Assert.assertEquals(5_000, controller.getCurrentPosition());
+            });
+            scenario.recreate();
+            waitForReconnectedSecondTrack();
+        } finally {
+            if (future.get() != null) {
+                MediaController controller = future.get().get(10, TimeUnit.SECONDS);
+                onMain(() -> {
+                    controller.stop();
+                    controller.clearMediaItems();
+                    controller.release();
+                });
+            }
+            context.stopService(new Intent(context, PlaybackService.class));
+        }
+    }
 
     @Test
     public void cultureNavigation_controlsAndBackgroundPlaybackStillWork() throws Exception {
@@ -101,6 +147,22 @@ public final class CulturePlaybackTest {
 
     private static void onMain(Runnable action) {
         InstrumentationRegistry.getInstrumentation().runOnMainSync(action);
+    }
+
+    private static void waitForReconnectedSecondTrack() {
+        long deadline = SystemClock.uptimeMillis() + 10_000;
+        do {
+            try {
+                onView(withId(R.id.btnPrev)).check(matches(isEnabled()));
+                onView(withId(R.id.songTitle)).check(matches(withText("两只老虎")));
+                return;
+            } catch (RuntimeException | AssertionError error) {
+                if (SystemClock.uptimeMillis() >= deadline) {
+                    throw error;
+                }
+                SystemClock.sleep(100);
+            }
+        } while (true);
     }
 
     private static void waitFor(BooleanSupplier condition) {
