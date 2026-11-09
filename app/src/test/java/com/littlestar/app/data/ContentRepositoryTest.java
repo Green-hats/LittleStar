@@ -26,7 +26,11 @@ public final class ContentRepositoryTest {
         List<Theme> themes = repo.themes();
         assertEquals(6, themes.size());
         Set<String> ids = new HashSet<>();
+        Set<String> themeImages = new HashSet<>();
         for (Theme t : themes) {
+            assertNotNull(t.illustration);
+            assertTrue(t.id, t.illustration.startsWith("ill_theme_"));
+            assertTrue("Each theme needs a distinct image", themeImages.add(t.illustration));
             assertEquals(6, t.words.size());
             for (Word w : t.words) {
                 assertTrue("重复 id: " + w.id, ids.add(w.id));

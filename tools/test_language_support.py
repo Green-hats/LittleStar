@@ -22,7 +22,7 @@ class EnglishScaffoldingTest(unittest.TestCase):
                         "english": "Two tigers"}],
         }
         self.category = {"id": "songs", "nameEn": "Songs"}
-        self.theme = {"id": "animals", "nameEn": "Animals", "words": [
+        self.theme = {"id": "animals", "nameEn": "Animals", "illustration": "ill_theme_animals", "words": [
             {"id": str(i), "hanzi": "猫", "english": "cat", "audio": "sound.ogg",
              "image": "cover", "distractors": []} for i in range(6)
         ]}

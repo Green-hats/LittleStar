@@ -106,7 +106,14 @@ public final class ThemesActivity extends ChildActivity {
         @Override
         public void onBindViewHolder(@NonNull Holder h, int position) {
             ThemesViewModel.ThemeItem item = items.get(position);
+            int illustration = item.theme.illustration == null ? 0 : getResources().getIdentifier(
+                    item.theme.illustration, "drawable", getPackageName());
+            boolean hasIllustration = illustration != 0
+                    && !"ill_placeholder".equals(item.theme.illustration);
+            h.b.themeIllustration.setImageResource(hasIllustration
+                    ? illustration : R.drawable.ill_placeholder);
             h.b.themeGlyph.setText(item.theme.glyph);
+            h.b.themeGlyph.setVisibility(hasIllustration ? View.GONE : View.VISIBLE);
             h.b.badgeText.setText(String.valueOf(item.theme.order));
             h.b.badgeNum.setContentDescription(
                     getString(R.string.themes_badge_desc, item.theme.order));

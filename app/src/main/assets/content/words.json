@@ -7,7 +7,7 @@
       "nameZh": "动物",
       "nameEn": "Animals",
       "glyph": "动",
-      "illustration": "ill_placeholder",
+      "illustration": "ill_theme_animals",
       "words": [
         {
           "id": "mao",
@@ -95,7 +95,7 @@
       "nameZh": "水果",
       "nameEn": "Fruits",
       "glyph": "果",
-      "illustration": "ill_placeholder",
+      "illustration": "ill_theme_fruits",
       "words": [
         {
           "id": "guo",
@@ -183,7 +183,7 @@
       "nameZh": "颜色",
       "nameEn": "Colors",
       "glyph": "色",
-      "illustration": "ill_placeholder",
+      "illustration": "ill_theme_colors",
       "words": [
         {
           "id": "hong",
@@ -271,7 +271,7 @@
       "nameZh": "数字",
       "nameEn": "Numbers",
       "glyph": "数",
-      "illustration": "ill_placeholder",
+      "illustration": "ill_theme_numbers",
       "words": [
         {
           "id": "yi",
@@ -359,7 +359,7 @@
       "nameZh": "家人",
       "nameEn": "Family",
       "glyph": "家",
-      "illustration": "ill_placeholder",
+      "illustration": "ill_theme_family",
       "words": [
         {
           "id": "ba",
@@ -447,7 +447,7 @@
       "nameZh": "自然",
       "nameEn": "Nature",
       "glyph": "月",
-      "illustration": "ill_placeholder",
+      "illustration": "ill_theme_nature",
       "words": [
         {
           "id": "yue",

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Content JSON resolves these drawable names at runtime. Preserve them in shrunk release builds. -->
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:keep="@drawable/ill_word_*,@drawable/ill_culture_*" />
+    tools:keep="@drawable/ill_word_*,@drawable/ill_culture_*,@drawable/ill_theme_*" />
