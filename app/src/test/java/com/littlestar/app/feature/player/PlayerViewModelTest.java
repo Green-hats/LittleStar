@@ -48,6 +48,27 @@ public final class PlayerViewModelTest {
         assertEquals(5_000, vm.state().getValue().positionMs);
     }
 
+    @Test public void repeatedInitKeepsCurrentTrackAndPausedProgress() {
+        var vm = player();
+        vm.onTrackChanged(B);
+        vm.onProgress(5_000, 20_000, false);
+        vm.init(A, QUEUE);
+        var ui = vm.state().getValue();
+        assertEquals(B, ui.item.id);
+        assertEquals(5_000, ui.positionMs);
+        assertFalse(ui.playing);
+    }
+
+    @Test public void nullSelectionAndNullQueueEntriesAreIgnored() {
+        var vm = new PlayerViewModel(TestContent.load());
+        vm.init(null, QUEUE);
+        assertNull(vm.state().getValue());
+        vm.init(A, java.util.Arrays.asList(null, A, A, "missing", B));
+        assertEquals(QUEUE, vm.state().getValue().queue);
+        vm.onTrackChanged("baluobo");
+        assertEquals(A, vm.state().getValue().item.id);
+    }
+
     @Test public void emptyOrInvalidQueueStillContainsSelectedItem() {
         var vm = new PlayerViewModel(TestContent.load());
         vm.init(B, List.of("missing", A, A));

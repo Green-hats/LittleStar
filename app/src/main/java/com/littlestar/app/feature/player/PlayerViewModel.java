@@ -65,24 +65,22 @@ public final class PlayerViewModel extends ViewModel {
     }
 
     /** 内容就绪后调用一次。 */
-    public void init(@NonNull String itemId, @NonNull List<String> queue) {
-        CultureItem item = content.itemById(itemId);
-        if (item == null) {
+    public void init(@Nullable String itemId, @NonNull List<String> queue) {
+        CultureItem item = itemId == null ? null : content.itemById(itemId);
+        if (item == null || state.getValue() != null) {
             return;
         }
         List<String> q = new ArrayList<>();
         for (String id : new LinkedHashSet<>(queue)) {
-            if (content.itemById(id) != null) {
+            if (id != null && content.itemById(id) != null) {
                 q.add(id);
             }
         }
         if (!q.contains(itemId)) {
             q.add(0, itemId);
         }
-        int idx = q.indexOf(itemId);
-        if (state.getValue() == null) {
-            state.setValue(new UiState(item, Collections.unmodifiableList(q), idx, -1, 0, 0, false));
-        }
+        state.setValue(new UiState(item, Collections.unmodifiableList(q), q.indexOf(itemId),
+                -1, 0, 0, false));
     }
 
     /** 当前条目切换（上一首/下一首）。 */

@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public final class SongProgressTest {
-    @Test public void cancelDoesNotSeekAndClickCommitsOnlyOnce() {
+    @Test public void cancelDoesNotSeekAndUpCommitsOnlyOnce() {
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
             SongProgressView view = new SongProgressView(ApplicationProvider.getApplicationContext());
             view.layout(0, 0, 400, 60);
@@ -25,9 +25,9 @@ public final class SongProgressTest {
             touch(view, MotionEvent.ACTION_MOVE, 300);
             touch(view, MotionEvent.ACTION_CANCEL, 300);
             assertTrue(seeks.isEmpty());
+            // A standalone click reports accessibility/click feedback, not a new seek target.
             view.performClick();
-            assertEquals(List.of(1_000L), seeks);
-            seeks.clear();
+            assertTrue(seeks.isEmpty());
             touch(view, MotionEvent.ACTION_DOWN, 200);
             touch(view, MotionEvent.ACTION_UP, 300);
             assertEquals(1, seeks.size());

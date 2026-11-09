@@ -42,6 +42,8 @@ import java.util.Set;
 /** PIN 保护的学习任务页；目标与学习提醒只在 Save 时写入，今日计划保持固定。 */
 public final class SettingsActivity extends ParentActivity {
 
+    private static final String TIME_PICKER_TAG = "reminder_time";
+
     private ActivitySettingsBinding binding;
     private final Set<Integer> days = new HashSet<>();
     private final List<BlockLayout> dayButtons = new ArrayList<>();
@@ -104,6 +106,11 @@ public final class SettingsActivity extends ParentActivity {
         binding.btnBack.setOnClickListener(v -> finish());
         binding.btnCancel.setOnClickListener(v -> finish());
         binding.btnSave.setOnClickListener(v -> save());
+        androidx.fragment.app.Fragment restored = getSupportFragmentManager()
+                .findFragmentByTag(TIME_PICKER_TAG);
+        if (restored instanceof MaterialTimePicker picker) {
+            bindTimePicker(picker);
+        }
     }
 
     @Override
@@ -221,17 +228,26 @@ public final class SettingsActivity extends ParentActivity {
     }
 
     private void pickTime() {
+        if (getSupportFragmentManager().isStateSaved()
+                || getSupportFragmentManager().findFragmentByTag(TIME_PICKER_TAG) != null) {
+            return;
+        }
         LocalTime time = parsedReminderTime();
         MaterialTimePicker picker = new MaterialTimePicker.Builder()
                 .setTimeFormat(DateFormat.is24HourFormat(this)
                         ? TimeFormat.CLOCK_24H : TimeFormat.CLOCK_12H)
                 .setHour(time.getHour()).setMinute(time.getMinute()).build();
+        bindTimePicker(picker);
+        picker.showNow(getSupportFragmentManager(), TIME_PICKER_TAG);
+    }
+
+    private void bindTimePicker(MaterialTimePicker picker) {
+        picker.clearOnPositiveButtonClickListeners();
         picker.addOnPositiveButtonClickListener(v -> {
             reminderTime = String.format(java.util.Locale.ROOT, "%02d:%02d",
                     picker.getHour(), picker.getMinute());
             renderTime();
         });
-        picker.show(getSupportFragmentManager(), "reminder_time");
     }
 
     private void save() {
