@@ -48,10 +48,14 @@ public final class QuizViewModel extends ViewModel {
         public final int chosenIndex;           // -1 = 未答
         public final boolean isLast;
         public final boolean showEnglishHint;
+        public final boolean retrying;
+        public final boolean corrected;
+        public final int retryChosenIndex;
 
         public UiState(int index, int total, @Nullable QuizGenerator.QuizQuestion question,
                        boolean answered, boolean lastAnswerCorrect, int chosenIndex,
-                       boolean isLast, boolean showEnglishHint) {
+                       boolean isLast, boolean showEnglishHint, boolean retrying,
+                       boolean corrected, int retryChosenIndex) {
             this.index = index;
             this.total = total;
             this.question = question;
@@ -60,10 +64,16 @@ public final class QuizViewModel extends ViewModel {
             this.chosenIndex = chosenIndex;
             this.isLast = isLast;
             this.showEnglishHint = showEnglishHint;
+            this.retrying = retrying;
+            this.corrected = corrected;
+            this.retryChosenIndex = retryChosenIndex;
         }
     }
 
     private static final String KEY_INDEX = "quiz_index";
+    private static final String KEY_RETRYING = "quiz_retrying";
+    private static final String KEY_CORRECTED = "quiz_corrected";
+    private static final String KEY_RETRY_CHOSEN = "quiz_retry_chosen";
 
     private final AppContainer container;
     private final SavedStateHandle savedState;
@@ -159,17 +169,32 @@ public final class QuizViewModel extends ViewModel {
             chosen = q.options().indexOf(a.chosen);
         }
         state.setValue(new UiState(idx, questions.size(), q, answered, correct, chosen,
-                idx == questions.size() - 1, container.settings.isEnglishHint()));
+                idx == questions.size() - 1, container.settings.isEnglishHint(),
+                answered && Boolean.TRUE.equals(savedState.get(KEY_RETRYING)),
+                answered && Boolean.TRUE.equals(savedState.get(KEY_CORRECTED)),
+                savedState.get(KEY_RETRY_CHOSEN) == null ? -1 : savedState.get(KEY_RETRY_CHOSEN)));
     }
 
     /** 点选项。立即锁定全部选项并判定（每题一次作答，点即锁定，本次即 firstTry）。 */
     public void choose(int optionIndex) {
         UiState s = state.getValue();
-        if (s == null || s.question == null || s.answered) {
+        if (s == null || s.question == null || optionIndex < 0
+                || optionIndex >= s.question.options().size() || (s.answered && !s.retrying)) {
             return;
         }
         QuizGenerator.QuizQuestion q = s.question;
         boolean correct = optionIndex == q.correctIndex();
+        if (s.retrying) {
+            savedState.set(KEY_RETRY_CHOSEN, optionIndex);
+            savedState.set(KEY_RETRYING, !correct);
+            savedState.set(KEY_CORRECTED, correct);
+            publish(currentSession());
+            effects.setValue(new Event<>(new Effect.AnswerSfx(correct)));
+            if (!correct) {
+                speakCurrent();
+            }
+            return;
+        }
         container.progress.recordAnswer(sessionId, q.wordId(), q.options().get(optionIndex), correct, true);
         justAnswered = true;
         justAnsweredCorrect = correct;
@@ -179,6 +204,18 @@ public final class QuizViewModel extends ViewModel {
         if (!correct) {
             effects.setValue(new Event<>(new Effect.PlayWord(q.wordId())));   // 答错后再朗读正确字
         }
+    }
+
+    /** 自愿纠正，不覆盖首次答案、不改变评分或复习调度。 */
+    public void retry() {
+        UiState s = state.getValue();
+        if (s == null || !s.answered || s.lastAnswerCorrect || s.retrying || s.corrected) {
+            return;
+        }
+        savedState.set(KEY_RETRYING, true);
+        savedState.set(KEY_RETRY_CHOSEN, -1);
+        publish(currentSession());
+        speakCurrent();
     }
 
     /** NEXT / 完成。 */
@@ -192,6 +229,9 @@ public final class QuizViewModel extends ViewModel {
             return;
         }
         savedState.set(KEY_INDEX, s.index + 1);
+        savedState.set(KEY_RETRYING, false);
+        savedState.set(KEY_CORRECTED, false);
+        savedState.set(KEY_RETRY_CHOSEN, -1);
         justAnswered = false;
         justChosenIndex = -1;
         publish(currentSession());

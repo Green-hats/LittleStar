@@ -2,11 +2,7 @@ package com.littlestar.app.feature.culture;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -16,13 +12,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.littlestar.app.R;
 import com.littlestar.app.core.lifecycle.ViewModelFactory;
 import com.littlestar.app.core.ui.ChildActivity;
+import com.littlestar.app.core.ui.CultureCover;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.databinding.ActivityCultureDetailBinding;
 import com.littlestar.app.data.content.CultureReadingText;
 import com.littlestar.app.feature.player.PlayerActivity;
 
-import java.util.Objects;
 
 /** 文化学习第二步：了解内容、预览文本，再主动开始播放。 */
 public final class CultureDetailActivity extends ChildActivity {
@@ -32,8 +28,7 @@ public final class CultureDetailActivity extends ChildActivity {
     private ActivityCultureDetailBinding binding;
     private CultureDetailViewModel vm;
     private boolean previewExpanded;
-    private String coverName;
-    private int coverRequest;
+    private CultureCover cover;
 
     @NonNull
     public static Intent intent(@NonNull Activity from, @NonNull String itemId) {
@@ -45,6 +40,7 @@ public final class CultureDetailActivity extends ChildActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCultureDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        cover = new CultureCover(binding.detailCover, container().executors);
         Insets.applySystemBarPadding(binding.getRoot());
         previewExpanded = savedInstanceState != null && savedInstanceState.getBoolean(STATE_PREVIEW);
         vm = new ViewModelProvider(this,
@@ -94,10 +90,10 @@ public final class CultureDetailActivity extends ChildActivity {
         binding.detailStatus.setText(R.string.culture_detail_missing);
         binding.btnListen.setEnabled(valid);
         if (!valid) {
-            renderCover(null);
+            cover.bind(null);
             return;
         }
-        renderCover(s.item.cover);
+        cover.bind(s.item.cover);
         binding.detailGlyph.setText(s.item.glyph);
         binding.detailTitle.setText(s.item.titleZh);
         binding.detailTitleEn.setText(s.item.titleEn);
@@ -107,39 +103,6 @@ public final class CultureDetailActivity extends ChildActivity {
         binding.detailFocus.setText(s.item.learningFocus);
         binding.detailTranscript.setText(CultureReadingText.format(s.item));
         renderPreview();
-    }
-
-    private void renderCover(@Nullable String name) {
-        if (Objects.equals(coverName, name)) {
-            return;
-        }
-        coverName = name;
-        int request = ++coverRequest;
-        binding.detailCover.setImageDrawable(null);
-        boolean hasCover = name != null && !name.isEmpty() && !"ill_placeholder".equals(name);
-        binding.detailCover.setVisibility(hasCover ? View.VISIBLE : View.GONE);
-        if (!hasCover) {
-            return;
-        }
-        container().executors.diskIO().execute(() -> {
-            Bitmap decoded = null;
-            try {
-                int id = getResources().getIdentifier(name, "drawable", getPackageName());
-                if (id != 0) {
-                    decoded = BitmapFactory.decodeResource(getResources(), id);
-                }
-            } catch (Resources.NotFoundException error) {
-                Log.w("CultureDetail", "Unable to load cover: " + name, error);
-            }
-            Bitmap photo = decoded;
-            container().executors.mainThread().execute(() -> {
-                if (request != coverRequest || isFinishing() || isDestroyed()) {
-                    return;
-                }
-                binding.detailCover.setImageBitmap(photo);
-                binding.detailCover.setVisibility(photo == null ? View.GONE : View.VISIBLE);
-            });
-        });
     }
 
     private void renderPreview() {

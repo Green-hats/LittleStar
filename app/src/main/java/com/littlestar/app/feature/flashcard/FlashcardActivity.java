@@ -208,7 +208,11 @@ public final class FlashcardActivity extends ChildActivity {
         binding.stamp.setLearned(s.currentLearned);
         binding.stampLabel.setText(s.currentLearned
                 ? R.string.pr_stamp_marked : R.string.pr_stamp_optional);
-        binding.btnNextText.setText(s.isLast ? R.string.fc_done : R.string.fc_next);
+        binding.btnNextText.setText(!s.isLast ? R.string.fc_next
+                : s.mode == FlashcardViewModel.Mode.SESSION
+                ? R.string.fc_start_quiz : R.string.fc_back_words);
+        binding.stampExplanation.setText(s.mode == FlashcardViewModel.Mode.SESSION
+                ? R.string.fc_session_stages : R.string.fc_browse_stages);
         updateReading();
     }
 

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="ls_record_control">80dp</dimen>
+    <dimen name="ls_quiz_option_min">100dp</dimen>
+    <dimen name="ls_home_preview_hanzi">64sp</dimen>
+    <dimen name="ls_culture_thumbnail">64dp</dimen>
     <dimen name="ls_margin">24dp</dimen>
     <dimen name="ls_section">24dp</dimen>
     <dimen name="ls_section_lg">32dp</dimen>

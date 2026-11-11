@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
@@ -14,12 +13,11 @@ import android.view.animation.OvershootInterpolator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.littlestar.app.R;
 
 /**
- * 学会印章（§8.5）：未学 = 描边方印 + 灰色「会」字；已学 = 朱红底 + 米白「会」字。
+ * 可选学习记录：描边勾号未记录，红底勾号已记录，不表示掌握程度。
  * {@link #setLearned(boolean, boolean)} 带动效：缩放 1.3 → 1 + 旋转 −8° → 0，240ms。
  */
 public final class StampView extends View {
@@ -70,10 +68,6 @@ public final class StampView extends View {
         mutedColor = ContextCompat.getColor(context, R.color.ls_muted);
 
         textPaint.setTextAlign(Paint.Align.CENTER);
-        Typeface hanzi = ResourcesCompat.getFont(context, R.font.noto_sans_sc_hanzi);
-        if (hanzi != null) {
-            textPaint.setTypeface(hanzi);
-        }
         updateDescription();
     }
 

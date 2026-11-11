@@ -109,6 +109,7 @@ public final class QuizActivity extends ChildActivity {
         binding.btnListen.setOnClickListener(v -> vm.speakCurrent());
         binding.questionCard.setOnClickListener(v -> vm.speakCurrent());
         binding.btnNext.setOnClickListener(v -> vm.next());
+        binding.btnRetry.setOnClickListener(v -> vm.retry());
         binding.btnAudioRetry.setOnClickListener(v -> {
             binding.audioMissing.setVisibility(View.GONE);
             vm.speakCurrent();
@@ -176,16 +177,16 @@ public final class QuizActivity extends ChildActivity {
             ob.optionPinyin.setText(w != null ? w.pinyin : "");
             ob.optionBadge.setVisibility(View.GONE);
 
-            if (!s.answered) {
+            if (!s.answered || (s.retrying && i != s.retryChosenIndex)) {
                 optionBlocks[i].setFillColor(card);
                 ob.optionHanzi.setTextColor(ink);
                 ob.optionPinyin.setTextColor(muted);
-            } else if (i == s.question.correctIndex()) {
+            } else if (!s.retrying && i == s.question.correctIndex()) {
                 optionBlocks[i].setFillColor(mint);
                 ob.optionHanzi.setTextColor(onMint);
                 ob.optionPinyin.setTextColor(onMint);
                 showBadge(ob, true);
-            } else if (i == s.chosenIndex) {
+            } else if (s.retrying ? i == s.retryChosenIndex : !s.corrected && i == s.chosenIndex) {
                 optionBlocks[i].setFillColor(clay);
                 ob.optionHanzi.setTextColor(onClay);
                 ob.optionPinyin.setTextColor(onClay);
@@ -199,15 +200,19 @@ public final class QuizActivity extends ChildActivity {
 
         // 反馈条 + NEXT（答后滑入一次）
         if (s.answered) {
-            binding.feedbackBar.setFillColor(s.lastAnswerCorrect ? mint : clay);
-            binding.feedbackText.setText(s.lastAnswerCorrect
+            boolean positive = s.lastAnswerCorrect || s.corrected;
+            binding.feedbackBar.setFillColor(positive ? mint : s.retrying ? card : clay);
+            binding.feedbackText.setText(s.retrying ? getString(R.string.quiz_retry_hint)
+                    : s.corrected ? getString(R.string.quiz_retry_correct) : s.lastAnswerCorrect
                     ? getString(R.string.quiz_feedback_correct)
                     : getString(R.string.quiz_feedback_wrong, s.question.hanzi(), s.question.english()));
-            binding.feedbackText.setTextColor(s.lastAnswerCorrect ? onMint : onClay);
+            binding.feedbackText.setTextColor(positive ? onMint : s.retrying ? ink : onClay);
             binding.feedbackIcon.setImageResource(
-                    s.lastAnswerCorrect ? R.drawable.ic_check : R.drawable.ic_close);
-            binding.feedbackIcon.setColorFilter(s.lastAnswerCorrect ? onMint : onClay);
-            binding.btnNextText.setText(s.isLast ? R.string.quiz_done : R.string.quiz_next);
+                    positive ? R.drawable.ic_check : s.retrying ? R.drawable.ic_speaker : R.drawable.ic_close);
+            binding.feedbackIcon.setColorFilter(positive ? onMint : s.retrying ? ink : onClay);
+            binding.btnRetry.setVisibility(!positive && !s.retrying ? View.VISIBLE : View.GONE);
+            binding.btnNextText.setText(s.retrying ? R.string.quiz_skip_retry
+                    : s.isLast ? R.string.quiz_done : R.string.quiz_next);
             if (feedbackShownFor != s.index) {
                 feedbackShownFor = s.index;
                 Motion.slideUpIn(binding.bottomFeedback);
@@ -242,8 +247,9 @@ public final class QuizActivity extends ChildActivity {
             container().sfx.play(sfx.correct() ? SfxPlayer.Sfx.CORRECT : SfxPlayer.Sfx.WRONG);
             if (!sfx.correct()) {
                 QuizViewModel.UiState s = vm.state().getValue();
-                if (s != null && s.chosenIndex >= 0 && s.chosenIndex < optionBlocks.length) {
-                    Motion.shake(optionBlocks[s.chosenIndex]);
+                int chosen = s == null ? -1 : s.retrying ? s.retryChosenIndex : s.chosenIndex;
+                if (chosen >= 0 && chosen < optionBlocks.length) {
+                    Motion.shake(optionBlocks[chosen]);
                 }
             }
         }

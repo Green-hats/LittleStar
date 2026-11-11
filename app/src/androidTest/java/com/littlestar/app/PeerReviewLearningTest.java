@@ -11,6 +11,8 @@ import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.data.store.ProgressState;
 import com.littlestar.app.feature.flashcard.FlashcardActivity;
 import com.littlestar.app.feature.quiz.QuizActivity;
+import com.littlestar.app.feature.quiz.QuizViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -44,18 +46,18 @@ public class PeerReviewLearningTest {
  private Intent browse(){return new Intent(ApplicationProvider.getApplicationContext(),FlashcardActivity.class).putExtra("mode","BROWSE").putStringArrayListExtra("wordIds",new ArrayList<>(List.of("mao","gou","niao")));}
  private Intent quiz(){return new Intent(ApplicationProvider.getApplicationContext(),QuizActivity.class).putExtra("mode","THEME").putExtra("sessionId",880L);}
 
- @Test public void optionalStamp_hasParentExplanation_andNextNeedsNoMark() throws Exception {
+ @Test public void optionalRecord_hasBrowseGuidance_andNextNeedsNoMark() throws Exception {
   try(ActivityScenario<FlashcardActivity> s=ActivityScenario.launch(browse())) {
    waitFor(s,R.id.stamp,View.VISIBLE);
    UiEvidence.capture("after_stamp_optional");
    s.onActivity(a->{
     assertEquals(a.getString(R.string.pr_stamp_optional),((TextView)a.findViewById(R.id.stampLabel)).getText().toString());
-    assertTrue(((TextView)a.findViewById(R.id.stampExplanation)).getText().toString().contains("not mastery"));
+    assertEquals(a.getString(R.string.fc_browse_stages),((TextView)a.findViewById(R.id.stampExplanation)).getText().toString());
     assertEquals("android.widget.Button",a.findViewById(R.id.stamp).getAccessibilityClassName());
     int[] hint=new int[2], label=new int[2];
     a.findViewById(R.id.stampExplanation).getLocationOnScreen(hint);
     a.findViewById(R.id.stampLabel).getLocationOnScreen(label);
-    assertTrue("Parent explanation must not overlap stamp row",hint[1]>=label[1]+a.findViewById(R.id.stampLabel).getHeight());
+    assertTrue("Stage guidance must not overlap record row",hint[1]>=label[1]+a.findViewById(R.id.stampLabel).getHeight());
    });
    onView(withId(R.id.btnNext)).perform(click());
    assertTrue(read(st->st.words.isEmpty()));
@@ -65,6 +67,8 @@ public class PeerReviewLearningTest {
    assertEquals(learned,read(st->st.words.get("gou").learnedAt));
    s.onActivity(a->assertEquals(a.getString(R.string.pr_stamp_marked),((TextView)a.findViewById(R.id.stampLabel)).getText().toString()));
    UiEvidence.capture("after_stamp_marked");
+   onView(withId(R.id.btnNext)).perform(click());
+   s.onActivity(a->assertEquals(a.getString(R.string.fc_back_words),((TextView)a.findViewById(R.id.btnNextText)).getText().toString()));
   }
  }
  @Test public void flashcardMissingAudio_retryRecovers_withoutProgressChange() throws Exception {
@@ -105,6 +109,45 @@ public class PeerReviewLearningTest {
    while(s.getState()!=androidx.lifecycle.Lifecycle.State.DESTROYED && SystemClock.elapsedRealtime()<deadline) SystemClock.sleep(100);
    assertEquals(androidx.lifecycle.Lifecycle.State.DESTROYED,s.getState());
   } finally {w.audio=original;}
+ }
+ @Test public void retry_preservesFirstAnswerAndSchedule_acrossRecreation() throws Exception {
+  try(ActivityScenario<QuizActivity> s=ActivityScenario.launch(quiz())) {
+   waitFor(s,R.id.option0,View.VISIBLE);
+   AtomicReference<QuizViewModel> model=new AtomicReference<>();
+   s.onActivity(a->{
+    QuizViewModel vm=new ViewModelProvider(a).get(QuizViewModel.class);model.set(vm);
+    assertNotNull(vm.state().getValue().question);
+    vm.choose((vm.state().getValue().question.correctIndex()+1)%4);
+   });
+   String wordId=model.get().state().getValue().question.wordId();
+   String due=read(st->st.words.get(wordId).dueDate);
+   assertEquals(1,(int)read(st->st.sessions.get(0).answers.size()));
+   s.onActivity(a->a.findViewById(R.id.btnRetry).performClick());
+   s.recreate();
+   s.onActivity(a->{
+    QuizViewModel vm=new ViewModelProvider(a).get(QuizViewModel.class);model.set(vm);
+    assertTrue(vm.state().getValue().retrying);
+    assertFalse(((TextView)a.findViewById(R.id.feedbackText)).getText().toString().contains(vm.state().getValue().question.english()));
+    vm.choose((vm.state().getValue().question.correctIndex()+1)%4);
+    assertTrue(vm.state().getValue().retrying);
+    vm.choose(vm.state().getValue().question.correctIndex());
+    assertTrue(vm.state().getValue().corrected);
+    assertFalse(vm.state().getValue().lastAnswerCorrect);
+   });
+   assertEquals(1,(int)read(st->st.sessions.get(0).answers.size()));
+   assertEquals(0,(int)read(st->st.sessions.get(0).correct));
+   assertFalse(read(st->st.sessions.get(0).answers.get(0).correct));
+   assertTrue(read(st->st.sessions.get(0).answers.get(0).firstTry));
+   assertEquals(due,read(st->st.words.get(wordId).dueDate));
+   assertNull(read(st->st.words.get(wordId).learnedAt));
+   s.recreate();
+   s.onActivity(a->{
+    QuizViewModel vm=new ViewModelProvider(a).get(QuizViewModel.class);
+    assertTrue(vm.state().getValue().corrected);
+    vm.next();assertEquals(1,vm.state().getValue().index);
+    assertFalse(vm.state().getValue().retrying);assertFalse(vm.state().getValue().corrected);
+   });
+  }
  }
  private <T>T read(Function<ProgressState,T> f) throws Exception {
   CountDownLatch done=new CountDownLatch(1);AtomicReference<T> result=new AtomicReference<>();

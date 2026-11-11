@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pr_stamp_optional">Optional mark</string>
-    <string name="pr_stamp_marked">Marked as learned</string>
+    <string name="pr_stamp_optional">Record</string>
+    <string name="pr_stamp_marked">Saved</string>
     <string name="pr_stamp_explanation">For parents: this records a learning action, not mastery.</string>
-    <string name="pr_stamp_action_desc">Mark this character as learned. Optional learning record.</string>
-    <string name="pr_stamp_marked_desc">Character marked as learned. This is a learning record, not mastery.</string>
+    <string name="pr_stamp_action_desc">Save a learning record. Optional.</string>
+    <string name="pr_stamp_marked_desc">Learning record saved. This is not a mastery score.</string>
     <string name="pr_stamp_state_unmarked">Not marked</string>
-    <string name="pr_stamp_state_marked">Marked as learned</string>
+    <string name="pr_stamp_state_marked">Learning recorded</string>
+    <string name="fc_start_quiz">Start quiz</string>
+    <string name="fc_back_words">Back to words</string>
+    <string name="fc_session_stages">Learn → Quiz → Done</string>
+    <string name="fc_browse_stages">Explore at your own pace</string>
+    <string name="quiz_retry">Try again</string>
+    <string name="quiz_retry_hint">Listen &amp; choose again. Just practice.</string>
+    <string name="quiz_retry_correct">You found it! Keep practicing.</string>
+    <string name="quiz_skip_retry">Skip practice</string>
     <string name="pr_audio_title">Can’t play this sound</string>
     <string name="pr_audio_message">Try again, or ask a parent for help.</string>
     <string name="pr_audio_retry">Try again</string>
