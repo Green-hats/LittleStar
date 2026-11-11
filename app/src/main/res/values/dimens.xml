@@ -4,11 +4,7 @@
     <dimen name="ls_flashcard_image">80dp</dimen>
     <dimen name="ls_flashcard_image_compact">64dp</dimen>
     <dimen name="ls_flashcard_image_min">48dp</dimen>
-    <dimen name="ls_flashcard_image_landscape_max">144dp</dimen>
-    <dimen name="ls_flashcard_landscape_max_width">960dp</dimen>
     <dimen name="ls_flashcard_gap_min">4dp</dimen>
-    <dimen name="ls_flashcard_sidebar_min">160dp</dimen>
-    <dimen name="ls_flashcard_sidebar_max">192dp</dimen>
     <dimen name="ls_flashcard_hanzi_max">100sp</dimen>
     <dimen name="ls_flashcard_hanzi_min">56sp</dimen>
     <dimen name="ls_flashcard_pinyin_max">24sp</dimen>

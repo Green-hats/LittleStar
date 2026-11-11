@@ -25,11 +25,8 @@
             </LinearLayout>
             <com.littlestar.app.core.ui.SegmentProgressView android:id="@+id/cardProgress"
                 android:layout_width="match_parent" android:layout_height="@dimen/ls_seg_height" android:layout_marginTop="@dimen/ls_gap" />
-            <LinearLayout android:id="@+id/flashcardWorkspace" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap"
-                android:orientation="vertical" android:gravity="center_vertical">
             <include android:id="@+id/pageCard" layout="@layout/page_flashcard"
-                android:layout_width="match_parent" android:layout_height="wrap_content" />
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" />
             <LinearLayout android:id="@+id/flashcardFooter" android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ls_gap" android:gravity="center_vertical" android:baselineAligned="false"
                 android:orientation="horizontal">
@@ -53,7 +50,6 @@
                             android:importantForAccessibility="no" android:src="@drawable/ic_chevron" app:tint="@color/ls_on_red" />
                     </LinearLayout>
                 </com.littlestar.app.core.ui.BlockLayout>
-            </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -88,4 +84,15 @@
             </LinearLayout>
         </com.littlestar.app.core.ui.BlockLayout>
     </FrameLayout>
+    <LinearLayout android:id="@+id/rotationGate" android:layout_width="0dp" android:layout_height="0dp"
+        android:orientation="vertical" android:gravity="center" android:padding="@dimen/ls_flashcard_margin"
+        android:background="@color/ls_paper" android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent">
+        <ImageView android:layout_width="@dimen/ls_btn_primary" android:layout_height="@dimen/ls_btn_primary"
+            android:importantForAccessibility="no" android:src="@drawable/ic_rotate_portrait" />
+        <TextView android:id="@+id/rotationMessage" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap" android:gravity="center" android:accessibilityHeading="true"
+            android:text="@string/fc_portrait_only" android:textAppearance="@style/TextAppearance.LS.Title" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

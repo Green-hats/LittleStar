@@ -198,7 +198,7 @@ public class PeerReviewLearningTest {
      View viewport=a.findViewById(R.id.flashcardScroll);
      var params=(androidx.constraintlayout.widget.ConstraintLayout.LayoutParams)viewport.getLayoutParams();
      float density=a.getResources().getDisplayMetrics().density;
-     params.width=Math.round(360*density);params.height=Math.round(560*density);
+     params.width=Math.round(360*density);params.height=Math.round(440*density);
      viewport.setLayoutParams(params);
     });
     onView(withId(R.id.btnListen)).perform(androidx.test.espresso.action.ViewActions.scrollTo());
@@ -209,60 +209,55 @@ public class PeerReviewLearningTest {
      View record=a.findViewById(R.id.stamp),next=a.findViewById(R.id.btnNext);
      assertEquals(record.getTop(),next.getTop());assertEquals(record.getHeight(),next.getHeight());
      assertEquals(android.widget.LinearLayout.HORIZONTAL,((android.widget.LinearLayout)a.findViewById(R.id.pageMain)).getOrientation());
-     View workspace=a.findViewById(R.id.flashcardWorkspace),root=a.findViewById(R.id.flashcardRoot),viewport=a.findViewById(R.id.flashcardScroll);
-     assertTrue("Compact layout should fit one screen",workspace.getBottom()+root.getPaddingBottom()<=viewport.getHeight());
+     View footer=a.findViewById(R.id.flashcardFooter),root=a.findViewById(R.id.flashcardRoot),viewport=a.findViewById(R.id.flashcardScroll);
+     assertTrue("Compact layout should fit one screen",footer.getBottom()+root.getPaddingBottom()<=viewport.getHeight());
+     TextView hanzi=a.findViewById(R.id.pageHanzi);
+     assertTrue("Bounded viewport should adapt text size",hanzi.getTextSize()<a.getResources().getDimension(R.dimen.ls_flashcard_hanzi_max));
+     assertTrue(hanzi.getTextSize()>=a.getResources().getDimension(R.dimen.ls_flashcard_hanzi_min));
      assertStaticCard(a.findViewById(R.id.pageCard));
      assertNoParentExplanation(a.findViewById(android.R.id.content));
     });
    }
   }finally{setFontScale(original);}
  }
- @Test public void flashcard_landscapeDoubleFont_fitsWithSideControls_andRetainsCurrentRecord() throws Exception {
+ @Test public void flashcard_landscapeBlocksLearning_andPortraitRestoresCurrentRecord() throws Exception {
   float original=android.provider.Settings.System.getFloat(ApplicationProvider.getApplicationContext().getContentResolver(),android.provider.Settings.System.FONT_SCALE,1f);
-  try {
-   try(ActivityScenario<FlashcardActivity> s=ActivityScenario.launch(browse())) {
-    waitFor(s,R.id.pageHanzi,View.VISIBLE);
-    setActivityFont(s,2f);
-    s.onActivity(a->{a.findViewById(R.id.btnNext).performClick();a.findViewById(R.id.stamp).performClick();});
-    c.store.flushNow();
-    AtomicReference<String> current=new AtomicReference<>();
-    s.onActivity(a->{
-     current.set(((TextView)a.findViewById(R.id.pageHanzi)).getText().toString());
-     a.setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    });
-    long end=android.os.SystemClock.uptimeMillis()+5000;
-    AtomicReference<Boolean> landscape=new AtomicReference<>(false);
-    do {
-     s.onActivity(a->landscape.set(a.getResources().getConfiguration().orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE));
-     if(landscape.get())break;
-     android.os.SystemClock.sleep(50);
-    }while(android.os.SystemClock.uptimeMillis()<end);
-    assertTrue("Landscape must be available",landscape.get());
-    s.onActivity(a->{
-     View viewport=a.findViewById(R.id.flashcardScroll);
-     var params=(androidx.constraintlayout.widget.ConstraintLayout.LayoutParams)viewport.getLayoutParams();
-     params.height=Math.round(300*a.getResources().getDisplayMetrics().density);
-     viewport.setLayoutParams(params);
-    });
-    onView(withId(R.id.btnNext)).check(androidx.test.espresso.assertion.ViewAssertions.matches(androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed()));
-    onView(withId(R.id.btnListen)).check(androidx.test.espresso.assertion.ViewAssertions.matches(androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed()));
-    s.onActivity(a->{
-     assertTrue(a.getResources().getConfiguration().fontScale>=2f);
-     View workspace=a.findViewById(R.id.flashcardWorkspace),root=a.findViewById(R.id.flashcardRoot),viewport=a.findViewById(R.id.flashcardScroll);
-     assertEquals(android.widget.LinearLayout.HORIZONTAL,((android.widget.LinearLayout)workspace).getOrientation());
-     assertTrue("Landscape should fit one screen",workspace.getBottom()+root.getPaddingBottom()<=viewport.getHeight());
-     assertTrue(a.findViewById(R.id.pageCard).getRight()<=a.findViewById(R.id.flashcardFooter).getLeft());
-     TextView hanzi=a.findViewById(R.id.pageHanzi);
-     assertEquals(current.get(),hanzi.getText().toString());
-     assertEquals(a.getString(R.string.pr_stamp_marked),((TextView)a.findViewById(R.id.stampLabel)).getText().toString());
-     assertTrue(hanzi.getTextSize()>=a.getResources().getDimension(R.dimen.ls_flashcard_hanzi_min));
-     assertTrue(hanzi.getTextSize()<a.getResources().getDimension(R.dimen.ls_flashcard_hanzi_max));
-     int min=a.getResources().getDimensionPixelSize(R.dimen.ls_btn_icon);
-     assertTrue(a.findViewById(R.id.stamp).getHeight()>=min);
-     assertTrue(a.findViewById(R.id.btnNext).getHeight()>=min);
-     assertTrue(a.findViewById(R.id.btnListen).getHeight()>=min);
-    });
-   }
+  try(ActivityScenario<FlashcardActivity> s=ActivityScenario.launch(browse())) {
+   waitFor(s,R.id.pageHanzi,View.VISIBLE);setActivityFont(s,2f);
+   s.onActivity(a->{a.findViewById(R.id.btnNext).performClick();a.findViewById(R.id.stamp).performClick();});
+   c.store.flushNow();
+   AtomicReference<String> word=new AtomicReference<>(),counter=new AtomicReference<>();
+   s.onActivity(a->{
+    word.set(((TextView)a.findViewById(R.id.pageHanzi)).getText().toString());
+    counter.set(((TextView)a.findViewById(R.id.cardCounter)).getText().toString());
+    a.setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+   });
+   waitFor(s,R.id.rotationGate,View.VISIBLE);
+   onView(withId(R.id.rotationMessage)).check(androidx.test.espresso.assertion.ViewAssertions.matches(
+    androidx.test.espresso.matcher.ViewMatchers.withText(R.string.fc_portrait_only)));
+   onView(withId(R.id.rotationMessage)).check(androidx.test.espresso.assertion.ViewAssertions.matches(
+    androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed()));
+   s.onActivity(a->{
+    assertEquals(android.content.res.Configuration.ORIENTATION_LANDSCAPE,a.getResources().getConfiguration().orientation);
+    assertEquals(View.GONE,a.findViewById(R.id.flashcardScroll).getVisibility());
+    assertFalse(a.findViewById(R.id.btnNext).isShown());assertFalse(a.findViewById(R.id.stamp).isShown());
+    assertFalse(a.findViewById(R.id.btnListen).isShown());
+    var vm=new androidx.lifecycle.ViewModelProvider(a).get(com.littlestar.app.feature.flashcard.FlashcardViewModel.class);
+    int index=vm.currentIndex();
+    a.findViewById(R.id.btnNext).performClick();a.findViewById(R.id.stamp).performClick();
+    a.findViewById(R.id.btnListen).performClick();
+    assertEquals("Landscape actions must be ignored",index,vm.currentIndex());
+    assertFalse(Boolean.TRUE.equals(c.speech.isPlaying().getValue()));
+    a.setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+   });
+   waitFor(s,R.id.flashcardScroll,View.VISIBLE);
+   onView(withId(R.id.pageHanzi)).check(androidx.test.espresso.assertion.ViewAssertions.matches(
+    androidx.test.espresso.matcher.ViewMatchers.withText(word.get())));
+   s.onActivity(a->{
+    assertEquals(View.GONE,a.findViewById(R.id.rotationGate).getVisibility());
+    assertEquals(counter.get(),((TextView)a.findViewById(R.id.cardCounter)).getText().toString());
+    assertEquals(a.getString(R.string.pr_stamp_marked),((TextView)a.findViewById(R.id.stampLabel)).getText().toString());
+   });
   }finally{setFontScale(original);}
  }
  private static void assertListenInsideCard(android.app.Activity a) {

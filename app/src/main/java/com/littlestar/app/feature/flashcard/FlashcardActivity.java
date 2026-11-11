@@ -2,6 +2,7 @@ package com.littlestar.app.feature.flashcard;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 
@@ -77,6 +78,8 @@ public final class FlashcardActivity extends ChildActivity {
         binding = ActivityFlashcardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
+        binding.flashcardScroll.setVisibility(needsPortrait() ? View.GONE : View.VISIBLE);
+        binding.rotationGate.setVisibility(needsPortrait() ? View.VISIBLE : View.GONE);
         layout = new FlashcardLayout(binding);
 
         // 进程被杀或重建：恢复已建会话与当前字卡索引，不覆盖为 -1，也不重复 buildSession
@@ -108,9 +111,13 @@ public final class FlashcardActivity extends ChildActivity {
             finish();
             Motion.childExit(this);
         });
-        binding.btnNext.setOnClickListener(v -> vm.next());
+        binding.btnNext.setOnClickListener(v -> {
+            if (!needsPortrait()) {
+                vm.next();
+            }
+        });
         binding.stamp.setOnClickListener(v -> {
-            if (vm.stamp()) {
+            if (!needsPortrait() && vm.stamp()) {
                 container().sfx.play(SfxPlayer.Sfx.TAP);
                 vm.refresh();
             }
@@ -127,7 +134,7 @@ public final class FlashcardActivity extends ChildActivity {
             public void onPlayFailed(@NonNull String wordId) {
                 runOnUiThread(() -> {
                     FlashcardViewModel.UiState current = vm.state().getValue();
-                    if (current != null && current.current() != null
+                    if (!needsPortrait() && current != null && current.current() != null
                             && wordId.equals(current.current().id)) {
                         binding.audioMissing.setVisibility(View.VISIBLE);
                         binding.audioMissing.announceForAccessibility(getString(R.string.pr_audio_title));
@@ -162,7 +169,7 @@ public final class FlashcardActivity extends ChildActivity {
     }
 
     private void render(FlashcardViewModel.UiState s) {
-        if (s == null || s.words.isEmpty()) {
+        if (needsPortrait() || s == null || s.words.isEmpty()) {
             return;
         }
         Word cur = s.current();
@@ -210,6 +217,9 @@ public final class FlashcardActivity extends ChildActivity {
     }
 
     private void speakCurrent() {
+        if (needsPortrait()) {
+            return;
+        }
         FlashcardViewModel.UiState s = vm.state().getValue();
         if (s != null && s.current() != null) {
             container().speech.play(s.current());
@@ -218,7 +228,7 @@ public final class FlashcardActivity extends ChildActivity {
 
     /** 朗读中：当前页的声波 + 「朗读中」（§7.23，不改布局）。 */
     private void updateReading() {
-        boolean showStatus = speaking && !layout.isLandscape();
+        boolean showStatus = speaking && !needsPortrait();
         binding.pageCard.soundWave.setPlaying(showStatus);
         binding.pageCard.soundWave.setVisibility(showStatus ? View.VISIBLE : View.GONE);
         binding.pageCard.readingLabel.setVisibility(showStatus ? View.VISIBLE : View.GONE);
@@ -226,6 +236,9 @@ public final class FlashcardActivity extends ChildActivity {
     }
 
     private void onEffect(Event<FlashcardViewModel.Effect> event) {
+        if (needsPortrait()) {
+            return;
+        }
         FlashcardViewModel.Effect e = event.getContentIfNotHandled();
         if (e instanceof FlashcardViewModel.Effect.GoQuiz goQuiz) {
             startActivity(QuizActivity.sessionIntent(this, goQuiz.sessionId()));
@@ -235,6 +248,10 @@ public final class FlashcardActivity extends ChildActivity {
             finish();
             Motion.childExit(this);
         }
+    }
+
+    private boolean needsPortrait() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     @Override

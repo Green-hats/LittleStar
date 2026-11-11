@@ -8,7 +8,6 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.littlestar.app.R;
 import com.littlestar.app.databinding.ActivityFlashcardBinding;
@@ -31,20 +30,8 @@ final class FlashcardLayout implements ViewTreeObserver.OnGlobalLayoutListener {
         binding.flashcardRoot.requestLayout();
     }
 
-    boolean isLandscape() {
-        return binding.getRoot().getWidth() > binding.getRoot().getHeight();
-    }
-
     @Override
     public void onGlobalLayout() {
-        var viewport = (ConstraintLayout.LayoutParams) binding.flashcardScroll.getLayoutParams();
-        int maximumWidth = dimension(isLandscape()
-                ? R.dimen.ls_flashcard_landscape_max_width : R.dimen.ls_content_max_width);
-        if (viewport.matchConstraintMaxWidth != maximumWidth) {
-            viewport.matchConstraintMaxWidth = maximumWidth;
-            binding.flashcardScroll.setLayoutParams(viewport);
-            return;
-        }
         int availableWidth = binding.flashcardScroll.getWidth();
         int availableHeight = binding.flashcardScroll.getHeight();
         if (availableWidth <= 0 || availableHeight <= 0) {
@@ -53,12 +40,12 @@ final class FlashcardLayout implements ViewTreeObserver.OnGlobalLayoutListener {
         if (width != availableWidth || height != availableHeight) {
             width = availableWidth;
             height = availableHeight;
-            compact = isLandscape();
+            compact = false;
             scale = 1f;
             apply();
             return;
         }
-        int needed = binding.flashcardWorkspace.getBottom() + binding.flashcardRoot.getPaddingBottom();
+        int needed = binding.flashcardFooter.getBottom() + binding.flashcardRoot.getPaddingBottom();
         if (needed <= height) {
             return;
         }
@@ -87,22 +74,16 @@ final class FlashcardLayout implements ViewTreeObserver.OnGlobalLayoutListener {
 
     private void apply() {
         var card = binding.pageCard;
-        boolean landscape = isLandscape();
         int gap = scaled(compact ? R.dimen.ls_gap_sm : R.dimen.ls_gap, R.dimen.ls_flashcard_gap_min);
         int margin = scaled(compact ? R.dimen.ls_gap : R.dimen.ls_flashcard_margin, R.dimen.ls_gap_sm);
         int touch = scaled(R.dimen.ls_btn_primary, R.dimen.ls_btn_icon);
         binding.flashcardRoot.setPadding(margin, margin, margin, margin);
         card.cardBody.setPadding(gap, gap, gap, gap);
-        binding.flashcardWorkspace.setOrientation(landscape ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
         card.pageMain.setOrientation(compact ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
 
         var image = (LinearLayout.LayoutParams) card.illustrationFrame.getLayoutParams();
         image.width = scaled(compact ? R.dimen.ls_flashcard_image_compact : R.dimen.ls_flashcard_image,
                 R.dimen.ls_flashcard_image_min);
-        if (landscape) {
-            image.width = Math.max(dimension(R.dimen.ls_flashcard_image_min),
-                    Math.min(dimension(R.dimen.ls_flashcard_image_landscape_max), Math.round(width * .16f * scale)));
-        }
         image.height = image.width;
         image.gravity = compact ? Gravity.CENTER_VERTICAL : Gravity.CENTER_HORIZONTAL;
         image.setMarginEnd(compact ? gap : 0);
@@ -113,43 +94,12 @@ final class FlashcardLayout implements ViewTreeObserver.OnGlobalLayoutListener {
         labels.topMargin = compact ? 0 : gap;
         card.wordLabels.setLayoutParams(labels);
 
-        var cardParams = (LinearLayout.LayoutParams) card.getRoot().getLayoutParams();
-        cardParams.width = landscape ? 0 : ViewGroup.LayoutParams.MATCH_PARENT;
-        cardParams.weight = landscape ? 1f : 0f;
-        card.getRoot().setLayoutParams(cardParams);
-        var footer = (LinearLayout.LayoutParams) binding.flashcardFooter.getLayoutParams();
-        footer.width = landscape ? Math.max(dimension(R.dimen.ls_flashcard_sidebar_min),
-                Math.min(dimension(R.dimen.ls_flashcard_sidebar_max), Math.round(width * .28f)))
-                : ViewGroup.LayoutParams.MATCH_PARENT;
-        footer.topMargin = landscape ? 0 : gap;
-        footer.setMarginStart(landscape ? gap : 0);
-        binding.flashcardFooter.setLayoutParams(footer);
-        binding.flashcardFooter.setOrientation(landscape ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
-
-        ViewGroup audioParent = (ViewGroup) card.audioRow.getParent();
-        ViewGroup target = landscape ? binding.flashcardFooter : card.cardBody;
-        if (audioParent != target) {
-            audioParent.removeView(card.audioRow);
-            target.addView(card.audioRow, landscape ? 0 : target.getChildCount());
-        }
-        if (landscape) {
-            card.soundWave.setPlaying(false);
-            card.soundWave.setVisibility(View.GONE);
-            card.readingLabel.setVisibility(View.GONE);
-        }
         for (View action : new View[]{binding.stamp, binding.btnNext}) {
-            var params = (LinearLayout.LayoutParams) action.getLayoutParams();
-            params.width = landscape ? ViewGroup.LayoutParams.MATCH_PARENT : 0;
-            params.height = landscape ? ViewGroup.LayoutParams.WRAP_CONTENT : ViewGroup.LayoutParams.MATCH_PARENT;
-            params.weight = landscape ? 0f : action == binding.stamp ? 1f : 1.5f;
-            params.topMargin = landscape ? gap : 0;
-            params.setMarginStart(!landscape && action == binding.btnNext ? gap : 0);
             action.setMinimumHeight(touch);
-            action.setLayoutParams(params);
         }
-        for (View view : new View[]{binding.cardProgress, binding.flashcardWorkspace, card.audioRow}) {
+        for (View view : new View[]{binding.cardProgress, card.getRoot(), binding.flashcardFooter, card.audioRow}) {
             var params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-            params.topMargin = landscape && view == card.audioRow ? 0 : gap;
+            params.topMargin = gap;
             view.setLayoutParams(params);
         }
         int audioTouch = scaled(R.dimen.ls_btn_secondary, R.dimen.ls_btn_icon);

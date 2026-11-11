@@ -9,6 +9,7 @@
     <string name="fc_start_quiz">Start quiz</string>
     <string name="fc_back_words">Back to words</string>
     <string name="fc_listen">Listen</string>
+    <string name="fc_portrait_only">Please turn your device upright</string>
     <string name="quiz_retry">Try again</string>
     <string name="quiz_retry_hint">Listen &amp; choose again. Just practice.</string>
     <string name="quiz_retry_correct">You found it! Keep practicing.</string>
