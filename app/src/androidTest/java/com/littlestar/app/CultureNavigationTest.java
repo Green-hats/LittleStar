@@ -9,12 +9,17 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.os.ParcelFileDescriptor;
+import android.provider.Settings;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -103,15 +108,66 @@ public final class CultureNavigationTest {
         }
     }
 
+    @Test public void largeFontKeepsCompletePlayLabelsAcrossCategories() throws Exception {
+        float original = Settings.System.getFloat(context.getContentResolver(), Settings.System.FONT_SCALE, 1f);
+        try {
+            setFontScale(2f);
+            for (var category : container.content.mvpCategories()) {
+                try (var scenario = ActivityScenario.<CultureListActivity>launch(
+                        new Intent(context, CultureListActivity.class).putExtra("categoryId", category.id))) {
+                    var items = container.content.itemsOfCategory(category.id);
+                    for (int position = 0; position < items.size(); position++) {
+                        waitForRow(scenario, position, 2f);
+                        int index = position;
+                        scenario.onActivity(activity -> {
+                            RecyclerView list = activity.findViewById(R.id.itemList);
+                            var row = list.findViewHolderForAdapterPosition(index).itemView;
+                            TextView label = row.findViewById(R.id.playShortcutLabel);
+                            assertEquals("Play", label.getText().toString());
+                            assertEquals(1, label.getLineCount());
+                            assertEquals(0, label.getLayout().getEllipsisCount(0));
+                            assertEquals(label.length(), label.getLayout().getLineEnd(0));
+                            int width = label.getWidth() - label.getCompoundPaddingLeft()
+                                    - label.getCompoundPaddingRight();
+                            assertTrue("Play must fit without clipping",
+                                    label.getPaint().measureText(label.getText().toString()) <= width + 1);
+                            assertTrue(label.getLayout().getHeight() <= label.getHeight()
+                                    - label.getCompoundPaddingTop() - label.getCompoundPaddingBottom());
+                            assertEquals(LinearLayout.VERTICAL,
+                                    ((LinearLayout) row.findViewById(R.id.rowContent)).getOrientation());
+                        });
+                    }
+                }
+            }
+        } finally {
+            setFontScale(original);
+        }
+    }
+
+    private static void setFontScale(float scale) throws Exception {
+        var descriptor = InstrumentationRegistry.getInstrumentation().getUiAutomation()
+                .executeShellCommand("settings put system font_scale " + scale);
+        try (var input = new ParcelFileDescriptor.AutoCloseInputStream(descriptor)) {
+            while (input.read() != -1) { }
+        }
+    }
+
     private static void waitForRow(ActivityScenario<CultureListActivity> scenario, int position) {
+        waitForRow(scenario, position, 0f);
+    }
+
+    private static void waitForRow(ActivityScenario<CultureListActivity> scenario, int position, float minScale) {
         AtomicBoolean ready = new AtomicBoolean();
         long deadline = SystemClock.uptimeMillis() + 5000;
         do {
             scenario.onActivity(activity -> {
                 RecyclerView list = activity.findViewById(R.id.itemList);
-                if (list.getAdapter().getItemCount() <= position) return;
+                if (activity.getResources().getConfiguration().fontScale < minScale
+                        || list.getAdapter().getItemCount() <= position) return;
                 ((LinearLayoutManager) list.getLayoutManager()).scrollToPositionWithOffset(position, 0);
-                ready.set(list.findViewHolderForAdapterPosition(position) != null);
+                var holder = list.findViewHolderForAdapterPosition(position);
+                ready.set(holder != null && holder.itemView.getWidth() > 0
+                        && holder.itemView.findViewById(R.id.playShortcutLabel).getWidth() > 0);
             });
             if (ready.get()) return;
             SystemClock.sleep(50);

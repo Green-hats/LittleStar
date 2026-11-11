@@ -2,9 +2,9 @@
 <com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/rowBlock" style="@style/Widget.LS.Block.Tile"
     android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="@dimen/ls_gap">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+    <LinearLayout android:id="@+id/rowContent" android:layout_width="match_parent" android:layout_height="wrap_content"
         android:padding="@dimen/ls_gap" android:gravity="center_vertical" android:orientation="horizontal">
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+        <LinearLayout android:id="@+id/rowText" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
             android:layout_marginEnd="@dimen/ls_gap" android:orientation="vertical">
             <TextView android:id="@+id/rowTitleEn" android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.LS.Title" />
@@ -16,13 +16,15 @@
                 android:importantForAccessibility="no" android:src="@drawable/ic_chevron" />
         </LinearLayout>
         <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnPlay" style="@style/Widget.LS.Block.Primary.Blue"
-            android:layout_width="@dimen/ls_play_shortcut" android:layout_height="wrap_content">
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:minWidth="@dimen/ls_play_shortcut" android:minHeight="@dimen/ls_btn_primary">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="@dimen/ls_gap_sm" android:gravity="center_horizontal" android:orientation="vertical">
+                android:minHeight="@dimen/ls_btn_secondary" android:layout_gravity="center"
+                android:padding="@dimen/ls_gap_sm" android:gravity="center" android:orientation="horizontal">
                 <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
                     android:importantForAccessibility="no" android:src="@drawable/ic_play" app:tint="@color/ls_on_blue" />
-                <TextView style="@style/Widget.LS.Label.Control" android:layout_width="match_parent"
-                    android:layout_height="@dimen/ls_avatar" android:gravity="center" android:text="@string/culture_list_play"
+                <TextView android:id="@+id/playShortcutLabel" android:layout_width="wrap_content"
+                    android:layout_marginStart="@dimen/ls_gap_sm" android:layout_height="wrap_content" android:gravity="center" android:text="@string/culture_list_play"
                     android:textAppearance="@style/TextAppearance.LS.Body" android:textColor="@color/ls_on_blue" />
             </LinearLayout>
         </com.littlestar.app.core.ui.BlockLayout>
