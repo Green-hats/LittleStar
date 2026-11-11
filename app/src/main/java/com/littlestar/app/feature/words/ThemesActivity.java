@@ -122,7 +122,6 @@ public final class ThemesActivity extends ChildActivity {
             h.b.badgeDone.setVisibility(done ? View.VISIBLE : View.GONE);
             h.b.themeNameZh.setText(item.theme.nameZh);
             h.b.themeNameEn.setText(item.theme.nameEn);
-            h.b.themeCount.setText(getString(R.string.themes_words_count, item.total));
             h.b.themeLearned.setText(getString(R.string.themes_learned, item.learned, item.total));
             h.b.themeTile.setOnClickListener(v -> {
                 startActivity(WordListActivity.intent(ThemesActivity.this, item.theme.id));

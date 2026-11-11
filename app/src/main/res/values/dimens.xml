@@ -80,4 +80,9 @@
     <dimen name="ls_navigation_label_max">22sp</dimen>
     <dimen name="ls_decorative_glyph_max">20sp</dimen>
     <dimen name="ls_text_fit_step">1sp</dimen>
+    <dimen name="ls_surface_stroke">1dp</dimen>
+    <dimen name="ls_no_shadow">0dp</dimen>
+    <dimen name="ls_detail_cover">128dp</dimen>
+    <dimen name="ls_detail_glyph">28sp</dimen>
+    <dimen name="ls_play_shortcut">72dp</dimen>
 </resources>

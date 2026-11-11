@@ -18,23 +18,20 @@
 
     <!-- ===== M3 · Home ===== -->
     <string name="home_panda_desc">Panpan the panda</string>
-    <string name="home_mode_word">Words</string>
-    <string name="home_mode_culture">Culture</string>
     <string name="home_words_glyph">字</string>
     <string name="home_culture_glyph">文</string>
     <string name="home_today_words">Today · Words</string>
-    <string name="home_today_culture">Today · Culture</string>
     <string name="home_today_done">All done today!</string>
-    <string name="home_start">START</string>
-    <string name="home_review">REVIEW</string>
+    <string name="home_start">Learn today</string>
+    <string name="home_review">Review words</string>
     <string name="home_listen">LISTEN</string>
     <string name="home_listen_desc">Listen to the sound</string>
     <string name="home_today_progress">Today %1$d / %2$d words</string>
     <string name="home_progress_done">All done for today!</string>
-    <string name="home_module_words_title">Words</string>
-    <string name="home_module_words_sub">Cards · Quiz</string>
-    <string name="home_module_culture_title">Culture</string>
-    <string name="home_module_culture_sub">Songs · Stories · Poems</string>
+    <string name="home_module_words_title">Browse words</string>
+    <string name="home_module_words_sub">识字 · Cards &amp; quiz</string>
+    <string name="home_module_culture_title">Listen &amp; read</string>
+    <string name="home_module_culture_sub">听读 · Songs &amp; stories</string>
     <string name="home_parent_entry">Learning plan</string>
 
     <!-- ===== M3 · 首次引导（§7.20，家长操作 → 英文） ===== -->

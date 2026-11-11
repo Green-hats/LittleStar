@@ -46,8 +46,14 @@ public final class CultureDetailTest {
             waitFor(R.id.detailTitle);
             waitForCover(scenario, true);
             onView(withId(R.id.detailTitle)).check(matches(withText("静夜思")));
+            scenario.onActivity(activity -> {
+                assertEquals(View.GONE, activity.findViewById(R.id.detailFocus).getVisibility());
+                assertEquals(View.GONE, activity.findViewById(R.id.detailTranscript).getVisibility());
+                assertTrue(!((View) activity.findViewById(R.id.detailCover).getParent().getParent()).isClickable());
+            });
             UiEvidence.capture("culture_detail_light");
             onView(withId(R.id.btnPreview)).perform(scrollTo(), click());
+            onView(withId(R.id.detailFocus)).perform(scrollTo()).check(matches(isDisplayed()));
             onView(withId(R.id.detailTranscript)).perform(scrollTo()).check(matches(isDisplayed()));
             scenario.recreate();
             waitFor(R.id.detailTitle);

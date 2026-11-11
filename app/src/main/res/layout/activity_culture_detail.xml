@@ -64,7 +64,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
                 <com.littlestar.app.core.ui.BlockLayout
-                    style="@style/Widget.LS.Block.Hero"
+                    style="@style/Widget.LS.Block.Surface"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:ls_pressable="false">
@@ -73,11 +73,11 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
-                        android:padding="@dimen/ls_card_pad">
+                        android:padding="@dimen/ls_gap">
                         <ImageView
                             android:id="@+id/detailCover"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/ls_player_cover"
+                            android:layout_height="@dimen/ls_detail_cover"
                             android:layout_marginBottom="@dimen/ls_gap_sm"
                             android:importantForAccessibility="no"
                             android:scaleType="fitCenter"
@@ -87,7 +87,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:importantForAccessibility="no"
-                            android:textAppearance="@style/TextAppearance.LS.HanziHero"
+                            android:textAppearance="@style/TextAppearance.LS.HanziTile"
+                            android:textSize="@dimen/ls_detail_glyph"
                             android:textColor="@color/ls_green" />
                         <TextView
                             android:id="@+id/detailTitleEn"
@@ -100,7 +101,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:textAppearance="@style/TextAppearance.LS.Title" />
+                            android:textAppearance="@style/TextAppearance.LS.Body" />
                         <TextView
                             android:id="@+id/detailSubtitle"
                             android:layout_width="match_parent"
@@ -114,27 +115,16 @@
                     android:id="@+id/detailSummary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ls_section"
+                    android:layout_marginTop="@dimen/ls_gap"
                     android:textAppearance="@style/TextAppearance.LS.Body" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ls_section"
-                    android:text="@string/culture_detail_focus"
-                    android:textAppearance="@style/TextAppearance.LS.Title" />
-                <TextView
-                    android:id="@+id/detailFocus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ls_gap_sm"
-                    android:textAppearance="@style/TextAppearance.LS.Body" />
+
                 <com.littlestar.app.core.ui.BlockLayout
                     android:id="@+id/btnPreview"
                     style="@style/Widget.LS.Block.Secondary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="@dimen/ls_btn_secondary"
-                    android:layout_marginTop="@dimen/ls_section">
+                    android:layout_marginTop="@dimen/ls_gap">
                     <TextView
                         android:id="@+id/previewLabel"
                         android:layout_width="match_parent"
@@ -144,6 +134,21 @@
                         android:text="@string/culture_detail_read_together"
                         android:textAppearance="@style/TextAppearance.LS.Body" />
                 </com.littlestar.app.core.ui.BlockLayout>
+                <TextView
+                    android:id="@+id/detailFocusHeading"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_gap"
+                    android:text="@string/culture_detail_focus"
+                    android:textAppearance="@style/TextAppearance.LS.Title" />
+                <TextView
+                    android:id="@+id/detailFocus"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_gap_sm"
+                    android:textAppearance="@style/TextAppearance.LS.Body" />
                 <TextView
                     android:id="@+id/detailTranscript"
                     android:layout_width="match_parent"

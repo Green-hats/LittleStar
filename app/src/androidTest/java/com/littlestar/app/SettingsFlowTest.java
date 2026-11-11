@@ -320,7 +320,6 @@ public final class SettingsFlowTest {
         awaitStore();
         try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
             waitFor(R.id.btnStart);
-            onView(withId(R.id.modeWord)).perform(click());
             onView(withId(R.id.btnStart)).perform(click());
             waitFor(R.id.flashcardRoot);
         }

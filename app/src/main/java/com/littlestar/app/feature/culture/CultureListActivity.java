@@ -19,11 +19,12 @@ import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.CultureItem;
 import com.littlestar.app.databinding.ActivityCultureListBinding;
 import com.littlestar.app.databinding.ItemCultureRowBinding;
+import com.littlestar.app.feature.player.PlayerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/** 文化列表：选择内容后先查看简介和学习重点，再进入播放器。 */
+/** 文化列表：标题进入详情，独立按钮直接播放当前分类队列。 */
 public final class CultureListActivity extends ChildActivity {
 
     private static final String EXTRA_CATEGORY_ID = "categoryId";
@@ -83,6 +84,19 @@ public final class CultureListActivity extends ChildActivity {
         Motion.childEnter(this);
     }
 
+    private void openPlayer(int index) {
+        CultureListViewModel.UiState s = vm.state().getValue();
+        if (s == null || index < 0 || index >= s.items.size()) {
+            return;
+        }
+        List<String> queue = new ArrayList<>();
+        for (CultureItem item : s.items) {
+            queue.add(item.id);
+        }
+        startActivity(PlayerActivity.intent(this, s.items.get(index).id, queue));
+        Motion.childEnter(this);
+    }
+
     private final class RowAdapter extends RecyclerView.Adapter<RowAdapter.Holder> {
 
         private List<CultureItem> items = new ArrayList<>();
@@ -101,15 +115,18 @@ public final class CultureListActivity extends ChildActivity {
         @Override
         public void onBindViewHolder(@NonNull Holder h, int position) {
             CultureItem item = items.get(position);
-            h.b.rowGlyph.setText(item.glyph);
             h.b.rowTitle.setText(item.titleZh);
             h.b.rowTitleEn.setText(item.titleEn);
             h.b.rowSub.setText(getString(R.string.player_subtitle_fmt, item.subtitleEn,
                     formatDuration(item.durationSec)));
             h.b.rowBlock.setContentDescription(getString(R.string.culture_detail_open, item.titleEn));
-            h.b.btnDetail.setContentDescription(getString(R.string.culture_detail_open, item.titleEn));
+            h.b.btnPlay.setContentDescription(getString(R.string.culture_list_play_item, item.titleEn));
             h.b.rowBlock.setOnClickListener(v -> openDetail(h.getBindingAdapterPosition()));
-            h.b.btnDetail.setOnClickListener(v -> openDetail(h.getBindingAdapterPosition()));
+            h.b.btnPlay.setOnClickListener(v -> {
+                v.setEnabled(false);
+                v.postDelayed(() -> v.setEnabled(true), 800);
+                openPlayer(h.getBindingAdapterPosition());
+            });
         }
 
         @Override

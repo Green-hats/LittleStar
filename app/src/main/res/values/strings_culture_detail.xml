@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="home_culture_open">EXPLORE</string>
     <string name="culture_detail_title">Discover</string>
     <string name="culture_detail_open">Discover %1$s</string>
     <string name="culture_detail_focus">Listen for</string>
@@ -10,4 +9,6 @@
     <string name="culture_detail_loading">Getting this story ready…</string>
     <string name="culture_detail_missing">This content is unavailable. Go back and choose another.</string>
     <string name="settings_help_message">%1$s\n\n%2$s\n\n%3$s</string>
+    <string name="culture_list_play">PLAY</string>
+    <string name="culture_list_play_item">Play %1$s</string>
 </resources>

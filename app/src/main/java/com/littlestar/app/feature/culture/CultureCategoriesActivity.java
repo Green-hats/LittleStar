@@ -45,15 +45,15 @@ public final class CultureCategoriesActivity extends ChildActivity {
             CultureCategory c = item.category;
             switch (c.id) {
                 case "songs":
-                    bind(c, item.count, binding.glyphSongs, binding.nameSongs, binding.nameSongsEn,
+                    bind(c, item.count, binding.nameSongs, binding.nameSongsEn,
                             binding.countSongs, binding.catSongs);
                     break;
                 case "stories":
-                    bind(c, item.count, binding.glyphStories, binding.nameStories,
+                    bind(c, item.count, binding.nameStories,
                             binding.nameStoriesEn, binding.countStories, binding.catStories);
                     break;
                 case "poems":
-                    bind(c, item.count, binding.glyphPoems, binding.namePoems, binding.namePoemsEn,
+                    bind(c, item.count, binding.namePoems, binding.namePoemsEn,
                             binding.countPoems, binding.catPoems);
                     break;
                 default:
@@ -63,11 +63,9 @@ public final class CultureCategoriesActivity extends ChildActivity {
     }
 
     private void bind(CultureCategory c, int count,
-                      com.littlestar.app.core.ui.HanziTextView glyph,
                       android.widget.TextView name, @Nullable android.widget.TextView nameEn,
                       android.widget.TextView countView,
                       com.littlestar.app.core.ui.BlockLayout block) {
-        glyph.setText(c.glyph);
         name.setText(c.nameZh);
         if (nameEn != null) {
             nameEn.setText(c.nameEn);

@@ -53,7 +53,6 @@ public final class SmokeTest {
             clickIfDisplayed(R.id.obLater);
 
             // 2. 首页：切到字态（17:00 后默认文态，LISTEN M3 不导航）再 START
-            clickIfDisplayed(R.id.modeWord);
             waitFor(R.id.btnStart, 10_000);
             onView(withId(R.id.btnStart)).perform(click());
 

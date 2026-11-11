@@ -64,7 +64,7 @@ public final class HomeViewModelTest {
     }
 
     private void observe(java.util.function.Consumer<HomeViewModel> test) {
-        var vm = new HomeViewModel(clock, settings, content,
+        var vm = new HomeViewModel(settings, content,
                 new ProgressRepository(store, content, clock), builder, executors);
         Observer<HomeViewModel.UiState> observer = state -> {};
         vm.state().observeForever(observer);
@@ -73,6 +73,20 @@ public final class HomeViewModelTest {
         } finally {
             vm.state().removeObserver(observer);
         }
+    }
+
+    @Test public void eveningKeepsTheSameDailyPractice() {
+        observe(vm -> {
+            var morning = vm.state().getValue();
+            clock.advance(Duration.ofHours(12));
+            vm.refresh();
+            var evening = vm.state().getValue();
+            assertNotNull(evening.nextWord);
+            assertEquals(morning.nextWord.id, evening.nextWord.id);
+            assertEquals(morning.goal, evening.goal);
+            assertEquals(morning.learnedToday, evening.learnedToday);
+            assertFalse(evening.isDailyComplete());
+        });
     }
 
     @Test public void lastWordCompletesActualPlanWithoutRewritingGoal() {

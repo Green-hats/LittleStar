@@ -57,7 +57,7 @@
             android:orientation="horizontal">
 
             <com.littlestar.app.core.ui.BlockLayout
-                style="@style/Widget.LS.Block.Icon"
+                style="@style/Widget.LS.Block.Surface"
                 android:layout_width="@dimen/ls_module_glyph"
                 android:layout_height="@dimen/ls_module_glyph"
                 app:ls_fill="@color/ls_green"
@@ -65,6 +65,7 @@
 
                 <com.littlestar.app.core.ui.HanziTextView
                     android:id="@+id/categoryGlyph"
+                    style="@style/Widget.LS.Glyph.Decorative"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
