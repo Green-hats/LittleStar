@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.gson.Gson;
 import com.littlestar.app.AppContainer;
@@ -86,15 +85,15 @@ public final class FlashcardRegressionTest {
         try (ActivityScenario<FlashcardActivity> scenario = ActivityScenario.launch(sessionIntent())) {
             FlashcardViewModel before = awaitCards(scenario);
             long id = before.sessionId();
-            scenario.onActivity(activity -> before.onPageSelected(1));
+            scenario.onActivity(activity -> activity.findViewById(R.id.btnNext).performClick());
             scenario.recreate();
             FlashcardViewModel after = awaitCards(scenario);
             assertSame(before, after);
             assertEquals(id, after.sessionId());
             assertEquals(1, after.currentIndex());
             assertEquals(ids, wordIds(after));
-            scenario.onActivity(activity -> assertEquals(1,
-                    ((ViewPager2) activity.findViewById(R.id.pager)).getCurrentItem()));
+            scenario.onActivity(activity -> assertEquals(container.content.wordById(ids.get(1)).hanzi,
+                    ((android.widget.TextView) activity.findViewById(R.id.pageHanzi)).getText().toString()));
             assertEquals(Integer.valueOf(1), read(progress -> progress.sessions.size()));
             assertEquals(Long.valueOf(id), read(progress -> progress.sessions.get(0).id));
         }
@@ -108,15 +107,15 @@ public final class FlashcardRegressionTest {
                 .putExtra("startIndex", 1);
         try (ActivityScenario<FlashcardActivity> scenario = ActivityScenario.launch(intent)) {
             FlashcardViewModel before = awaitCards(scenario);
-            scenario.onActivity(activity -> before.onPageSelected(2));
+            scenario.onActivity(activity -> activity.findViewById(R.id.btnNext).performClick());
             scenario.recreate();
             FlashcardViewModel after = awaitCards(scenario);
             assertSame(before, after);
             assertEquals(-1, after.sessionId());
             assertEquals(2, after.currentIndex());
             assertEquals(ids, wordIds(after));
-            scenario.onActivity(activity -> assertEquals(2,
-                    ((ViewPager2) activity.findViewById(R.id.pager)).getCurrentItem()));
+            scenario.onActivity(activity -> assertEquals(container.content.wordById(ids.get(2)).hanzi,
+                    ((android.widget.TextView) activity.findViewById(R.id.pageHanzi)).getText().toString()));
             assertEquals(Integer.valueOf(0), read(progress -> progress.sessions.size()));
         }
     }

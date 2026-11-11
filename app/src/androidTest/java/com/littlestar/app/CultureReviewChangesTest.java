@@ -41,7 +41,7 @@ public final class CultureReviewChangesTest {
             UiEvidence.capture("review_categories_light");
             onView(withId(R.id.catPoems)).perform(click());
             waitForText(R.id.categoryName, "Poems");
-            onView(withId(R.id.categoryCount)).check(matches(withText(containsString("3"))));
+            onView(withId(R.id.categoryCount)).check(matches(withText("古诗")));
             pressBack();
             onView(withId(R.id.catSongs)).perform(click());
             waitForText(R.id.categoryName, "Songs");

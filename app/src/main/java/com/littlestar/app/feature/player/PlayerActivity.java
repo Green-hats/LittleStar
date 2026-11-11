@@ -22,6 +22,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.littlestar.app.R;
 import com.littlestar.app.core.lifecycle.ViewModelFactory;
 import com.littlestar.app.core.ui.ChildActivity;
+import com.littlestar.app.core.ui.ContentImage;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.CultureItem;
@@ -29,6 +30,7 @@ import com.littlestar.app.data.content.model.LyricLine;
 import com.littlestar.app.databinding.ActivityPlayerBinding;
 import com.littlestar.app.feature.culture.CultureListActivity;
 import com.littlestar.app.playback.PlaybackService;
+import com.littlestar.app.playback.PlaybackControls;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,7 @@ public final class PlayerActivity extends ChildActivity {
 
     private static final String EXTRA_ITEM_ID = "itemId";
     private static final String EXTRA_QUEUE = "queue";
+    private static final String EXTRA_PLAY = "play";
     private static final String STATE_PLAYBACK_STARTED = "playback_started";
     private static final long PROGRESS_TICK_MS = 250L;
     private static final float DISABLED_ALPHA = 0.38f;
@@ -55,7 +58,14 @@ public final class PlayerActivity extends ChildActivity {
         return i;
     }
 
+    @NonNull
+    public static Intent resumeIntent(@NonNull Activity from, @NonNull String itemId,
+                                      @NonNull List<String> queue) {
+        return intent(from, itemId, queue).putExtra(EXTRA_PLAY, false);
+    }
+
     private ActivityPlayerBinding binding;
+    private ContentImage cover;
     private PlayerViewModel vm;
     private final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -80,6 +90,7 @@ public final class PlayerActivity extends ChildActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityPlayerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        cover = new ContentImage(binding.playerCover, container().executors);
         Insets.applySystemBarPadding(binding.getRoot());
 
         vm = new ViewModelProvider(this,
@@ -93,18 +104,7 @@ public final class PlayerActivity extends ChildActivity {
         binding.btnPlay.setOnClickListener(v -> {
             MediaController c = controller;
             if (c != null && c.getMediaItemCount() > 0) {
-                if (c.getPlayWhenReady() && c.getPlaybackState() != Player.STATE_ENDED
-                        && c.getPlayerError() == null) {
-                    c.pause();
-                } else {
-                    if (c.getPlaybackState() == Player.STATE_ENDED) {
-                        c.seekTo(0);
-                    }
-                    if (c.getPlaybackState() == Player.STATE_IDLE || c.getPlayerError() != null) {
-                        c.prepare();
-                    }
-                    c.play();
-                }
+                PlaybackControls.toggle(c);
                 syncControllerState();
             }
         });
@@ -197,11 +197,14 @@ public final class PlayerActivity extends ChildActivity {
             activeQueue.add(c.getMediaItemAt(i).mediaId);
         }
         if (vm.canKeepPlayback(activeQueue, cur == null ? null : cur.mediaId, playbackStarted)) {
+            if (!playbackStarted && getIntent().getBooleanExtra(EXTRA_PLAY, true)) {
+                PlaybackControls.play(c);
+            }
             playbackStarted = true;
             syncControllerState();
-            return;   // 保留同一队列的当前曲目、进度和暂停状态
+            return;
         }
-        boolean resume = playbackStarted;
+        boolean resume = playbackStarted || !getIntent().getBooleanExtra(EXTRA_PLAY, true);
         playbackStarted = true;
         List<MediaItem> mediaItems = new ArrayList<>();
         for (String id : s.queue) {
@@ -290,6 +293,7 @@ public final class PlayerActivity extends ChildActivity {
         binding.playerTitle.setText(s.item.titleEn);
         binding.songTitle.setText(s.item.titleZh);
         binding.coverGlyph.setText(s.item.glyph);
+        cover.bind(s.item.cover);
         binding.songSubtitle.setText(getString(R.string.player_subtitle_fmt,
                 s.item.subtitleEn == null ? "" : s.item.subtitleEn,
                 CultureListActivity.formatDuration(s.item.durationSec)));

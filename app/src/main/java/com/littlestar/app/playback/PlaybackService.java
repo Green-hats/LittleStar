@@ -14,6 +14,12 @@ import androidx.media3.session.MediaSessionService;
 /** 长音频播放服务：后台播放与系统媒体控制，播放队列由播放器页面设置。 */
 public final class PlaybackService extends MediaSessionService {
 
+    private static volatile boolean running;
+
+    public static boolean isRunning() {
+        return running;
+    }
+
     @Nullable
     private MediaSession session;
     @Nullable
@@ -30,6 +36,7 @@ public final class PlaybackService extends MediaSessionService {
                 .setHandleAudioBecomingNoisy(true)
                 .build();
         session = new MediaSession.Builder(this, player).build();
+        running = true;
     }
 
     @Override
@@ -48,6 +55,7 @@ public final class PlaybackService extends MediaSessionService {
 
     @Override
     public void onDestroy() {
+        running = false;
         if (session != null) {
             session.release();
             session = null;

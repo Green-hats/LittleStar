@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!-- 测验选项块：汉字 34sp + 拼音 12sp + 角标（答对勾 / 答错 ×） -->
-<com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/optionBlock" style="@style/Widget.LS.Block.Option" android:layout_width="match_parent" android:layout_height="match_parent">
+<com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/optionBlock" style="@style/Widget.LS.Block.Option" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="@dimen/ls_quiz_option_min" android:padding="@dimen/ls_gap_sm">
 
     <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:gravity="center_horizontal" android:orientation="vertical">
 

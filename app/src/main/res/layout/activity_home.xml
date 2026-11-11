@@ -16,6 +16,27 @@
                     android:layout_weight="1" android:layout_marginStart="@dimen/ls_gap"
                     android:text="@string/app_name" android:textAppearance="@style/TextAppearance.LS.Title" />
             </LinearLayout>
+            <com.littlestar.app.core.ui.BlockLayout android:id="@+id/nowPlaying" style="@style/Widget.LS.Block.Surface"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ls_gap" android:visibility="gone">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:padding="@dimen/ls_gap_sm" android:gravity="center_vertical" android:orientation="horizontal">
+                    <LinearLayout android:id="@+id/nowPlayingOpen" android:layout_width="0dp" android:layout_weight="1"
+                        android:layout_height="wrap_content" android:minHeight="@dimen/ls_btn_secondary"
+                        android:layout_marginEnd="@dimen/ls_gap_sm" android:clickable="true" android:focusable="true"
+                        android:gravity="center_vertical" android:orientation="vertical">
+                        <TextView android:id="@+id/nowPlayingState" android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.LS.Caption" />
+                        <TextView android:id="@+id/nowPlayingTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.LS.Body" android:textStyle="bold" />
+                    </LinearLayout>
+                    <com.littlestar.app.core.ui.BlockLayout android:id="@+id/nowPlayingToggle" style="@style/Widget.LS.Block.Icon"
+                        android:layout_width="@dimen/ls_btn_icon" android:layout_height="@dimen/ls_btn_icon">
+                        <ImageView android:id="@+id/nowPlayingIcon" android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
+                            android:layout_gravity="center" android:importantForAccessibility="no" app:tint="@color/ls_blue" />
+                    </com.littlestar.app.core.ui.BlockLayout>
+                </LinearLayout>
+            </com.littlestar.app.core.ui.BlockLayout>
             <com.littlestar.app.core.ui.BlockLayout
                 android:id="@+id/heroCard" style="@style/Widget.LS.Block.Surface"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -25,21 +46,24 @@
                     <TextView android:id="@+id/todayLabel" android:layout_width="match_parent"
                         android:layout_height="wrap_content" android:text="@string/home_today_words"
                         android:textAppearance="@style/TextAppearance.LS.Body" android:textStyle="bold" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center" android:orientation="horizontal">
                     <com.littlestar.app.core.ui.HanziTextView android:id="@+id/heroHanzi"
                         android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.LS.HanziHero" />
-                    <TextView android:id="@+id/heroPinyin" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.LS.Pinyin" />
-                    <TextView android:id="@+id/heroEnglish" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.LS.English" />
+                        android:textAppearance="@style/TextAppearance.LS.HanziHero" android:textSize="@dimen/ls_home_preview_hanzi" />
                     <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnListen"
                         style="@style/Widget.LS.Block.Icon" android:layout_width="@dimen/ls_btn_icon"
-                        android:layout_height="@dimen/ls_btn_icon" android:layout_marginTop="@dimen/ls_gap"
+                        android:layout_height="@dimen/ls_btn_icon" android:layout_marginStart="@dimen/ls_gap"
                         android:contentDescription="@string/home_listen_desc" app:ls_fill="@color/ls_yellow">
                         <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
                             android:layout_gravity="center" android:importantForAccessibility="no"
                             android:src="@drawable/ic_speaker" app:tint="@color/ls_on_yellow" />
                     </com.littlestar.app.core.ui.BlockLayout>
+                    </LinearLayout>
+                    <TextView android:id="@+id/heroPinyin" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.LS.Pinyin" />
+                    <TextView android:id="@+id/heroEnglish" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.LS.English" />
                 </LinearLayout>
             </com.littlestar.app.core.ui.BlockLayout>
             <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnStart"

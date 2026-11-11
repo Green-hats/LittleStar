@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="home_audio_playing">Now playing</string>
+    <string name="home_audio_paused">Audio paused</string>
+    <string name="home_audio_open">Open player: %1$s</string>
     <string name="app_name">LittleStar</string>
 
     <!-- 组件无障碍 / 组件内文案（D30：UI 外壳英文；教学内容中文在 JSON） -->
-    <string name="ls_seg_progress_desc">%1$d of %2$d learned</string>
-    <string name="ls_stamp_char">会</string>
-    <string name="ls_stamp_learned_desc">Learned</string>
-    <string name="ls_stamp_not_learned_desc">Not learned yet</string>
+    <string name="ls_seg_progress_desc">Progress: %1$d of %2$d</string>
+    <string name="ls_stamp_char">✓</string>
+    <string name="ls_stamp_learned_desc">Learning recorded</string>
+    <string name="ls_stamp_not_learned_desc">No learning record yet</string>
     <string name="ls_stepper_minus">−</string>
     <string name="ls_stepper_plus">+</string>
     <string name="ls_stepper_decrease_desc">Decrease</string>
@@ -26,7 +29,7 @@
     <string name="home_review">Review words</string>
     <string name="home_listen">LISTEN</string>
     <string name="home_listen_desc">Listen to the sound</string>
-    <string name="home_today_progress">Today %1$d / %2$d words</string>
+    <string name="home_today_progress">Today %1$d / %2$d recorded</string>
     <string name="home_progress_done">All done for today!</string>
     <string name="home_module_words_title">Browse words</string>
     <string name="home_module_words_sub">识字 · Cards &amp; quiz</string>
@@ -64,7 +67,7 @@
     <string name="fc_counter">%1$d/%2$d</string>
     <string name="fc_next">NEXT</string>
     <string name="fc_done">DONE</string>
-    <string name="fc_stamp_label">I learned it</string>
+    <string name="fc_stamp_label">Record</string>
     <string name="fc_reading">Reading…</string>
     <string name="fc_audio_missing_title">No audio yet</string>
     <string name="fc_audio_missing_msg">Look at the character for now, and try again later</string>
@@ -94,12 +97,12 @@
     <string name="themes_subtitle">6 themes · 6 characters each</string>
     <string name="themes_order_hint">Start from 1 — recommended order</string>
     <string name="themes_words_count">%1$d characters</string>
-    <string name="themes_learned">%1$d/%2$d learned</string>
+    <string name="themes_learned">%1$d/%2$d recorded</string>
     <string name="themes_badge_desc">Theme %1$d</string>
     <string name="wl_quiz">Quiz</string>
-    <string name="wl_learned">%1$d / %2$d learned</string>
+    <string name="wl_learned">%1$d / %2$d recorded</string>
     <string name="wl_hint">Tap a character to hear it</string>
-    <string name="wl_learned_desc">Learned</string>
+    <string name="wl_learned_desc">Learning recorded</string>
 
     <!-- ===== M5 · 文化模块 ===== -->
     <string name="cul_top">Culture</string>

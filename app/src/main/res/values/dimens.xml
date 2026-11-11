@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="ls_flashcard_margin">16dp</dimen>
+    <dimen name="ls_flashcard_image">80dp</dimen>
+    <dimen name="ls_flashcard_image_compact">64dp</dimen>
+    <dimen name="ls_flashcard_image_min">48dp</dimen>
+    <dimen name="ls_flashcard_gap_min">4dp</dimen>
+    <dimen name="ls_flashcard_hanzi_max">100sp</dimen>
+    <dimen name="ls_flashcard_hanzi_min">56sp</dimen>
+    <dimen name="ls_flashcard_pinyin_max">24sp</dimen>
+    <dimen name="ls_flashcard_pinyin_min">16sp</dimen>
+    <dimen name="ls_flashcard_english_max">16sp</dimen>
+    <dimen name="ls_flashcard_english_min">14sp</dimen>
+    <dimen name="ls_flashcard_title_max">22sp</dimen>
+    <dimen name="ls_flashcard_title_min">16sp</dimen>
+    <dimen name="ls_flashcard_button_max">20sp</dimen>
+    <dimen name="ls_flashcard_button_min">16sp</dimen>
+    <dimen name="ls_quiz_option_min">100dp</dimen>
+    <dimen name="ls_home_preview_hanzi">64sp</dimen>
+    <dimen name="ls_culture_thumbnail">64dp</dimen>
     <dimen name="ls_margin">24dp</dimen>
     <dimen name="ls_section">24dp</dimen>
     <dimen name="ls_section_lg">32dp</dimen>

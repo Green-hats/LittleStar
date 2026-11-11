@@ -33,6 +33,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.littlestar.app.feature.player.PlayerActivity;
+import com.littlestar.app.feature.home.HomeActivity;
 import com.littlestar.app.feature.player.PlayerViewModel;
 import com.littlestar.app.playback.PlaybackService;
 
@@ -76,6 +77,62 @@ public final class PlayerRegressionTest {
             controllerFuture = null;
         }
         context.stopService(new Intent(context, PlaybackService.class));
+    }
+
+    @Test
+    public void explicitPlayResumesButPassiveEntryAndRecreationKeepPause() throws Exception {
+        List<String> queue = List.of("xiaoxingxing", "liangzhilaohu");
+        MediaController controller;
+        try (ActivityScenario<PlayerActivity> scenario = ActivityScenario.launch(playerIntent(queue.get(0), queue))) {
+            controller = connect().get(10, TimeUnit.SECONDS);
+            waitFor(controller::isPlaying);
+            onMain(() -> { controller.pause(); controller.seekTo(2000); });
+            waitFor(() -> !controller.getPlayWhenReady() && controller.getCurrentPosition() == 2000);
+        }
+        try (ActivityScenario<PlayerActivity> scenario = ActivityScenario.launch(
+                playerIntent(queue.get(0), queue).putExtra("play", false))) {
+            waitForText(R.id.timeCurrent, "0:02");
+            onMain(() -> assertFalse(controller.getPlayWhenReady()));
+            scenario.recreate();
+            waitForText(R.id.timeCurrent, "0:02");
+            onMain(() -> assertFalse(controller.getPlayWhenReady()));
+        }
+        try (ActivityScenario<PlayerActivity> scenario = ActivityScenario.launch(playerIntent(queue.get(0), queue))) {
+            waitFor(controller::isPlaying);
+            onMain(() -> {
+                assertTrue(controller.getCurrentPosition() >= 2000);
+                assertEquals(2, controller.getMediaItemCount());
+                assertEquals(queue.get(0), controller.getCurrentMediaItem().mediaId);
+            });
+        }
+    }
+
+    @Test
+    public void homeControlsExistingPlaybackAndOpensWithoutResumingPause() throws Exception {
+        container.settings.setOnboarded(true);
+        container.settings.setSoundEnabled(false);
+        MediaController controller;
+        try (ActivityScenario<PlayerActivity> scenario = ActivityScenario.launch(
+                playerIntent("xiaoxingxing", List.of("xiaoxingxing", "liangzhilaohu")))) {
+            controller = connect().get(10, TimeUnit.SECONDS);
+            waitFor(controller::isPlaying);
+            onMain(() -> { controller.pause(); controller.seekTo(3000); });
+        }
+        try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
+            waitForText(R.id.nowPlayingState, context.getString(R.string.home_audio_paused));
+            onView(withId(R.id.nowPlayingToggle)).perform(click());
+            waitFor(controller::isPlaying);
+            onView(withId(R.id.nowPlayingToggle)).perform(click());
+            waitFor(() -> !controller.getPlayWhenReady());
+            onView(withId(R.id.nowPlayingOpen)).perform(click());
+            waitForText(R.id.songTitle, "小星星");
+            onMain(() -> {
+                assertFalse(controller.getPlayWhenReady());
+                assertEquals(2, controller.getMediaItemCount());
+            });
+            androidx.test.espresso.Espresso.pressBack();
+            waitForText(R.id.nowPlayingState, context.getString(R.string.home_audio_paused));
+        }
     }
 
     @Test

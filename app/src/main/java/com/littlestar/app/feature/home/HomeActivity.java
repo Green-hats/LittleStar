@@ -47,6 +47,7 @@ public final class HomeActivity extends ChildActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
+        getLifecycle().addObserver(new HomePlaybackControls(this, binding));
 
         vm = new ViewModelProvider(this,
                 ViewModelFactory.of(() -> new HomeViewModel(container()))).get(HomeViewModel.class);

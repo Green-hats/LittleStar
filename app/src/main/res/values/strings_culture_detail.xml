@@ -10,5 +10,6 @@
     <string name="culture_detail_missing">This content is unavailable. Go back and choose another.</string>
     <string name="settings_help_message">%1$s\n\n%2$s\n\n%3$s</string>
     <string name="culture_list_play">Play</string>
+    <string name="culture_list_details">Details →</string>
     <string name="culture_list_play_item">Play %1$s</string>
 </resources>

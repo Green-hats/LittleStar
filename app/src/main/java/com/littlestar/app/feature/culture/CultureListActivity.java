@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.littlestar.app.R;
 import com.littlestar.app.core.lifecycle.ViewModelFactory;
 import com.littlestar.app.core.ui.ChildActivity;
+import com.littlestar.app.core.ui.ContentImage;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.CultureItem;
@@ -69,10 +70,8 @@ public final class CultureListActivity extends ChildActivity {
         if (s == null) {
             return;
         }
-        binding.categoryGlyph.setText(s.category.glyph);
         binding.categoryName.setText(s.category.nameEn);
-        binding.categoryCount.setText(
-                getString(R.string.cul_list_header_fmt, s.category.nameZh, s.items.size()));
+        binding.categoryCount.setText(s.category.nameZh);
         adapter.setItems(s.items);
     }
 
@@ -116,6 +115,7 @@ public final class CultureListActivity extends ChildActivity {
         @Override
         public void onBindViewHolder(@NonNull Holder h, int position) {
             CultureItem item = items.get(position);
+            h.cover.bind(item.cover);
             h.b.rowTitle.setText(item.titleZh);
             h.b.rowTitleEn.setText(item.titleEn);
             h.b.rowSub.setText(getString(R.string.player_subtitle_fmt, item.subtitleEn,
@@ -137,12 +137,14 @@ public final class CultureListActivity extends ChildActivity {
 
         final class Holder extends RecyclerView.ViewHolder {
             final ItemCultureRowBinding b;
+            final ContentImage cover;
 
             Holder(@NonNull ItemCultureRowBinding binding) {
                 super(binding.getRoot());
                 b = binding;
+                cover = new ContentImage(b.rowCover, container().executors);
                 if (getResources().getConfiguration().fontScale >= 1.3f
-                        || getResources().getConfiguration().screenWidthDp < 360) {
+                        || getResources().getConfiguration().screenWidthDp < 400) {
                     b.rowContent.setOrientation(LinearLayout.VERTICAL);
                     LinearLayout.LayoutParams text = (LinearLayout.LayoutParams) b.rowText.getLayoutParams();
                     text.width = ViewGroup.LayoutParams.MATCH_PARENT;
