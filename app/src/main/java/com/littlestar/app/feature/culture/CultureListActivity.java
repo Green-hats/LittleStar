@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -140,6 +141,19 @@ public final class CultureListActivity extends ChildActivity {
             Holder(@NonNull ItemCultureRowBinding binding) {
                 super(binding.getRoot());
                 b = binding;
+                if (getResources().getConfiguration().fontScale >= 1.3f
+                        || getResources().getConfiguration().screenWidthDp < 360) {
+                    b.rowContent.setOrientation(LinearLayout.VERTICAL);
+                    LinearLayout.LayoutParams text = (LinearLayout.LayoutParams) b.rowText.getLayoutParams();
+                    text.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    text.weight = 0;
+                    text.setMarginEnd(0);
+                    b.rowText.setLayoutParams(text);
+                    LinearLayout.LayoutParams play = (LinearLayout.LayoutParams) b.btnPlay.getLayoutParams();
+                    play.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    play.topMargin = getResources().getDimensionPixelSize(R.dimen.ls_gap);
+                    b.btnPlay.setLayoutParams(play);
+                }
             }
         }
     }
