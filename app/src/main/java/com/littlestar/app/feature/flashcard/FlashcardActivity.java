@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.core.content.ContextCompat;
+import com.littlestar.app.core.ui.ContentImage;
 
 import com.littlestar.app.R;
 import com.littlestar.app.core.audio.SfxPlayer;
@@ -22,15 +21,11 @@ import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.Theme;
 import com.littlestar.app.data.content.model.Word;
-import com.littlestar.app.data.store.ProgressState;
 import com.littlestar.app.databinding.ActivityFlashcardBinding;
-import com.littlestar.app.databinding.PageFlashcardBinding;
 import com.littlestar.app.feature.quiz.QuizActivity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 识字卡（§7.4）。SESSION：进入时用 SessionBuilder 建会话（REVIEW 会话无新字 → 直接进 Quiz）。
@@ -63,15 +58,15 @@ public final class FlashcardActivity extends ChildActivity {
 
     private ActivityFlashcardBinding binding;
     private FlashcardViewModel vm;
-    private CardAdapter adapter;
+    private ContentImage illustration;
+    private FlashcardLayout layout;
+    private String renderedWordId;
 
     private FlashcardViewModel.Mode mode = FlashcardViewModel.Mode.SESSION;
     private long sessionId = -1;
     private int restoredIndex = -1;
     private boolean speaking;
     private SpeechPlayer.FailureListener audioFailureListener;
-    /** 页面滑动来源标记：next() 按钮触发的翻页不重复朗读（render 里已处理）。 */
-    private boolean firstPageSpoken;
 
     private static final String STATE_SESSION_ID = "state_session_id";
     private static final String STATE_CURRENT_INDEX = "state_current_index";
@@ -82,6 +77,7 @@ public final class FlashcardActivity extends ChildActivity {
         binding = ActivityFlashcardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
+        layout = new FlashcardLayout(binding);
 
         // 进程被杀或重建：恢复已建会话与当前字卡索引，不覆盖为 -1，也不重复 buildSession
         if (savedInstanceState != null) {
@@ -104,21 +100,9 @@ public final class FlashcardActivity extends ChildActivity {
             sessionId = vm.sessionId();
         }
 
-        adapter = new CardAdapter();
-        binding.pager.setAdapter(adapter);
-        binding.pager.setPageTransformer((page, position) -> {
-            page.setTranslationX(-position * page.getWidth() * 0.08f);
-            page.setRotation(position * 2f);   // §8.6 翻卡 ±2°
-        });
-        binding.pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                vm.onPageSelected(position);
-                container().sfx.play(SfxPlayer.Sfx.FLIP);
-                speakCurrent();
-                updateReading();
-            }
-        });
+        illustration = new ContentImage(binding.pageCard.pageIllustration, container().executors,
+                binding.pageCard.pageGlyph);
+        binding.pageCard.btnListen.setOnClickListener(v -> speakCurrent());
 
         binding.btnBack.setOnClickListener(v -> {
             finish();
@@ -127,8 +111,6 @@ public final class FlashcardActivity extends ChildActivity {
         binding.btnNext.setOnClickListener(v -> vm.next());
         binding.stamp.setOnClickListener(v -> {
             if (vm.stamp()) {
-                // 盖章动效 + 「嗒」（已学再点不撤销、不重播）
-                binding.stamp.setLearned(true, true);
                 container().sfx.play(SfxPlayer.Sfx.TAP);
                 vm.refresh();
             }
@@ -191,44 +173,40 @@ public final class FlashcardActivity extends ChildActivity {
         String themeId = container().content.themeIdOf(cur.id);
         Theme theme = themeId == null ? null : container().content.themeById(themeId);
         binding.cardTitle.setText(theme != null
-                ? theme.nameEn + " " + theme.nameZh
+                ? theme.nameEn
                 : getString(R.string.fc_session_title));
         binding.cardCounter.setText(getString(R.string.fc_counter, s.index + 1, s.words.size()));
         binding.cardProgress.setSegments(s.words.size());
         binding.cardProgress.setFilled(s.index + 1);
 
-        adapter.setWords(s.words, learnedSet());
-        if (binding.pager.getCurrentItem() != s.index) {
-            binding.pager.setCurrentItem(s.index, false);
-        } else if (!firstPageSpoken) {
-            firstPageSpoken = true;
+        if (!cur.id.equals(renderedWordId)) {
+            boolean first = renderedWordId == null;
+            renderedWordId = cur.id;
+            binding.pageCard.pageHanzi.setText(cur.hanzi);
+            binding.pageCard.pagePinyin.setText(cur.pinyin);
+            binding.pageCard.pageEnglish.setText(cur.english);
+            binding.pageCard.pageGlyph.setText(cur.hanzi);
+            illustration.bind(cur.image);
+            layout.reset();
+            binding.flashcardScroll.scrollTo(0, 0);
+            if (!first) {
+                container().sfx.play(SfxPlayer.Sfx.FLIP);
+            }
             speakCurrent();
         }
 
-        binding.stamp.setLearned(s.currentLearned);
+        binding.stamp.setFillColor(ContextCompat.getColor(this,
+                s.currentLearned ? R.color.ls_mint : R.color.ls_card));
+        binding.stamp.setContentDescription(getString(s.currentLearned
+                ? R.string.pr_stamp_marked_desc : R.string.pr_stamp_action_desc));
+        binding.stamp.setStateDescription(getString(s.currentLearned
+                ? R.string.pr_stamp_state_marked : R.string.pr_stamp_state_unmarked));
         binding.stampLabel.setText(s.currentLearned
                 ? R.string.pr_stamp_marked : R.string.pr_stamp_optional);
         binding.btnNextText.setText(!s.isLast ? R.string.fc_next
                 : s.mode == FlashcardViewModel.Mode.SESSION
                 ? R.string.fc_start_quiz : R.string.fc_back_words);
-        binding.stampExplanation.setText(s.mode == FlashcardViewModel.Mode.SESSION
-                ? R.string.fc_session_stages : R.string.fc_browse_stages);
         updateReading();
-    }
-
-    /** 当前已学集合（从 store 快照读，供 adapter 标印章）。 */
-    @NonNull
-    private Set<String> learnedSet() {
-        Set<String> set = new HashSet<>();
-        ProgressState ps = container().store.observe().getValue();
-        if (ps != null) {
-            for (java.util.Map.Entry<String, ProgressState.WordProgress> e : ps.words.entrySet()) {
-                if (e.getValue().learnedAt != null) {
-                    set.add(e.getKey());
-                }
-            }
-        }
-        return set;
     }
 
     private void speakCurrent() {
@@ -240,24 +218,11 @@ public final class FlashcardActivity extends ChildActivity {
 
     /** 朗读中：当前页的声波 + 「朗读中」（§7.23，不改布局）。 */
     private void updateReading() {
-        CardAdapter.Holder h = currentHolder();
-        if (h == null) {
-            return;
-        }
-        h.binding.soundWave.setPlaying(speaking);
-        h.binding.soundWave.setVisibility(speaking ? View.VISIBLE : View.GONE);
-        h.binding.readingLabel.setVisibility(speaking ? View.VISIBLE : View.GONE);
-    }
-
-    @Nullable
-    private CardAdapter.Holder currentHolder() {
-        ViewGroup rv = (ViewGroup) binding.pager.getChildAt(0);
-        if (!(rv instanceof RecyclerView)) {
-            return null;
-        }
-        RecyclerView.ViewHolder vh =
-                ((RecyclerView) rv).findViewHolderForAdapterPosition(binding.pager.getCurrentItem());
-        return vh instanceof CardAdapter.Holder ? (CardAdapter.Holder) vh : null;
+        boolean showStatus = speaking && !layout.isLandscape();
+        binding.pageCard.soundWave.setPlaying(showStatus);
+        binding.pageCard.soundWave.setVisibility(showStatus ? View.VISIBLE : View.GONE);
+        binding.pageCard.readingLabel.setVisibility(showStatus ? View.VISIBLE : View.GONE);
+        binding.pageCard.btnListen.setStateDescription(speaking ? getString(R.string.fc_reading) : null);
     }
 
     private void onEffect(Event<FlashcardViewModel.Effect> event) {
@@ -280,70 +245,13 @@ public final class FlashcardActivity extends ChildActivity {
 
     @Override
     protected void onDestroy() {
+        if (layout != null) {
+            layout.close();
+        }
         if (audioFailureListener != null) {
             container().speech.clearFailureListener(audioFailureListener);
         }
         super.onDestroy();
     }
 
-    /** 卡页 adapter：每页一张主角卡。绑定专属词义配图并隐藏重复字形占位。 */
-    private final class CardAdapter extends RecyclerView.Adapter<CardAdapter.Holder> {
-
-        private List<Word> words = new ArrayList<>();
-        private Set<String> learned = new HashSet<>();
-
-        void setWords(@NonNull List<Word> newWords, @NonNull Set<String> learnedIds) {
-            if (words.equals(newWords) && learned.equals(learnedIds)) {
-                return;
-            }
-            words = new ArrayList<>(newWords);
-            learned = new HashSet<>(learnedIds);
-            notifyDataSetChanged();
-        }
-
-        @NonNull
-        @Override
-        public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            PageFlashcardBinding b = PageFlashcardBinding.inflate(getLayoutInflater(), parent, false);
-            return new Holder(b);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull Holder h, int position) {
-            Word w = words.get(position);
-            int resId = w.image == null ? 0
-                    : getResources().getIdentifier(w.image, "drawable", getPackageName());
-            boolean hasDedicatedIllustration = resId != 0 && !"ill_placeholder".equals(w.image);
-            if (hasDedicatedIllustration) {
-                h.binding.pageIllustration.setImageResource(resId);
-                h.binding.pageGlyph.setVisibility(View.GONE);
-            } else {
-                h.binding.pageIllustration.setImageResource(R.drawable.ill_placeholder);
-                h.binding.pageGlyph.setVisibility(View.VISIBLE);
-                h.binding.pageGlyph.setText(w.hanzi);
-            }
-            h.binding.pageHanzi.setText(w.hanzi);
-            h.binding.pagePinyin.setText(w.pinyin);
-            h.binding.pageEnglish.setText(w.english);
-            h.binding.btnListen.setOnClickListener(v -> container().speech.play(w));
-            h.binding.pageCard.setOnClickListener(v -> container().speech.play(w));
-            if (position == binding.pager.getCurrentItem()) {
-                updateReading();
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return words.size();
-        }
-
-        final class Holder extends RecyclerView.ViewHolder {
-            final PageFlashcardBinding binding;
-
-            Holder(@NonNull PageFlashcardBinding b) {
-                super(b.getRoot());
-                binding = b;
-            }
-        }
-    }
 }

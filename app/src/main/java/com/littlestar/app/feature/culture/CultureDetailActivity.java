@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.littlestar.app.R;
 import com.littlestar.app.core.lifecycle.ViewModelFactory;
 import com.littlestar.app.core.ui.ChildActivity;
-import com.littlestar.app.core.ui.CultureCover;
+import com.littlestar.app.core.ui.ContentImage;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.databinding.ActivityCultureDetailBinding;
@@ -28,7 +28,7 @@ public final class CultureDetailActivity extends ChildActivity {
     private ActivityCultureDetailBinding binding;
     private CultureDetailViewModel vm;
     private boolean previewExpanded;
-    private CultureCover cover;
+    private ContentImage cover;
 
     @NonNull
     public static Intent intent(@NonNull Activity from, @NonNull String itemId) {
@@ -40,7 +40,7 @@ public final class CultureDetailActivity extends ChildActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCultureDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        cover = new CultureCover(binding.detailCover, container().executors);
+        cover = new ContentImage(binding.detailCover, container().executors);
         Insets.applySystemBarPadding(binding.getRoot());
         previewExpanded = savedInstanceState != null && savedInstanceState.getBoolean(STATE_PREVIEW);
         vm = new ViewModelProvider(this,

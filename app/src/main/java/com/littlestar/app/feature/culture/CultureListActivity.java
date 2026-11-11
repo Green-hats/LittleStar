@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.littlestar.app.R;
 import com.littlestar.app.core.lifecycle.ViewModelFactory;
 import com.littlestar.app.core.ui.ChildActivity;
-import com.littlestar.app.core.ui.CultureCover;
+import com.littlestar.app.core.ui.ContentImage;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.CultureItem;
@@ -137,12 +137,12 @@ public final class CultureListActivity extends ChildActivity {
 
         final class Holder extends RecyclerView.ViewHolder {
             final ItemCultureRowBinding b;
-            final CultureCover cover;
+            final ContentImage cover;
 
             Holder(@NonNull ItemCultureRowBinding binding) {
                 super(binding.getRoot());
                 b = binding;
-                cover = new CultureCover(b.rowCover, container().executors);
+                cover = new ContentImage(b.rowCover, container().executors);
                 if (getResources().getConfiguration().fontScale >= 1.3f
                         || getResources().getConfiguration().screenWidthDp < 400) {
                     b.rowContent.setOrientation(LinearLayout.VERTICAL);

@@ -2,15 +2,13 @@
 <resources>
     <string name="pr_stamp_optional">Record</string>
     <string name="pr_stamp_marked">Saved</string>
-    <string name="pr_stamp_explanation">For parents: this records a learning action, not mastery.</string>
     <string name="pr_stamp_action_desc">Save a learning record. Optional.</string>
     <string name="pr_stamp_marked_desc">Learning record saved. This is not a mastery score.</string>
     <string name="pr_stamp_state_unmarked">Not marked</string>
     <string name="pr_stamp_state_marked">Learning recorded</string>
     <string name="fc_start_quiz">Start quiz</string>
     <string name="fc_back_words">Back to words</string>
-    <string name="fc_session_stages">Learn → Quiz → Done</string>
-    <string name="fc_browse_stages">Explore at your own pace</string>
+    <string name="fc_listen">Listen</string>
     <string name="quiz_retry">Try again</string>
     <string name="quiz_retry_hint">Listen &amp; choose again. Just practice.</string>
     <string name="quiz_retry_correct">You found it! Keep practicing.</string>

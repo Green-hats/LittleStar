@@ -15,16 +15,23 @@ import com.littlestar.app.R;
 import java.util.Objects;
 
 /** 每个展示位独立跟踪异步请求，避免列表复用或换曲后显示旧封面。 */
-public final class CultureCover {
+public final class ContentImage {
     private final ImageView image;
     private final AppExecutors executors;
+    @Nullable
+    private final View fallback;
     private String name;
     private boolean bound;
     private int generation;
 
-    public CultureCover(ImageView image, AppExecutors executors) {
+    public ContentImage(ImageView image, AppExecutors executors) {
+        this(image, executors, null);
+    }
+
+    public ContentImage(ImageView image, AppExecutors executors, @Nullable View fallback) {
         this.image = image;
         this.executors = executors;
+        this.fallback = fallback;
     }
 
     public void bind(@Nullable String cover) {
@@ -35,6 +42,9 @@ public final class CultureCover {
         name = cover;
         int request = ++generation;
         image.setImageDrawable(null);
+        if (fallback != null) {
+            fallback.setVisibility(View.VISIBLE);
+        }
         boolean valid = cover != null && !cover.isEmpty() && !"ill_placeholder".equals(cover);
         image.setVisibility(valid ? View.VISIBLE : View.GONE);
         if (!valid) {
@@ -60,13 +70,16 @@ public final class CultureCover {
                     decoded = BitmapFactory.decodeResource(resources, id, options);
                 }
             } catch (Resources.NotFoundException error) {
-                Log.w("CultureCover", "Unable to load cover: " + cover, error);
+                Log.w("ContentImage", "Unable to load image: " + cover, error);
             }
             Bitmap bitmap = decoded;
             executors.mainThread().execute(() -> {
                 if (request == generation) {
                     image.setImageBitmap(bitmap);
                     image.setVisibility(bitmap == null ? View.GONE : View.VISIBLE);
+                    if (fallback != null) {
+                        fallback.setVisibility(bitmap == null ? View.VISIBLE : View.GONE);
+                    }
                 }
             });
         });

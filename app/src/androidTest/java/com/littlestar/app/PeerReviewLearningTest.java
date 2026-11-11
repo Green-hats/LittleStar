@@ -46,18 +46,19 @@ public class PeerReviewLearningTest {
  private Intent browse(){return new Intent(ApplicationProvider.getApplicationContext(),FlashcardActivity.class).putExtra("mode","BROWSE").putStringArrayListExtra("wordIds",new ArrayList<>(List.of("mao","gou","niao")));}
  private Intent quiz(){return new Intent(ApplicationProvider.getApplicationContext(),QuizActivity.class).putExtra("mode","THEME").putExtra("sessionId",880L);}
 
- @Test public void optionalRecord_hasBrowseGuidance_andNextNeedsNoMark() throws Exception {
+ @Test public void optionalRecord_isAlignedEnglishButton_andNextNeedsNoMark() throws Exception {
   try(ActivityScenario<FlashcardActivity> s=ActivityScenario.launch(browse())) {
    waitFor(s,R.id.stamp,View.VISIBLE);
    UiEvidence.capture("after_stamp_optional");
    s.onActivity(a->{
     assertEquals(a.getString(R.string.pr_stamp_optional),((TextView)a.findViewById(R.id.stampLabel)).getText().toString());
-    assertEquals(a.getString(R.string.fc_browse_stages),((TextView)a.findViewById(R.id.stampExplanation)).getText().toString());
     assertEquals("android.widget.Button",a.findViewById(R.id.stamp).getAccessibilityClassName());
-    int[] hint=new int[2], label=new int[2];
-    a.findViewById(R.id.stampExplanation).getLocationOnScreen(hint);
-    a.findViewById(R.id.stampLabel).getLocationOnScreen(label);
-    assertTrue("Stage guidance must not overlap record row",hint[1]>=label[1]+a.findViewById(R.id.stampLabel).getHeight());
+    View record=a.findViewById(R.id.stamp), next=a.findViewById(R.id.btnNext);
+    assertEquals("Buttons must align",record.getTop(),next.getTop());
+    assertEquals("Buttons must have equal heights",record.getHeight(),next.getHeight());
+    assertTrue(record.getHeight()>=a.getResources().getDimensionPixelSize(R.dimen.ls_btn_primary));
+    assertStaticCard(a.findViewById(R.id.pageCard));
+    assertNoParentExplanation(a.findViewById(android.R.id.content));
    });
    onView(withId(R.id.btnNext)).perform(click());
    assertTrue(read(st->st.words.isEmpty()));
@@ -148,6 +149,164 @@ public class PeerReviewLearningTest {
     assertFalse(vm.state().getValue().retrying);assertFalse(vm.state().getValue().corrected);
    });
   }
+ }
+ @Test public void quizPromptAndOptions_doNotOverlapAtDoubleFontScale() throws Exception {
+  float original=android.provider.Settings.System.getFloat(ApplicationProvider.getApplicationContext().getContentResolver(),android.provider.Settings.System.FONT_SCALE,1f);
+  try {
+   setFontScale(2f);
+   try(ActivityScenario<QuizActivity> s=ActivityScenario.launch(quiz())) {
+    AtomicBoolean ready=new AtomicBoolean();long deadline=SystemClock.uptimeMillis()+5000;
+    do {
+     s.onActivity(a->ready.set(a.getResources().getConfiguration().fontScale>=2f && a.findViewById(R.id.questionHint).getWidth()>0));
+     if(ready.get())break;SystemClock.sleep(50);
+    }while(SystemClock.uptimeMillis()<deadline);
+    assertTrue("Expected font2 configuration",ready.get());
+    s.onActivity(a->{
+     View illustration=a.findViewById(R.id.questionIllustration), hint=a.findViewById(R.id.questionHint);
+     int[] imagePosition=new int[2],hintPosition=new int[2];
+     illustration.getLocationOnScreen(imagePosition);hint.getLocationOnScreen(hintPosition);
+     assertTrue("Prompt must be below illustration",hintPosition[1]>=imagePosition[1]+illustration.getHeight());
+     TextView text=(TextView)hint;
+     assertTrue(text.getLayout().getHeight()<=text.getHeight());
+     for(int id:new int[]{R.id.option0,R.id.option1,R.id.option2,R.id.option3}) {
+      assertTrue(a.findViewById(id).getHeight()>=a.getResources().getDimensionPixelSize(R.dimen.ls_quiz_option_min));
+     }
+    });
+   }
+  }finally{setFontScale(original);}
+ }
+ @Test public void flashcard_noGesturePaging_andListenFitsInsideCard() throws Exception {
+  try(ActivityScenario<FlashcardActivity> s=ActivityScenario.launch(browse())) {
+   waitFor(s,R.id.pageHanzi,View.VISIBLE);
+   AtomicReference<String> before=new AtomicReference<>();
+   s.onActivity(a->before.set(((TextView)a.findViewById(R.id.cardCounter)).getText().toString()));
+   onView(withId(R.id.pageCard)).perform(androidx.test.espresso.action.ViewActions.swipeLeft());
+   onView(withId(R.id.pageCard)).perform(androidx.test.espresso.action.ViewActions.swipeUp());
+   s.onActivity(a->{
+    assertEquals(before.get(),((TextView)a.findViewById(R.id.cardCounter)).getText().toString());
+    assertListenInsideCard(a);
+   });
+  }
+ }
+ @Test public void flashcard_doubleFont_keepsAlignedButtonsAndReadableListen() throws Exception {
+  float original=android.provider.Settings.System.getFloat(ApplicationProvider.getApplicationContext().getContentResolver(),android.provider.Settings.System.FONT_SCALE,1f);
+  try {
+   try(ActivityScenario<FlashcardActivity> s=ActivityScenario.launch(browse())) {
+    waitFor(s,R.id.pageHanzi,View.VISIBLE);
+    setActivityFont(s,2f);
+    s.onActivity(a->{
+     View viewport=a.findViewById(R.id.flashcardScroll);
+     var params=(androidx.constraintlayout.widget.ConstraintLayout.LayoutParams)viewport.getLayoutParams();
+     float density=a.getResources().getDisplayMetrics().density;
+     params.width=Math.round(360*density);params.height=Math.round(560*density);
+     viewport.setLayoutParams(params);
+    });
+    onView(withId(R.id.btnListen)).perform(androidx.test.espresso.action.ViewActions.scrollTo());
+    s.onActivity(PeerReviewLearningTest::assertListenInsideCard);
+    onView(withId(R.id.stamp)).perform(androidx.test.espresso.action.ViewActions.scrollTo());
+    s.onActivity(a->{
+     assertTrue(a.getResources().getConfiguration().fontScale>=2f);
+     View record=a.findViewById(R.id.stamp),next=a.findViewById(R.id.btnNext);
+     assertEquals(record.getTop(),next.getTop());assertEquals(record.getHeight(),next.getHeight());
+     assertEquals(android.widget.LinearLayout.HORIZONTAL,((android.widget.LinearLayout)a.findViewById(R.id.pageMain)).getOrientation());
+     View workspace=a.findViewById(R.id.flashcardWorkspace),root=a.findViewById(R.id.flashcardRoot),viewport=a.findViewById(R.id.flashcardScroll);
+     assertTrue("Compact layout should fit one screen",workspace.getBottom()+root.getPaddingBottom()<=viewport.getHeight());
+     assertStaticCard(a.findViewById(R.id.pageCard));
+     assertNoParentExplanation(a.findViewById(android.R.id.content));
+    });
+   }
+  }finally{setFontScale(original);}
+ }
+ @Test public void flashcard_landscapeDoubleFont_fitsWithSideControls_andRetainsCurrentRecord() throws Exception {
+  float original=android.provider.Settings.System.getFloat(ApplicationProvider.getApplicationContext().getContentResolver(),android.provider.Settings.System.FONT_SCALE,1f);
+  try {
+   try(ActivityScenario<FlashcardActivity> s=ActivityScenario.launch(browse())) {
+    waitFor(s,R.id.pageHanzi,View.VISIBLE);
+    setActivityFont(s,2f);
+    s.onActivity(a->{a.findViewById(R.id.btnNext).performClick();a.findViewById(R.id.stamp).performClick();});
+    c.store.flushNow();
+    AtomicReference<String> current=new AtomicReference<>();
+    s.onActivity(a->{
+     current.set(((TextView)a.findViewById(R.id.pageHanzi)).getText().toString());
+     a.setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    });
+    long end=android.os.SystemClock.uptimeMillis()+5000;
+    AtomicReference<Boolean> landscape=new AtomicReference<>(false);
+    do {
+     s.onActivity(a->landscape.set(a.getResources().getConfiguration().orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE));
+     if(landscape.get())break;
+     android.os.SystemClock.sleep(50);
+    }while(android.os.SystemClock.uptimeMillis()<end);
+    assertTrue("Landscape must be available",landscape.get());
+    s.onActivity(a->{
+     View viewport=a.findViewById(R.id.flashcardScroll);
+     var params=(androidx.constraintlayout.widget.ConstraintLayout.LayoutParams)viewport.getLayoutParams();
+     params.height=Math.round(300*a.getResources().getDisplayMetrics().density);
+     viewport.setLayoutParams(params);
+    });
+    onView(withId(R.id.btnNext)).check(androidx.test.espresso.assertion.ViewAssertions.matches(androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed()));
+    onView(withId(R.id.btnListen)).check(androidx.test.espresso.assertion.ViewAssertions.matches(androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed()));
+    s.onActivity(a->{
+     assertTrue(a.getResources().getConfiguration().fontScale>=2f);
+     View workspace=a.findViewById(R.id.flashcardWorkspace),root=a.findViewById(R.id.flashcardRoot),viewport=a.findViewById(R.id.flashcardScroll);
+     assertEquals(android.widget.LinearLayout.HORIZONTAL,((android.widget.LinearLayout)workspace).getOrientation());
+     assertTrue("Landscape should fit one screen",workspace.getBottom()+root.getPaddingBottom()<=viewport.getHeight());
+     assertTrue(a.findViewById(R.id.pageCard).getRight()<=a.findViewById(R.id.flashcardFooter).getLeft());
+     TextView hanzi=a.findViewById(R.id.pageHanzi);
+     assertEquals(current.get(),hanzi.getText().toString());
+     assertEquals(a.getString(R.string.pr_stamp_marked),((TextView)a.findViewById(R.id.stampLabel)).getText().toString());
+     assertTrue(hanzi.getTextSize()>=a.getResources().getDimension(R.dimen.ls_flashcard_hanzi_min));
+     assertTrue(hanzi.getTextSize()<a.getResources().getDimension(R.dimen.ls_flashcard_hanzi_max));
+     int min=a.getResources().getDimensionPixelSize(R.dimen.ls_btn_icon);
+     assertTrue(a.findViewById(R.id.stamp).getHeight()>=min);
+     assertTrue(a.findViewById(R.id.btnNext).getHeight()>=min);
+     assertTrue(a.findViewById(R.id.btnListen).getHeight()>=min);
+    });
+   }
+  }finally{setFontScale(original);}
+ }
+ private static void assertListenInsideCard(android.app.Activity a) {
+  View card=a.findViewById(R.id.pageCard),listen=a.findViewById(R.id.btnListen);
+  int[] cardPosition=new int[2],listenPosition=new int[2];
+  card.getLocationOnScreen(cardPosition);listen.getLocationOnScreen(listenPosition);
+  assertTrue(listenPosition[1]>=cardPosition[1]);
+  assertTrue("Listen must not cross card bottom",listenPosition[1]+listen.getHeight()<=cardPosition[1]+card.getHeight());
+  android.graphics.Rect visible=new android.graphics.Rect();assertTrue(listen.getGlobalVisibleRect(visible));
+  assertEquals("Listen must be fully visible",listen.getHeight(),visible.height());
+ }
+ private static void assertStaticCard(View v) {
+  assertFalse(v instanceof androidx.core.widget.NestedScrollView);
+  assertFalse(v instanceof androidx.viewpager2.widget.ViewPager2);
+  if(v instanceof android.view.ViewGroup group)for(int i=0;i<group.getChildCount();i++)assertStaticCard(group.getChildAt(i));
+ }
+ private static void assertNoParentExplanation(View v) {
+  if(v instanceof TextView text)assertFalse(text.getText().toString().contains("For parents"));
+  if(v instanceof android.view.ViewGroup group)for(int i=0;i<group.getChildCount();i++)assertNoParentExplanation(group.getChildAt(i));
+ }
+ private static void setFontScale(float scale) throws Exception {
+  var descriptor=androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().getUiAutomation()
+    .executeShellCommand("settings put system font_scale "+scale);
+  try(var input=new android.os.ParcelFileDescriptor.AutoCloseInputStream(descriptor)){while(input.read()!=-1){}}
+  long deadline=SystemClock.elapsedRealtime()+5000;
+  do {
+   androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+   float actual=android.provider.Settings.System.getFloat(ApplicationProvider.getApplicationContext().getContentResolver(),android.provider.Settings.System.FONT_SCALE,1f);
+   if(Math.abs(actual-scale)<.01f)return;
+   SystemClock.sleep(50);
+  }while(SystemClock.elapsedRealtime()<deadline);
+  fail("Font scale did not reach "+scale);
+ }
+ private static <A extends android.app.Activity> void waitForFont(ActivityScenario<A> scenario,float scale) {
+  long deadline=SystemClock.elapsedRealtime()+5000;AtomicBoolean ready=new AtomicBoolean();
+  do {
+   scenario.onActivity(a->ready.set(Math.abs(a.getResources().getConfiguration().fontScale-scale)<.01f));
+   if(ready.get())return;SystemClock.sleep(50);
+  }while(SystemClock.elapsedRealtime()<deadline);
+  fail("Activity font scale did not reach "+scale);
+ }
+ private static <A extends android.app.Activity> void setActivityFont(ActivityScenario<A> scenario,float scale) throws Exception {
+  setFontScale(1f);waitForFont(scenario,1f);
+  setFontScale(scale);waitForFont(scenario,scale);
  }
  private <T>T read(Function<ProgressState,T> f) throws Exception {
   CountDownLatch done=new CountDownLatch(1);AtomicReference<T> result=new AtomicReference<>();

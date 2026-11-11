@@ -22,7 +22,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.littlestar.app.R;
 import com.littlestar.app.core.lifecycle.ViewModelFactory;
 import com.littlestar.app.core.ui.ChildActivity;
-import com.littlestar.app.core.ui.CultureCover;
+import com.littlestar.app.core.ui.ContentImage;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.CultureItem;
@@ -65,7 +65,7 @@ public final class PlayerActivity extends ChildActivity {
     }
 
     private ActivityPlayerBinding binding;
-    private CultureCover cover;
+    private ContentImage cover;
     private PlayerViewModel vm;
     private final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -90,7 +90,7 @@ public final class PlayerActivity extends ChildActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityPlayerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        cover = new CultureCover(binding.playerCover, container().executors);
+        cover = new ContentImage(binding.playerCover, container().executors);
         Insets.applySystemBarPadding(binding.getRoot());
 
         vm = new ViewModelProvider(this,
