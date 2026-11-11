@@ -10,7 +10,7 @@
             <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon" android:layout_gravity="center" android:importantForAccessibility="no" android:src="@drawable/ic_back"/>
         </com.littlestar.app.core.ui.BlockLayout>
 
-        <TextView android:id="@+id/listTitle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/ls_gap" android:layout_marginEnd="@dimen/ls_gap" android:textAppearance="@style/TextAppearance.LS.Title" app:layout_constraintBottom_toBottomOf="@id/btnBack" app:layout_constraintEnd_toStartOf="@id/btnQuiz" app:layout_constraintStart_toEndOf="@id/btnBack" app:layout_constraintTop_toTopOf="@id/btnBack" android:maxLines="1" android:ellipsize="end"/>
+        <TextView android:id="@+id/listTitle" style="@style/Widget.LS.Label.Navigation" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/ls_gap" android:layout_marginEnd="@dimen/ls_gap" android:textAppearance="@style/TextAppearance.LS.Title" app:layout_constraintBottom_toBottomOf="@id/btnBack" app:layout_constraintEnd_toStartOf="@id/btnQuiz" app:layout_constraintStart_toEndOf="@id/btnBack" app:layout_constraintTop_toTopOf="@id/btnBack" android:maxLines="1" android:ellipsize="end"/>
 
         <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnQuiz" style="@style/Widget.LS.Block.Icon" android:layout_width="wrap_content" android:layout_height="@dimen/ls_btn_icon" app:layout_constraintBottom_toBottomOf="@id/btnBack" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@id/btnBack" app:ls_strokeColor="@color/ls_red">
 

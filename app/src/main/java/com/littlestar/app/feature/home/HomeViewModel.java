@@ -8,53 +8,38 @@ import androidx.lifecycle.ViewModel;
 
 import com.littlestar.app.AppContainer;
 import com.littlestar.app.AppExecutors;
-import com.littlestar.app.core.time.AppClock;
 import com.littlestar.app.data.content.ContentRepository;
-import com.littlestar.app.data.content.model.CultureItem;
 import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.data.prefs.SettingsStore;
 import com.littlestar.app.data.repo.ProgressRepository;
 import com.littlestar.app.data.store.ProgressState;
-import com.littlestar.app.domain.HomeModeResolver;
 import com.littlestar.app.domain.SessionBuilder;
 
 import java.util.List;
 
 /**
- * 首页。模式（字/文）默认按时间规则，手动切换只存在内存里（不写 SharedPreferences）。
+ * 首页固定展示每日识字任务；听读通过独立浏览入口进入。
  */
 public final class HomeViewModel extends ViewModel {
 
     /** 首页状态。 */
     public static final class UiState {
         public final boolean loading;
-        public final HomeModeResolver.Mode mode;
         public final int goal;                 // 今日实际计划量，不改写配置目标
         public final int learnedToday;         // k
         @Nullable
         public final Word nextWord;            // 今日下一个未学的字
-        @Nullable
-        public final CultureItem featured;     // 推荐文化条目
         public final boolean allDone;          // 全部学完
         public final boolean firstLaunch;      // 首次引导态
 
-        public UiState(boolean loading, HomeModeResolver.Mode mode,
-                       int goal, int learnedToday, @Nullable Word nextWord,
-                       @Nullable CultureItem featured,
+        public UiState(boolean loading, int goal, int learnedToday, @Nullable Word nextWord,
                        boolean allDone, boolean firstLaunch) {
             this.loading = loading;
-            this.mode = mode;
             this.goal = goal;
             this.learnedToday = learnedToday;
             this.nextWord = nextWord;
-            this.featured = featured;
             this.allDone = allDone;
             this.firstLaunch = firstLaunch;
-        }
-
-        UiState with(HomeModeResolver.Mode newMode, @Nullable CultureItem newFeatured) {
-            return new UiState(loading, newMode, goal, learnedToday, nextWord,
-                    newFeatured, allDone, firstLaunch);
         }
 
         public boolean isDailyComplete() {
@@ -63,33 +48,27 @@ public final class HomeViewModel extends ViewModel {
     }
 
     private final SessionBuilder sessionBuilder;
-    private final AppClock clock;
     private final SettingsStore settings;
     private final ContentRepository content;
     private final ProgressRepository progress;
 
     private final MediatorLiveData<UiState> state = new MediatorLiveData<>();
-    /** 手动覆盖的模式；null = 按时间规则。 */
-    @Nullable
-    private HomeModeResolver.Mode manualMode;
     @Nullable
     private ProgressState lastProgress;
     private boolean contentReady;
 
     public HomeViewModel(@NonNull AppContainer container) {
-        this(container.clock, container.settings, container.content, container.progress,
+        this(container.settings, container.content, container.progress,
                 container.sessionBuilder, container.executors);
     }
 
-    HomeViewModel(AppClock clock, SettingsStore settings, ContentRepository content,
+    HomeViewModel(SettingsStore settings, ContentRepository content,
                   ProgressRepository progress, SessionBuilder sessionBuilder, AppExecutors executors) {
-        this.clock = clock;
         this.settings = settings;
         this.content = content;
         this.progress = progress;
         this.sessionBuilder = sessionBuilder;
-        state.setValue(new UiState(true, HomeModeResolver.resolve(clock.localTime()),
-                settings.getDailyGoal(), 0, null, null, false, !settings.isOnboarded()));
+        state.setValue(new UiState(true, settings.getDailyGoal(), 0, null, false, !settings.isOnboarded()));
         // 内容先在 diskIO 线程解析，回调到主线程后再计算（不在主线程做 IO）
         content.load(executors, () -> {
             contentReady = true;
@@ -133,31 +112,8 @@ public final class HomeViewModel extends ViewModel {
             next = words.get(words.size() - 1);
         }
 
-        HomeModeResolver.Mode mode = manualMode != null ? manualMode
-                : HomeModeResolver.resolve(clock.localTime());
-        CultureItem featured = pickFeatured();
-        state.setValue(new UiState(false, mode, goal, k, next, featured,
+        state.setValue(new UiState(false, goal, k, next,
                 allDone, !settings.isOnboarded()));
-    }
-
-    @Nullable
-    private CultureItem pickFeatured() {
-        List<CultureItem> featured = content.featuredToday(clock.today());
-        if (!featured.isEmpty()) {
-            return featured.get(0);
-        }
-        // 默认：儿歌类第一条
-        List<CultureItem> songs = content.itemsOfCategory("songs");
-        return songs.isEmpty() ? null : songs.get(0);
-    }
-
-    /** 用户点「字 / 文」切换：只影响本次会话（内存）。 */
-    public void setMode(@NonNull HomeModeResolver.Mode mode) {
-        manualMode = mode;
-        UiState cur = state.getValue();
-        if (cur != null && !cur.loading) {
-            state.setValue(cur.with(mode, pickFeatured()));
-        }
     }
 
     @NonNull
@@ -175,8 +131,8 @@ public final class HomeViewModel extends ViewModel {
         settings.setOnboarded(true);
         UiState cur = state.getValue();
         if (cur != null) {
-            state.setValue(new UiState(cur.loading, cur.mode, goal,
-                    cur.learnedToday, cur.nextWord, cur.featured, cur.allDone, false));
+            state.setValue(new UiState(cur.loading, goal,
+                    cur.learnedToday, cur.nextWord, cur.allDone, false));
         }
     }
 }

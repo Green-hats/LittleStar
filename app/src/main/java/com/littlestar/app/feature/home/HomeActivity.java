@@ -17,15 +17,12 @@ import com.littlestar.app.core.lifecycle.ViewModelFactory;
 import com.littlestar.app.core.ui.ChildActivity;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
-import com.littlestar.app.data.content.model.CultureItem;
 import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.databinding.ActivityHomeBinding;
-import com.littlestar.app.domain.HomeModeResolver;
 import com.littlestar.app.feature.flashcard.FlashcardActivity;
-import com.littlestar.app.feature.culture.CultureDetailActivity;
 
 /**
- * 首页（§7.1）。字态主流程：今日字 + START → Flashcard(SESSION)。
+ * 首页（§7.1）。每日学习主流程：今日字 + START → Flashcard(SESSION)。
  * firstLaunch=true 时盖首次引导（§7.20）；设置入口经过 PIN 验证。
  */
 public final class HomeActivity extends ChildActivity {
@@ -55,21 +52,8 @@ public final class HomeActivity extends ChildActivity {
                 ViewModelFactory.of(() -> new HomeViewModel(container()))).get(HomeViewModel.class);
         vm.state().observe(this, this::render);
 
-        // 字 / 文 切换：只切主角卡（§9.1）
-        binding.modeWord.setOnClickListener(v -> vm.setMode(HomeModeResolver.Mode.WORDS));
-        binding.modeCulture.setOnClickListener(v -> vm.setMode(HomeModeResolver.Mode.CULTURE));
-
         binding.btnStart.setOnClickListener(v -> startSession());
         binding.btnListen.setOnClickListener(v -> speakHero());
-        binding.heroCard.setOnClickListener(v -> {
-            HomeViewModel.UiState s = vm.state().getValue();
-            if (s != null && s.mode == HomeModeResolver.Mode.CULTURE) {
-                openCultureDetail(s);
-            } else {
-                speakHero();
-            }
-        });
-
         // 内容模块与受 PIN 保护的设置入口。
         binding.moduleWords.setOnClickListener(v -> {
             startActivity(new Intent(this,
@@ -112,48 +96,17 @@ public final class HomeActivity extends ChildActivity {
             return;
         }
 
-        // 模式切换外观：选中 = 彩色描边 + 彩色字；未选 = 墨线
-        boolean wordMode = s.mode == HomeModeResolver.Mode.WORDS;
-        int red = ContextCompat.getColor(this, R.color.ls_red);
         int green = ContextCompat.getColor(this, R.color.ls_green);
         int ink = ContextCompat.getColor(this, R.color.ls_ink);
-        int stroke = ContextCompat.getColor(this, R.color.ls_stroke);
-        binding.modeWord.setStrokeColor(wordMode ? red : stroke);
-        binding.modeWordText.setTextColor(wordMode ? red : ink);
-        binding.modeCulture.setStrokeColor(wordMode ? stroke : green);
-        binding.modeCultureText.setTextColor(wordMode ? ink : green);
-
         boolean done = s.isDailyComplete();
-        if (wordMode) {
-            Word w = s.nextWord;
-            binding.todayLabel.setText(done ? R.string.home_today_done : R.string.home_today_words);
-            binding.todayLabel.setTextColor(done ? green : ink);
-            binding.heroHanzi.setText(w != null ? w.hanzi : "");
-            binding.heroPinyin.setText(w != null ? w.pinyin : "");
-            binding.heroEnglish.setText(w != null ? w.english : "");
-            maybeAutoSpeak(s);
-        } else {
-            // 文态主角卡：展示推荐内容，点击后进入文化详情。
-            CultureItem c = s.featured;
-            binding.todayLabel.setText(R.string.home_today_culture);
-            binding.todayLabel.setTextColor(ink);
-            binding.heroHanzi.setText(c != null ? c.glyph : "");
-            binding.heroPinyin.setText(c != null ? c.titleZh : "");
-            binding.heroEnglish.setText(c != null ? c.titleEn : "");
-        }
-
-        // 主按钮：字态 START / REVIEW，文态 EXPLORE 蓝块。
-        binding.btnStartText.setText(wordMode
-                ? (done ? R.string.home_review : R.string.home_start)
-                : R.string.home_culture_open);
-        binding.btnStartIcon.setImageResource(wordMode ? R.drawable.ic_play : R.drawable.ic_book);
-        binding.btnListen.setVisibility(wordMode ? View.VISIBLE : View.GONE);
-        int blue = ContextCompat.getColor(this, R.color.ls_blue);
-        int onRed = ContextCompat.getColor(this, R.color.ls_on_red);
-        int onBlue = ContextCompat.getColor(this, R.color.ls_on_blue);
-        binding.btnStart.setFillColor(wordMode ? red : blue);
-        binding.btnStartText.setTextColor(wordMode ? onRed : onBlue);
-        binding.btnStartIcon.setColorFilter(wordMode ? onRed : onBlue);
+        Word w = s.nextWord;
+        binding.todayLabel.setText(done ? R.string.home_today_done : R.string.home_today_words);
+        binding.todayLabel.setTextColor(done ? green : ink);
+        binding.heroHanzi.setText(w != null ? w.hanzi : "");
+        binding.heroPinyin.setText(w != null ? w.pinyin : "");
+        binding.heroEnglish.setText(w != null ? w.english : "");
+        binding.btnStartText.setText(done ? R.string.home_review : R.string.home_start);
+        maybeAutoSpeak(s);
 
         // 今日进度
         binding.todayProgress.setSegments(Math.max(1, s.goal));
@@ -188,7 +141,7 @@ public final class HomeActivity extends ChildActivity {
 
     private void speakHero() {
         HomeViewModel.UiState s = vm.state().getValue();
-        if (s != null && s.mode == HomeModeResolver.Mode.WORDS && s.nextWord != null) {
+        if (s != null && s.nextWord != null) {
             container().speech.play(s.nextWord);
         }
     }
@@ -202,23 +155,11 @@ public final class HomeActivity extends ChildActivity {
         binding.btnStart.setEnabled(false);
         binding.btnStart.postDelayed(() -> binding.btnStart.setEnabled(true), 800);
 
-        HomeViewModel.UiState s = vm.state().getValue();
-        if (s != null && s.mode == HomeModeResolver.Mode.CULTURE) {
-            openCultureDetail(s);
-            return;
-        }
         startActivity(FlashcardActivity.sessionIntent(this));
         Motion.childEnter(this);
     }
 
     // ---------- 首次引导（§7.20） ----------
-    private void openCultureDetail(HomeViewModel.UiState s) {
-        if (s.featured != null && !s.loading) {
-            startActivity(CultureDetailActivity.intent(this, s.featured.id));
-            Motion.childEnter(this);
-        }
-    }
-
     private void setupOnboarding() {
         int[] ages = {3, 4, 5, 6};
         com.littlestar.app.core.ui.BlockLayout[] ageChips = {

@@ -47,6 +47,12 @@
         <item name="ls_pressable">false</item>
     </style>
 
+    <style name="Widget.LS.Block.Surface" parent="Widget.LS.Block.Hero">
+        <item name="ls_strokeWidth">@dimen/ls_surface_stroke</item>
+        <item name="ls_strokeColor">@color/ls_track</item>
+        <item name="ls_shadowOffset">@dimen/ls_no_shadow</item>
+    </style>
+
     <!-- 模块块 104dp -->
     <style name="Widget.LS.Block.Module">
         <item name="ls_strokeWidth">@dimen/ls_stroke_hero</item>

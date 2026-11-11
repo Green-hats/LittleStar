@@ -40,7 +40,11 @@ public final class ThemeMediaTest {
                     View row = list.findViewHolderForAdapterPosition(position).itemView;
                     assertEquals(theme.nameEn, ((TextView) row.findViewById(R.id.themeNameEn))
                             .getText().toString());
-                    assertTrue(row.findViewById(R.id.themeNameEn).isShown());
+                    TextView english = row.findViewById(R.id.themeNameEn);
+                    TextView chinese = row.findViewById(R.id.themeNameZh);
+                    assertTrue(english.isShown());
+                    assertTrue(english.getTop() < chinese.getTop());
+                    assertTrue(english.getTextSize() > chinese.getTextSize());
                     assertEquals(View.GONE, row.findViewById(R.id.themeGlyph).getVisibility());
                     ImageView image = row.findViewById(R.id.themeIllustration);
                     assertTrue(image.getDrawable() instanceof BitmapDrawable);

@@ -1,88 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 文化列表行：封面、标题、类型与时长，箭头进入详情。 -->
 <com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rowBlock"
-    style="@style/Widget.LS.Block.Secondary"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="@dimen/ls_row_culture"
-    android:layout_marginBottom="@dimen/ls_gap">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/ls_gap_sm"
-        android:paddingBottom="@dimen/ls_gap_sm"
-        android:paddingStart="@dimen/ls_gap"
-        android:paddingEnd="@dimen/ls_gap">
-
-        <FrameLayout
-            android:layout_width="@dimen/ls_cover"
-            android:layout_height="@dimen/ls_cover">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ill_placeholder" />
-
-            <com.littlestar.app.core.ui.HanziTextView
-                android:id="@+id/rowGlyph"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.LS.HanziTile"
-                android:textColor="@color/ls_on_yellow"
-                android:textSize="24sp" />
-        </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ls_gap"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/rowTitleEn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.LS.Body"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/rowTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.LS.Body"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/rowSub"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.LS.Caption" />
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/rowBlock" style="@style/Widget.LS.Block.Tile"
+    android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="@dimen/ls_gap">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:padding="@dimen/ls_gap" android:gravity="center_vertical" android:orientation="horizontal">
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:layout_marginEnd="@dimen/ls_gap" android:orientation="vertical">
+            <TextView android:id="@+id/rowTitleEn" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.LS.Title" />
+            <TextView android:id="@+id/rowTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.LS.Body" />
+            <TextView android:id="@+id/rowSub" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ls_gap_sm" android:textAppearance="@style/TextAppearance.LS.Caption" />
+            <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
+                android:importantForAccessibility="no" android:src="@drawable/ic_chevron" />
         </LinearLayout>
-
-        <com.littlestar.app.core.ui.BlockLayout
-            android:id="@+id/btnDetail"
-            style="@style/Widget.LS.Block.Icon"
-            android:layout_width="@dimen/ls_module_glyph"
-            android:layout_height="@dimen/ls_module_glyph"
-            app:ls_fill="@color/ls_card">
-
-            <ImageView
-                android:layout_width="@dimen/ls_icon"
-                android:layout_height="@dimen/ls_icon"
-                android:layout_gravity="center"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_chevron"
-                app:tint="@color/ls_ink" />
+        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnPlay" style="@style/Widget.LS.Block.Primary.Blue"
+            android:layout_width="@dimen/ls_play_shortcut" android:layout_height="wrap_content">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:padding="@dimen/ls_gap_sm" android:gravity="center_horizontal" android:orientation="vertical">
+                <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
+                    android:importantForAccessibility="no" android:src="@drawable/ic_play" app:tint="@color/ls_on_blue" />
+                <TextView style="@style/Widget.LS.Label.Control" android:layout_width="match_parent"
+                    android:layout_height="@dimen/ls_avatar" android:gravity="center" android:text="@string/culture_list_play"
+                    android:textAppearance="@style/TextAppearance.LS.Body" android:textColor="@color/ls_on_blue" />
+            </LinearLayout>
         </com.littlestar.app.core.ui.BlockLayout>
-
     </LinearLayout>
 </com.littlestar.app.core.ui.BlockLayout>

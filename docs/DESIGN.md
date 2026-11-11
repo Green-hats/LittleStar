@@ -8,7 +8,7 @@
 
 目标用户是生活在英语环境中的 3–6 岁华裔儿童及其家长。
 儿童通过字形、拼音、英文提示和音频接触中文；家长设置识字目标与学习提醒。
-词卡插画仍是占位内容，尚不能将现有界面视为已经验证的低龄儿童可用性结果。
+字词与主题使用离线配图，但模拟器验收仍不等同于真实儿童可用性研究。
 
 ## 设计原则
 
@@ -31,9 +31,9 @@
 | A | FlashcardActivity | 浏览字形、听发音、标记已学 | Quiz 或返回浏览 |
 | A | QuizActivity | 四选一作答并展示正确或错误反馈 | Reward |
 | B | CultureCategoriesActivity | 选择儿歌、故事、古诗 | CultureList |
-| B | CultureListActivity | 查看标题、类型和时长，选择条目 | CultureDetail |
-| B | CultureDetailActivity | 看简介和学习重点，选择展开文本 | Player |
-| B | PlayerActivity | 播放、暂停、上一首、下一首及拖动进度 | 返回详情或后台收听 |
+| B | CultureListActivity | 标题查看详情，独立 PLAY 直接收听 | CultureDetail 或 Player |
+| B | CultureDetailActivity | 看简短介绍，按需展开共读与学习重点 | Player |
+| B | PlayerActivity | 播放、暂停、上一首、下一首及拖动进度 | 返回来源详情／列表或后台收听 |
 | C | ParentGateActivity | 首次创建或验证四位数字 PIN | Settings |
 | C | SettingsActivity | 配置目标、提醒，使用帮助菜单 | 返回 Home |
 | C | RewardActivity | 本轮完成反馈、完成、再来一次 | RoundReview 或 Home |
@@ -46,42 +46,42 @@
 
 ```text
 Home
-├─ START → Flashcard（每日会话）→ Quiz → Reward → RoundReview
+├─ Learn today / Review words → Flashcard（每日会话）→ Quiz → Reward → RoundReview
 │                                           └─ DONE → Home
-├─ Words → Themes → WordList → Flashcard（浏览）
-├─ Culture → CultureCategories → CultureList → CultureDetail → Player
-├─ 文模式推荐 → CultureDetail → Player
+├─ Browse words → Themes → WordList → Flashcard（浏览）
+├─ Listen & read → CultureCategories → CultureList
+│                                    ├─ 标题 → CultureDetail → LISTEN → Player
+│                                    └─ PLAY → Player
 └─ Learning plan → ParentGate → Settings
                                   └─ 菜单：Help / Send test notification / About
 ```
 
 家长设置可先于儿童学习，也可在以后调整；文化学习属于自主扩展。
-字/文切换只改变首页推荐卡，模块入口进入浏览流程。
-文化模式主按钮是 EXPLORE，进入内容详情；不再用 LISTEN 标签进入介绍页。
-Player 返回所选内容详情，详情返回来源列表或首页。
+首页不按时间切换主任务，也不再提供同名模式开关。每日学习和两个浏览入口职责固定。
+Player 返回打开它的详情或列表；列表直接播放仍传递当前分类的完整队列。
 
 ## 首页
 
 目的：呈现一个明确的今日学习入口，同时提供字、文及家长计划入口。
 
 - 顶栏为熊猫和应用名称；独立问号入口已移除。
-- 字模式展示今日汉字、拼音、英文、听音及今日进度；主操作为 START 或 REVIEW。
-- 文模式展示推荐文化内容；主操作为 EXPLORE，卡片本身也可进入同一详情。
-- 文模式不显示只对汉字发音有效的听音按钮。
+- 每日卡固定展示今日汉字、拼音、英文与进度，主操作为 Learn today 或 Review words。
+- 只读内容卡使用轻边框、无硬影；发音通过独立扬声器按钮触发。
+- 两个全宽浏览入口用书本／音符图标和英文主标题定位，保留中文辅助名称。
 - 初次引导仍在 Home 内完成，不新增 Activity。
 
 ## A 子系统 识字学习与测评
 
 ### 主题与词表
 
-主题页采用两列网格，每个主题显示名称、汉字数量和已学进度。
+主题页常规采用两列，大字体改为单列；图像和英文名称优先，中文名称与进度辅助，不再重复字数或固定推荐提示。
 词表提供进入指定汉字的浏览入口。主题顺序和内容来自本地 JSON。
 
 ### 识字卡
 
 展示大汉字、拼音、英文和听音操作；支持左右浏览、标记已学和继续。
 每日会话与主题浏览使用不同模式，避免浏览产生重复每日会话。
-当前小图块仍重复展示汉字，后续应替换为表达词义的插图。
+小图块使用表达词义的离线照片或插画。
 “已学”目前表示用户手动标记，不等同于通过测验或已经掌握。
 
 ### 测验

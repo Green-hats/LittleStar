@@ -61,36 +61,29 @@ public final class LanguageSupportTest {
     }
 
     @Test
-    public void homeModesAndFeaturedContentHaveVisibleEnglish() {
+    public void homeHasEnglishPracticeAndDistinctBrowsingEntries() {
         try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
-            waitForText(scenario, R.id.modeCultureText, "Culture");
-            onView(withId(R.id.modeWordText)).check(matches(withText("Words")));
-            onView(withId(R.id.modeCulture)).perform(click());
+            waitForText(scenario, R.id.moduleWordsTitle, "Browse words");
             AtomicBoolean hasMeaning = new AtomicBoolean();
             long deadline = SystemClock.uptimeMillis() + 5000;
             do {
                 scenario.onActivity(activity -> {
-                    TextView title = activity.findViewById(R.id.heroEnglish);
-                    TextView original = activity.findViewById(R.id.heroPinyin);
-                    for (var category : container.content.mvpCategories()) {
-                        for (var item : container.content.itemsOfCategory(category.id)) {
-                            if (title.isShown() && item.titleEn.contentEquals(title.getText())
-                                    && item.titleZh.contentEquals(original.getText())) {
-                                hasMeaning.set(true);
-                            }
+                    TextView english = activity.findViewById(R.id.heroEnglish);
+                    TextView hanzi = activity.findViewById(R.id.heroHanzi);
+                    for (var word : container.content.wordsInOrder()) {
+                        if (english.isShown() && word.english.contentEquals(english.getText())
+                                && word.hanzi.contentEquals(hanzi.getText())) {
+                            hasMeaning.set(true);
                         }
                     }
                 });
-                if (hasMeaning.get()) {
-                    break;
-                }
+                if (hasMeaning.get()) break;
                 SystemClock.sleep(50);
             } while (SystemClock.uptimeMillis() < deadline);
-            assertTrue("Featured culture needs an English title", hasMeaning.get());
-            onView(withId(R.id.modeWord)).perform(click());
-            onView(withId(R.id.heroEnglish)).check(matches(isDisplayed()));
-            onView(withId(R.id.moduleWordsGlyph)).perform(scrollTo()).check(matches(withText("字")));
-            onView(withId(R.id.moduleCultureGlyph)).perform(scrollTo()).check(matches(withText("文")));
+            assertTrue("Daily practice needs an English meaning", hasMeaning.get());
+            onView(withId(R.id.moduleWordsIcon)).perform(scrollTo()).check(matches(isDisplayed()));
+            onView(withId(R.id.moduleCultureIcon)).perform(scrollTo()).check(matches(isDisplayed()));
+            onView(withId(R.id.moduleCultureTitle)).check(matches(withText("Listen & read")));
         }
     }
 
@@ -162,27 +155,22 @@ public final class LanguageSupportTest {
     @Test
     public void navigationLabelsAndDecorativeGlyphsFit() {
         try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
-            waitForText(scenario, R.id.modeCultureText, "Culture");
+            waitForText(scenario, R.id.moduleWordsTitle, "Browse words");
             scenario.onActivity(activity -> {
-                assertWholeWord(activity.findViewById(R.id.modeWordText));
-                assertWholeWord(activity.findViewById(R.id.modeCultureText));
                 assertWholeWord(activity.findViewById(R.id.moduleWordsTitle));
                 assertWholeWord(activity.findViewById(R.id.moduleCultureTitle));
-                assertGlyphFits(activity.findViewById(R.id.moduleWordsGlyph));
-                assertGlyphFits(activity.findViewById(R.id.moduleCultureGlyph));
             });
         }
         try (ActivityScenario<CultureCategoriesActivity> scenario =
                      ActivityScenario.launch(CultureCategoriesActivity.class)) {
             waitForText(scenario, R.id.nameSongsEn, "Songs");
             scenario.onActivity(activity -> {
-                assertGlyphFits(activity.findViewById(R.id.glyphSongs));
-                assertGlyphFits(activity.findViewById(R.id.glyphStories));
-                assertGlyphFits(activity.findViewById(R.id.glyphPoems));
-                assertAbove(activity.findViewById(R.id.catSongs),
-                        activity.findViewById(R.id.glyphSongs), activity.findViewById(R.id.nameSongs));
-                assertAbove(activity.findViewById(R.id.catStories),
-                        activity.findViewById(R.id.glyphStories), activity.findViewById(R.id.nameStories));
+                assertWholeWord(activity.findViewById(R.id.nameSongsEn));
+                assertWholeWord(activity.findViewById(R.id.nameStoriesEn));
+                assertWholeWord(activity.findViewById(R.id.namePoemsEn));
+                assertEquals(View.VISIBLE, activity.findViewById(R.id.iconSongs).getVisibility());
+                assertEquals(View.VISIBLE, activity.findViewById(R.id.iconStories).getVisibility());
+                assertEquals(View.VISIBLE, activity.findViewById(R.id.iconPoems).getVisibility());
             });
         }
         try (ActivityScenario<PlayerActivity> scenario = ActivityScenario.launch(
