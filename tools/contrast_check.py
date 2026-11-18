@@ -18,6 +18,10 @@ PAIRS = [
     ("ls_on_clay", "ls_clay"), ("ls_on_mint", "ls_mint"),
     ("ls_ink", "ls_clay"), ("ls_ink", "ls_mint"),
     ("ls_red", "ls_paper"),      # 彩色描边文字（如 Quiz 入口）也要 ≥ 4.5
+    ("sprout_on_plum", "sprout_plum"), ("sprout_on_lilac", "sprout_lilac"),
+    ("sprout_on_lilac", "sprout_cloud"), ("sprout_fern", "sprout_dew"),
+    ("ls_muted", "sprout_cloud"), ("ls_muted", "sprout_dew"),
+    ("ls_muted", "sprout_lilac"),
 ]
 
 
@@ -69,7 +73,8 @@ def check(name: str, colors: dict) -> bool:
 
 def main() -> int:
     ok = True
-    ok &= check("light", load_colors(RES / "values/colors.xml"))
+    colors = load_colors(RES / "values/colors.xml") | load_colors(RES / "values/sprout.xml")
+    ok &= check("light", colors)
     return 0 if ok else 1
 
 

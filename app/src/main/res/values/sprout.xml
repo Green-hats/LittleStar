@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sprout_cloud">#FFF9F0</color>
+    <color name="sprout_plum">#4E397A</color>
+    <color name="sprout_on_plum">#FFFFFF</color>
+    <color name="sprout_lilac">#EFE7FC</color>
+    <color name="sprout_on_lilac">#332051</color>
+    <color name="sprout_fern">#176552</color>
+    <color name="sprout_dew">#D8F2E7</color>
+    <color name="sprout_sun">#FFC659</color>
+    <color name="sprout_outline">#81748D</color>
+    <color name="sprout_peach">#FAE2D6</color>
+
+    <style name="Widget.Sprout.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">56dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+    <style name="Widget.Sprout.Secondary" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">56dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+    <style name="Widget.Sprout.Back" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+    <style name="Widget.Sprout.Card" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">@color/sprout_lilac</item>
+        <item name="cardCornerRadius">24dp</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+    <style name="TextAppearance.Sprout.Title" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">@color/sprout_on_lilac</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <style name="TextAppearance.Sprout.Section" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/sprout_on_lilac</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <style name="TextAppearance.Sprout.Caption" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/ls_muted</item>
+    </style>
+    <dimen name="sprout_gutter">20dp</dimen>
+    <dimen name="sprout_space">12dp</dimen>
+
+    <string name="sprout_learn">Learn</string>
+    <string name="sprout_parents">Parents</string>
+    <string name="sprout_today">Today’s adventure</string>
+    <string name="sprout_today_goal">%1$d of %2$d words learned</string>
+    <string name="sprout_today_loading">Getting your lesson ready…</string>
+    <string name="sprout_path">Your lesson path</string>
+    <string name="sprout_path_meet">1 · Meet</string>
+    <string name="sprout_path_play">2 · Practice</string>
+    <string name="sprout_path_done">3 · Finish</string>
+    <string name="sprout_start">Start lesson</string>
+    <string name="sprout_continue">Continue lesson</string>
+    <string name="sprout_review">Review words</string>
+    <string name="sprout_explore">Explore more</string>
+    <string name="sprout_words">Words</string>
+    <string name="sprout_culture">Culture</string>
+    <string name="sprout_back">Back</string>
+</resources>

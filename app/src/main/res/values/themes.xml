@@ -2,19 +2,23 @@
 <resources>
     <style name="Theme.LittleStar" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:forceDarkAllowed">false</item>
-        <item name="colorPrimary">@color/ls_red</item>
-        <item name="colorOnPrimary">@color/ls_on_red</item>
-        <item name="colorSecondary">@color/ls_blue</item>
-        <item name="colorOnSecondary">@color/ls_on_blue</item>
+        <item name="colorPrimary">@color/sprout_plum</item>
+        <item name="colorOnPrimary">@color/sprout_on_plum</item>
+        <item name="colorPrimaryContainer">@color/sprout_lilac</item>
+        <item name="colorOnPrimaryContainer">@color/sprout_on_lilac</item>
+        <item name="colorSecondary">@color/sprout_fern</item>
+        <item name="colorOnSecondary">@color/sprout_on_plum</item>
+        <item name="colorSecondaryContainer">@color/sprout_dew</item>
+        <item name="colorOnSecondaryContainer">@color/sprout_fern</item>
         <item name="colorTertiary">@color/ls_green</item>
         <item name="colorOnTertiary">@color/ls_on_green</item>
         <item name="colorSurface">@color/ls_card</item>
         <item name="colorOnSurface">@color/ls_ink</item>
         <item name="colorOnSurfaceVariant">@color/ls_muted</item>
-        <item name="colorOutline">@color/ls_stroke</item>
+        <item name="colorOutline">@color/sprout_outline</item>
         <item name="colorError">@color/ls_on_clay</item>
         <item name="colorErrorContainer">@color/ls_clay</item>
-        <item name="android:colorBackground">@color/ls_paper</item>
+        <item name="android:colorBackground">@color/sprout_cloud</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="lsStroke">@color/ls_stroke</item>
@@ -33,9 +37,9 @@
         <item name="android:forceDarkAllowed">false</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
-        <item name="windowSplashScreenBackground">@color/ls_paper</item>
+        <item name="windowSplashScreenBackground">@color/sprout_cloud</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_panda</item>
-        <item name="windowSplashScreenIconBackgroundColor">@color/ls_yellow</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/sprout_sun</item>
         <item name="postSplashScreenTheme">@style/Theme.LittleStar.Child</item>
     </style>
 </resources>
