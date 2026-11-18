@@ -101,6 +101,14 @@ public final class SpeechPlayer {
 
     /** 播放一个字的读音。新请求打断旧的。 */
     public void play(@NonNull Word word) {
+        int state = player.getPlaybackState();
+        if (word.id.equals(pendingWordId) && player.getPlayWhenReady()
+                && (state == Player.STATE_BUFFERING || state == Player.STATE_READY)) {
+            return;
+        }
+        if (tts != null) {
+            tts.stop();
+        }
         pendingWordId = word.id;
         pendingWordText = word.hanzi;
         player.setMediaItem(MediaItem.fromUri("asset:///" + word.audio));
@@ -115,6 +123,11 @@ public final class SpeechPlayer {
 
     public void stop() {
         player.stop();
+        if (tts != null) {
+            tts.stop();
+        }
+        pendingWordId = null;
+        pendingWordText = null;
         playing.postValue(false);
     }
 

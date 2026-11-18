@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * 出题（§7.4）：听音 + 看图 → 四选一选字。
+ * 出题：听音 → 四选一选字。
  * 干扰项优先 word.distractors；不够 3 个从同主题补；再不够从其他主题补。
  */
 public final class QuizGenerator {

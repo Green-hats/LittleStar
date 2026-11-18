@@ -34,8 +34,6 @@ public final class QuizViewModel extends ViewModel {
         record PlayWord(@NonNull String wordId) implements Effect {
         }
 
-        record AnswerSfx(boolean correct) implements Effect {
-        }
     }
 
     /** 单题 UI 状态。 */
@@ -48,14 +46,13 @@ public final class QuizViewModel extends ViewModel {
         public final boolean lastAnswerCorrect;
         public final int chosenIndex;           // -1 = 未答
         public final boolean isLast;
-        public final boolean showEnglishHint;
         public final boolean retrying;
         public final boolean corrected;
         public final int retryChosenIndex;
 
         public UiState(int index, int total, @Nullable QuizGenerator.QuizQuestion question,
                        boolean answered, boolean lastAnswerCorrect, int chosenIndex,
-                       boolean isLast, boolean showEnglishHint, boolean retrying,
+                       boolean isLast, boolean retrying,
                        boolean corrected, int retryChosenIndex) {
             this.index = index;
             this.total = total;
@@ -64,7 +61,6 @@ public final class QuizViewModel extends ViewModel {
             this.lastAnswerCorrect = lastAnswerCorrect;
             this.chosenIndex = chosenIndex;
             this.isLast = isLast;
-            this.showEnglishHint = showEnglishHint;
             this.retrying = retrying;
             this.corrected = corrected;
             this.retryChosenIndex = retryChosenIndex;
@@ -174,7 +170,7 @@ public final class QuizViewModel extends ViewModel {
         boolean correct = justAnsweredCorrect;
         int chosen = justChosenIndex;
         state.setValue(new UiState(idx, questions.size(), q, answered, correct, chosen,
-                idx == questions.size() - 1, container.settings.isEnglishHint(),
+                idx == questions.size() - 1,
                 answered && Boolean.TRUE.equals(savedState.get(KEY_RETRYING)),
                 answered && Boolean.TRUE.equals(savedState.get(KEY_CORRECTED)),
                 savedState.get(KEY_RETRY_CHOSEN) == null ? -1 : savedState.get(KEY_RETRY_CHOSEN)));
@@ -197,7 +193,6 @@ public final class QuizViewModel extends ViewModel {
             savedState.set(KEY_RETRYING, !correct);
             savedState.set(KEY_CORRECTED, correct);
             publish();
-            effects.setValue(new Event<>(new Effect.AnswerSfx(correct)));
             if (!correct) {
                 speakCurrent();
             }
@@ -208,7 +203,6 @@ public final class QuizViewModel extends ViewModel {
         justAnsweredCorrect = correct;
         justChosenIndex = optionIndex;
         publish();
-        effects.setValue(new Event<>(new Effect.AnswerSfx(correct)));
         if (!correct) {
             effects.setValue(new Event<>(new Effect.PlayWord(q.wordId())));   // 答错后再朗读正确字
         }

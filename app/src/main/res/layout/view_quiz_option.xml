@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<com.littlestar.app.feature.quiz.AnswerCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/optionBlock"
@@ -36,4 +36,4 @@
             android:visibility="gone"
             android:importantForAccessibility="no" />
     </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+</com.littlestar.app.feature.quiz.AnswerCardView>

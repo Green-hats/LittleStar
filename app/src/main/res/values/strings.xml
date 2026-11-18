@@ -79,6 +79,8 @@
     <string name="quiz_listen_hint">Listen &amp; choose</string>
     <string name="quiz_counter">%1$d / %2$d</string>
     <string name="quiz_feedback_correct">Correct!</string>
+    <string name="quiz_option_correct">Correct choice</string>
+    <string name="quiz_option_wrong">Not this one</string>
     <string name="quiz_feedback_wrong">Listen again: %1$s means %2$s</string>
     <string name="quiz_next">NEXT</string>
     <string name="quiz_done">DONE</string>

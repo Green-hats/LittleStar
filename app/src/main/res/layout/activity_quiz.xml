@@ -76,26 +76,12 @@
                     android:textAppearance="@style/TextAppearance.Sprout.Section"
                     android:text="@string/sprout_choose" />
 
-                <ImageView
-                    android:id="@+id/questionIllustration"
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:scaleType="fitCenter"
-                    android:importantForAccessibility="no"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/englishHint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Sprout.Caption"
-                    android:visibility="gone" />
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnListen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Widget.Sprout.Secondary"
+                    android:layout_marginTop="8dp"
                     android:text="@string/sprout_listen_again"
                     app:icon="@drawable/ic_speaker" />
             </LinearLayout>

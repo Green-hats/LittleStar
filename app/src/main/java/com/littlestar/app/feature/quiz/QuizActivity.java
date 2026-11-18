@@ -3,6 +3,9 @@ package com.littlestar.app.feature.quiz;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.LocaleSpan;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -14,15 +17,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.viewmodel.CreationExtras;
 
 import com.littlestar.app.R;
-import com.littlestar.app.core.audio.SfxPlayer;
 import com.littlestar.app.core.audio.SpeechPlayer;
 import com.littlestar.app.core.ui.ChildActivity;
-import com.littlestar.app.core.ui.ContentImage;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.databinding.ActivityQuizBinding;
 import com.littlestar.app.databinding.ViewQuizOptionBinding;
 import com.littlestar.app.feature.reward.RewardActivity;
+
+import java.util.Locale;
 
 public final class QuizActivity extends ChildActivity {
     private static final String EXTRA_MODE = "mode";
@@ -44,7 +47,6 @@ public final class QuizActivity extends ChildActivity {
     private ActivityQuizBinding binding;
     private QuizViewModel vm;
     private ViewQuizOptionBinding[] options;
-    private ContentImage questionArt;
     private SpeechPlayer.FailureListener audioFailureListener;
     private int renderedIndex = -1;
 
@@ -54,7 +56,6 @@ public final class QuizActivity extends ChildActivity {
         binding = ActivityQuizBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
-        questionArt = new ContentImage(binding.questionIllustration, container().executors);
 
         vm = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
@@ -71,6 +72,8 @@ public final class QuizActivity extends ChildActivity {
             int index = i;
             options[i].getRoot().setOnClickListener(v -> vm.choose(index));
         }
+        container().speech.isPlaying().observe(this, playing -> binding.btnListen.setStateDescription(
+                Boolean.TRUE.equals(playing) ? getString(R.string.fc_reading) : null));
 
         binding.btnBack.setOnClickListener(v -> finish());
         binding.btnListen.setOnClickListener(v -> vm.speakCurrent());
@@ -101,8 +104,6 @@ public final class QuizActivity extends ChildActivity {
                 if (word != null) {
                     container().speech.play(word);
                 }
-            } else if (effect instanceof QuizViewModel.Effect.AnswerSfx sound) {
-                container().sfx.play(sound.correct() ? SfxPlayer.Sfx.CORRECT : SfxPlayer.Sfx.WRONG);
             }
         });
 
@@ -129,15 +130,11 @@ public final class QuizActivity extends ChildActivity {
         binding.quizCounter.setText(getString(R.string.quiz_counter, state.index + 1, state.total));
         binding.quizProgress.setMax(state.total);
         binding.quizProgress.setProgress(state.index + 1);
-        binding.englishHint.setVisibility(state.showEnglishHint ? View.VISIBLE : View.GONE);
-        binding.englishHint.setText(state.question.english());
 
         boolean newQuestion = renderedIndex != state.index;
         if (newQuestion) {
             renderedIndex = state.index;
             binding.audioMissing.setVisibility(View.GONE);
-            Word word = container().content.wordById(state.question.wordId());
-            questionArt.bind(word == null ? null : word.image);
             binding.getRoot().scrollTo(0, 0);
         }
 
@@ -149,7 +146,7 @@ public final class QuizActivity extends ChildActivity {
                 continue;
             }
             String value = state.question.options().get(i);
-            boolean right = state.answered && !state.retrying && i == state.question.correctIndex();
+            boolean right = resolved && i == state.question.correctIndex();
             boolean wrong = state.answered && (state.retrying ? i == state.retryChosenIndex
                     : !resolved && i == state.chosenIndex);
             option.getRoot().setVisibility(View.VISIBLE);
@@ -159,8 +156,12 @@ public final class QuizActivity extends ChildActivity {
             option.optionHanzi.setText(value);
             option.optionBadge.setVisibility(right || wrong ? View.VISIBLE : View.GONE);
             option.optionBadge.setImageResource(right ? R.drawable.ic_check : R.drawable.ic_close);
-            option.getRoot().setContentDescription(right ? getString(R.string.sprout_option_correct, value)
-                    : wrong ? getString(R.string.sprout_option_wrong, value) : value);
+            SpannableString pronunciation = new SpannableString(value);
+            pronunciation.setSpan(new LocaleSpan(Locale.SIMPLIFIED_CHINESE),
+                    0, value.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            option.getRoot().setContentDescription(pronunciation);
+            option.getRoot().setStateDescription(right ? getString(R.string.quiz_option_correct)
+                    : wrong ? getString(R.string.quiz_option_wrong) : null);
         }
 
         binding.bottomFeedback.setVisibility(state.answered ? View.VISIBLE : View.GONE);

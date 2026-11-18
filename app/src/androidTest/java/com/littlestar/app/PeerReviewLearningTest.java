@@ -46,6 +46,43 @@ public class PeerReviewLearningTest {
  private Intent browse(){return new Intent(ApplicationProvider.getApplicationContext(),FlashcardActivity.class).putExtra("mode","BROWSE").putStringArrayListExtra("wordIds",new ArrayList<>(List.of("mao","gou","niao")));}
  private Intent quiz(){return new Intent(ApplicationProvider.getApplicationContext(),QuizActivity.class).putExtra("mode","THEME").putExtra("sessionId",880L);}
 
+ @Test public void independentQuizOffersOnlyAudioAndUnmarkedCharacters() throws Exception {
+  c.settings.setEnglishHint(true);
+  try(ActivityScenario<QuizActivity> s=ActivityScenario.launch(quiz())) {
+   waitFor(s,R.id.quizOptions,View.VISIBLE);
+   String hanzi=c.content.wordById("mao").hanzi;
+   s.onActivity(a->{
+    View prompt=a.findViewById(R.id.questionCard);
+    assertFalse(hasImage(prompt));
+    assertNoAnswerClue(prompt,hanzi,c.content.wordById("mao").pinyin,c.content.wordById("mao").english);
+    for(int id:new int[]{R.id.option0,R.id.option1,R.id.option2,R.id.option3}) {
+     View option=a.findViewById(id);
+     assertTrue(option.isEnabled());
+     assertNull(option.getStateDescription());
+     assertEquals("android.widget.Button",option.createAccessibilityNodeInfo().getClassName());
+    }
+   });
+   onView(withId(R.id.btnListen)).perform(click());
+   assertTrue(read(st->st.sessions.get(0).answers.isEmpty()));
+  }finally{c.settings.setEnglishHint(false);}
+ }
+
+ private static boolean hasImage(View view) {
+  if(view instanceof android.widget.ImageView && view.isShown())return true;
+  if(view instanceof android.view.ViewGroup group)
+   for(int i=0;i<group.getChildCount();i++)if(hasImage(group.getChildAt(i)))return true;
+  return false;
+ }
+
+ private static void assertNoAnswerClue(View view,String... clues) {
+  if(view instanceof TextView text && text.isShown()) {
+   String displayed=text.getText().toString();
+   for(String clue:clues)assertFalse(displayed.contains(clue));
+  }
+  if(view instanceof android.view.ViewGroup group)
+   for(int i=0;i<group.getChildCount();i++)assertNoAnswerClue(group.getChildAt(i),clues);
+ }
+
  @Test public void optionalRecord_isAlignedEnglishButton_andNextNeedsNoMark() throws Exception {
   try(ActivityScenario<FlashcardActivity> s=ActivityScenario.launch(browse())) {
    waitFor(s,R.id.stamp,View.VISIBLE);
@@ -161,10 +198,10 @@ public class PeerReviewLearningTest {
     }while(SystemClock.uptimeMillis()<deadline);
     assertTrue("Expected font2 configuration",ready.get());
     s.onActivity(a->{
-     View illustration=a.findViewById(R.id.questionIllustration), hint=a.findViewById(R.id.questionHint);
-     int[] imagePosition=new int[2],hintPosition=new int[2];
-     illustration.getLocationOnScreen(imagePosition);hint.getLocationOnScreen(hintPosition);
-     assertTrue("Illustration must be below prompt",imagePosition[1]>=hintPosition[1]+hint.getHeight());
+     View hint=a.findViewById(R.id.questionHint), listen=a.findViewById(R.id.btnListen);
+     int[] listenPosition=new int[2],hintPosition=new int[2];
+     listen.getLocationOnScreen(listenPosition);hint.getLocationOnScreen(hintPosition);
+     assertTrue("Replay must be below prompt",listenPosition[1]>=hintPosition[1]+hint.getHeight());
      TextView text=(TextView)hint;
      assertTrue(text.getLayout().getHeight()<=text.getHeight());
      for(int id:new int[]{R.id.option0,R.id.option1,R.id.option2,R.id.option3}) {
