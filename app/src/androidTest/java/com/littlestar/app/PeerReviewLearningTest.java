@@ -91,7 +91,10 @@ public class PeerReviewLearningTest {
     assertEquals(a.getString(R.string.sprout_mark),((TextView)a.findViewById(R.id.stamp)).getText().toString());
     assertEquals("android.widget.Button",a.findViewById(R.id.stamp).getAccessibilityClassName());
     View record=a.findViewById(R.id.stamp), next=a.findViewById(R.id.btnNext);
-    assertTrue("Next is below the optional mark", record.getBottom() <= next.getTop());
+    int[] recordPosition=new int[2], nextPosition=new int[2];
+    record.getLocationOnScreen(recordPosition);
+    next.getLocationOnScreen(nextPosition);
+    assertTrue("Next is below the optional mark", recordPosition[1]+record.getHeight() <= nextPosition[1]);
     assertTrue(record.getHeight() >= 48 * a.getResources().getDisplayMetrics().density);
     assertStaticCard(a.findViewById(R.id.pageCard));
     assertNoParentExplanation(a.findViewById(android.R.id.content));
