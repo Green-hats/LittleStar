@@ -96,10 +96,10 @@ public final class LanguageSupportTest {
                         new Intent(context, CultureDetailActivity.class).putExtra("itemId", item.id))) {
                     waitForText(scenario, R.id.detailTitleEn, item.titleEn);
                     onView(withId(R.id.detailTitleEn)).check(matches(isDisplayed()));
-                    onView(withId(R.id.previewLabel)).check(matches(
+                    onView(withId(R.id.btnPreview)).check(matches(
                             withText(R.string.culture_detail_read_together)));
                     onView(withId(R.id.btnPreview)).perform(scrollTo(), click());
-                    waitForText(scenario, R.id.previewLabel,
+                    waitForText(scenario, R.id.btnPreview,
                             context.getString(R.string.culture_detail_hide_text));
                     scenario.onActivity(activity -> {
                         TextView text = activity.findViewById(R.id.detailTranscript);
@@ -130,7 +130,7 @@ public final class LanguageSupportTest {
             onView(withId(R.id.playerSummary)).check(matches(withText(item.summary)));
             scenario.onActivity(activity -> {
                 assertEquals(View.GONE, activity.findViewById(R.id.lyricsCard).getVisibility());
-                assertTrue(((TextView) activity.findViewById(R.id.playLabel)).getText().length() > 0);
+                assertTrue(((TextView) activity.findViewById(R.id.btnPlay)).getText().length() > 0);
             });
         }
     }
@@ -160,9 +160,9 @@ public final class LanguageSupportTest {
                 new Intent(context, PlayerActivity.class).putExtra("itemId", "changebenyue"))) {
             waitForText(scenario, R.id.playerTitle, container.content.itemById("changebenyue").titleEn);
             scenario.onActivity(activity -> {
-                assertWholeWord(activity.findViewById(R.id.previousLabel));
-                assertWholeWord(activity.findViewById(R.id.playLabel));
-                assertWholeWord(activity.findViewById(R.id.nextLabel));
+                assertWholeWord(activity.findViewById(R.id.btnPrev));
+                assertWholeWord(activity.findViewById(R.id.btnPlay));
+                assertWholeWord(activity.findViewById(R.id.btnNext));
             });
         }
     }

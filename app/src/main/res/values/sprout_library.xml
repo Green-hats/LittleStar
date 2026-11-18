@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sprout_gardens">Word gardens</string>
+    <string name="sprout_gardens_hint">Pick a garden and tap a word to hear it.</string>
+    <string name="sprout_theme_practice">Practice this garden</string>
+    <string name="sprout_culture_welcome">Find a song, a story, or a poem to enjoy offline.</string>
+    <string name="sprout_culture_empty">No stories or songs here yet. Try another category.</string>
+    <string name="sprout_about_piece">About this piece</string>
+    <string name="sprout_play_piece">Play recording</string>
+    <string name="sprout_now_playing">Now playing</string>
+    <string name="sprout_seek">Playback position</string>
+    <string name="sprout_read_along">Read along</string>
+    <string name="sprout_zero_time">0:00</string>
+</resources>

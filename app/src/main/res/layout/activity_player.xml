@@ -1,308 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- §7.9 播放器：封面 + 标题 + 进度条 + 三键 + 歌词卡 -->
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/playerRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ls_paper"
-    android:fillViewport="true">
-
+    android:fillViewport="true"
+    android:background="@color/sprout_cloud">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:maxWidth="@dimen/ls_content_max_width"
         android:orientation="vertical"
-        android:padding="@dimen/ls_margin">
-
-        <!-- 顶栏：返回 + 标题 -->
+        android:paddingStart="@dimen/sprout_gutter"
+        android:paddingEnd="@dimen/sprout_gutter"
+        android:paddingTop="12dp"
+        android:paddingBottom="20dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.littlestar.app.core.ui.BlockLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBack"
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="@dimen/ls_btn_icon"
-                android:layout_height="@dimen/ls_btn_icon"
-                android:contentDescription="@string/nav_back">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:layout_gravity="center"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_back" />
-            </com.littlestar.app.core.ui.BlockLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Sprout.Back"
+                android:text="@string/sprout_back"
+                app:icon="@drawable/ic_back" />
 
             <TextView
-                android:id="@+id/playerTitle"
-                android:text="@string/player_heading"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/ls_gap"
+                android:textAppearance="@style/TextAppearance.Sprout.Title"
+                android:text="@string/sprout_now_playing"
                 android:layout_weight="1"
-                android:textAppearance="@style/TextAppearance.LS.Title" />
-
+                android:layout_marginStart="8dp"
+                android:accessibilityHeading="true" />
         </LinearLayout>
 
-        <com.littlestar.app.core.ui.BlockLayout
-            style="@style/Widget.LS.Block.Surface"
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap"
-            app:ls_pressable="false">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="@dimen/ls_gap_sm" android:gravity="center_horizontal" android:orientation="vertical">
-                <ImageView android:id="@+id/playerCover" android:layout_width="match_parent"
-                    android:layout_height="@dimen/ls_detail_cover" android:importantForAccessibility="no"
-                    android:scaleType="fitCenter" />
-                <com.littlestar.app.core.ui.HanziTextView android:id="@+id/coverGlyph"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.LS.HanziHero" android:textSize="@dimen/ls_detail_glyph" />
+            style="@style/Widget.Sprout.Card">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="136dp">
+                    <com.littlestar.app.core.ui.HanziTextView
+                        android:id="@+id/coverGlyph"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="44sp"
+                        android:textColor="@color/sprout_on_lilac"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no" />
+
+                    <ImageView
+                        android:id="@+id/playerCover"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        android:importantForAccessibility="no"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/playerTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Sprout.Title"
+                    android:text="@string/player_heading"
+                    android:gravity="center"
+                    android:accessibilityHeading="true" />
+
+                <com.littlestar.app.core.ui.HanziTextView
+                    android:id="@+id/songTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:textColor="@color/sprout_on_lilac"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/songSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Sprout.Caption"
+                    android:gravity="center" />
             </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/songTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap"
-            android:textAppearance="@style/TextAppearance.LS.Display" />
-
-        <TextView
-            android:id="@+id/songSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap_sm"
-            android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/playerSummary"
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap"
-            android:textAppearance="@style/TextAppearance.LS.Body" />
+            android:layout_height="12dp" />
 
-        <!-- 进度条 + 时间 -->
         <com.littlestar.app.core.ui.SongProgressView
             android:id="@+id/progress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap" />
+            android:layout_height="48dp"
+            android:contentDescription="@string/sprout_seek" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
                 android:id="@+id/timeCurrent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="@style/TextAppearance.LS.Caption" />
+                android:textAppearance="@style/TextAppearance.Sprout.Caption"
+                android:text="@string/sprout_zero_time"
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/timeTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.LS.Caption" />
+                android:textAppearance="@style/TextAppearance.Sprout.Caption"
+                android:text="@string/sprout_zero_time" />
         </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Sprout.Button"
+            android:text="@string/player_desc_play"
+            app:icon="@drawable/ic_play" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap"
-            android:gravity="center_vertical"
             android:orientation="horizontal">
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPrev"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                style="@style/Widget.Sprout.Secondary"
+                android:text="@string/player_desc_prev"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-                <com.littlestar.app.core.ui.BlockLayout
-                    android:id="@+id/btnPrev"
-                    style="@style/Widget.LS.Block.Icon"
-                    android:layout_width="@dimen/ls_btn_icon"
-                    android:layout_height="@dimen/ls_btn_icon"
-                    android:contentDescription="@string/player_desc_prev"
-                    android:enabled="false">
-                    <ImageView
-                        android:layout_width="@dimen/ls_icon"
-                        android:layout_height="@dimen/ls_icon"
-                        android:layout_gravity="center"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/ic_prev" />
-                </com.littlestar.app.core.ui.BlockLayout>
-                <TextView
-                    android:id="@+id/previousLabel"
-                    style="@style/Widget.LS.Label.Control"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ls_gap_sm"
-                    android:gravity="center"
-                    android:importantForAccessibility="no"
-                    android:text="@string/player_desc_prev"
-                    android:textAppearance="@style/TextAppearance.LS.Body" />
-            </LinearLayout>
-            <LinearLayout
+                android:layout_marginEnd="6dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNext"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-                <com.littlestar.app.core.ui.BlockLayout
-                    android:id="@+id/btnPlay"
-                    style="@style/Widget.LS.Block.Primary.Blue"
-                    android:layout_width="@dimen/ls_play_big"
-                    android:layout_height="@dimen/ls_play_big"
-                    android:contentDescription="@string/player_desc_play">
-                    <ImageView
-                        android:id="@+id/playIcon"
-                        android:layout_width="@dimen/ls_section_lg"
-                        android:layout_height="@dimen/ls_section_lg"
-                        android:layout_gravity="center"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/ic_play"
-                        app:tint="@color/ls_on_blue" />
-                </com.littlestar.app.core.ui.BlockLayout>
-                <TextView
-                    android:id="@+id/playLabel"
-                    style="@style/Widget.LS.Label.Control"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ls_gap_sm"
-                    android:gravity="center"
-                    android:importantForAccessibility="no"
-                    android:text="@string/player_desc_play"
-                    android:textAppearance="@style/TextAppearance.LS.Body" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-                <com.littlestar.app.core.ui.BlockLayout
-                    android:id="@+id/btnNext"
-                    style="@style/Widget.LS.Block.Icon"
-                    android:layout_width="@dimen/ls_btn_icon"
-                    android:layout_height="@dimen/ls_btn_icon"
-                    android:contentDescription="@string/player_desc_next"
-                    android:enabled="false">
-                    <ImageView
-                        android:layout_width="@dimen/ls_icon"
-                        android:layout_height="@dimen/ls_icon"
-                        android:layout_gravity="center"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/ic_next" />
-                </com.littlestar.app.core.ui.BlockLayout>
-                <TextView
-                    android:id="@+id/nextLabel"
-                    style="@style/Widget.LS.Label.Control"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ls_gap_sm"
-                    android:gravity="center"
-                    android:importantForAccessibility="no"
-                    android:text="@string/player_desc_next"
-                    android:textAppearance="@style/TextAppearance.LS.Body" />
-            </LinearLayout>
+                style="@style/Widget.Sprout.Secondary"
+                android:text="@string/player_desc_next"
+                android:layout_weight="1" />
         </LinearLayout>
 
-        <!-- 歌词卡：当前句黄底高亮，后两句 muted；无歌词隐藏 -->
-        <com.littlestar.app.core.ui.BlockLayout
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/lyricsCard"
-            style="@style/Widget.LS.Block.Secondary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_section"
-            app:ls_pressable="false">
-
+            style="@style/Widget.Sprout.Card"
+            android:visibility="gone"
+            android:layout_marginTop="8dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/ls_gap">
+                android:padding="14dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Sprout.Section"
+                    android:text="@string/sprout_read_along"
+                    android:accessibilityHeading="true" />
 
                 <LinearLayout
                     android:id="@+id/lyricCurrentRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_notify_preview"
                     android:orientation="vertical"
-                    android:padding="@dimen/ls_gap_sm">
-
+                    android:padding="8dp"
+                    android:background="@drawable/bg_sprout_step">
                     <com.littlestar.app.core.ui.HanziTextView
                         android:id="@+id/lyricCurrent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textSize="23sp"
+                        android:textColor="@color/sprout_on_lilac" />
 
                     <TextView
                         android:id="@+id/lyricCurrentPinyin"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.LS.Pinyin.Small" />
+                        android:textAppearance="@style/TextAppearance.Sprout.Caption" />
 
                     <TextView
                         android:id="@+id/lyricCurrentEnglish"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.LS.English.Small" />
+                        android:textAppearance="@style/TextAppearance.Sprout.Caption" />
                 </LinearLayout>
 
-                <LinearLayout
+                <com.littlestar.app.core.ui.HanziTextView
+                    android:id="@+id/lyricNext1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ls_gap_sm"
-                    android:orientation="vertical">
+                    android:textSize="18sp"
+                    android:textColor="@color/sprout_on_lilac"
+                    android:layout_marginTop="8dp" />
 
-                    <com.littlestar.app.core.ui.HanziTextView
-                        android:id="@+id/lyricNext1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/ls_muted"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/lyricNext1Pinyin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.LS.Pinyin.Small"
-                        android:textColor="@color/ls_muted" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/lyricNext1Pinyin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ls_gap_sm"
-                    android:orientation="vertical">
+                    android:textAppearance="@style/TextAppearance.Sprout.Caption" />
 
-                    <com.littlestar.app.core.ui.HanziTextView
-                        android:id="@+id/lyricNext2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/ls_muted"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                <com.littlestar.app.core.ui.HanziTextView
+                    android:id="@+id/lyricNext2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/sprout_on_lilac"
+                    android:layout_marginTop="8dp" />
 
-                    <TextView
-                        android:id="@+id/lyricNext2Pinyin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.LS.Pinyin.Small"
-                        android:textColor="@color/ls_muted" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/lyricNext2Pinyin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Sprout.Caption" />
             </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/playerSummary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Sprout.Caption"
+            android:layout_marginTop="12dp"
+            android:paddingBottom="12dp" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

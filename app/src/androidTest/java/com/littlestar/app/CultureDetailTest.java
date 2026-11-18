@@ -56,8 +56,8 @@ public final class CultureDetailTest {
             onView(withId(R.id.detailFocus)).perform(scrollTo()).check(matches(isDisplayed()));
             onView(withId(R.id.detailTranscript)).perform(scrollTo()).check(matches(isDisplayed()));
             scenario.recreate();
-            waitFor(R.id.detailTitle);
             waitForCover(scenario, true);
+            onView(withId(R.id.detailTitle)).perform(scrollTo());
             onView(withId(R.id.detailTitle)).check(matches(withText("静夜思")));
             scenario.onActivity(activity -> assertEquals(android.view.View.VISIBLE,
                     activity.findViewById(R.id.detailTranscript).getVisibility()));
@@ -78,7 +78,7 @@ public final class CultureDetailTest {
     }
 
     @Test
-    public void allCovers_preserveGlyphTitleAndPlaybackEntry() {
+    public void allCovers_preserveTitleAndPlaybackEntry() {
         Context context = ApplicationProvider.getApplicationContext();
         AppContainer container = ((LittleStarApp) context).container();
         container.content.ensureLoaded();
@@ -93,7 +93,7 @@ public final class CultureDetailTest {
                 scenario.onActivity(activity -> {
                     assertEquals(item.titleZh, ((TextView) activity.findViewById(R.id.detailTitle)).getText().toString());
                     assertEquals(item.glyph, ((TextView) activity.findViewById(R.id.detailGlyph)).getText().toString());
-                    assertEquals(View.VISIBLE, activity.findViewById(R.id.detailGlyph).getVisibility());
+                    assertEquals(View.GONE, activity.findViewById(R.id.detailGlyph).getVisibility());
                     assertEquals(item.summary, ((TextView) activity.findViewById(R.id.detailSummary)).getText().toString());
                     assertTrue(activity.findViewById(R.id.btnListen).isEnabled());
                     assertEquals(View.IMPORTANT_FOR_ACCESSIBILITY_NO,

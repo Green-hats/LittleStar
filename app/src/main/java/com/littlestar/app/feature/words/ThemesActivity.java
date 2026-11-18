@@ -112,6 +112,7 @@ public final class ThemesActivity extends ChildActivity {
                     && !"ill_placeholder".equals(item.theme.illustration);
             h.b.themeIllustration.setImageResource(hasIllustration
                     ? illustration : R.drawable.ill_placeholder);
+            h.b.themeIllustration.setVisibility(hasIllustration ? View.VISIBLE : View.GONE);
             h.b.themeGlyph.setText(item.theme.glyph);
             h.b.themeGlyph.setVisibility(hasIllustration ? View.GONE : View.VISIBLE);
             h.b.badgeText.setText(String.valueOf(item.theme.order));

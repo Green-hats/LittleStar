@@ -90,7 +90,7 @@ public final class PlayerActivity extends ChildActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityPlayerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        cover = new ContentImage(binding.playerCover, container().executors);
+        cover = new ContentImage(binding.playerCover, container().executors, binding.coverGlyph);
         Insets.applySystemBarPadding(binding.getRoot());
 
         vm = new ViewModelProvider(this,
@@ -299,8 +299,8 @@ public final class PlayerActivity extends ChildActivity {
                 CultureListActivity.formatDuration(s.item.durationSec)));
 
         binding.playerSummary.setText(s.item.summary);
-        binding.playLabel.setText(s.playing ? R.string.player_desc_pause : R.string.player_desc_play);
-        binding.playIcon.setImageResource(s.playing ? R.drawable.ic_pause : R.drawable.ic_play);
+        binding.btnPlay.setText(s.playing ? R.string.player_desc_pause : R.string.player_desc_play);
+        binding.btnPlay.setIconResource(s.playing ? R.drawable.ic_pause : R.drawable.ic_play);
         binding.btnPlay.setContentDescription(
                 getString(s.playing ? R.string.player_desc_pause : R.string.player_desc_play));
 

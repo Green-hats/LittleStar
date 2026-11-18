@@ -65,7 +65,7 @@ public final class CultureCategoriesActivity extends ChildActivity {
     private void bind(CultureCategory c, int count,
                       android.widget.TextView name, @Nullable android.widget.TextView nameEn,
                       android.widget.TextView countView,
-                      com.littlestar.app.core.ui.BlockLayout block) {
+                      android.view.View block) {
         name.setText(c.nameZh);
         if (nameEn != null) {
             nameEn.setText(c.nameEn);

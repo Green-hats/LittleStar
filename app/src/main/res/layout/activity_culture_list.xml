@@ -1,60 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- §7.8 文化列表：类别头 + 80dp 行 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cultureListRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ls_paper"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:paddingStart="@dimen/sprout_gutter"
+    android:paddingEnd="@dimen/sprout_gutter"
+    android:paddingVertical="12dp"
+    android:background="@color/sprout_cloud">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:maxWidth="@dimen/ls_content_max_width"
-        android:orientation="vertical"
-        android:padding="@dimen/ls_margin">
-
-        <!-- 顶栏 -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            style="@style/Widget.Sprout.Back"
+            android:text="@string/sprout_back"
+            app:icon="@drawable/ic_back" />
 
-            <com.littlestar.app.core.ui.BlockLayout
-                android:id="@+id/btnBack"
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="@dimen/ls_btn_icon"
-                android:layout_height="@dimen/ls_btn_icon"
-                android:contentDescription="@string/nav_back">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:layout_gravity="center"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_back" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <LinearLayout android:layout_width="0dp" android:layout_weight="1"
-                android:layout_height="wrap_content" android:layout_marginStart="@dimen/ls_gap" android:orientation="vertical">
-                <TextView android:id="@+id/categoryName" android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.LS.Title" />
-                <TextView android:id="@+id/categoryCount" android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.LS.Caption" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/itemList"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/ls_gap"
+        <TextView
+            android:id="@+id/categoryName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Sprout.Title"
+            android:text="@string/sprout_culture"
             android:layout_weight="1"
-            android:clipToPadding="false"
-            android:overScrollMode="never" />
-
+            android:layout_marginStart="8dp"
+            android:accessibilityHeading="true" />
     </LinearLayout>
+
+    <com.littlestar.app.core.ui.HanziTextView
+        android:id="@+id/categoryCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/sprout_on_lilac" />
+
+    <TextView
+        android:id="@+id/cultureListStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Sprout.Caption"
+        android:text="@string/sprout_today_loading" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingTop="10dp"
+        android:paddingBottom="8dp" />
 </LinearLayout>

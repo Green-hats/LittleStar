@@ -1,35 +1,71 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!-- §7.3 词表：ConstraintLayout 响应式布局，红色描边 Quiz 入口 + 6 段进度 + 2×3 词块 + 底部提示 -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/wordListRoot" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/ls_paper">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/wordListRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/sprout_gutter"
+    android:paddingEnd="@dimen/sprout_gutter"
+    android:paddingVertical="12dp"
+    android:background="@color/sprout_cloud">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Sprout.Back"
+            android:text="@string/sprout_back"
+            app:icon="@drawable/ic_back" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/wordListContent" android:layout_width="0dp" android:layout_height="0dp" android:padding="@dimen/ls_margin" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" app:layout_constraintWidth_max="@dimen/ls_content_max_width">
+        <TextView
+            android:id="@+id/listTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Sprout.Title"
+            android:text="@string/sprout_words"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:accessibilityHeading="true" />
+    </LinearLayout>
 
-        <!-- 顶栏：返回 + 主题名 + Quiz 描边入口 -->
-        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnBack" style="@style/Widget.LS.Block.Icon" android:layout_width="@dimen/ls_btn_icon" android:layout_height="@dimen/ls_btn_icon" android:contentDescription="@string/nav_back" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+    <TextView
+        android:id="@+id/listProgressText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Sprout.Caption"
+        android:text="@string/sprout_today_loading" />
 
-            <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon" android:layout_gravity="center" android:importantForAccessibility="no" android:src="@drawable/ic_back"/>
-        </com.littlestar.app.core.ui.BlockLayout>
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/listProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:indicatorColor="@color/sprout_fern"
+        app:trackColor="@color/sprout_dew"
+        app:trackCornerRadius="4dp"
+        app:trackThickness="8dp"
+        android:layout_marginTop="12dp" />
 
-        <TextView android:id="@+id/listTitle" style="@style/Widget.LS.Label.Navigation" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/ls_gap" android:layout_marginEnd="@dimen/ls_gap" android:textAppearance="@style/TextAppearance.LS.Title" app:layout_constraintBottom_toBottomOf="@id/btnBack" app:layout_constraintEnd_toStartOf="@id/btnQuiz" app:layout_constraintStart_toEndOf="@id/btnBack" app:layout_constraintTop_toTopOf="@id/btnBack" android:maxLines="1" android:ellipsize="end"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/wordGrid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingTop="10dp"
+        android:paddingBottom="8dp" />
 
-        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnQuiz" style="@style/Widget.LS.Block.Icon" android:layout_width="wrap_content" android:layout_height="@dimen/ls_btn_icon" app:layout_constraintBottom_toBottomOf="@id/btnBack" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@id/btnBack" app:ls_strokeColor="@color/ls_red">
-
-            <TextView android:layout_width="wrap_content" android:layout_height="match_parent" android:gravity="center" android:paddingStart="@dimen/ls_gap" android:paddingEnd="@dimen/ls_gap" android:text="@string/wl_quiz" android:textAppearance="@style/TextAppearance.LS.Body" android:textColor="@color/ls_red" android:textStyle="bold"/>
-        </com.littlestar.app.core.ui.BlockLayout>
-
-        <!-- 进度 -->
-        <com.littlestar.app.core.ui.SegmentProgressView android:id="@+id/listProgress" android:layout_width="0dp" android:layout_height="@dimen/ls_seg_height" android:layout_marginEnd="@dimen/ls_gap" app:layout_constraintBottom_toBottomOf="@id/listProgressText" app:layout_constraintEnd_toStartOf="@id/listProgressText" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="@id/listProgressText"/>
-
-        <TextView android:id="@+id/listProgressText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" android:textAppearance="@style/TextAppearance.LS.Caption" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@id/btnBack"/>
-
-        <androidx.recyclerview.widget.RecyclerView android:id="@+id/wordGrid" android:layout_width="0dp" android:layout_height="0dp" android:layout_marginTop="@dimen/ls_gap" android:layout_marginBottom="@dimen/ls_gap" android:clipToPadding="false" android:overScrollMode="never" app:layout_constraintBottom_toTopOf="@id/wordListHintRow" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/listProgressText"/>
-
-        <!-- 底部提示 -->
-        <LinearLayout android:id="@+id/wordListHintRow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon" android:importantForAccessibility="no" android:src="@drawable/ic_speaker" app:tint="@color/ls_muted"/>
-
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/ls_gap_sm" android:text="@string/wl_hint" android:textAppearance="@style/TextAppearance.LS.Caption" android:textSize="14sp"/>
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Sprout.Button"
+        android:text="@string/sprout_theme_practice"
+        app:icon="@drawable/ic_quiz"
+        android:enabled="false" />
+</LinearLayout>

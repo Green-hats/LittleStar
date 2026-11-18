@@ -40,7 +40,7 @@ public final class CultureDetailActivity extends ChildActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCultureDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        cover = new ContentImage(binding.detailCover, container().executors);
+        cover = new ContentImage(binding.detailCover, container().executors, binding.detailGlyph);
         Insets.applySystemBarPadding(binding.getRoot());
         previewExpanded = savedInstanceState != null && savedInstanceState.getBoolean(STATE_PREVIEW);
         vm = new ViewModelProvider(this,
@@ -110,7 +110,7 @@ public final class CultureDetailActivity extends ChildActivity {
         binding.detailTranscript.setVisibility(visibility);
         binding.detailFocus.setVisibility(visibility);
         binding.detailFocusHeading.setVisibility(visibility);
-        binding.previewLabel.setText(previewExpanded
+        binding.btnPreview.setText(previewExpanded
                 ? R.string.culture_detail_hide_text : R.string.culture_detail_read_together);
         binding.btnPreview.setContentDescription(getString(previewExpanded
                 ? R.string.culture_detail_hide_text : R.string.culture_detail_read_together));

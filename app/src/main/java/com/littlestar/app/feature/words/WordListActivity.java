@@ -79,8 +79,9 @@ public final class WordListActivity extends ChildActivity {
             return;
         }
         binding.listTitle.setText(s.theme.nameEn);
-        binding.listProgress.setSegments(Math.max(1, s.words.size()));
-        binding.listProgress.setFilled(s.learned);
+        binding.listProgress.setMax(Math.max(1, s.words.size()));
+        binding.listProgress.setProgress(s.learned);
+        binding.btnQuiz.setEnabled(!s.words.isEmpty());
         binding.listProgressText.setText(
                 getString(R.string.wl_learned, s.learned, s.words.size()));
         adapter.setItems(s.words);
@@ -129,6 +130,7 @@ public final class WordListActivity extends ChildActivity {
             int resId = item.word.image == null ? 0
                     : getResources().getIdentifier(item.word.image, "drawable", getPackageName());
             boolean hasDedicatedIllustration = resId != 0 && !"ill_placeholder".equals(item.word.image);
+            h.b.wordIllustration.setVisibility(hasDedicatedIllustration ? View.VISIBLE : View.GONE);
             if (hasDedicatedIllustration) {
                 h.b.wordIllustration.setImageResource(resId);
                 h.b.wordGlyph.setVisibility(View.GONE);
