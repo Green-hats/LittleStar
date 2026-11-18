@@ -159,6 +159,9 @@ public class PeerReviewLearningTest {
     beforeHint.set(vm.state().getValue().question.correctIndex());
     vm.choose((beforeHint.get()+1)%4);
     assertEquals(View.GONE,a.findViewById(R.id.shapeClue).getVisibility());
+    var action=a.<com.google.android.material.button.MaterialButton>findViewById(R.id.btnRetry);
+    assertEquals(a.getString(R.string.quiz_see_clue),action.getText());
+    assertNotNull(action.getIcon());
    });
    String wordId=model.get().state().getValue().question.wordId();
    String due=read(st->st.words.get(wordId).dueDate);
@@ -174,6 +177,9 @@ public class PeerReviewLearningTest {
     int firstRetry=vm.state().getValue().question.correctIndex();
     vm.choose((vm.state().getValue().question.correctIndex()+1)%4);
     assertFalse(vm.state().getValue().retrying);
+    var action=a.<com.google.android.material.button.MaterialButton>findViewById(R.id.btnRetry);
+    assertEquals(a.getString(R.string.sprout_try_again),action.getText());
+    assertNotNull(action.getIcon());
     vm.choose(firstRetry);
     assertFalse(vm.state().getValue().corrected);
     vm.retry();

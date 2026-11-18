@@ -179,6 +179,7 @@ public final class QuizActivity extends ChildActivity {
                     : getString(R.string.quiz_feedback_wrong));
             binding.btnRetry.setVisibility(state.canAdvance() ? View.GONE : View.VISIBLE);
             binding.btnRetry.setText(state.showingHint ? R.string.sprout_try_again : R.string.quiz_see_clue);
+            binding.btnRetry.setIconResource(state.showingHint ? R.drawable.ic_retry : R.drawable.ic_clue);
             binding.btnNext.setVisibility(state.canAdvance() ? View.VISIBLE : View.GONE);
             binding.btnNext.setText(state.isLast ? R.string.sprout_finish : R.string.sprout_next);
             binding.bottomFeedback.post(() -> binding.bottomFeedback.requestRectangleOnScreen(

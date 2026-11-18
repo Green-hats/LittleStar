@@ -225,8 +225,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Widget.Sprout.Button"
-                    android:text="@string/sprout_try_again"
-                    app:icon="@drawable/ic_next"
+                    android:text="@string/quiz_see_clue"
+                    app:icon="@drawable/ic_clue"
                     android:visibility="gone" />
 
                 <com.google.android.material.button.MaterialButton
