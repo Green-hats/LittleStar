@@ -110,5 +110,42 @@
             android:text="@string/sprout_answers"
             app:icon="@drawable/ic_book"
             android:enabled="false" />
+
+        <LinearLayout
+            android:id="@+id/practicedSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/sprout_space"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityHeading="true"
+                android:text="@string/reward_practiced_words"
+                android:textAppearance="@style/TextAppearance.Sprout.Section" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reward_replay_instruction"
+                android:textAppearance="@style/TextAppearance.Sprout.Caption" />
+
+            <TextView
+                android:id="@+id/rewardAudioMissing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityLiveRegion="polite"
+                android:text="@string/pr_audio_title"
+                android:textAppearance="@style/TextAppearance.Sprout.Caption"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/practicedWords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

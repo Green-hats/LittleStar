@@ -5,26 +5,33 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.littlestar.app.AppContainer;
-import com.littlestar.app.core.lifecycle.Event;
+import com.littlestar.app.data.content.model.Word;
+import com.littlestar.app.data.repo.ProgressRepository;
 import com.littlestar.app.data.store.ProgressState;
 import com.littlestar.app.domain.SessionBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class RewardViewModel extends ViewModel {
+    enum Result { INDEPENDENT, WITH_CLUE, WITH_CLUE_THEN_INDEPENDENT, CORRECTED, REVISIT }
+
+    record PracticedWord(Word word, Result result) {}
+
     public static final class UiState {
-        public final int newWords;
         public final int correct;
         public final int total;
+        final List<PracticedWord> words;
 
-        UiState(int newWords, int correct, int total) {
-            this.newWords = newWords;
+        UiState(int correct, int total, List<PracticedWord> words) {
             this.correct = correct;
             this.total = total;
+            this.words = words;
         }
     }
 
     private final AppContainer container;
     private final MutableLiveData<UiState> state = new MutableLiveData<>();
-    private final MutableLiveData<Event<Boolean>> effects = new MutableLiveData<>();
 
     public RewardViewModel(AppContainer container) {
         this.container = container;
@@ -44,8 +51,27 @@ public final class RewardViewModel extends ViewModel {
             container.progress.completeSession(sessionId);
             return true;
         }
-        state.setValue(new UiState(session.newWordIds.size(), session.correct, session.total));
-        effects.setValue(new Event<>(true));
+        List<PracticedWord> words = new ArrayList<>();
+        for (String id : session.quizWordIds) {
+            Word word = container.content.wordById(id);
+            ProgressState.Answer answer = ProgressRepository.answerFor(session, id);
+            if (word == null || answer == null) {
+                continue;
+            }
+            Result result;
+            if (answer.correct && answer.firstTry) {
+                result = Result.INDEPENDENT;
+            } else if (session.correctedWordIds.contains(id) && session.hintAttempts.containsKey(id)) {
+                result = Boolean.TRUE.equals(session.retestResults.get(id))
+                        ? Result.WITH_CLUE_THEN_INDEPENDENT : Result.WITH_CLUE;
+            } else if (session.correctedWordIds.contains(id) || answer.correct) {
+                result = Result.CORRECTED;
+            } else {
+                result = Result.REVISIT;
+            }
+            words.add(new PracticedWord(word, result));
+        }
+        state.setValue(new UiState(session.correct, session.total, List.copyOf(words)));
         return true;
     }
 
@@ -53,7 +79,4 @@ public final class RewardViewModel extends ViewModel {
         return state;
     }
 
-    public LiveData<Event<Boolean>> effects() {
-        return effects;
-    }
 }

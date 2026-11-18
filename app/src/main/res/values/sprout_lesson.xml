@@ -20,6 +20,14 @@
     <string name="sprout_answers">See my answers</string>
     <string name="sprout_round_review">Round review</string>
     <string name="sprout_first_try">First try: %1$d of %2$d</string>
+    <string name="reward_practiced_words">Words you practiced</string>
+    <string name="reward_replay_instruction">Tap a word to hear it.</string>
+    <string name="reward_replay_word">Listen to %1$s</string>
+    <string name="reward_word_independent">On your own</string>
+    <string name="reward_word_with_clue">With a clue</string>
+    <string name="reward_word_retested">With a clue, then on your own</string>
+    <string name="reward_word_corrected">After a retry</string>
+    <string name="reward_word_revisit">Practice again later</string>
     <plurals name="sprout_practice_count">
         <item quantity="one">%d word to revisit later</item>
         <item quantity="other">%d words to revisit later</item>

@@ -92,7 +92,10 @@
 
     <!-- ===== M3 · Reward ===== -->
     <string name="reward_title">Great job!</string>
-    <string name="reward_subtitle">You practiced %1$d characters</string>
+    <plurals name="reward_subtitle">
+        <item quantity="one">You practiced %d character</item>
+        <item quantity="other">You practiced %d characters</item>
+    </plurals>
     <string name="reward_subtitle_review">Practice complete!</string>
     <string name="reward_stamp_text">Done!</string>
     <string name="reward_done">DONE</string>
