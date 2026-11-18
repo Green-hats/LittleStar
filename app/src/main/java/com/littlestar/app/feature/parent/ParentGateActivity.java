@@ -37,7 +37,7 @@ public final class ParentGateActivity extends ParentActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityParentGateBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        Insets.applySystemBarPadding(binding.getRoot());
+        Insets.applyFormPadding(binding.getRoot(), binding.pinControls);
 
         createMode = !container().settings.isPinSet();
         binding.questionText.setText(createMode

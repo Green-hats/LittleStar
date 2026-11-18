@@ -1,9 +1,10 @@
 package com.littlestar.app.core.ui;
 
-import android.view.View;
 import android.app.Activity;
+import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowCompat;
@@ -28,14 +29,38 @@ public final class Insets {
 
     /** 把 systemBars 的 inset 加到根布局 padding 上（保留原 padding）。 */
     public static void applySystemBarPadding(@NonNull View root) {
+        applyPadding(root, null);
+    }
+
+    public static void applyFormPadding(@NonNull View root, @NonNull View controls) {
+        applyPadding(root, controls);
+    }
+
+    private static void applyPadding(@NonNull View root, @Nullable View controls) {
         int pl = root.getPaddingLeft();
         int pt = root.getPaddingTop();
         int pr = root.getPaddingRight();
         int pb = root.getPaddingBottom();
         ViewCompat.setOnApplyWindowInsetsListener(root, (v, windowInsets) -> {
-            androidx.core.graphics.Insets bars = windowInsets.getInsets(
-                    WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
-            v.setPadding(pl + bars.left, pt + bars.top, pr + bars.right, pb + bars.bottom);
+            int bars = WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout();
+            var safe = windowInsets.getInsets(controls == null ? bars : bars | WindowInsetsCompat.Type.ime());
+            int bottom = pb + safe.bottom;
+            boolean reveal = controls != null && v.getPaddingBottom() != bottom
+                    && windowInsets.isVisible(WindowInsetsCompat.Type.ime());
+            v.setPadding(pl + safe.left, pt + safe.top, pr + safe.right, bottom);
+            if (reveal) {
+                v.post(() -> {
+                    int[] rootLocation = new int[2];
+                    int[] fieldLocation = new int[2];
+                    v.getLocationOnScreen(rootLocation);
+                    controls.getLocationOnScreen(fieldLocation);
+                    int visibleBottom = rootLocation[1] + v.getHeight() - v.getPaddingBottom();
+                    int covered = fieldLocation[1] + controls.getHeight() - visibleBottom;
+                    if (covered > 0) {
+                        v.scrollBy(0, covered);
+                    }
+                });
+            }
             return windowInsets;
         });
     }

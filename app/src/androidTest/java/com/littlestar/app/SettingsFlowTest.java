@@ -15,13 +15,18 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.SystemClock;
+import android.view.View;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.littlestar.app.core.ui.StepperView;
 import com.littlestar.app.data.store.ProgressState;
@@ -36,6 +41,7 @@ import org.junit.runner.RunWith;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -62,6 +68,40 @@ public final class SettingsFlowTest {
             container.sessionBuilder.todayPlan(state, 3);
         });
         awaitStore();
+    }
+
+    @Test
+    public void pinControlsStayAboveTheNumericKeyboard() {
+        try (ActivityScenario<ParentGateActivity> scenario = ActivityScenario.launch(ParentGateActivity.class)) {
+            scenario.onActivity(activity -> {
+                View input = activity.findViewById(R.id.answerInput);
+                input.requestFocus();
+                WindowCompat.getInsetsController(activity.getWindow(), input)
+                        .show(WindowInsetsCompat.Type.ime());
+            });
+            AtomicBoolean visible = new AtomicBoolean();
+            long deadline = SystemClock.uptimeMillis() + 5000;
+            do {
+                scenario.onActivity(activity -> {
+                    View root = activity.findViewById(R.id.gateRoot);
+                    var insets = ViewCompat.getRootWindowInsets(root);
+                    if (insets == null || !insets.isVisible(WindowInsetsCompat.Type.ime())) {
+                        return;
+                    }
+                    Rect bounds = new Rect();
+                    View controls = activity.findViewById(R.id.pinControls);
+                    visible.set(root.getPaddingBottom() >= insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+                            && controls.getGlobalVisibleRect(bounds)
+                            && bounds.height() == controls.getHeight());
+                });
+                if (visible.get()) break;
+                SystemClock.sleep(50);
+            } while (SystemClock.uptimeMillis() < deadline);
+            assertTrue("The whole PIN form must be visible while the numeric keyboard is open", visible.get());
+            onView(withId(R.id.answerInput)).perform(replaceText("1234"));
+            onView(withId(R.id.btnConfirm)).perform(click());
+            onView(withId(R.id.settingsTitle)).check(matches(isDisplayed()));
+        }
     }
 
     @Test
