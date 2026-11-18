@@ -161,6 +161,11 @@ public final class ProgressStore {
                 Log.e(TAG, "Invalid progress structure (backup=" + fromBackup + ")");
                 return null;
             }
+            for (ProgressState.Session session : parsed.sessions) {
+                if (session.correctedWordIds == null) {
+                    session.correctedWordIds = new java.util.ArrayList<>();
+                }
+            }
             return parsed;
         } catch (RuntimeException e) {
             Log.e(TAG, "parse failed (backup=" + fromBackup + ")", e);

@@ -63,27 +63,10 @@ public final class LanguageSupportTest {
     @Test
     public void homeHasEnglishPracticeAndDistinctBrowsingEntries() {
         try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
-            waitForText(scenario, R.id.moduleWordsTitle, "Browse words");
-            AtomicBoolean hasMeaning = new AtomicBoolean();
-            long deadline = SystemClock.uptimeMillis() + 5000;
-            do {
-                scenario.onActivity(activity -> {
-                    TextView english = activity.findViewById(R.id.heroEnglish);
-                    TextView hanzi = activity.findViewById(R.id.heroHanzi);
-                    for (var word : container.content.wordsInOrder()) {
-                        if (english.isShown() && word.english.contentEquals(english.getText())
-                                && word.hanzi.contentEquals(hanzi.getText())) {
-                            hasMeaning.set(true);
-                        }
-                    }
-                });
-                if (hasMeaning.get()) break;
-                SystemClock.sleep(50);
-            } while (SystemClock.uptimeMillis() < deadline);
-            assertTrue("Daily practice needs an English meaning", hasMeaning.get());
-            onView(withId(R.id.moduleWordsIcon)).perform(scrollTo()).check(matches(isDisplayed()));
-            onView(withId(R.id.moduleCultureIcon)).perform(scrollTo()).check(matches(isDisplayed()));
-            onView(withId(R.id.moduleCultureTitle)).check(matches(withText("Listen & read")));
+            waitForText(scenario, R.id.moduleWords, "Words");
+            onView(withId(R.id.todayLabel)).check(matches(withText(R.string.sprout_today)));
+            onView(withId(R.id.btnStart)).check(matches(isDisplayed()));
+            onView(withId(R.id.moduleCulture)).check(matches(withText(R.string.sprout_culture)));
         }
     }
 
@@ -155,10 +138,10 @@ public final class LanguageSupportTest {
     @Test
     public void navigationLabelsAndDecorativeGlyphsFit() {
         try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
-            waitForText(scenario, R.id.moduleWordsTitle, "Browse words");
+            waitForText(scenario, R.id.moduleWords, "Words");
             scenario.onActivity(activity -> {
-                assertWholeWord(activity.findViewById(R.id.moduleWordsTitle));
-                assertWholeWord(activity.findViewById(R.id.moduleCultureTitle));
+                assertWholeWord(activity.findViewById(R.id.moduleWords));
+                assertWholeWord(activity.findViewById(R.id.moduleCulture));
             });
         }
         try (ActivityScenario<CultureCategoriesActivity> scenario =

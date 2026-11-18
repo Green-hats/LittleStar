@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sprout_meet">Meet the words</string>
+    <string name="sprout_practice">Practice</string>
+    <string name="sprout_choose">Listen &amp; choose the word</string>
+    <string name="sprout_listen">Hear the word</string>
+    <string name="sprout_listen_again">Listen again</string>
+    <string name="sprout_next">Next</string>
+    <string name="sprout_start_practice">Start practice</string>
+    <string name="sprout_finish">Finish lesson</string>
+    <string name="sprout_try_again">Try again</string>
+    <string name="sprout_mark">Mark as learned</string>
+    <string name="sprout_learned">Learned</string>
+    <string name="sprout_word_counter">Word %1$d of %2$d</string>
+    <string name="sprout_rotate">Turn your screen upright to learn.</string>
+    <string name="sprout_dismiss">Dismiss</string>
+    <string name="sprout_complete">Lesson complete</string>
+    <string name="sprout_reward_title">You finished the trail!</string>
+    <string name="sprout_return_learn">Done</string>
+    <string name="sprout_answers">See my answers</string>
+    <string name="sprout_round_review">Round review</string>
+    <string name="sprout_first_try">First try: %1$d of %2$d</string>
+    <plurals name="sprout_practice_count">
+        <item quantity="one">%d word to revisit later</item>
+        <item quantity="other">%d words to revisit later</item>
+    </plurals>
+    <string name="sprout_no_revisit">You got every word on the first try.</string>
+    <string name="sprout_unavailable">This lesson isn’t available. Go back to Learn to try again.</string>
+    <string name="sprout_option_correct">%1$s, correct</string>
+    <string name="sprout_option_wrong">%1$s, try again</string>
+</resources>

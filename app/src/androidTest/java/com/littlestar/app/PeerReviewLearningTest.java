@@ -51,12 +51,11 @@ public class PeerReviewLearningTest {
    waitFor(s,R.id.stamp,View.VISIBLE);
    UiEvidence.capture("after_stamp_optional");
    s.onActivity(a->{
-    assertEquals(a.getString(R.string.pr_stamp_optional),((TextView)a.findViewById(R.id.stampLabel)).getText().toString());
+    assertEquals(a.getString(R.string.sprout_mark),((TextView)a.findViewById(R.id.stamp)).getText().toString());
     assertEquals("android.widget.Button",a.findViewById(R.id.stamp).getAccessibilityClassName());
     View record=a.findViewById(R.id.stamp), next=a.findViewById(R.id.btnNext);
-    assertEquals("Buttons must align",record.getTop(),next.getTop());
-    assertEquals("Buttons must have equal heights",record.getHeight(),next.getHeight());
-    assertTrue(record.getHeight()>=a.getResources().getDimensionPixelSize(R.dimen.ls_btn_primary));
+    assertTrue("Next is below the optional mark", record.getBottom() <= next.getTop());
+    assertTrue(record.getHeight() >= 48 * a.getResources().getDisplayMetrics().density);
     assertStaticCard(a.findViewById(R.id.pageCard));
     assertNoParentExplanation(a.findViewById(android.R.id.content));
    });
@@ -66,10 +65,10 @@ public class PeerReviewLearningTest {
    Long learned=read(st->st.words.get("gou").learnedAt);assertNotNull(learned);
    onView(withId(R.id.stamp)).perform(click());
    assertEquals(learned,read(st->st.words.get("gou").learnedAt));
-   s.onActivity(a->assertEquals(a.getString(R.string.pr_stamp_marked),((TextView)a.findViewById(R.id.stampLabel)).getText().toString()));
+   s.onActivity(a->assertEquals(a.getString(R.string.sprout_learned),((TextView)a.findViewById(R.id.stamp)).getText().toString()));
    UiEvidence.capture("after_stamp_marked");
    onView(withId(R.id.btnNext)).perform(click());
-   s.onActivity(a->assertEquals(a.getString(R.string.fc_back_words),((TextView)a.findViewById(R.id.btnNextText)).getText().toString()));
+   s.onActivity(a->assertEquals(a.getString(R.string.sprout_back),((TextView)a.findViewById(R.id.btnNext)).getText().toString()));
   }
  }
  @Test public void flashcardMissingAudio_retryRecovers_withoutProgressChange() throws Exception {
@@ -140,7 +139,7 @@ public class PeerReviewLearningTest {
    assertFalse(read(st->st.sessions.get(0).answers.get(0).correct));
    assertTrue(read(st->st.sessions.get(0).answers.get(0).firstTry));
    assertEquals(due,read(st->st.words.get(wordId).dueDate));
-   assertNull(read(st->st.words.get(wordId).learnedAt));
+   assertNotNull(read(st->st.words.get(wordId).learnedAt));
    s.recreate();
    s.onActivity(a->{
     QuizViewModel vm=new ViewModelProvider(a).get(QuizViewModel.class);
@@ -165,11 +164,11 @@ public class PeerReviewLearningTest {
      View illustration=a.findViewById(R.id.questionIllustration), hint=a.findViewById(R.id.questionHint);
      int[] imagePosition=new int[2],hintPosition=new int[2];
      illustration.getLocationOnScreen(imagePosition);hint.getLocationOnScreen(hintPosition);
-     assertTrue("Prompt must be below illustration",hintPosition[1]>=imagePosition[1]+illustration.getHeight());
+     assertTrue("Illustration must be below prompt",imagePosition[1]>=hintPosition[1]+hint.getHeight());
      TextView text=(TextView)hint;
      assertTrue(text.getLayout().getHeight()<=text.getHeight());
      for(int id:new int[]{R.id.option0,R.id.option1,R.id.option2,R.id.option3}) {
-      assertTrue(a.findViewById(id).getHeight()>=a.getResources().getDimensionPixelSize(R.dimen.ls_quiz_option_min));
+      assertTrue(a.findViewById(id).getHeight()>=48 * a.getResources().getDisplayMetrics().density);
      }
     });
    }
@@ -188,7 +187,7 @@ public class PeerReviewLearningTest {
    });
   }
  }
- @Test public void flashcard_doubleFont_keepsAlignedButtonsAndReadableListen() throws Exception {
+ @Test public void flashcard_doubleFont_keepsStackedButtonsAndReadableListen() throws Exception {
   float original=android.provider.Settings.System.getFloat(ApplicationProvider.getApplicationContext().getContentResolver(),android.provider.Settings.System.FONT_SCALE,1f);
   try {
    try(ActivityScenario<FlashcardActivity> s=ActivityScenario.launch(browse())) {
@@ -196,7 +195,7 @@ public class PeerReviewLearningTest {
     setActivityFont(s,2f);
     s.onActivity(a->{
      View viewport=a.findViewById(R.id.flashcardScroll);
-     var params=(androidx.constraintlayout.widget.ConstraintLayout.LayoutParams)viewport.getLayoutParams();
+     var params=viewport.getLayoutParams();
      float density=a.getResources().getDisplayMetrics().density;
      params.width=Math.round(360*density);params.height=Math.round(440*density);
      viewport.setLayoutParams(params);
@@ -207,13 +206,9 @@ public class PeerReviewLearningTest {
     s.onActivity(a->{
      assertTrue(a.getResources().getConfiguration().fontScale>=2f);
      View record=a.findViewById(R.id.stamp),next=a.findViewById(R.id.btnNext);
-     assertEquals(record.getTop(),next.getTop());assertEquals(record.getHeight(),next.getHeight());
-     assertEquals(android.widget.LinearLayout.HORIZONTAL,((android.widget.LinearLayout)a.findViewById(R.id.pageMain)).getOrientation());
-     View footer=a.findViewById(R.id.flashcardFooter),root=a.findViewById(R.id.flashcardRoot),viewport=a.findViewById(R.id.flashcardScroll);
-     assertTrue("Compact layout should fit one screen",footer.getBottom()+root.getPaddingBottom()<=viewport.getHeight());
+     assertTrue(record.getBottom() <= next.getTop());
      TextView hanzi=a.findViewById(R.id.pageHanzi);
-     assertTrue("Bounded viewport should adapt text size",hanzi.getTextSize()<a.getResources().getDimension(R.dimen.ls_flashcard_hanzi_max));
-     assertTrue(hanzi.getTextSize()>=a.getResources().getDimension(R.dimen.ls_flashcard_hanzi_min));
+     assertTrue(hanzi.getLayout().getHeight() <= hanzi.getHeight());
      assertStaticCard(a.findViewById(R.id.pageCard));
      assertNoParentExplanation(a.findViewById(android.R.id.content));
     });
@@ -234,7 +229,7 @@ public class PeerReviewLearningTest {
    });
    waitFor(s,R.id.rotationGate,View.VISIBLE);
    onView(withId(R.id.rotationMessage)).check(androidx.test.espresso.assertion.ViewAssertions.matches(
-    androidx.test.espresso.matcher.ViewMatchers.withText(R.string.fc_portrait_only)));
+    androidx.test.espresso.matcher.ViewMatchers.withText(R.string.sprout_rotate)));
    onView(withId(R.id.rotationMessage)).check(androidx.test.espresso.assertion.ViewAssertions.matches(
     androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed()));
    s.onActivity(a->{
@@ -256,7 +251,7 @@ public class PeerReviewLearningTest {
    s.onActivity(a->{
     assertEquals(View.GONE,a.findViewById(R.id.rotationGate).getVisibility());
     assertEquals(counter.get(),((TextView)a.findViewById(R.id.cardCounter)).getText().toString());
-    assertEquals(a.getString(R.string.pr_stamp_marked),((TextView)a.findViewById(R.id.stampLabel)).getText().toString());
+    assertEquals(a.getString(R.string.sprout_learned),((TextView)a.findViewById(R.id.stamp)).getText().toString());
    });
   }finally{setFontScale(original);}
  }

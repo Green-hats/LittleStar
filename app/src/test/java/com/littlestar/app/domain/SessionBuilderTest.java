@@ -1,6 +1,8 @@
 package com.littlestar.app.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.littlestar.app.data.content.ContentRepository;
@@ -168,5 +170,19 @@ public final class SessionBuilderTest {
         assertEquals(2, SessionBuilder.remainingTodayCount(state,
                 builder.previewTodayPlan(state, 8)));
         assertEquals(3, plan.goal);
+    }
+
+    @Test public void resumeUsesTodaysUnfinishedDailySessionNotThemeOrCompletedSession() {
+        FakeClock clock = new FakeClock(T1);
+        SessionBuilder builder = newBuilder(clock, TestContent.load());
+        ProgressState state = new ProgressState();
+        ProgressState.Session lesson = builder.resumeOrBuildDailySession(state, 3);
+        lesson.lessonCardIndex = 1;
+        builder.buildThemeSession(state, "animals");
+        assertEquals(lesson, builder.resumeOrBuildDailySession(state, 6));
+        assertEquals(2, state.sessions.size());
+        lesson.completedAt = clock.now().toEpochMilli();
+        assertNull(builder.resumableLesson(state));
+        assertNotEquals(lesson.id, builder.resumeOrBuildDailySession(state, 6).id);
     }
 }

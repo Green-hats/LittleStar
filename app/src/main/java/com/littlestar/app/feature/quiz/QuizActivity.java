@@ -8,62 +8,45 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.SavedStateHandleSupport;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.viewmodel.CreationExtras;
 
 import com.littlestar.app.R;
 import com.littlestar.app.core.audio.SfxPlayer;
 import com.littlestar.app.core.audio.SpeechPlayer;
-import com.littlestar.app.core.lifecycle.Event;
-import com.littlestar.app.core.ui.BlockLayout;
 import com.littlestar.app.core.ui.ChildActivity;
+import com.littlestar.app.core.ui.ContentImage;
 import com.littlestar.app.core.ui.Insets;
-import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.Word;
-import com.littlestar.app.data.store.ProgressState;
 import com.littlestar.app.databinding.ActivityQuizBinding;
 import com.littlestar.app.databinding.ViewQuizOptionBinding;
 import com.littlestar.app.feature.reward.RewardActivity;
 
-/**
- * 测验（§7.5）：一页一题，不用 ViewPager。点选项即锁定判定；
- * 答对 mint+勾，答错 clay+墨色× 并亮出正确项。答后反馈条 + NEXT 从下滑入。
- */
 public final class QuizActivity extends ChildActivity {
-
     private static final String EXTRA_MODE = "mode";
     private static final String EXTRA_SESSION_ID = "sessionId";
 
-    @NonNull
     public static Intent sessionIntent(@NonNull Activity from, long sessionId) {
-        Intent i = new Intent(from, QuizActivity.class);
-        i.putExtra(EXTRA_MODE, QuizViewModel.Mode.SESSION.name());
-        i.putExtra(EXTRA_SESSION_ID, sessionId);
-        return i;
+        return intent(from, sessionId, QuizViewModel.Mode.SESSION);
     }
 
-    /** 词表 Quiz 入口：创建 THEME 会话。 */
-    @NonNull
     public static Intent themeIntent(@NonNull Activity from, long sessionId) {
-        Intent i = new Intent(from, QuizActivity.class);
-        i.putExtra(EXTRA_MODE, QuizViewModel.Mode.THEME.name());
-        i.putExtra(EXTRA_SESSION_ID, sessionId);
-        return i;
+        return intent(from, sessionId, QuizViewModel.Mode.THEME);
+    }
+
+    private static Intent intent(Activity from, long id, QuizViewModel.Mode mode) {
+        return new Intent(from, QuizActivity.class)
+                .putExtra(EXTRA_MODE, mode.name()).putExtra(EXTRA_SESSION_ID, id);
     }
 
     private ActivityQuizBinding binding;
     private QuizViewModel vm;
     private ViewQuizOptionBinding[] options;
-    private BlockLayout[] optionBlocks;
-
-    private QuizViewModel.Mode mode = QuizViewModel.Mode.SESSION;
-    private long sessionId = -1;
+    private ContentImage questionArt;
     private SpeechPlayer.FailureListener audioFailureListener;
-    /** 已滑入反馈条的题号（-1 = 当前题还没滑入）。 */
-    private int feedbackShownFor = -1;
+    private int renderedIndex = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,186 +54,130 @@ public final class QuizActivity extends ChildActivity {
         binding = ActivityQuizBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Insets.applySystemBarPadding(binding.getRoot());
+        questionArt = new ContentImage(binding.questionIllustration, container().executors);
 
-        // SavedStateHandle 从 CreationExtras 取（进程被杀后回到同一题）
         vm = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
             @Override
             @SuppressWarnings("unchecked")
-            public <T extends androidx.lifecycle.ViewModel> T create(@NonNull Class<T> modelClass,
-                    @NonNull CreationExtras extras) {
-                SavedStateHandle handle = SavedStateHandleSupport.createSavedStateHandle(extras);
-                return (T) new QuizViewModel(container(), handle);
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass, @NonNull CreationExtras extras) {
+                return (T) new QuizViewModel(container(), SavedStateHandleSupport.createSavedStateHandle(extras));
             }
         }).get(QuizViewModel.class);
 
-        String m = getIntent().getStringExtra(EXTRA_MODE);
-        if (m != null) {
-            mode = QuizViewModel.Mode.valueOf(m);
-        }
-        sessionId = getIntent().getLongExtra(EXTRA_SESSION_ID, -1);
-
         options = new ViewQuizOptionBinding[]{
-                ViewQuizOptionBinding.bind(findViewById(R.id.option0)),
-                ViewQuizOptionBinding.bind(findViewById(R.id.option1)),
-                ViewQuizOptionBinding.bind(findViewById(R.id.option2)),
-                ViewQuizOptionBinding.bind(findViewById(R.id.option3))};
-        optionBlocks = new BlockLayout[options.length];
+                binding.option0, binding.option1, binding.option2, binding.option3};
         for (int i = 0; i < options.length; i++) {
-            optionBlocks[i] = options[i].optionBlock;
             int index = i;
-            optionBlocks[i].setOnClickListener(v -> vm.choose(index));
+            options[i].getRoot().setOnClickListener(v -> vm.choose(index));
         }
 
-        binding.btnBack.setOnClickListener(v -> {
-            finish();
-            Motion.childExit(this);
-        });
+        binding.btnBack.setOnClickListener(v -> finish());
         binding.btnListen.setOnClickListener(v -> vm.speakCurrent());
-        binding.questionCard.setOnClickListener(v -> vm.speakCurrent());
-        binding.btnNext.setOnClickListener(v -> vm.next());
         binding.btnRetry.setOnClickListener(v -> vm.retry());
+        binding.btnNext.setOnClickListener(v -> vm.next());
         binding.btnAudioRetry.setOnClickListener(v -> {
             binding.audioMissing.setVisibility(View.GONE);
             vm.speakCurrent();
         });
-        binding.btnAudioContinue.setOnClickListener(v -> {
-            finish();
-            Motion.childExit(this);
-        });
-        audioFailureListener = wordId -> runOnUiThread(() -> {
-            QuizViewModel.UiState current = vm.state().getValue();
-            if (current != null && current.question != null
-                    && wordId.equals(current.question.wordId())) {
+        binding.btnAudioContinue.setOnClickListener(v -> finish());
+        audioFailureListener = id -> {
+            QuizViewModel.UiState state = vm.state().getValue();
+            if (state != null && state.question != null && id.equals(state.question.wordId())) {
                 binding.audioMissing.setVisibility(View.VISIBLE);
                 binding.audioMissing.announceForAccessibility(getString(R.string.pr_audio_title));
             }
-        });
+        };
         container().speech.setFailureListener(audioFailureListener);
 
         vm.state().observe(this, this::render);
-        vm.effects().observe(this, this::onEffect);
-
-        // 内容就绪 + 会话可读后才 init（会话由 Flashcard 落盘，快照可能稍晚到）
-        container().content.load(container().executors, this::tryInit);
-    }
-
-    private void tryInit() {
-        if (vm.init(mode, sessionId)) {
-            return;
-        }
-        container().store.observe().observe(this, new Observer<ProgressState>() {
-            @Override
-            public void onChanged(ProgressState ps) {
-                if (vm.init(mode, sessionId)) {
-                    container().store.observe().removeObserver(this);
+        vm.effects().observe(this, event -> {
+            QuizViewModel.Effect effect = event.getContentIfNotHandled();
+            if (effect instanceof QuizViewModel.Effect.GoReward reward) {
+                startActivity(RewardActivity.intent(this, reward.sessionId()));
+                finish();
+            } else if (effect instanceof QuizViewModel.Effect.PlayWord play) {
+                Word word = container().content.wordById(play.wordId());
+                if (word != null) {
+                    container().speech.play(word);
                 }
+            } else if (effect instanceof QuizViewModel.Effect.AnswerSfx sound) {
+                container().sfx.play(sound.correct() ? SfxPlayer.Sfx.CORRECT : SfxPlayer.Sfx.WRONG);
+            }
+        });
+
+        long sessionId = getIntent().getLongExtra(EXTRA_SESSION_ID, -1);
+        QuizViewModel.Mode mode = QuizViewModel.Mode.THEME.name().equals(getIntent().getStringExtra(EXTRA_MODE))
+                ? QuizViewModel.Mode.THEME : QuizViewModel.Mode.SESSION;
+        container().content.load(container().executors, () -> {
+            if (!isDestroyed()) {
+                container().progress.observe().observe(this, snapshot -> {
+                    if (snapshot != null && !vm.init(mode, sessionId)) {
+                        binding.quizCounter.setText(R.string.sprout_unavailable);
+                    }
+                });
             }
         });
     }
 
-    private void render(QuizViewModel.UiState s) {
-        if (s == null || s.question == null) {
+    private void render(QuizViewModel.UiState state) {
+        if (state.question == null) {
+            binding.quizCounter.setText(R.string.sprout_unavailable);
             return;
         }
-        binding.quizCounter.setText(getString(R.string.quiz_counter, s.index + 1, s.total));
-        binding.quizProgress.setSegments(Math.max(1, s.total));
-        binding.quizProgress.setFilled(s.index + 1);
+        binding.quizOptions.setVisibility(View.VISIBLE);
+        binding.quizCounter.setText(getString(R.string.quiz_counter, state.index + 1, state.total));
+        binding.quizProgress.setMax(state.total);
+        binding.quizProgress.setProgress(state.index + 1);
+        binding.englishHint.setVisibility(state.showEnglishHint ? View.VISIBLE : View.GONE);
+        binding.englishHint.setText(state.question.english());
 
-        // 英文提示默认隐藏（settings.isEnglishHint）
-        binding.englishHint.setVisibility(s.showEnglishHint ? View.VISIBLE : View.GONE);
-        binding.englishHint.setText(s.question.english());
+        boolean newQuestion = renderedIndex != state.index;
+        if (newQuestion) {
+            renderedIndex = state.index;
+            binding.audioMissing.setVisibility(View.GONE);
+            Word word = container().content.wordById(state.question.wordId());
+            questionArt.bind(word == null ? null : word.image);
+            binding.getRoot().scrollTo(0, 0);
+        }
 
-        int card = ContextCompat.getColor(this, R.color.ls_card);
-        int mint = ContextCompat.getColor(this, R.color.ls_mint);
-        int clay = ContextCompat.getColor(this, R.color.ls_clay);
-        int ink = ContextCompat.getColor(this, R.color.ls_ink);
-        int muted = ContextCompat.getColor(this, R.color.ls_muted);
-        int onMint = ContextCompat.getColor(this, R.color.ls_on_mint);
-        int onClay = ContextCompat.getColor(this, R.color.ls_on_clay);
-
+        boolean resolved = state.lastAnswerCorrect || state.corrected;
         for (int i = 0; i < options.length; i++) {
-            ViewQuizOptionBinding ob = options[i];
-            String hanzi = i < s.question.options().size() ? s.question.options().get(i) : "";
-            ob.optionHanzi.setText(hanzi);
-            Word w = container().content.wordByHanzi(hanzi);
-            ob.optionPinyin.setText(w != null ? w.pinyin : "");
-            ob.optionBadge.setVisibility(View.GONE);
-
-            if (!s.answered || (s.retrying && i != s.retryChosenIndex)) {
-                optionBlocks[i].setFillColor(card);
-                ob.optionHanzi.setTextColor(ink);
-                ob.optionPinyin.setTextColor(muted);
-            } else if (!s.retrying && i == s.question.correctIndex()) {
-                optionBlocks[i].setFillColor(mint);
-                ob.optionHanzi.setTextColor(onMint);
-                ob.optionPinyin.setTextColor(onMint);
-                showBadge(ob, true);
-            } else if (s.retrying ? i == s.retryChosenIndex : !s.corrected && i == s.chosenIndex) {
-                optionBlocks[i].setFillColor(clay);
-                ob.optionHanzi.setTextColor(onClay);
-                ob.optionPinyin.setTextColor(onClay);
-                showBadge(ob, false);
-            } else {
-                optionBlocks[i].setFillColor(card);
-                ob.optionHanzi.setTextColor(ink);
-                ob.optionPinyin.setTextColor(muted);
+            ViewQuizOptionBinding option = options[i];
+            if (i >= state.question.options().size()) {
+                option.getRoot().setVisibility(View.GONE);
+                continue;
             }
+            String value = state.question.options().get(i);
+            boolean right = state.answered && !state.retrying && i == state.question.correctIndex();
+            boolean wrong = state.answered && (state.retrying ? i == state.retryChosenIndex
+                    : !resolved && i == state.chosenIndex);
+            option.getRoot().setVisibility(View.VISIBLE);
+            option.getRoot().setEnabled(!state.answered || state.retrying);
+            option.getRoot().setCardBackgroundColor(ContextCompat.getColor(this,
+                    right ? R.color.sprout_dew : wrong ? R.color.sprout_peach : R.color.ls_card));
+            option.optionHanzi.setText(value);
+            option.optionBadge.setVisibility(right || wrong ? View.VISIBLE : View.GONE);
+            option.optionBadge.setImageResource(right ? R.drawable.ic_check : R.drawable.ic_close);
+            option.getRoot().setContentDescription(right ? getString(R.string.sprout_option_correct, value)
+                    : wrong ? getString(R.string.sprout_option_wrong, value) : value);
         }
 
-        // 反馈条 + NEXT（答后滑入一次）
-        if (s.answered) {
-            boolean positive = s.lastAnswerCorrect || s.corrected;
-            binding.feedbackBar.setFillColor(positive ? mint : s.retrying ? card : clay);
-            binding.feedbackText.setText(s.retrying ? getString(R.string.quiz_retry_hint)
-                    : s.corrected ? getString(R.string.quiz_retry_correct) : s.lastAnswerCorrect
-                    ? getString(R.string.quiz_feedback_correct)
-                    : getString(R.string.quiz_feedback_wrong, s.question.hanzi(), s.question.english()));
-            binding.feedbackText.setTextColor(positive ? onMint : s.retrying ? ink : onClay);
-            binding.feedbackIcon.setImageResource(
-                    positive ? R.drawable.ic_check : s.retrying ? R.drawable.ic_speaker : R.drawable.ic_close);
-            binding.feedbackIcon.setColorFilter(positive ? onMint : s.retrying ? ink : onClay);
-            binding.btnRetry.setVisibility(!positive && !s.retrying ? View.VISIBLE : View.GONE);
-            binding.btnNextText.setText(s.retrying ? R.string.quiz_skip_retry
-                    : s.isLast ? R.string.quiz_done : R.string.quiz_next);
-            if (feedbackShownFor != s.index) {
-                feedbackShownFor = s.index;
-                Motion.slideUpIn(binding.bottomFeedback);
-            }
-        } else {
-            binding.bottomFeedback.setVisibility(View.GONE);
-            feedbackShownFor = -1;
-        }
-    }
-
-    private void showBadge(ViewQuizOptionBinding ob, boolean correct) {
-        ob.optionBadge.setImageResource(correct ? R.drawable.ic_check : R.drawable.ic_close);
-        ob.optionBadge.setBackgroundResource(
-                correct ? R.drawable.bg_badge_green : R.drawable.bg_badge_ink);
-        ob.optionBadge.setColorFilter(ContextCompat.getColor(this,
-                correct ? R.color.ls_on_green : R.color.ls_card));
-        Motion.popIn(ob.optionBadge);
-    }
-
-    private void onEffect(Event<QuizViewModel.Effect> event) {
-        QuizViewModel.Effect e = event.getContentIfNotHandled();
-        if (e instanceof QuizViewModel.Effect.GoReward go) {
-            startActivity(RewardActivity.intent(this, go.sessionId()));
-            Motion.childEnter(this);
-            finish();
-        } else if (e instanceof QuizViewModel.Effect.PlayWord play) {
-            Word w = container().content.wordById(play.wordId());
-            if (w != null) {
-                container().speech.play(w);
-            }
-        } else if (e instanceof QuizViewModel.Effect.AnswerSfx sfx) {
-            container().sfx.play(sfx.correct() ? SfxPlayer.Sfx.CORRECT : SfxPlayer.Sfx.WRONG);
-            if (!sfx.correct()) {
-                QuizViewModel.UiState s = vm.state().getValue();
-                int chosen = s == null ? -1 : s.retrying ? s.retryChosenIndex : s.chosenIndex;
-                if (chosen >= 0 && chosen < optionBlocks.length) {
-                    Motion.shake(optionBlocks[chosen]);
-                }
+        binding.bottomFeedback.setVisibility(state.answered ? View.VISIBLE : View.GONE);
+        if (state.answered) {
+            binding.bottomFeedback.setCardBackgroundColor(ContextCompat.getColor(this,
+                    resolved ? R.color.sprout_dew : R.color.sprout_peach));
+            binding.feedbackText.setText(state.corrected ? getString(R.string.quiz_retry_correct)
+                    : state.lastAnswerCorrect ? getString(R.string.quiz_feedback_correct)
+                    : state.retrying ? getString(R.string.quiz_retry_hint)
+                    : getString(R.string.quiz_feedback_wrong, state.question.hanzi(), state.question.english()));
+            binding.btnRetry.setVisibility(!resolved && !state.retrying ? View.VISIBLE : View.GONE);
+            binding.btnNext.setVisibility(resolved ? View.VISIBLE : View.GONE);
+            binding.btnNext.setText(state.isLast ? R.string.sprout_finish : R.string.sprout_next);
+            if (!state.retrying) {
+                binding.bottomFeedback.post(() -> binding.bottomFeedback.requestRectangleOnScreen(
+                        new android.graphics.Rect(0, 0, binding.bottomFeedback.getWidth(),
+                                binding.bottomFeedback.getHeight())));
             }
         }
     }
@@ -263,9 +190,7 @@ public final class QuizActivity extends ChildActivity {
 
     @Override
     protected void onDestroy() {
-        if (audioFailureListener != null) {
-            container().speech.clearFailureListener(audioFailureListener);
-        }
+        container().speech.clearFailureListener(audioFailureListener);
         super.onDestroy();
     }
 }

@@ -1,196 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- §7.6 完成：黄色舞台 + 熊猫 + 本轮字块 + 完成 / 再来一次 -->
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rewardRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ls_paper"
-    android:fillViewport="true">
-
+    android:fillViewport="true"
+    android:background="@color/sprout_cloud">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxWidth="@dimen/ls_content_max_width"
         android:orientation="vertical"
-        android:padding="@dimen/ls_margin">
-
-        <!-- 黄色舞台（confetti 只在舞台内） -->
-        <com.littlestar.app.core.ui.BlockLayout
-            android:id="@+id/stage"
-            style="@style/Widget.LS.Block.Hero"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_reward_stage"
-            android:layout_marginTop="@dimen/ls_section"
-            app:ls_fill="@color/ls_yellow"
-            app:ls_pressable="false">
-
-            <ImageView
-                android:layout_width="@dimen/ls_reward_panda"
-                android:layout_height="@dimen/ls_reward_panda"
-                android:layout_gravity="center"
-                android:contentDescription="@string/home_panda_desc"
-                android:src="@drawable/ic_panda" />
-
-            <FrameLayout
-                android:id="@+id/confettiLayer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </com.littlestar.app.core.ui.BlockLayout>
-        <!-- 标题 + 副标题 + 学会印章 -->
+        android:paddingStart="@dimen/sprout_gutter"
+        android:paddingEnd="@dimen/sprout_gutter"
+        android:paddingTop="12dp"
+        android:paddingBottom="20dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_section"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Sprout.Back"
+                android:text="@string/sprout_back"
+                app:icon="@drawable/ic_back" />
 
-            <LinearLayout
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Sprout.Title"
+                android:text="@string/sprout_complete"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_marginStart="8dp"
+                android:accessibilityHeading="true" />
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/reward_title"
-                    android:textAppearance="@style/TextAppearance.LS.Display"
-                    android:textSize="34sp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
-                <TextView
-                    android:id="@+id/rewardSubtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ls_gap_sm"
-                    android:textAppearance="@style/TextAppearance.LS.Caption"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <com.littlestar.app.core.ui.BlockLayout
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="@dimen/ls_stamp"
-                android:layout_height="@dimen/ls_stamp"
-                android:rotation="-8"
-                app:ls_fill="@color/ls_red"
-                app:ls_pressable="false">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Sprout.Card">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="124dp"
+                    android:src="@drawable/ill_sprout_trail"
+                    android:scaleType="fitCenter"
+                    android:importantForAccessibility="no" />
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.LS.Body"
-                    android:text="@string/reward_stamp_text"
-                    android:textColor="@color/ls_on_red"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </com.littlestar.app.core.ui.BlockLayout>
-        </LinearLayout>
-
-        <!-- 本轮学会的字块 -->
-        <LinearLayout
-            android:id="@+id/wordsRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_section"
-            android:orientation="horizontal" />
-
-        <!-- 次入口：本轮答题回顾（A1） -->
-        <com.littlestar.app.core.ui.BlockLayout
-            android:id="@+id/btnReview"
-            style="@style/Widget.LS.Block.Secondary"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_secondary"
-            android:layout_marginTop="@dimen/ls_section">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_quiz" />
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Sprout.Title"
+                    android:text="@string/sprout_reward_title"
+                    android:gravity="center" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/rewardSubtitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/ls_gap_sm"
-                    android:text="@string/reward_review"
-                    android:textAppearance="@style/TextAppearance.LS.Body"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.Sprout.Caption"
+                    android:text="@string/sprout_today_loading"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/rewardScore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Sprout.Section"
+                    android:gravity="center"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:id="@+id/rewardPractice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Sprout.Caption"
+                    android:gravity="center" />
             </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <Space
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
-        <!-- 主按钮：完成 -->
-        <com.littlestar.app.core.ui.BlockLayout
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDone"
-            style="@style/Widget.LS.Block.Primary"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/ls_section"
-            android:layout_height="@dimen/ls_btn_primary">
+            android:layout_height="wrap_content"
+            style="@style/Widget.Sprout.Button"
+            android:text="@string/sprout_return_learn"
+            app:icon="@drawable/ic_check" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_check"
-                    app:tint="@color/ls_on_red" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/ls_gap_sm"
-                    android:text="@string/reward_done"
-                    android:textAppearance="@style/TextAppearance.LS.Button" />
-            </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
-
-        <!-- 次按钮：再来一次 -->
-        <com.littlestar.app.core.ui.BlockLayout
-            android:id="@+id/btnAgain"
-            style="@style/Widget.LS.Block.Secondary"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnReview"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_secondary"
-            android:layout_marginTop="@dimen/ls_gap">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_play" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/ls_gap_sm"
-                    android:text="@string/reward_again"
-                    android:textAppearance="@style/TextAppearance.LS.Button"
-                    android:textColor="@color/ls_ink" />
-            </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
+            android:layout_height="wrap_content"
+            style="@style/Widget.Sprout.Secondary"
+            android:text="@string/sprout_answers"
+            app:icon="@drawable/ic_book"
+            android:enabled="false" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

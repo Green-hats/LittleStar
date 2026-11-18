@@ -90,22 +90,72 @@ public final class ProgressRepository {
         LocalDate today = clock.today();
         store.update(state -> {
             ProgressState.Session s = findSession(state, sessionId);
-            if (s != null) {
-                ProgressState.Answer a = new ProgressState.Answer();
-                a.wordId = wordId;
-                a.chosen = chosenHanzi;
-                a.correct = correct;
-                a.firstTry = firstTry;
-                a.at = now.toEpochMilli();
-                s.answers.add(a);
-                if (correct) {
-                    s.correct++;
-                }
+            if (s == null || s.completedAt != null || !s.quizWordIds.contains(wordId)
+                    || answerFor(s, wordId) != null) {
+                return;
+            }
+            ProgressState.Answer a = new ProgressState.Answer();
+            a.wordId = wordId;
+            a.chosen = chosenHanzi;
+            a.correct = correct;
+            a.firstTry = firstTry;
+            a.at = now.toEpochMilli();
+            s.answers.add(a);
+            if (correct && firstTry) {
+                s.correct++;
             }
             ProgressState.WordProgress wp =
                     state.words.computeIfAbsent(wordId, k -> new ProgressState.WordProgress());
             ReviewScheduler.onQuizAnswer(wp, correct && firstTry, now, today);
         });
+        store.flushNow();
+    }
+
+    public void recordCorrection(long sessionId, @NonNull String wordId) {
+        Instant now = clock.now();
+        LocalDate today = clock.today();
+        store.update(state -> {
+            ProgressState.Session session = findSession(state, sessionId);
+            ProgressState.Answer answer = session == null ? null : answerFor(session, wordId);
+            if (session == null || session.completedAt != null || answer == null || answer.correct
+                    || session.correctedWordIds.contains(wordId)) {
+                return;
+            }
+            session.correctedWordIds.add(wordId);
+            ProgressState.WordProgress word = state.words.computeIfAbsent(wordId,
+                    id -> new ProgressState.WordProgress());
+            if (word.learnedAt == null) {
+                ReviewScheduler.markLearned(word, now, today);
+            }
+        });
+        store.flushNow();
+    }
+
+    public void saveLessonPosition(long sessionId, int position, boolean practice) {
+        store.update(state -> {
+            ProgressState.Session session = findSession(state, sessionId);
+            if (session == null || session.completedAt != null) {
+                return;
+            }
+            if (practice) {
+                session.practiceStarted = true;
+                session.practiceIndex = Math.max(session.practiceIndex, position);
+            } else {
+                session.lessonCardIndex = Math.max(session.lessonCardIndex, position);
+            }
+        });
+        store.flushNow();
+    }
+
+    @Nullable
+    public static ProgressState.Answer answerFor(@NonNull ProgressState.Session session,
+                                                  @NonNull String wordId) {
+        for (ProgressState.Answer answer : session.answers) {
+            if (wordId.equals(answer.wordId)) {
+                return answer;
+            }
+        }
+        return null;
     }
 
     /** 记录完成时间；只在 completedAt 为空时写一次，并立即保存。 */

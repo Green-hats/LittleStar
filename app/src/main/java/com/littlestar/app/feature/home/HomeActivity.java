@@ -55,13 +55,15 @@ public final class HomeActivity extends ChildActivity {
     }
 
     private void render(HomeViewModel.UiState state) {
-        binding.btnStart.setEnabled(!state.loading && !openingLesson && state.nextWord != null);
+        binding.btnStart.setEnabled(!state.loading && !openingLesson
+                && (state.hasActiveLesson || state.nextWord != null));
         if (state.loading) {
             return;
         }
         binding.todayProgressText.setText(getString(R.string.sprout_today_goal, state.learnedToday, state.goal));
         binding.todayProgress.setMax(Math.max(1, state.goal));
         binding.todayProgress.setProgress(state.isDailyComplete() ? Math.max(1, state.goal) : state.learnedToday);
-        binding.btnStart.setText(state.isDailyComplete() ? R.string.sprout_review : R.string.sprout_start);
+        binding.btnStart.setText(state.hasActiveLesson ? R.string.sprout_continue
+                : state.isDailyComplete() ? R.string.sprout_review : R.string.sprout_start);
     }
 }

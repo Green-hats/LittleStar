@@ -80,8 +80,14 @@ public final class RoundReviewActivity extends ChildActivity {
         binding.reviewSummary.setVisibility(empty ? View.GONE : View.VISIBLE);
         binding.answerList.setVisibility(empty ? View.GONE : View.VISIBLE);
         binding.emptyState.setVisibility(empty ? View.VISIBLE : View.GONE);
-        binding.reviewSummary.setText(getString(R.string.review_summary, s.correct, s.total));
+        binding.reviewSummary.setText(getString(R.string.sprout_first_try, s.correct, s.total));
         adapter.setItems(s.items);
+    }
+
+    @Override
+    protected void onPause() {
+        container().speech.stop();
+        super.onPause();
     }
 
     private final class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.Holder> {

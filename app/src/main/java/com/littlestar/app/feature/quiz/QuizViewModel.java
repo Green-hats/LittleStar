@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 import com.littlestar.app.AppContainer;
 import com.littlestar.app.core.lifecycle.Event;
 import com.littlestar.app.data.content.model.Word;
+import com.littlestar.app.data.repo.ProgressRepository;
 import com.littlestar.app.data.store.ProgressState;
 import com.littlestar.app.domain.QuizGenerator;
 import com.littlestar.app.domain.SessionBuilder;
@@ -81,7 +82,6 @@ public final class QuizViewModel extends ViewModel {
     private final MutableLiveData<UiState> state = new MutableLiveData<>();
     private final MutableLiveData<Event<Effect>> effects = new MutableLiveData<>();
 
-    private Mode mode = Mode.SESSION;
     private long sessionId = -1;
     private List<QuizGenerator.QuizQuestion> questions = new ArrayList<>();
     /** 刚作答的结果（store 快照到达前 UI 立即反馈用）。 */
@@ -90,6 +90,7 @@ public final class QuizViewModel extends ViewModel {
     private int justChosenIndex = -1;
 
     private boolean initialized;
+    private boolean completing;
 
     public QuizViewModel(@NonNull AppContainer container, @NonNull SavedStateHandle savedState) {
         this.container = container;
@@ -107,7 +108,6 @@ public final class QuizViewModel extends ViewModel {
             return false;
         }
         initialized = true;
-        this.mode = mode;
         this.sessionId = sessionId;
         for (int qIdx = 0; qIdx < session.quizWordIds.size(); qIdx++) {
             String id = session.quizWordIds.get(qIdx);
@@ -118,8 +118,17 @@ public final class QuizViewModel extends ViewModel {
                 questions.add(seededGen.generate(w));
             }
         }
-        publish(session);
+        Integer activityIndex = savedState.get(KEY_INDEX);
+        int resumeIndex = Math.max(0, Math.min(session.practiceIndex, questions.size() - 1));
+        if (activityIndex == null || activityIndex != resumeIndex) {
+            savedState.set(KEY_RETRYING, false);
+            savedState.set(KEY_CORRECTED, false);
+            savedState.set(KEY_RETRY_CHOSEN, -1);
+        }
+        savedState.set(KEY_INDEX, resumeIndex);
+        container.progress.saveLessonPosition(sessionId, resumeIndex, true);
         if (!restoreAnswered(session)) {
+            publish();
             speakCurrent();
         }
         return true;
@@ -142,32 +151,28 @@ public final class QuizViewModel extends ViewModel {
             return false;
         }
         int idx = index();
-        if (idx < session.answers.size()) {
-            ProgressState.Answer a = session.answers.get(idx);
+        QuizGenerator.QuizQuestion q = idx < questions.size() ? questions.get(idx) : null;
+        ProgressState.Answer a = q == null ? null : ProgressRepository.answerFor(session, q.wordId());
+        if (a != null) {
             justAnswered = true;
-            justAnsweredCorrect = a.correct;
-            QuizGenerator.QuizQuestion q = idx < questions.size() ? questions.get(idx) : null;
-            if (q != null) {
-                justChosenIndex = q.options().indexOf(a.chosen);
+            justAnsweredCorrect = a.correct && a.firstTry;
+            justChosenIndex = q.options().indexOf(a.chosen);
+            if (session.correctedWordIds.contains(q.wordId()) || (a.correct && !a.firstTry)) {
+                savedState.set(KEY_CORRECTED, true);
+                savedState.set(KEY_RETRYING, false);
             }
-            publish(session);
+            publish();
             return true;
         }
         return false;
     }
 
-    private void publish(@Nullable ProgressState.Session session) {
+    private void publish() {
         int idx = index();
         QuizGenerator.QuizQuestion q = idx < questions.size() ? questions.get(idx) : null;
         boolean answered = justAnswered;
         boolean correct = justAnsweredCorrect;
         int chosen = justChosenIndex;
-        if (!answered && session != null && q != null && idx < session.answers.size()) {
-            ProgressState.Answer a = session.answers.get(idx);
-            answered = true;
-            correct = a.correct;
-            chosen = q.options().indexOf(a.chosen);
-        }
         state.setValue(new UiState(idx, questions.size(), q, answered, correct, chosen,
                 idx == questions.size() - 1, container.settings.isEnglishHint(),
                 answered && Boolean.TRUE.equals(savedState.get(KEY_RETRYING)),
@@ -185,10 +190,13 @@ public final class QuizViewModel extends ViewModel {
         QuizGenerator.QuizQuestion q = s.question;
         boolean correct = optionIndex == q.correctIndex();
         if (s.retrying) {
+            if (correct) {
+                container.progress.recordCorrection(sessionId, q.wordId());
+            }
             savedState.set(KEY_RETRY_CHOSEN, optionIndex);
             savedState.set(KEY_RETRYING, !correct);
             savedState.set(KEY_CORRECTED, correct);
-            publish(currentSession());
+            publish();
             effects.setValue(new Event<>(new Effect.AnswerSfx(correct)));
             if (!correct) {
                 speakCurrent();
@@ -199,14 +207,14 @@ public final class QuizViewModel extends ViewModel {
         justAnswered = true;
         justAnsweredCorrect = correct;
         justChosenIndex = optionIndex;
-        publish(currentSession());
+        publish();
         effects.setValue(new Event<>(new Effect.AnswerSfx(correct)));
         if (!correct) {
             effects.setValue(new Event<>(new Effect.PlayWord(q.wordId())));   // 答错后再朗读正确字
         }
     }
 
-    /** 自愿纠正，不覆盖首次答案、不改变评分或复习调度。 */
+    /** 纠正不覆盖首次答案、不改变评分或复习调度。 */
     public void retry() {
         UiState s = state.getValue();
         if (s == null || !s.answered || s.lastAnswerCorrect || s.retrying || s.corrected) {
@@ -214,28 +222,35 @@ public final class QuizViewModel extends ViewModel {
         }
         savedState.set(KEY_RETRYING, true);
         savedState.set(KEY_RETRY_CHOSEN, -1);
-        publish(currentSession());
+        publish();
         speakCurrent();
     }
 
     /** NEXT / 完成。 */
     public void next() {
         UiState s = state.getValue();
-        if (s == null || !s.answered) {
+        if (s == null || !(s.lastAnswerCorrect || s.corrected) || completing) {
             return;
         }
         if (s.isLast) {
+            completing = true;
+            container.progress.completeSession(sessionId);
             effects.setValue(new Event<>(new Effect.GoReward(sessionId)));
             return;
         }
         savedState.set(KEY_INDEX, s.index + 1);
+        container.progress.saveLessonPosition(sessionId, s.index + 1, true);
         savedState.set(KEY_RETRYING, false);
         savedState.set(KEY_CORRECTED, false);
         savedState.set(KEY_RETRY_CHOSEN, -1);
         justAnswered = false;
+        justAnsweredCorrect = false;
         justChosenIndex = -1;
-        publish(currentSession());
-        speakCurrent();
+        ProgressState.Session session = currentSession();
+        if (!restoreAnswered(session)) {
+            publish();
+            speakCurrent();
+        }
     }
 
     /** 自动读题 / 点「听」重听。 */

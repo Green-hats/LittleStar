@@ -1,111 +1,134 @@
 package com.littlestar.app;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.junit.Assert.*;
+
+import android.os.SystemClock;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.littlestar.app.data.store.ProgressState;
+import com.littlestar.app.domain.QuizGenerator;
 import com.littlestar.app.feature.home.HomeActivity;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/**
- * 冒烟（M3）：清到首次启动 → 引导两步 → START → 识字卡 NEXT×N → 每题点第一个选项
- * → Reward → 完成回 Home。
- * 数据是持久的：@Before 通过容器把 settings / progress 重置（进程内存态也一并清），
- * 保证测试从「firstLaunch + 0 进度」开始。
- */
+import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public final class SmokeTest {
+    private static final int[] OPTIONS = {R.id.option0, R.id.option1, R.id.option2, R.id.option3};
+    private AppContainer container;
 
     @Before
-    public void resetToFirstLaunch() throws InterruptedException {
-        AppContainer c = ((LittleStarApp) ApplicationProvider.getApplicationContext()).container();
-        c.settings.setOnboarded(false);
-        c.settings.setDailyGoal(3);
-        c.settings.setEnglishHint(false);
-        c.settings.setParentPin("");
-        c.store.update(state -> {
-            state.words.clear();
-            state.sessions.clear();
-            state.dailyPlans.clear();
-            state.usage.clear();
-            state.nextSessionId = 1;
+    public void resetToFirstLaunch() throws Exception {
+        container = ((LittleStarApp) ApplicationProvider.getApplicationContext()).container();
+        container.settings.setOnboarded(false);
+        container.settings.setDailyGoal(3);
+        container.settings.setEnglishHint(false);
+        container.store.update(s -> {
+            s.words.clear();
+            s.sessions.clear();
+            s.dailyPlans.clear();
+            s.nextSessionId = 1;
         });
-        c.store.flushNow();
-        Thread.sleep(500);   // 等 diskIO 落盘
+        read(s -> s.sessions.size());
     }
 
     @Test
-    public void fullSessionFlow() throws InterruptedException {
-        try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
-            // 1. 首次引导：下一步 → 先不用
-            clickIfDisplayed(R.id.obNext);
-            clickIfDisplayed(R.id.obLater);
+    public void fullSessionFlow() throws Exception {
+        try (ActivityScenario<HomeActivity> ignored = ActivityScenario.launch(HomeActivity.class)) {
+            tap(R.id.btnStart);
+            tap(R.id.btnListen);
+            tap(R.id.btnNext);
+            pressBack();
+            onView(withId(R.id.btnStart)).check(matches(withText(R.string.sprout_continue)));
+            tap(R.id.btnStart);
+            tap(R.id.btnListen);
+            onView(withId(R.id.cardCounter)).check(matches(withText("Word 2 of 3")));
+            tap(R.id.btnNext);
+            tap(R.id.btnNext);
 
-            // 2. 首页：切到字态（17:00 后默认文态，LISTEN M3 不导航）再 START
-            waitFor(R.id.btnStart, 10_000);
-            onView(withId(R.id.btnStart)).perform(click());
-
-            // 3. 识字卡：NEXT 点到 Quiz 出现（REVIEW 会话会直接跳过识字卡）
-            for (int i = 0; i < 8 && !isShown(R.id.quizRoot); i++) {
-                waitFor(R.id.flashcardRoot, 10_000);
-                onView(withId(R.id.btnNext)).perform(click());
-                Thread.sleep(600);
-            }
-
-            // 4. 测验：每题点第一个选项，再点 NEXT
-            for (int i = 0; i < 12 && !isShown(R.id.rewardRoot); i++) {
-                waitFor(R.id.quizRoot, 10_000);
-                if (isShown(R.id.bottomFeedback)) {
-                    onView(withId(R.id.btnNext)).perform(click());
-                } else {
-                    onView(withId(R.id.option0)).perform(click());
+            ProgressState.Session session = read(s -> s.sessions.get(0));
+            for (int i = 0; i < session.quizWordIds.size(); i++) {
+                String id = session.quizWordIds.get(i);
+                long seed = session.id * 10007L + (long) i * 31L + id.hashCode();
+                int correct = new QuizGenerator(container.content, new Random(seed))
+                        .generate(container.content.wordById(id)).correctIndex();
+                if (i == 0) {
+                    tap(OPTIONS[(correct + 1) % OPTIONS.length]);
+                    waitUntilShown(R.id.btnRetry);
+                    assertFalse("An incorrect answer must not unlock Next", shownAndEnabled(R.id.btnNext));
+                    pressBack();
+                    tap(R.id.btnStart);
+                    tap(R.id.btnRetry);
                 }
-                Thread.sleep(600);
+                tap(OPTIONS[correct]);
+                tap(R.id.btnNext);
             }
 
-            // 5. Reward 出现 → 完成回 Home
-            waitFor(R.id.rewardRoot, 10_000);
-            onView(withId(R.id.btnDone)).check(matches(isDisplayed())).perform(click());
-            Thread.sleep(800);
-            onView(withId(R.id.btnStart)).check(matches(isDisplayed()));
+            waitUntilShown(R.id.btnReview);
+            onView(withId(R.id.rewardScore)).check(matches(withText("First try: 2 of 3")));
+            tap(R.id.btnReview);
+            waitUntilShown(R.id.answerList);
+            pressBack();
+            tap(R.id.btnDone);
+            onView(withId(R.id.btnStart)).check(matches(withText(R.string.sprout_review)));
+            ProgressState state = read(s -> s);
+            ProgressState.Session completed = state.sessions.get(0);
+            assertEquals(1, state.sessions.size());
+            assertNotNull(completed.completedAt);
+            assertEquals(3, completed.answers.size());
+            assertEquals(2, completed.correct);
+            assertFalse(completed.answers.get(0).correct);
+            String corrected = completed.answers.get(0).wordId;
+            assertTrue(completed.correctedWordIds.contains(corrected));
+            assertEquals(container.clock.today().plusDays(1).toString(), state.words.get(corrected).dueDate);
         }
     }
 
-    private static void clickIfDisplayed(int id) throws InterruptedException {
-        waitFor(id, 10_000);
-        onView(withId(id)).perform(click());
-        Thread.sleep(600);
+    private <T> T read(Function<ProgressState, T> fn) throws Exception {
+        CompletableFuture<T> result = new CompletableFuture<>();
+        container.progress.read(state -> fn.apply(state.deepCopy(new com.google.gson.Gson())), result::complete);
+        return result.get(10, TimeUnit.SECONDS);
     }
 
-    private static boolean isShown(int id) {
+    private static void tap(int id) {
+        waitUntilShown(id);
+        onView(withId(id)).perform(click());
+    }
+
+    private static boolean shownAndEnabled(int id) {
         try {
-            onView(withId(id)).check(matches(isDisplayed()));
+            onView(withId(id)).check(matches(allOf(isDisplayed(), isEnabled())));
             return true;
         } catch (RuntimeException | AssertionError e) {
             return false;
         }
     }
 
-    private static void waitFor(int id, long timeoutMs) throws InterruptedException {
-        long deadline = System.currentTimeMillis() + timeoutMs;
-        while (!isShown(id)) {
-            if (System.currentTimeMillis() > deadline) {
-                // 最后一次用 check 抛出带堆栈的失败
-                onView(withId(id)).check(matches(isDisplayed()));
-                return;
-            }
-            Thread.sleep(200);
+    private static void waitUntilShown(int id) {
+        long deadline = SystemClock.uptimeMillis() + 5000;
+        while (!shownAndEnabled(id) && SystemClock.uptimeMillis() < deadline) {
+            SystemClock.sleep(50);
         }
+        onView(withId(id)).check(matches(allOf(isDisplayed(), isEnabled())));
     }
 }

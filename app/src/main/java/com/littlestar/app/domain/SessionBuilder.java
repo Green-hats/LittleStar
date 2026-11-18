@@ -120,6 +120,28 @@ public final class SessionBuilder {
         return s;
     }
 
+    @Nullable
+    public ProgressState.Session resumableLesson(@NonNull ProgressState state) {
+        String today = clock.today().toString();
+        for (int i = state.sessions.size() - 1; i >= 0; i--) {
+            ProgressState.Session session = state.sessions.get(i);
+            if (session.completedAt == null && today.equals(session.date)
+                    && (KIND_DAILY.equals(session.kind) || KIND_REVIEW.equals(session.kind))
+                    && !session.quizWordIds.isEmpty()
+                    && session.quizWordIds.stream().allMatch(id -> content.wordById(id) != null)) {
+                return session;
+            }
+        }
+        return null;
+    }
+
+    @NonNull
+    public ProgressState.Session resumeOrBuildDailySession(@NonNull ProgressState state, int dailyGoal) {
+        content.ensureLoaded();
+        ProgressState.Session active = resumableLesson(state);
+        return active != null ? active : buildDailySession(state, dailyGoal);
+    }
+
     /** THEME 会话：从该主题 6 字里随机取 5 题；不影响今日进度，但会更新字进度。 */
     @NonNull
     public ProgressState.Session buildThemeSession(@NonNull ProgressState state, @NonNull String themeId) {

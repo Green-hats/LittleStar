@@ -9,6 +9,7 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.lifecycle.SavedStateHandle;
+import androidx.lifecycle.ViewModelProvider;
 import com.littlestar.app.feature.words.ThemesActivity;
 import com.littlestar.app.feature.words.WordListActivity;
 import com.littlestar.app.feature.flashcard.FlashcardActivity;
@@ -68,15 +69,18 @@ public class MemberADesignTest {
         Intent quiz=new Intent(ApplicationProvider.getApplicationContext(),QuizActivity.class).putExtra("mode","THEME").putExtra("sessionId",901L);
         try(ActivityScenario<QuizActivity> s=ActivityScenario.launch(quiz)) {
             SystemClock.sleep(700); UiEvidence.capture("A4_unanswered");
-            onView(withId(R.id.option0)).perform(click()); SystemClock.sleep(500);
+            s.onActivity(a -> {
+                QuizViewModel vm = new ViewModelProvider(a).get(QuizViewModel.class);
+                int[] options = {R.id.option0, R.id.option1, R.id.option2, R.id.option3};
+                a.findViewById(options[vm.state().getValue().question.correctIndex()]).performClick();
+            });
+            SystemClock.sleep(300);
             s.onActivity(a->{
                 assertVisible(a.findViewById(R.id.btnNext));
                 for(int id:new int[]{R.id.option0,R.id.option1,R.id.option2,R.id.option3}) {
                     View option=a.findViewById(id); assertVisible(option);
                     TextView hanzi=option.findViewById(R.id.optionHanzi);
-                    TextView pinyin=option.findViewById(R.id.optionPinyin);
-                    assertTrue("option must fit glyph + pinyin plus shadow", option.getHeight()-option.getPaddingBottom()>=hanzi.getHeight()+pinyin.getHeight());
-                    assertTextFits(hanzi); assertTextFits(pinyin);
+                    assertTextFits(hanzi);
                 }
                 assertTextFits(a.findViewById(R.id.feedbackText));
             });

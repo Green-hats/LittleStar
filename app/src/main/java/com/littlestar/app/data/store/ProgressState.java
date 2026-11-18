@@ -57,6 +57,10 @@ public final class ProgressState {
         public int correct;
         public int total;
         public List<Answer> answers = new ArrayList<>();
+        public int lessonCardIndex;
+        public boolean practiceStarted;
+        public int practiceIndex;
+        public List<String> correctedWordIds = new ArrayList<>();
     }
 
     public static final class Answer {

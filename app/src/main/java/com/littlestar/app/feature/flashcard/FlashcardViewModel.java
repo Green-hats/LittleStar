@@ -69,10 +69,12 @@ public final class FlashcardViewModel extends ViewModel {
     private boolean cleared;
 
     /** 只跨线程传递副本，绝不把 store 内可变 Session 暴露给主线程。 */
-    private record SessionResult(long id, List<String> newIds, boolean hasQuiz) {
+    private record SessionResult(long id, List<String> newIds, boolean hasQuiz,
+                                 int cardIndex, boolean practicing) {
         static SessionResult copyOf(ProgressState.Session session) {
             return new SessionResult(session.id, new ArrayList<>(session.newWordIds),
-                    !session.quizWordIds.isEmpty());
+                    !session.quizWordIds.isEmpty(), session.lessonCardIndex,
+                    session.practiceStarted || !session.answers.isEmpty());
         }
     }
 
@@ -121,7 +123,7 @@ public final class FlashcardViewModel extends ViewModel {
     /** 更新与落盘沿用 store 的串行 diskIO 约定；callback 不引用任何 Activity。 */
     private void buildSession() {
         container.store.update(progress -> {
-            SessionResult result = SessionResult.copyOf(container.sessionBuilder.buildDailySession(
+            SessionResult result = SessionResult.copyOf(container.sessionBuilder.resumeOrBuildDailySession(
                     progress, container.settings.getDailyGoal()));
             container.store.flushNow();
             // flushNow 入队在前，随后这个 diskIO barrier 确保保存完成再交付结果。
@@ -136,13 +138,13 @@ public final class FlashcardViewModel extends ViewModel {
 
     private void acceptSession(@NonNull SessionResult result, int startIndex) {
         sessionId = result.id();
-        if (!result.hasQuiz() || result.newIds().isEmpty()) {
+        if (!result.hasQuiz() || result.newIds().isEmpty() || result.practicing()) {
             initializing = false;
             initialized = true;
             effects.setValue(new Event<>(!result.hasQuiz()
                     ? new Effect.Close() : new Effect.GoQuiz(result.id())));
         } else {
-            init(Mode.SESSION, result.newIds(), startIndex, result.id());
+            init(Mode.SESSION, result.newIds(), Math.max(startIndex, result.cardIndex()), result.id());
         }
     }
 
@@ -228,17 +230,21 @@ public final class FlashcardViewModel extends ViewModel {
     /** NEXT / 完成。 */
     public void next() {
         UiState s = state.getValue();
-        if (s == null) {
+        if (s == null || s.current() == null) {
             return;
         }
         if (s.isLast) {
             if (mode == Mode.SESSION) {
+                container.progress.saveLessonPosition(sessionId, 0, true);
                 effects.setValue(new Event<>(new Effect.GoQuiz(sessionId)));
             } else {
                 effects.setValue(new Event<>(new Effect.Close()));
             }
         } else {
             index++;
+            if (mode == Mode.SESSION) {
+                container.progress.saveLessonPosition(sessionId, index, false);
+            }
             publish();
         }
     }

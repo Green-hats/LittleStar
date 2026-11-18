@@ -1,54 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/pageCard" style="@style/Widget.LS.Block.Surface"
-    android:layout_width="match_parent" android:layout_height="wrap_content" app:ls_pressable="false">
-    <LinearLayout android:id="@+id/cardBody" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="vertical" android:gravity="center_horizontal" android:padding="@dimen/ls_gap">
-        <LinearLayout android:id="@+id/pageMain" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:gravity="center_vertical" android:orientation="vertical">
-        <FrameLayout android:id="@+id/illustrationFrame" android:layout_width="@dimen/ls_flashcard_image" android:layout_height="@dimen/ls_flashcard_image" android:layout_gravity="center_horizontal">
-            <com.littlestar.app.core.ui.HanziTextView android:id="@+id/pageGlyph" android:layout_width="match_parent"
-                android:layout_height="match_parent" android:gravity="center" android:importantForAccessibility="no"
-                android:textAppearance="@style/TextAppearance.LS.HanziTile" android:textColor="@color/ls_on_yellow"
-                android:background="@color/ls_yellow" />
-            <ImageView android:id="@+id/pageIllustration" android:layout_width="match_parent"
-                android:layout_height="match_parent" android:importantForAccessibility="no" android:scaleType="fitCenter" />
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/Widget.Sprout.Card">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="138dp">
+            <ImageView
+                android:id="@+id/pageGlyph"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ill_sprout_trail"
+                android:importantForAccessibility="no"
+                android:scaleType="fitCenter" />
+
+            <ImageView
+                android:id="@+id/pageIllustration"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:importantForAccessibility="no" />
         </FrameLayout>
-        <LinearLayout android:id="@+id/wordLabels" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap_sm" android:orientation="vertical">
-        <com.littlestar.app.core.ui.HanziTextView android:id="@+id/pageHanzi" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:gravity="center"
-            android:textAppearance="@style/TextAppearance.LS.HanziHero" />
-        <TextView android:id="@+id/pagePinyin" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:gravity="center" android:textAppearance="@style/TextAppearance.LS.Pinyin" />
-        <TextView android:id="@+id/pageEnglish" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:gravity="center" android:layout_marginTop="@dimen/ls_gap_sm"
-            android:textAppearance="@style/TextAppearance.LS.English" />
-        </LinearLayout>
-        </LinearLayout>
-        <LinearLayout android:id="@+id/audioRow" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap" android:gravity="center" android:orientation="horizontal">
-            <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnListen" style="@style/Widget.LS.Block.Secondary"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:minHeight="@dimen/ls_btn_secondary" app:ls_strokeColor="@color/ls_blue"
-                app:ls_shadowOffset="@dimen/ls_no_shadow" android:contentDescription="@string/home_listen_desc">
-                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:minHeight="@dimen/ls_btn_secondary" android:padding="@dimen/ls_gap_sm"
-                    android:gravity="center" android:orientation="horizontal">
-                    <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
-                        android:importantForAccessibility="no" android:src="@drawable/ic_speaker" app:tint="@color/ls_blue" />
-                    <TextView android:id="@+id/listenLabel" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/ls_gap_sm" android:text="@string/fc_listen"
-                        android:textAppearance="@style/TextAppearance.LS.Body" android:textColor="@color/ls_blue" />
-                </LinearLayout>
-            </com.littlestar.app.core.ui.BlockLayout>
-            <com.littlestar.app.core.ui.SoundWaveView android:id="@+id/soundWave" android:layout_width="@dimen/ls_wave"
-                android:layout_height="@dimen/ls_wave_height" android:layout_marginStart="@dimen/ls_gap"
-                android:visibility="gone" app:barColor="@color/ls_blue" />
-            <TextView android:id="@+id/readingLabel" android:layout_width="0dp" android:layout_weight="1"
-                android:layout_height="wrap_content" android:layout_marginStart="@dimen/ls_gap_sm"
-                android:text="@string/fc_reading" android:textAppearance="@style/TextAppearance.LS.Caption"
-                android:textColor="@color/ls_blue" android:visibility="gone" />
-        </LinearLayout>
+
+        <com.littlestar.app.core.ui.HanziTextView
+            android:id="@+id/pageHanzi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="64sp"
+            android:textColor="@color/sprout_on_lilac"
+            android:gravity="center"
+            android:accessibilityHeading="true" />
+
+        <TextView
+            android:id="@+id/pagePinyin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Sprout.Section"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/pageEnglish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Sprout.Caption"
+            android:gravity="center" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnListen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Sprout.Secondary"
+            android:text="@string/sprout_listen"
+            app:icon="@drawable/ic_speaker"
+            android:layout_marginTop="12dp" />
     </LinearLayout>
-</com.littlestar.app.core.ui.BlockLayout>
+</com.google.android.material.card.MaterialCardView>
