@@ -60,6 +60,9 @@ public final class SmokeTest {
             onView(withId(R.id.btnStart)).check(matches(allOf(isCompletelyDisplayed(), withText(R.string.sprout_start))));
             tap(R.id.btnStart);
             waitUntilShown(R.id.pageHanzi);
+            onView(withId(R.id.pageIllustration)).check(matches(isCompletelyDisplayed()));
+            onView(withId(R.id.btnListen)).check(matches(isCompletelyDisplayed()));
+            onView(withId(R.id.btnNext)).check(matches(isCompletelyDisplayed()));
             pressBack();
             waitUntilShown(R.id.btnStart);
             onView(withId(R.id.btnStart)).check(matches(allOf(isCompletelyDisplayed(), withText(R.string.sprout_continue))));

@@ -72,7 +72,7 @@ public final class FlashcardActivity extends ChildActivity {
                 .get(FlashcardViewModel.class);
         illustration = new ContentImage(binding.pageCard.pageIllustration, container().executors,
                 binding.pageCard.pageGlyph);
-        binding.pageCard.btnListen.setOnClickListener(v -> speakCurrent());
+        binding.btnListen.setOnClickListener(v -> speakCurrent());
         binding.btnNext.setOnClickListener(v -> vm.next());
         binding.stamp.setOnClickListener(v -> {
             if (vm.stamp()) {
@@ -102,7 +102,7 @@ public final class FlashcardActivity extends ChildActivity {
             }
         });
         container().progress.observe().observe(this, ignored -> vm.refresh());
-        container().speech.isPlaying().observe(this, playing -> binding.pageCard.btnListen
+        container().speech.isPlaying().observe(this, playing -> binding.btnListen
                 .setStateDescription(Boolean.TRUE.equals(playing) ? getString(R.string.fc_reading) : null));
 
         long sessionId = savedInstanceState == null ? getIntent().getLongExtra(EXTRA_SESSION_ID, -1)
@@ -132,6 +132,7 @@ public final class FlashcardActivity extends ChildActivity {
             return;
         }
         binding.pageCard.getRoot().setVisibility(View.VISIBLE);
+        binding.flashcardActions.setVisibility(View.VISIBLE);
         binding.cardCounter.setText(getString(R.string.sprout_word_counter, state.index + 1, state.words.size()));
         binding.cardProgress.setMax(state.words.size());
         binding.cardProgress.setProgress(state.index + 1);
@@ -151,9 +152,10 @@ public final class FlashcardActivity extends ChildActivity {
         binding.stamp.setVisibility(browsing ? View.VISIBLE : View.GONE);
         binding.stamp.setEnabled(!state.currentLearned);
         binding.stamp.setText(state.currentLearned ? R.string.sprout_learned : R.string.sprout_mark);
-        binding.btnNext.setEnabled(true);
         binding.btnNext.setText(!state.isLast ? R.string.sprout_next
                 : browsing ? R.string.sprout_back : R.string.sprout_start_practice);
+        binding.btnNext.setIconResource(!state.isLast ? R.drawable.ic_next
+                : browsing ? R.drawable.ic_back : R.drawable.ic_quiz);
     }
 
     private void speakCurrent() {

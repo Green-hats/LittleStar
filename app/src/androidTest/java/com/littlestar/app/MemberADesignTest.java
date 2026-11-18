@@ -57,11 +57,6 @@ public class MemberADesignTest {
             .putStringArrayListExtra("wordIds",new ArrayList<>(List.of("mao","gou","niao")));
         try(ActivityScenario<FlashcardActivity> s=ActivityScenario.launch(cards)) {
             SystemClock.sleep(700);
-            s.onActivity(a->{
-                View listen=a.findViewById(R.id.btnListen);
-                listen.requestRectangleOnScreen(new Rect(0,0,listen.getWidth(),listen.getHeight()),true);
-            });
-            SystemClock.sleep(150);
             s.onActivity(a->{ assertVisible(a.findViewById(R.id.btnNext)); assertVisible(a.findViewById(R.id.btnListen)); });
             UiEvidence.capture("A3_checked");
         }

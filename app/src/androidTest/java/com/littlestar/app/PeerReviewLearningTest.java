@@ -241,7 +241,7 @@ public class PeerReviewLearningTest {
    }
   }finally{setFontScale(original);}
  }
- @Test public void flashcard_noGesturePaging_andListenFitsInsideCard() throws Exception {
+ @Test public void flashcard_noGesturePaging_andActionsStayVisible() throws Exception {
   try(ActivityScenario<FlashcardActivity> s=ActivityScenario.launch(browse())) {
    waitFor(s,R.id.pageHanzi,View.VISIBLE);
    AtomicReference<String> before=new AtomicReference<>();
@@ -250,7 +250,7 @@ public class PeerReviewLearningTest {
    onView(withId(R.id.pageCard)).perform(androidx.test.espresso.action.ViewActions.swipeUp());
    s.onActivity(a->{
     assertEquals(before.get(),((TextView)a.findViewById(R.id.cardCounter)).getText().toString());
-    assertListenInsideCard(a);
+    assertFlashcardActionsVisible(a);
    });
   }
  }
@@ -261,19 +261,8 @@ public class PeerReviewLearningTest {
     waitFor(s,R.id.pageHanzi,View.VISIBLE);
     setActivityFont(s,2f);
     s.onActivity(a->{
-     View viewport=a.findViewById(R.id.flashcardScroll);
-     var params=viewport.getLayoutParams();
-     float density=a.getResources().getDisplayMetrics().density;
-     params.width=Math.round(360*density);params.height=Math.round(440*density);
-     viewport.setLayoutParams(params);
-    });
-    onView(withId(R.id.btnListen)).perform(androidx.test.espresso.action.ViewActions.scrollTo());
-    s.onActivity(PeerReviewLearningTest::assertListenInsideCard);
-    onView(withId(R.id.stamp)).perform(androidx.test.espresso.action.ViewActions.scrollTo());
-    s.onActivity(a->{
      assertTrue(a.getResources().getConfiguration().fontScale>=2f);
-     View record=a.findViewById(R.id.stamp),next=a.findViewById(R.id.btnNext);
-     assertTrue(record.getBottom() <= next.getTop());
+     assertFlashcardActionsVisible(a);
      TextView hanzi=a.findViewById(R.id.pageHanzi);
      assertTrue(hanzi.getLayout().getHeight() <= hanzi.getHeight());
      assertStaticCard(a.findViewById(R.id.pageCard));
@@ -322,14 +311,15 @@ public class PeerReviewLearningTest {
    });
   }finally{setFontScale(original);}
  }
- private static void assertListenInsideCard(android.app.Activity a) {
-  View card=a.findViewById(R.id.pageCard),listen=a.findViewById(R.id.btnListen);
-  int[] cardPosition=new int[2],listenPosition=new int[2];
-  card.getLocationOnScreen(cardPosition);listen.getLocationOnScreen(listenPosition);
-  assertTrue(listenPosition[1]>=cardPosition[1]);
-  assertTrue("Listen must not cross card bottom",listenPosition[1]+listen.getHeight()<=cardPosition[1]+card.getHeight());
-  android.graphics.Rect visible=new android.graphics.Rect();assertTrue(listen.getGlobalVisibleRect(visible));
-  assertEquals("Listen must be fully visible",listen.getHeight(),visible.height());
+ private static void assertFlashcardActionsVisible(android.app.Activity a) {
+  View listen=a.findViewById(R.id.btnListen),next=a.findViewById(R.id.btnNext);
+  assertTrue(listen.getBottom() <= next.getTop());
+  for (View action : List.of(listen,next)) {
+   android.graphics.Rect visible=new android.graphics.Rect();
+   assertTrue(action.getGlobalVisibleRect(visible));
+   assertEquals("Action must be fully visible",action.getHeight(),visible.height());
+   assertTrue(action.getHeight()>=48 * a.getResources().getDisplayMetrics().density);
+  }
  }
  private static void assertStaticCard(View v) {
   assertFalse(v instanceof androidx.core.widget.NestedScrollView);

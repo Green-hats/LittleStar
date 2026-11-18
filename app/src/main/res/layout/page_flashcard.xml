@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/Widget.Sprout.Card">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:padding="16dp">
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="138dp">
+            android:layout_width="0dp"
+            android:layout_height="138dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/sprout_space">
             <ImageView
                 android:id="@+id/pageGlyph"
                 android:layout_width="match_parent"
@@ -29,36 +31,34 @@
                 android:importantForAccessibility="no" />
         </FrameLayout>
 
-        <com.littlestar.app.core.ui.HanziTextView
-            android:id="@+id/pageHanzi"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="64sp"
-            android:textColor="@color/sprout_on_lilac"
-            android:gravity="center"
-            android:accessibilityHeading="true" />
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/pagePinyin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.Sprout.Section"
-            android:gravity="center" />
+            <com.littlestar.app.core.ui.HanziTextView
+                android:id="@+id/pageHanzi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="64sp"
+                android:textColor="@color/sprout_on_lilac"
+                android:gravity="center"
+                android:accessibilityHeading="true" />
 
-        <TextView
-            android:id="@+id/pageEnglish"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.Sprout.Caption"
-            android:gravity="center" />
+            <TextView
+                android:id="@+id/pagePinyin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Sprout.Section"
+                android:gravity="center" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnListen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Sprout.Secondary"
-            android:text="@string/sprout_listen"
-            app:icon="@drawable/ic_speaker"
-            android:layout_marginTop="12dp" />
+            <TextView
+                android:id="@+id/pageEnglish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Sprout.Caption"
+                android:gravity="center" />
+        </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
