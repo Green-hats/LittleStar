@@ -73,35 +73,60 @@ public final class SettingsFlowTest {
     @Test
     public void pinControlsStayAboveTheNumericKeyboard() {
         try (ActivityScenario<ParentGateActivity> scenario = ActivityScenario.launch(ParentGateActivity.class)) {
-            scenario.onActivity(activity -> {
-                View input = activity.findViewById(R.id.answerInput);
-                input.requestFocus();
-                WindowCompat.getInsetsController(activity.getWindow(), input)
-                        .show(WindowInsetsCompat.Type.ime());
-            });
-            AtomicBoolean visible = new AtomicBoolean();
-            long deadline = SystemClock.uptimeMillis() + 5000;
-            do {
-                scenario.onActivity(activity -> {
-                    View root = activity.findViewById(R.id.gateRoot);
-                    var insets = ViewCompat.getRootWindowInsets(root);
-                    if (insets == null || !insets.isVisible(WindowInsetsCompat.Type.ime())) {
-                        return;
-                    }
-                    Rect bounds = new Rect();
-                    View controls = activity.findViewById(R.id.pinControls);
-                    visible.set(root.getPaddingBottom() >= insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-                            && controls.getGlobalVisibleRect(bounds)
-                            && bounds.height() == controls.getHeight());
-                });
-                if (visible.get()) break;
-                SystemClock.sleep(50);
-            } while (SystemClock.uptimeMillis() < deadline);
-            assertTrue("The whole PIN form must be visible while the numeric keyboard is open", visible.get());
+            showPinKeyboard(scenario);
+            assertPinControlsAboveKeyboard(scenario);
             onView(withId(R.id.answerInput)).perform(replaceText("1234"));
             onView(withId(R.id.btnConfirm)).perform(click());
             onView(withId(R.id.settingsTitle)).check(matches(isDisplayed()));
         }
+    }
+
+    @Test
+    public void newPinCanBeConfirmedWithKeyboardOpenWithoutManualScrolling() {
+        container.settings.setParentPin("");
+        try (ActivityScenario<ParentGateActivity> scenario = ActivityScenario.launch(ParentGateActivity.class)) {
+            showPinKeyboard(scenario);
+            assertPinControlsAboveKeyboard(scenario);
+            onView(withId(R.id.answerInput)).perform(replaceText("1234"));
+            onView(withId(R.id.btnConfirm)).perform(click());
+            onView(withId(R.id.btnConfirm)).check(matches(withText(R.string.sprout_pin_again)));
+            assertPinControlsAboveKeyboard(scenario);
+            onView(withId(R.id.answerInput)).perform(replaceText("1234"));
+            onView(withId(R.id.btnConfirm)).perform(click());
+            onView(withId(R.id.settingsTitle)).check(matches(isDisplayed()));
+            assertEquals("1234", container.settings.getParentPin());
+        }
+    }
+
+    private static void showPinKeyboard(ActivityScenario<ParentGateActivity> scenario) {
+        scenario.onActivity(activity -> {
+            View input = activity.findViewById(R.id.answerInput);
+            input.requestFocus();
+            WindowCompat.getInsetsController(activity.getWindow(), input)
+                    .show(WindowInsetsCompat.Type.ime());
+        });
+    }
+
+    private static void assertPinControlsAboveKeyboard(ActivityScenario<ParentGateActivity> scenario) {
+        AtomicBoolean visible = new AtomicBoolean();
+        long deadline = SystemClock.uptimeMillis() + 5000;
+        do {
+            scenario.onActivity(activity -> {
+                View root = activity.findViewById(R.id.gateRoot);
+                var insets = ViewCompat.getRootWindowInsets(root);
+                if (insets == null || !insets.isVisible(WindowInsetsCompat.Type.ime())) {
+                    return;
+                }
+                Rect bounds = new Rect();
+                View controls = activity.findViewById(R.id.pinControls);
+                visible.set(root.getPaddingBottom() >= insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+                        && controls.getGlobalVisibleRect(bounds)
+                        && bounds.height() == controls.getHeight());
+            });
+            if (visible.get()) return;
+            SystemClock.sleep(50);
+        } while (SystemClock.uptimeMillis() < deadline);
+        assertTrue("The whole PIN form must be visible while the numeric keyboard is open", visible.get());
     }
 
     @Test
