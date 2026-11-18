@@ -1,161 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- §7.12 设置验证：PIN + 红描边输入框 + 确认；adjustResize 保证键盘不遮按钮 -->
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/gateRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ls_paper"
-    android:fillViewport="true">
-
+    android:fillViewport="true"
+    android:background="@color/sprout_cloud">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:maxWidth="@dimen/ls_content_max_width"
         android:orientation="vertical"
-        android:padding="@dimen/ls_margin">
-
-        <!-- 顶栏 -->
+        android:paddingStart="@dimen/sprout_gutter"
+        android:paddingEnd="@dimen/sprout_gutter"
+        android:paddingTop="12dp"
+        android:paddingBottom="20dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.littlestar.app.core.ui.BlockLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBack"
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="@dimen/ls_btn_icon"
-                android:layout_height="@dimen/ls_btn_icon"
-                android:contentDescription="@string/nav_back">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:layout_gravity="center"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_back" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/ls_gap"
-                android:text="@string/pg_top"
-                android:textAppearance="@style/TextAppearance.LS.Title" />
+                style="@style/Widget.Sprout.Back"
+                android:text="@string/sprout_back"
+                app:icon="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Sprout.Title"
+                android:text="@string/sprout_parents"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:accessibilityHeading="true" />
         </LinearLayout>
 
-        <!-- 锁块 + 标题 -->
-        <LinearLayout
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_section"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.littlestar.app.core.ui.BlockLayout
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="@dimen/ls_stamp"
-                android:layout_height="@dimen/ls_stamp"
-                app:ls_fill="@color/ls_ink"
-                app:ls_pressable="false">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:layout_gravity="center"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_lock"
-                    app:tint="@color/ls_card" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
+            style="@style/Widget.Sprout.Card"
+            app:cardBackgroundColor="@color/sprout_lilac">
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/ls_gap"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pg_title"
-                    android:textAppearance="@style/TextAppearance.LS.Display"
-                    android:textSize="26sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pg_sub"
-                    android:textAppearance="@style/TextAppearance.LS.Caption" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- PIN 提示卡（D31：密码登录） -->
-        <com.littlestar.app.core.ui.BlockLayout
-            style="@style/Widget.LS.Block.Secondary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/ls_gate_card"
-            android:layout_marginTop="@dimen/ls_section_lg"
-            app:ls_pressable="false">
-
-            <TextView
-                android:id="@+id/questionText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.LS.Title"
-                android:textSize="22sp" />
-        </com.littlestar.app.core.ui.BlockLayout>
-
-        <!-- 输入框 -->
-        <EditText
-            android:id="@+id/answerInput"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_secondary"
-            android:layout_marginTop="@dimen/ls_section"
-            android:background="@drawable/bg_input_red"
-            android:hint="@string/pg_answer_hint"
-            android:imeOptions="actionDone"
-            android:importantForAutofill="no"
-            android:inputType="numberPassword"
-            android:maxLength="4"
-            android:paddingStart="@dimen/ls_card_pad"
-            android:paddingEnd="@dimen/ls_card_pad"
-            android:textAppearance="@style/TextAppearance.LS.Title" />
-
-        <!-- 确认 -->
-        <com.littlestar.app.core.ui.BlockLayout
-            android:id="@+id/btnConfirm"
-            style="@style/Widget.LS.Block.Primary"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_secondary"
-            android:layout_marginTop="@dimen/ls_section">
-
-            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/pg_confirm"
-                android:textAppearance="@style/TextAppearance.LS.Button" />
-        </com.littlestar.app.core.ui.BlockLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_lock"
+                    android:importantForAccessibility="no" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_section"
-            android:text="@string/pg_hint1"
-            android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/questionText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Sprout.Title"
+                    android:text="@string/pg_pin_prompt"
+                    android:layout_marginTop="12dp"
+                    android:accessibilityHeading="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap"
-            android:text="@string/pg_hint2"
-            android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textSize="14sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Sprout.Caption"
+                    android:text="@string/sprout_parent_explain"
+                    android:layout_marginTop="8dp" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/pinField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:hint="@string/pg_answer_hint"
+                    app:errorEnabled="true">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/answerInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberPassword"
+                        android:imeOptions="actionDone"
+                        android:maxLength="4"
+                        android:saveEnabled="false"
+                        android:minHeight="56dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnConfirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Sprout.Button"
+                    android:text="@string/sprout_pin_unlock" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -42,6 +42,7 @@ public final class ParentGateActivity extends ParentActivity {
         createMode = !container().settings.isPinSet();
         binding.questionText.setText(createMode
                 ? R.string.pg_pin_create : R.string.pg_pin_prompt);
+        binding.btnConfirm.setText(createMode ? R.string.sprout_pin_create : R.string.sprout_pin_unlock);
 
         binding.btnBack.setOnClickListener(v -> finish());
         binding.btnConfirm.setOnClickListener(v -> submit());
@@ -57,16 +58,16 @@ public final class ParentGateActivity extends ParentActivity {
     private void submit() {
         String input = binding.answerInput.getText().toString().trim();
         if (!input.matches("[0-9]{4}")) {
-            Motion.shake(binding.answerInput);
-            binding.answerInput.setText("");
+            showPinError(R.string.sprout_pin_invalid);
             return;
         }
         if (createMode) {
             if (pendingPin == null) {
                 pendingPin = input;
                 binding.answerInput.setText("");
-                binding.answerInput.setError(null);
+                binding.pinField.setError(null);
                 binding.questionText.setText(R.string.peer_settings_pin_confirm);
+                binding.btnConfirm.setText(R.string.sprout_pin_again);
                 binding.questionText.announceForAccessibility(
                         getString(R.string.peer_settings_pin_confirm));
             } else if (pendingPin.equals(input)) {
@@ -76,17 +77,20 @@ public final class ParentGateActivity extends ParentActivity {
             } else {
                 pendingPin = null;
                 binding.questionText.setText(R.string.pg_pin_create);
-                binding.answerInput.setText("");
-                binding.answerInput.setError(getString(R.string.peer_settings_pin_mismatch));
-                Motion.shake(binding.answerInput);
+                binding.btnConfirm.setText(R.string.sprout_pin_create);
+                showPinError(R.string.peer_settings_pin_mismatch);
             }
         } else if (input.equals(container().settings.getParentPin())) {
             dispatch();
         } else {
-            // 错了：抖动 + 清空，不锁定
-            Motion.shake(binding.answerInput);
-            binding.answerInput.setText("");
+            showPinError(R.string.sprout_pin_wrong);
         }
+    }
+
+    private void showPinError(int message) {
+        binding.answerInput.setText("");
+        binding.pinField.setError(getString(message));
+        Motion.shake(binding.answerInput);
     }
 
     /** 通过后只进入设置页。 */

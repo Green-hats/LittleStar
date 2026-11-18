@@ -16,7 +16,8 @@ import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.widget.LinearLayout;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -71,6 +72,7 @@ public final class SettingsFlowTest {
             onView(withId(R.id.btnConfirm)).perform(click());
             onView(withId(R.id.gateRoot)).check(matches(isDisplayed()));
             onView(withId(R.id.answerInput)).check(matches(withText("")));
+            onView(withText(R.string.sprout_pin_wrong)).check(matches(isDisplayed()));
             enterPin();
             waitFor(R.id.settingsTitle);
             onView(withId(R.id.btnBack)).perform(click());
@@ -143,7 +145,7 @@ public final class SettingsFlowTest {
         try (ActivityScenario<SettingsActivity> scenario = ActivityScenario.launch(SettingsActivity.class)) {
             scenario.onActivity(activity -> {
                 ((StepperView) activity.findViewById(R.id.goalStepper)).setValue(5);
-                ((LinearLayout) activity.findViewById(R.id.weekdayRow)).getChildAt(1).performClick();
+                ((ChipGroup) activity.findViewById(R.id.weekdayRow)).getChildAt(1).performClick();
                 activity.findViewById(R.id.btnCancel).performClick();
             });
             assertEquals(3, container.settings.getDailyGoal());
@@ -252,7 +254,7 @@ public final class SettingsFlowTest {
             }
             onView(withId(com.google.android.material.R.id.material_timepicker_ok_button))
                     .inRoot(isDialog()).perform(click());
-            onView(withId(R.id.btnSave)).perform(click());
+            onView(withId(R.id.btnSave)).perform(androidx.test.espresso.action.ViewActions.scrollTo(), click());
             assertEquals("19:30", container.settings.getReminderTime());
         }
     }
@@ -262,12 +264,13 @@ public final class SettingsFlowTest {
         try (ActivityScenario<SettingsActivity> scenario = ActivityScenario.launch(SettingsActivity.class)) {
             scenario.onActivity(activity -> {
                 ((StepperView) activity.findViewById(R.id.goalStepper)).setValue(7);
-                ((LinearLayout) activity.findViewById(R.id.weekdayRow)).getChildAt(1).performClick();
+                ((ChipGroup) activity.findViewById(R.id.weekdayRow)).getChildAt(1).performClick();
             });
             scenario.recreate();
             scenario.onActivity(activity -> {
                 assertEquals(7, ((StepperView) activity.findViewById(R.id.goalStepper)).getValue());
-                assertTrue(((LinearLayout) activity.findViewById(R.id.weekdayRow)).getChildAt(1).isSelected());
+                ChipGroup weekdays = activity.findViewById(R.id.weekdayRow);
+                assertTrue(((Chip) weekdays.getChildAt(1)).isChecked());
                 assertEquals(3, container.settings.getDailyGoal());
             });
         }
@@ -278,7 +281,7 @@ public final class SettingsFlowTest {
         container.settings.setReminderDays(Set.of(1, 3));
         try (ActivityScenario<SettingsActivity> scenario = ActivityScenario.launch(SettingsActivity.class)) {
             scenario.onActivity(activity -> {
-                LinearLayout weekdays = activity.findViewById(R.id.weekdayRow);
+                ChipGroup weekdays = activity.findViewById(R.id.weekdayRow);
                 weekdays.getChildAt(0).performClick();
                 weekdays.getChildAt(2).performClick();
                 activity.findViewById(R.id.btnSave).performClick();
@@ -348,7 +351,7 @@ public final class SettingsFlowTest {
 
     private static String progressText(int learned, int goal) {
         return ApplicationProvider.getApplicationContext()
-                .getString(R.string.home_today_progress, learned, goal);
+                .getString(R.string.sprout_today_goal, learned, goal);
     }
 
     private static void waitForText(String text) {

@@ -66,6 +66,11 @@ public final class SettingsTimePickerRegressionTest {
                     activity.findViewById(R.id.timeRow).performClick());
             MaterialTimePicker first = waitForPicker(activityRef);
             onMain(() -> {
+                if (!android.text.format.DateFormat.is24HourFormat(first.requireContext())) {
+                    first.requireDialog()
+                            .findViewById(com.google.android.material.R.id.material_clock_period_am_button)
+                            .performClick();
+                }
                 first.setHour(8);
                 first.setMinute(45);
             });

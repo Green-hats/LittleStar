@@ -30,17 +30,15 @@ public final class HomeViewModel extends ViewModel {
         @Nullable
         public final Word nextWord;            // 今日下一个未学的字
         public final boolean allDone;          // 全部学完
-        public final boolean firstLaunch;      // 首次引导态
         public final boolean hasActiveLesson;
 
         public UiState(boolean loading, int goal, int learnedToday, @Nullable Word nextWord,
-                       boolean allDone, boolean firstLaunch, boolean hasActiveLesson) {
+                       boolean allDone, boolean hasActiveLesson) {
             this.loading = loading;
             this.goal = goal;
             this.learnedToday = learnedToday;
             this.nextWord = nextWord;
             this.allDone = allDone;
-            this.firstLaunch = firstLaunch;
             this.hasActiveLesson = hasActiveLesson;
         }
 
@@ -70,7 +68,7 @@ public final class HomeViewModel extends ViewModel {
         this.content = content;
         this.progress = progress;
         this.sessionBuilder = sessionBuilder;
-        state.setValue(new UiState(true, settings.getDailyGoal(), 0, null, false, !settings.isOnboarded(), false));
+        state.setValue(new UiState(true, settings.getDailyGoal(), 0, null, false, false));
         // 内容先在 diskIO 线程解析，回调到主线程后再计算（不在主线程做 IO）
         content.load(executors, () -> {
             contentReady = true;
@@ -115,7 +113,7 @@ public final class HomeViewModel extends ViewModel {
         }
 
         state.setValue(new UiState(false, goal, k, next,
-                allDone, !settings.isOnboarded(), sessionBuilder.resumableLesson(ps) != null));
+                allDone, sessionBuilder.resumableLesson(ps) != null));
     }
 
     @NonNull
@@ -126,15 +124,5 @@ public final class HomeViewModel extends ViewModel {
     /** 从设置返回后刷新；已生成计划仍使用当天固定的目标。 */
     public void refresh() {
         onProgress(lastProgress);
-    }
-
-    public void completeOnboarding(int goal) {
-        settings.setDailyGoal(goal);
-        settings.setOnboarded(true);
-        UiState cur = state.getValue();
-        if (cur != null) {
-            state.setValue(new UiState(cur.loading, goal,
-                    cur.learnedToday, cur.nextWord, cur.allDone, false, cur.hasActiveLesson));
-        }
     }
 }

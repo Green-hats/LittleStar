@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sprout_parent_explain">Manage learning goals and reminders in the grown-up area.</string>
+    <string name="sprout_pin_unlock">Unlock</string>
+    <string name="sprout_pin_create">Set PIN</string>
+    <string name="sprout_pin_again">Confirm PIN</string>
+    <string name="sprout_pin_invalid">Enter four digits.</string>
+    <string name="sprout_pin_wrong">That PIN didn’t match. Try again.</string>
+    <string name="sprout_reminders">Learning reminders</string>
+</resources>

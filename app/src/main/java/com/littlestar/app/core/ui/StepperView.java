@@ -2,6 +2,7 @@ package com.littlestar.app.core.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.view.ContextThemeWrapper;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -11,10 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.littlestar.app.R;
+import com.google.android.material.button.MaterialButton;
 
 /**
  * 步进器（§8.5）：− / 数字 / +，范围可配；到边界时按钮变灰并禁用。
- * 按钮用 {@link BlockLayout}（Icon 样式），整个控件横向排列、垂直居中。
  */
 public final class StepperView extends LinearLayout {
 
@@ -25,8 +26,8 @@ public final class StepperView extends LinearLayout {
 
     private static final float DISABLED_ALPHA = 0.38f;
 
-    private final BlockLayout minusButton;
-    private final BlockLayout plusButton;
+    private final MaterialButton minusButton;
+    private final MaterialButton plusButton;
     private final TextView valueText;
 
     private int minValue;
@@ -68,10 +69,10 @@ public final class StepperView extends LinearLayout {
 
         valueText = new TextView(context);
         valueText.setGravity(Gravity.CENTER);
-        valueText.setTextAppearance(R.style.TextAppearance_LS_Title);
+        valueText.setTextAppearance(R.style.TextAppearance_Sprout_Title);
 
-        LayoutParams minusLp = new LayoutParams(buttonSize, buttonSize);
-        LayoutParams plusLp = new LayoutParams(buttonSize, buttonSize);
+        LayoutParams minusLp = new LayoutParams(buttonSize, LayoutParams.WRAP_CONTENT);
+        LayoutParams plusLp = new LayoutParams(buttonSize, LayoutParams.WRAP_CONTENT);
         LayoutParams textLp = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f);
         textLp.setMargins(gap, 0, gap, 0);
 
@@ -86,15 +87,14 @@ public final class StepperView extends LinearLayout {
     }
 
     @NonNull
-    private BlockLayout createButton(@NonNull Context context, @NonNull String label,
+    private MaterialButton createButton(@NonNull Context context, @NonNull String label,
             @NonNull String description) {
-        BlockLayout button = new BlockLayout(context, null, 0, R.style.Widget_LS_Block_Icon);
-        TextView text = new TextView(context);
-        text.setText(label);
-        text.setGravity(Gravity.CENTER);
-        text.setTextAppearance(R.style.TextAppearance_LS_Title);
-        text.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
-        button.addView(text, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        MaterialButton button = new MaterialButton(
+                new ContextThemeWrapper(context, R.style.Widget_Sprout_Secondary));
+        button.setText(label);
+        button.setTextAppearance(R.style.TextAppearance_Sprout_Section);
+        button.setMinHeight((int) (getResources().getDisplayMetrics().density * 48));
+        button.setPadding(0, button.getPaddingTop(), 0, button.getPaddingBottom());
         button.setContentDescription(description);
         return button;
     }
