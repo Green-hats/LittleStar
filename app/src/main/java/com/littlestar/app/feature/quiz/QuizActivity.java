@@ -7,10 +7,13 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.LocaleSpan;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityNodeInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.OneShotPreDrawListener;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.viewmodel.CreationExtras;
@@ -122,8 +125,9 @@ public final class QuizActivity extends ChildActivity {
         binding.quizProgress.setMax(state.total);
         binding.quizProgress.setProgress(state.index + 1);
 
-        boolean newQuestion = renderedIndex != state.index || renderedRetest != state.retest
-                || !renderedOptions.equals(state.question.options());
+        boolean questionChanged = renderedIndex != state.index || renderedRetest != state.retest;
+        boolean movePromptFocus = renderedIndex >= 0 && questionChanged;
+        boolean newQuestion = questionChanged || !renderedOptions.equals(state.question.options());
         if (newQuestion) {
             renderedIndex = state.index;
             renderedRetest = state.retest;
@@ -185,6 +189,10 @@ public final class QuizActivity extends ChildActivity {
             binding.bottomFeedback.post(() -> binding.bottomFeedback.requestRectangleOnScreen(
                     new android.graphics.Rect(0, 0, binding.bottomFeedback.getWidth(),
                             binding.bottomFeedback.getHeight())));
+        }
+        if (movePromptFocus && getSystemService(AccessibilityManager.class).isTouchExplorationEnabled()) {
+            OneShotPreDrawListener.add(binding.questionHint, () -> binding.questionHint.performAccessibilityAction(
+                    AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS, null));
         }
     }
 

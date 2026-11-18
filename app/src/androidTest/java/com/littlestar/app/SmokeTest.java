@@ -103,6 +103,9 @@ public final class SmokeTest {
                 }
                 tap(OPTIONS[correct]);
                 tap(R.id.btnNext);
+                if (i == 0) {
+                    onView(withId(R.id.questionHint)).check(matches(isCompletelyDisplayed()));
+                }
                 if (i == 1) {
                     tap(OPTIONS[retestIndex]);
                     tap(R.id.btnNext);
