@@ -4,6 +4,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -50,6 +51,19 @@ public final class SmokeTest {
             s.nextSessionId = 1;
         });
         read(s -> s.sessions.size());
+    }
+
+    @Test
+    public void firstLaunchAndReturnShowLessonActionWithoutScrolling() {
+        try (ActivityScenario<HomeActivity> ignored = ActivityScenario.launch(HomeActivity.class)) {
+            waitUntilShown(R.id.btnStart);
+            onView(withId(R.id.btnStart)).check(matches(allOf(isCompletelyDisplayed(), withText(R.string.sprout_start))));
+            tap(R.id.btnStart);
+            waitUntilShown(R.id.pageHanzi);
+            pressBack();
+            waitUntilShown(R.id.btnStart);
+            onView(withId(R.id.btnStart)).check(matches(allOf(isCompletelyDisplayed(), withText(R.string.sprout_continue))));
+        }
     }
 
     @Test
