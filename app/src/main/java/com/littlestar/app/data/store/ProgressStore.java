@@ -165,6 +165,12 @@ public final class ProgressStore {
                 if (session.correctedWordIds == null) {
                     session.correctedWordIds = new java.util.ArrayList<>();
                 }
+                if (session.hintAttempts == null) {
+                    session.hintAttempts = new java.util.HashMap<>();
+                }
+                if (session.retestResults == null) {
+                    session.retestResults = new java.util.HashMap<>();
+                }
             }
             return parsed;
         } catch (RuntimeException e) {

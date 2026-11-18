@@ -132,6 +132,15 @@ public final class ProgressRepository {
     }
 
     public void saveLessonPosition(long sessionId, int position, boolean practice) {
+        saveLessonPosition(sessionId, position, practice, null);
+    }
+
+    public void savePracticePosition(long sessionId, int position, @Nullable String retestWordId) {
+        saveLessonPosition(sessionId, position, true, retestWordId);
+    }
+
+    private void saveLessonPosition(long sessionId, int position, boolean practice,
+                                    @Nullable String retestWordId) {
         store.update(state -> {
             ProgressState.Session session = findSession(state, sessionId);
             if (session == null || session.completedAt != null) {
@@ -140,8 +149,30 @@ public final class ProgressRepository {
             if (practice) {
                 session.practiceStarted = true;
                 session.practiceIndex = Math.max(session.practiceIndex, position);
+                session.practiceRetestWordId = retestWordId;
             } else {
                 session.lessonCardIndex = Math.max(session.lessonCardIndex, position);
+            }
+        });
+        store.flushNow();
+    }
+
+    public void recordHintAttempt(long sessionId, @NonNull String wordId, int attempt) {
+        store.update(state -> {
+            ProgressState.Session session = findSession(state, sessionId);
+            if (session != null && session.completedAt == null) {
+                session.hintAttempts.put(wordId, attempt);
+            }
+        });
+        store.flushNow();
+    }
+
+    public void recordRetest(long sessionId, @NonNull String wordId, boolean correct) {
+        store.update(state -> {
+            ProgressState.Session session = findSession(state, sessionId);
+            if (session != null && session.completedAt == null
+                    && wordId.equals(session.practiceRetestWordId)) {
+                session.retestResults.putIfAbsent(wordId, correct);
             }
         });
         store.flushNow();

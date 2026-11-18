@@ -84,6 +84,31 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/sprout_listen_again"
                     app:icon="@drawable/ic_speaker" />
+
+                <LinearLayout
+                    android:id="@+id/shapeClue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+                    <com.littlestar.app.core.ui.HanziTextView
+                        android:id="@+id/clueShape"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:importantForAccessibility="no"
+                        android:textColor="@color/sprout_on_lilac"
+                        android:textSize="32sp" />
+                    <TextView
+                        android:id="@+id/clueText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:accessibilityLiveRegion="polite"
+                        android:textAppearance="@style/TextAppearance.Sprout.Caption" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -201,7 +226,7 @@
                     android:layout_height="wrap_content"
                     style="@style/Widget.Sprout.Button"
                     android:text="@string/sprout_try_again"
-                    app:icon="@drawable/ic_speaker"
+                    app:icon="@drawable/ic_next"
                     android:visibility="gone" />
 
                 <com.google.android.material.button.MaterialButton

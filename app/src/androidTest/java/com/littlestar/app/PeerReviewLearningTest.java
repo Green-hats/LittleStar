@@ -148,13 +148,17 @@ public class PeerReviewLearningTest {
   } finally {w.audio=original;}
  }
  @Test public void retry_preservesFirstAnswerAndSchedule_acrossRecreation() throws Exception {
+  AtomicReference<Integer> beforeHint=new AtomicReference<>();
+  AtomicReference<Integer> afterHint=new AtomicReference<>();
   try(ActivityScenario<QuizActivity> s=ActivityScenario.launch(quiz())) {
    waitFor(s,R.id.option0,View.VISIBLE);
    AtomicReference<QuizViewModel> model=new AtomicReference<>();
    s.onActivity(a->{
     QuizViewModel vm=new ViewModelProvider(a).get(QuizViewModel.class);model.set(vm);
     assertNotNull(vm.state().getValue().question);
-    vm.choose((vm.state().getValue().question.correctIndex()+1)%4);
+    beforeHint.set(vm.state().getValue().question.correctIndex());
+    vm.choose((beforeHint.get()+1)%4);
+    assertEquals(View.GONE,a.findViewById(R.id.shapeClue).getVisibility());
    });
    String wordId=model.get().state().getValue().question.wordId();
    String due=read(st->st.words.get(wordId).dueDate);
@@ -164,9 +168,17 @@ public class PeerReviewLearningTest {
    s.onActivity(a->{
     QuizViewModel vm=new ViewModelProvider(a).get(QuizViewModel.class);model.set(vm);
     assertTrue(vm.state().getValue().retrying);
-    assertFalse(((TextView)a.findViewById(R.id.feedbackText)).getText().toString().contains(vm.state().getValue().question.english()));
+    assertEquals(View.VISIBLE,a.findViewById(R.id.shapeClue).getVisibility());
+    assertEquals("艹",((TextView)a.findViewById(R.id.clueShape)).getText().toString());
+    assertNotEquals(beforeHint.get().intValue(),vm.state().getValue().question.correctIndex());
+    int firstRetry=vm.state().getValue().question.correctIndex();
     vm.choose((vm.state().getValue().question.correctIndex()+1)%4);
-    assertTrue(vm.state().getValue().retrying);
+    assertFalse(vm.state().getValue().retrying);
+    vm.choose(firstRetry);
+    assertFalse(vm.state().getValue().corrected);
+    vm.retry();
+    afterHint.set(vm.state().getValue().question.correctIndex());
+    assertNotEquals(firstRetry,afterHint.get().intValue());
     vm.choose(vm.state().getValue().question.correctIndex());
     assertTrue(vm.state().getValue().corrected);
     assertFalse(vm.state().getValue().lastAnswerCorrect);
@@ -183,8 +195,26 @@ public class PeerReviewLearningTest {
     assertTrue(vm.state().getValue().corrected);
     vm.next();assertEquals(1,vm.state().getValue().index);
     assertFalse(vm.state().getValue().retrying);assertFalse(vm.state().getValue().corrected);
+    assertFalse(vm.state().getValue().retest);
+    vm.choose(vm.state().getValue().question.correctIndex());
+    vm.next();
    });
   }
+  assertEquals("mao",read(st->st.sessions.get(0).practiceRetestWordId));
+  try(ActivityScenario<QuizActivity> resumed=ActivityScenario.launch(quiz())) {
+   waitFor(resumed,R.id.option0,View.VISIBLE);
+   resumed.onActivity(a->{
+    QuizViewModel vm=new ViewModelProvider(a).get(QuizViewModel.class);
+    assertTrue(vm.state().getValue().retest);
+    assertEquals("mao",vm.state().getValue().question.wordId());
+    assertNotEquals(afterHint.get().intValue(),vm.state().getValue().question.correctIndex());
+    assertEquals(View.GONE,a.findViewById(R.id.shapeClue).getVisibility());
+    vm.choose((vm.state().getValue().question.correctIndex()+1)%4);
+    assertTrue(vm.state().getValue().canAdvance());
+   });
+  }
+  assertEquals(Boolean.FALSE,read(st->st.sessions.get(0).retestResults.get("mao")));
+  assertEquals(2,(int)read(st->st.sessions.get(0).answers.size()));
  }
  @Test public void quizPromptAndOptions_doNotOverlapAtDoubleFontScale() throws Exception {
   float original=android.provider.Settings.System.getFloat(ApplicationProvider.getApplicationContext().getContentResolver(),android.provider.Settings.System.FONT_SCALE,1f);

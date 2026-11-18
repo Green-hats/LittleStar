@@ -103,7 +103,7 @@ public final class WordListActivity extends ChildActivity {
                 if (isFinishing() || isDestroyed()) {
                     return;
                 }
-                startActivity(QuizActivity.themeIntent(this, id));
+                startActivity(QuizActivity.intent(this, id));
                 Motion.childEnter(this);
             });
         });

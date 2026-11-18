@@ -26,6 +26,18 @@ public final class QuizGenerator {
                                @NonNull String image,
                                @NonNull List<String> options,
                                int correctIndex) {
+        public QuizQuestion reordered(int round) {
+            if (round == 0 || options.size() < 2) {
+                return this;
+            }
+            List<String> moved = new ArrayList<>(options);
+            moved.remove(correctIndex);
+            Collections.shuffle(moved, new Random(options.hashCode() * 31L + round));
+            int direction = (options.hashCode() & 1) == 0 ? 1 : -1;
+            int newIndex = Math.floorMod(correctIndex + direction * round, options.size());
+            moved.add(newIndex, hanzi);
+            return new QuizQuestion(wordId, hanzi, pinyin, english, image, List.copyOf(moved), newIndex);
+        }
     }
 
     private final ContentRepository content;

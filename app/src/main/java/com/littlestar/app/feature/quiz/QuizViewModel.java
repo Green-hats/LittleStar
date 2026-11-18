@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
 import com.littlestar.app.AppContainer;
@@ -13,47 +12,37 @@ import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.data.repo.ProgressRepository;
 import com.littlestar.app.data.store.ProgressState;
 import com.littlestar.app.domain.QuizGenerator;
+import com.littlestar.app.domain.QuizGenerator.QuizQuestion;
 import com.littlestar.app.domain.SessionBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * 测验。一页一题；题目顺序在会话创建时写进 session.quizWordIds（恢复时按它重建，不重新随机）。
- * 选项顺序按 (session.id, word.id) 确定性种子生成，确保进程重建后四选项位置稳定不变。
- */
 public final class QuizViewModel extends ViewModel {
 
-    public enum Mode {SESSION, THEME}
-
     public sealed interface Effect {
-        record GoReward(long sessionId) implements Effect {
-        }
-
-        record PlayWord(@NonNull String wordId) implements Effect {
-        }
-
+        record GoReward(long sessionId) implements Effect {}
+        record PlayWord(@NonNull String wordId) implements Effect {}
     }
 
-    /** 单题 UI 状态。 */
     public static final class UiState {
-        public final int index;                 // 当前题（0 起）
+        public final int index;
         public final int total;
-        @Nullable
-        public final QuizGenerator.QuizQuestion question;
+        @Nullable public final QuizQuestion question;
         public final boolean answered;
         public final boolean lastAnswerCorrect;
-        public final int chosenIndex;           // -1 = 未答
+        public final int chosenIndex;
         public final boolean isLast;
         public final boolean retrying;
         public final boolean corrected;
         public final int retryChosenIndex;
+        public final boolean retest;
+        public final boolean showingHint;
 
-        public UiState(int index, int total, @Nullable QuizGenerator.QuizQuestion question,
-                       boolean answered, boolean lastAnswerCorrect, int chosenIndex,
-                       boolean isLast, boolean retrying,
-                       boolean corrected, int retryChosenIndex) {
+        UiState(int index, int total, @Nullable QuizQuestion question, boolean answered,
+                boolean lastAnswerCorrect, int chosenIndex, boolean isLast, boolean retrying,
+                boolean corrected, int retryChosenIndex, boolean retest, boolean showingHint) {
             this.index = index;
             this.total = total;
             this.question = question;
@@ -64,190 +53,190 @@ public final class QuizViewModel extends ViewModel {
             this.retrying = retrying;
             this.corrected = corrected;
             this.retryChosenIndex = retryChosenIndex;
+            this.retest = retest;
+            this.showingHint = showingHint;
+        }
+
+        public boolean canAdvance() {
+            return lastAnswerCorrect || corrected || (retest && answered);
         }
     }
 
-    private static final String KEY_INDEX = "quiz_index";
-    private static final String KEY_RETRYING = "quiz_retrying";
-    private static final String KEY_CORRECTED = "quiz_corrected";
-    private static final String KEY_RETRY_CHOSEN = "quiz_retry_chosen";
-
     private final AppContainer container;
-    private final SavedStateHandle savedState;
-
     private final MutableLiveData<UiState> state = new MutableLiveData<>();
     private final MutableLiveData<Event<Effect>> effects = new MutableLiveData<>();
-
-    private long sessionId = -1;
-    private List<QuizGenerator.QuizQuestion> questions = new ArrayList<>();
-    /** 刚作答的结果（store 快照到达前 UI 立即反馈用）。 */
-    private boolean justAnswered;
-    private boolean justAnsweredCorrect;
-    private int justChosenIndex = -1;
-
-    private boolean initialized;
+    private final List<QuizQuestion> questions = new ArrayList<>();
+    private ProgressState.Session session;
+    private int retryMissIndex = -1;
+    private Integer retestChosenIndex;
     private boolean completing;
 
-    public QuizViewModel(@NonNull AppContainer container, @NonNull SavedStateHandle savedState) {
+    public QuizViewModel(@NonNull AppContainer container) {
         this.container = container;
-        this.savedState = savedState;
     }
 
-    /** Activity 在 content + store 就绪后调用；会话还没读到时返回 false，稍后重试。 */
-    public boolean init(@NonNull Mode mode, long sessionId) {
-        if (initialized) {
+    public boolean init(long sessionId) {
+        if (session != null) {
             return true;
         }
         ProgressState ps = container.store.observe().getValue();
-        ProgressState.Session session = ps == null ? null : SessionBuilder.sessionById(ps, sessionId);
-        if (session == null) {
+        ProgressState.Session source = ps == null ? null : SessionBuilder.sessionById(ps, sessionId);
+        if (source == null) {
             return false;
         }
-        initialized = true;
-        this.sessionId = sessionId;
-        for (int qIdx = 0; qIdx < session.quizWordIds.size(); qIdx++) {
-            String id = session.quizWordIds.get(qIdx);
-            Word w = container.content.wordById(id);
-            if (w != null) {
-                long seed = session.id * 10007L + (long) qIdx * 31L + id.hashCode();
-                QuizGenerator seededGen = new QuizGenerator(container.content, new Random(seed));
-                questions.add(seededGen.generate(w));
+        session = new ProgressState.Session();
+        session.id = source.id;
+        session.practiceIndex = source.practiceIndex;
+        session.practiceRetestWordId = source.practiceRetestWordId;
+        session.answers.addAll(source.answers);
+        session.correctedWordIds.addAll(source.correctedWordIds);
+        session.hintAttempts.putAll(source.hintAttempts);
+        session.retestResults.putAll(source.retestResults);
+        for (int i = 0; i < source.quizWordIds.size(); i++) {
+            String id = source.quizWordIds.get(i);
+            Word word = container.content.wordById(id);
+            if (word != null) {
+                long seed = sessionId * 10007L + i * 31L + id.hashCode();
+                questions.add(new QuizGenerator(container.content, new Random(seed)).generate(word));
             }
         }
-        Integer activityIndex = savedState.get(KEY_INDEX);
-        int resumeIndex = Math.max(0, Math.min(session.practiceIndex, questions.size() - 1));
-        if (activityIndex == null || activityIndex != resumeIndex) {
-            savedState.set(KEY_RETRYING, false);
-            savedState.set(KEY_CORRECTED, false);
-            savedState.set(KEY_RETRY_CHOSEN, -1);
-        }
-        savedState.set(KEY_INDEX, resumeIndex);
-        container.progress.saveLessonPosition(sessionId, resumeIndex, true);
-        if (!restoreAnswered(session)) {
-            publish();
-            speakCurrent();
-        }
+        session.practiceIndex = Math.max(0, Math.min(session.practiceIndex, questions.size() - 1));
+        container.progress.savePracticePosition(session.id, session.practiceIndex, session.practiceRetestWordId);
+        showPrompt();
         return true;
     }
 
-    private int index() {
-        Integer i = savedState.get(KEY_INDEX);
-        return i == null ? 0 : i;
-    }
-
     @Nullable
-    private ProgressState.Session currentSession() {
-        ProgressState ps = container.store.observe().getValue();
-        return ps == null ? null : SessionBuilder.sessionById(ps, sessionId);
-    }
-
-    /** 进程恢复：当前题若已有答案，恢复已答状态（含选中项，标 clay/mint）。返回是否恢复为已答。 */
-    private boolean restoreAnswered(@Nullable ProgressState.Session session) {
-        if (session == null) {
-            return false;
-        }
-        int idx = index();
-        QuizGenerator.QuizQuestion q = idx < questions.size() ? questions.get(idx) : null;
-        ProgressState.Answer a = q == null ? null : ProgressRepository.answerFor(session, q.wordId());
-        if (a != null) {
-            justAnswered = true;
-            justAnsweredCorrect = a.correct && a.firstTry;
-            justChosenIndex = q.options().indexOf(a.chosen);
-            if (session.correctedWordIds.contains(q.wordId()) || (a.correct && !a.firstTry)) {
-                savedState.set(KEY_CORRECTED, true);
-                savedState.set(KEY_RETRYING, false);
+    private QuizQuestion baseQuestion() {
+        if (session.practiceRetestWordId != null) {
+            for (QuizQuestion q : questions) {
+                if (q.wordId().equals(session.practiceRetestWordId)) {
+                    return q;
+                }
             }
-            publish();
-            return true;
         }
-        return false;
+        return questions.isEmpty() ? null : questions.get(session.practiceIndex);
     }
 
     private void publish() {
-        int idx = index();
-        QuizGenerator.QuizQuestion q = idx < questions.size() ? questions.get(idx) : null;
-        boolean answered = justAnswered;
-        boolean correct = justAnsweredCorrect;
-        int chosen = justChosenIndex;
+        int idx = session.practiceIndex;
+        QuizQuestion q = baseQuestion();
+        String id = q == null ? "" : q.wordId();
+        boolean retest = id.equals(session.practiceRetestWordId);
+        ProgressState.Answer first = ProgressRepository.answerFor(session, id);
+        int attempts = session.hintAttempts.getOrDefault(id, 0);
+        boolean corrected = !retest && (session.correctedWordIds.contains(id)
+                || (first != null && first.correct && !first.firstTry));
+        boolean showingHint = !retest && attempts > 0 && !corrected;
+        boolean answered = retest ? session.retestResults.containsKey(id) : first != null;
+        boolean correct = retest ? Boolean.TRUE.equals(session.retestResults.get(id))
+                : first != null && first.correct && first.firstTry;
+        if (q != null && (attempts > 0 || retest)) {
+            q = q.reordered(attempts + (retest ? 1 : 0));
+        }
+        int chosen = q == null ? -1 : retest ? retestChosenIndex == null ? -1 : retestChosenIndex
+                : first == null ? -1 : q.options().indexOf(first.chosen);
         state.setValue(new UiState(idx, questions.size(), q, answered, correct, chosen,
-                idx == questions.size() - 1,
-                answered && Boolean.TRUE.equals(savedState.get(KEY_RETRYING)),
-                answered && Boolean.TRUE.equals(savedState.get(KEY_CORRECTED)),
-                savedState.get(KEY_RETRY_CHOSEN) == null ? -1 : savedState.get(KEY_RETRY_CHOSEN)));
+                idx == questions.size() - 1 && pendingRetest() == null,
+                showingHint && retryMissIndex == -1, corrected, retryMissIndex, retest, showingHint));
     }
 
-    /** 点选项。立即锁定全部选项并判定（每题一次作答，点即锁定，本次即 firstTry）。 */
     public void choose(int optionIndex) {
         UiState s = state.getValue();
-        if (s == null || s.question == null || optionIndex < 0
+        if (s == null || s.question == null || optionIndex < 0 || completing
                 || optionIndex >= s.question.options().size() || (s.answered && !s.retrying)) {
             return;
         }
-        QuizGenerator.QuizQuestion q = s.question;
+        QuizQuestion q = s.question;
         boolean correct = optionIndex == q.correctIndex();
-        if (s.retrying) {
+        if (s.retest) {
+            retestChosenIndex = optionIndex;
+            session.retestResults.put(q.wordId(), correct);
+            container.progress.recordRetest(session.id, q.wordId(), correct);
+        } else if (s.retrying) {
             if (correct) {
-                container.progress.recordCorrection(sessionId, q.wordId());
+                session.correctedWordIds.add(q.wordId());
+                container.progress.recordCorrection(session.id, q.wordId());
+            } else {
+                retryMissIndex = optionIndex;
             }
-            savedState.set(KEY_RETRY_CHOSEN, optionIndex);
-            savedState.set(KEY_RETRYING, !correct);
-            savedState.set(KEY_CORRECTED, correct);
-            publish();
-            if (!correct) {
-                speakCurrent();
-            }
-            return;
+        } else {
+            ProgressState.Answer first = new ProgressState.Answer();
+            first.wordId = q.wordId();
+            first.chosen = q.options().get(optionIndex);
+            first.correct = correct;
+            first.firstTry = true;
+            session.answers.add(first);
+            container.progress.recordAnswer(session.id, first.wordId, first.chosen, correct, true);
         }
-        container.progress.recordAnswer(sessionId, q.wordId(), q.options().get(optionIndex), correct, true);
-        justAnswered = true;
-        justAnsweredCorrect = correct;
-        justChosenIndex = optionIndex;
         publish();
-        if (!correct) {
-            effects.setValue(new Event<>(new Effect.PlayWord(q.wordId())));   // 答错后再朗读正确字
-        }
     }
 
-    /** 纠正不覆盖首次答案、不改变评分或复习调度。 */
     public void retry() {
         UiState s = state.getValue();
-        if (s == null || !s.answered || s.lastAnswerCorrect || s.retrying || s.corrected) {
+        if (s == null || s.question == null || !s.answered || s.retest
+                || s.canAdvance() || s.retrying) {
             return;
         }
-        savedState.set(KEY_RETRYING, true);
-        savedState.set(KEY_RETRY_CHOSEN, -1);
-        publish();
-        speakCurrent();
+        String id = s.question.wordId();
+        int attempt = session.hintAttempts.getOrDefault(id, 0) + 1;
+        session.hintAttempts.put(id, attempt);
+        retryMissIndex = -1;
+        container.progress.recordHintAttempt(session.id, id, attempt);
+        showPrompt();
     }
 
-    /** NEXT / 完成。 */
+    @Nullable
+    private String pendingRetest() {
+        int i = session.practiceIndex;
+        if (i > 0 && needsRetest(questions.get(i - 1).wordId())) {
+            return questions.get(i - 1).wordId();
+        }
+        if (i == questions.size() - 1) {
+            for (QuizQuestion q : questions) {
+                if (needsRetest(q.wordId())) {
+                    return q.wordId();
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean needsRetest(String id) {
+        return session.hintAttempts.containsKey(id) && session.correctedWordIds.contains(id)
+                && !session.retestResults.containsKey(id);
+    }
+
     public void next() {
         UiState s = state.getValue();
-        if (s == null || !(s.lastAnswerCorrect || s.corrected) || completing) {
+        if (s == null || !s.canAdvance() || completing) {
             return;
         }
         if (s.isLast) {
             completing = true;
-            container.progress.completeSession(sessionId);
-            effects.setValue(new Event<>(new Effect.GoReward(sessionId)));
+            container.progress.completeSession(session.id);
+            effects.setValue(new Event<>(new Effect.GoReward(session.id)));
             return;
         }
-        savedState.set(KEY_INDEX, s.index + 1);
-        container.progress.saveLessonPosition(sessionId, s.index + 1, true);
-        savedState.set(KEY_RETRYING, false);
-        savedState.set(KEY_CORRECTED, false);
-        savedState.set(KEY_RETRY_CHOSEN, -1);
-        justAnswered = false;
-        justAnsweredCorrect = false;
-        justChosenIndex = -1;
-        ProgressState.Session session = currentSession();
-        if (!restoreAnswered(session)) {
-            publish();
+        String retestId = pendingRetest();
+        if (retestId == null) {
+            session.practiceIndex++;
+        }
+        session.practiceRetestWordId = retestId;
+        retryMissIndex = -1;
+        retestChosenIndex = null;
+        container.progress.savePracticePosition(session.id, session.practiceIndex, retestId);
+        showPrompt();
+    }
+
+    private void showPrompt() {
+        publish();
+        UiState s = state.getValue();
+        if (s != null && (!s.answered || s.retrying)) {
             speakCurrent();
         }
     }
 
-    /** 自动读题 / 点「听」重听。 */
     public void speakCurrent() {
         UiState s = state.getValue();
         if (s != null && s.question != null) {
@@ -255,13 +244,11 @@ public final class QuizViewModel extends ViewModel {
         }
     }
 
-    @NonNull
-    public LiveData<UiState> state() {
+    @NonNull public LiveData<UiState> state() {
         return state;
     }
 
-    @NonNull
-    public LiveData<Event<Effect>> effects() {
+    @NonNull public LiveData<Event<Effect>> effects() {
         return effects;
     }
 }

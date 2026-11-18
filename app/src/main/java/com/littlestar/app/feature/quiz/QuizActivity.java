@@ -11,7 +11,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.SavedStateHandleSupport;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.viewmodel.CreationExtras;
@@ -25,23 +24,14 @@ import com.littlestar.app.databinding.ActivityQuizBinding;
 import com.littlestar.app.databinding.ViewQuizOptionBinding;
 import com.littlestar.app.feature.reward.RewardActivity;
 
+import java.util.List;
 import java.util.Locale;
 
 public final class QuizActivity extends ChildActivity {
-    private static final String EXTRA_MODE = "mode";
     private static final String EXTRA_SESSION_ID = "sessionId";
 
-    public static Intent sessionIntent(@NonNull Activity from, long sessionId) {
-        return intent(from, sessionId, QuizViewModel.Mode.SESSION);
-    }
-
-    public static Intent themeIntent(@NonNull Activity from, long sessionId) {
-        return intent(from, sessionId, QuizViewModel.Mode.THEME);
-    }
-
-    private static Intent intent(Activity from, long id, QuizViewModel.Mode mode) {
-        return new Intent(from, QuizActivity.class)
-                .putExtra(EXTRA_MODE, mode.name()).putExtra(EXTRA_SESSION_ID, id);
+    public static Intent intent(@NonNull Activity from, long sessionId) {
+        return new Intent(from, QuizActivity.class).putExtra(EXTRA_SESSION_ID, sessionId);
     }
 
     private ActivityQuizBinding binding;
@@ -49,6 +39,8 @@ public final class QuizActivity extends ChildActivity {
     private ViewQuizOptionBinding[] options;
     private SpeechPlayer.FailureListener audioFailureListener;
     private int renderedIndex = -1;
+    private boolean renderedRetest;
+    private List<String> renderedOptions = List.of();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +54,7 @@ public final class QuizActivity extends ChildActivity {
             @Override
             @SuppressWarnings("unchecked")
             public <T extends ViewModel> T create(@NonNull Class<T> modelClass, @NonNull CreationExtras extras) {
-                return (T) new QuizViewModel(container(), SavedStateHandleSupport.createSavedStateHandle(extras));
+                return (T) new QuizViewModel(container());
             }
         }).get(QuizViewModel.class);
 
@@ -108,12 +100,10 @@ public final class QuizActivity extends ChildActivity {
         });
 
         long sessionId = getIntent().getLongExtra(EXTRA_SESSION_ID, -1);
-        QuizViewModel.Mode mode = QuizViewModel.Mode.THEME.name().equals(getIntent().getStringExtra(EXTRA_MODE))
-                ? QuizViewModel.Mode.THEME : QuizViewModel.Mode.SESSION;
         container().content.load(container().executors, () -> {
             if (!isDestroyed()) {
                 container().progress.observe().observe(this, snapshot -> {
-                    if (snapshot != null && !vm.init(mode, sessionId)) {
+                    if (snapshot != null && !vm.init(sessionId)) {
                         binding.quizCounter.setText(R.string.sprout_unavailable);
                     }
                 });
@@ -127,18 +117,29 @@ public final class QuizActivity extends ChildActivity {
             return;
         }
         binding.quizOptions.setVisibility(View.VISIBLE);
-        binding.quizCounter.setText(getString(R.string.quiz_counter, state.index + 1, state.total));
+        binding.quizCounter.setText(state.retest ? getString(R.string.quiz_retest_title)
+                : getString(R.string.quiz_counter, state.index + 1, state.total));
         binding.quizProgress.setMax(state.total);
         binding.quizProgress.setProgress(state.index + 1);
 
-        boolean newQuestion = renderedIndex != state.index;
+        boolean newQuestion = renderedIndex != state.index || renderedRetest != state.retest
+                || !renderedOptions.equals(state.question.options());
         if (newQuestion) {
             renderedIndex = state.index;
+            renderedRetest = state.retest;
+            renderedOptions = state.question.options();
             binding.audioMissing.setVisibility(View.GONE);
             binding.getRoot().scrollTo(0, 0);
         }
 
-        boolean resolved = state.lastAnswerCorrect || state.corrected;
+        binding.shapeClue.setVisibility(state.showingHint ? View.VISIBLE : View.GONE);
+        if (state.showingHint) {
+            CharacterClue clue = CharacterClue.forHanzi(state.question.hanzi());
+            binding.clueShape.setVisibility(clue == null ? View.GONE : View.VISIBLE);
+            binding.clueShape.setText(clue == null ? null : clue.shape());
+            binding.clueText.setText(clue == null ? R.string.quiz_clue_fallback : clue.description());
+        }
+        boolean correct = state.lastAnswerCorrect || state.corrected;
         for (int i = 0; i < options.length; i++) {
             ViewQuizOptionBinding option = options[i];
             if (i >= state.question.options().size()) {
@@ -146,13 +147,15 @@ public final class QuizActivity extends ChildActivity {
                 continue;
             }
             String value = state.question.options().get(i);
-            boolean right = resolved && i == state.question.correctIndex();
-            boolean wrong = state.answered && (state.retrying ? i == state.retryChosenIndex
-                    : !resolved && i == state.chosenIndex);
+            boolean right = correct && i == state.question.correctIndex();
+            int wrongIndex = state.showingHint ? state.retryChosenIndex : state.chosenIndex;
+            boolean wrong = state.answered && !correct && i == wrongIndex;
             option.getRoot().setVisibility(View.VISIBLE);
             option.getRoot().setEnabled(!state.answered || state.retrying);
             option.getRoot().setCardBackgroundColor(ContextCompat.getColor(this,
                     right ? R.color.sprout_dew : wrong ? R.color.sprout_peach : R.color.ls_card));
+            option.getRoot().setStrokeWidth(getResources().getDimensionPixelSize(
+                    right || wrong ? R.dimen.quiz_outcome_outline : R.dimen.quiz_option_outline));
             option.optionHanzi.setText(value);
             option.optionBadge.setVisibility(right || wrong ? View.VISIBLE : View.GONE);
             option.optionBadge.setImageResource(right ? R.drawable.ic_check : R.drawable.ic_close);
@@ -164,22 +167,23 @@ public final class QuizActivity extends ChildActivity {
                     : wrong ? getString(R.string.quiz_option_wrong) : null);
         }
 
-        binding.bottomFeedback.setVisibility(state.answered ? View.VISIBLE : View.GONE);
-        if (state.answered) {
+        boolean feedback = state.answered && !state.retrying;
+        binding.bottomFeedback.setVisibility(feedback ? View.VISIBLE : View.GONE);
+        if (feedback) {
             binding.bottomFeedback.setCardBackgroundColor(ContextCompat.getColor(this,
-                    resolved ? R.color.sprout_dew : R.color.sprout_peach));
+                    correct ? R.color.sprout_dew : R.color.sprout_peach));
             binding.feedbackText.setText(state.corrected ? getString(R.string.quiz_retry_correct)
                     : state.lastAnswerCorrect ? getString(R.string.quiz_feedback_correct)
-                    : state.retrying ? getString(R.string.quiz_retry_hint)
-                    : getString(R.string.quiz_feedback_wrong, state.question.hanzi(), state.question.english()));
-            binding.btnRetry.setVisibility(!resolved && !state.retrying ? View.VISIBLE : View.GONE);
-            binding.btnNext.setVisibility(resolved ? View.VISIBLE : View.GONE);
+                    : state.retest ? getString(R.string.quiz_retest_wrong)
+                    : state.showingHint ? getString(R.string.quiz_clue_wrong)
+                    : getString(R.string.quiz_feedback_wrong));
+            binding.btnRetry.setVisibility(state.canAdvance() ? View.GONE : View.VISIBLE);
+            binding.btnRetry.setText(state.showingHint ? R.string.sprout_try_again : R.string.quiz_see_clue);
+            binding.btnNext.setVisibility(state.canAdvance() ? View.VISIBLE : View.GONE);
             binding.btnNext.setText(state.isLast ? R.string.sprout_finish : R.string.sprout_next);
-            if (!state.retrying) {
-                binding.bottomFeedback.post(() -> binding.bottomFeedback.requestRectangleOnScreen(
-                        new android.graphics.Rect(0, 0, binding.bottomFeedback.getWidth(),
-                                binding.bottomFeedback.getHeight())));
-            }
+            binding.bottomFeedback.post(() -> binding.bottomFeedback.requestRectangleOnScreen(
+                    new android.graphics.Rect(0, 0, binding.bottomFeedback.getWidth(),
+                            binding.bottomFeedback.getHeight())));
         }
     }
 

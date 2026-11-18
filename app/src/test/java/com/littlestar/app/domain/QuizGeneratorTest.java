@@ -47,6 +47,22 @@ public final class QuizGeneratorTest {
         }
     }
 
+    @Test
+    public void successiveRoundsMoveTargetAndPreserveChoices() {
+        ContentRepository content = TestContent.load();
+        QuizGenerator gen = new QuizGenerator(content, new Random(42));
+        for (Word word : content.wordsInOrder()) {
+            QuizGenerator.QuizQuestion original = gen.generate(word);
+            for (int round = 1; round < 9; round++) {
+                QuizGenerator.QuizQuestion retry = original.reordered(round);
+                assertTrue(retry.correctIndex() != original.reordered(round - 1).correctIndex());
+                assertEquals(new HashSet<>(original.options()), new HashSet<>(retry.options()));
+                assertEquals(word.hanzi, retry.options().get(retry.correctIndex()));
+                assertEquals(retry, original.reordered(round));
+            }
+        }
+    }
+
     /** 同主题不够 3 个干扰项时跨主题补（人为构造 distractors 为空的情况测同主题补）。 */
     @Test
     public void fillsFromSameThemeWhenNoDistractors() {

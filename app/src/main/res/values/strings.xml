@@ -81,7 +81,12 @@
     <string name="quiz_feedback_correct">Correct!</string>
     <string name="quiz_option_correct">Correct choice</string>
     <string name="quiz_option_wrong">Not this one</string>
-    <string name="quiz_feedback_wrong">Listen again: %1$s means %2$s</string>
+    <string name="quiz_feedback_wrong">Not quite. Try a shape clue.</string>
+    <string name="quiz_see_clue">See a clue</string>
+    <string name="quiz_clue_wrong">Not quite. Let’s try again.</string>
+    <string name="quiz_retest_title">One more listen</string>
+    <string name="quiz_retest_wrong">We’ll practice this word again later.</string>
+    <string name="quiz_clue_fallback">Look closely at the lines and corners.</string>
     <string name="quiz_next">NEXT</string>
     <string name="quiz_done">DONE</string>
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="quiz_shape_1">Find the short cross strokes at the top right.</string>
+    <string name="quiz_shape_2">Find the little square on the right.</string>
+    <string name="quiz_shape_3">Find the little dot near the top.</string>
+    <string name="quiz_shape_4">Find the box with a cross in it.</string>
+    <string name="quiz_shape_5">Find the big hook at the bottom right.</string>
+    <string name="quiz_shape_6">Find the long line through the middle.</string>
+    <string name="quiz_shape_7">Find the box with a cross at the top.</string>
+    <string name="quiz_shape_8">Find the little bend and dot in the middle.</string>
+    <string name="quiz_shape_9">Find the tree shape on the left.</string>
+    <string name="quiz_shape_10">Find the tree shape at the bottom.</string>
+    <string name="quiz_shape_11">Find the two dots at the bottom.</string>
+    <string name="quiz_shape_12">Find this bent line and crossbar at the bottom.</string>
+    <string name="quiz_shape_13">Find the two bars joined in the middle, on the right.</string>
+    <string name="quiz_shape_14">Find the two spreading strokes at the bottom.</string>
+    <string name="quiz_shape_15">Find the wide, flat box at the bottom.</string>
+    <string name="quiz_shape_16">Find the two bends on the left.</string>
+    <string name="quiz_shape_17">Find the little slant above the box.</string>
+    <string name="quiz_shape_18">Find four dots along the bottom.</string>
+    <string name="quiz_shape_19">Find just one line across.</string>
+    <string name="quiz_shape_20">Find two lines across.</string>
+    <string name="quiz_shape_21">Find three lines across.</string>
+    <string name="quiz_shape_22">Find the box that goes all the way around.</string>
+    <string name="quiz_shape_23">Find the little corner above the bottom line.</string>
+    <string name="quiz_shape_24">Find the two strokes spreading apart at the bottom.</string>
+    <string name="quiz_shape_25">Find the crossed strokes at the top.</string>
+    <string name="quiz_shape_26">Find the big hook on the right.</string>
+    <string name="quiz_shape_27">Find two little squares.</string>
+    <string name="quiz_shape_28">Find the tall shape with bars on the right.</string>
+    <string name="quiz_shape_29">Find the long slant at the bottom left.</string>
+    <string name="quiz_shape_30">Find the two bars and spreading strokes on the right.</string>
+    <string name="quiz_shape_31">Find the tall shape with a hook at the bottom right.</string>
+    <string name="quiz_shape_32">Find the tall stroke between two shorter ones.</string>
+    <string name="quiz_shape_33">Find the strokes spreading out from the middle.</string>
+    <string name="quiz_shape_34">Find the two long legs opening below the dots.</string>
+    <string name="quiz_shape_35">Find the cross with two branches underneath.</string>
+    <string name="quiz_shape_36">Find the box with one line through it at the top.</string>
+</resources>

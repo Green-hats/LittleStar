@@ -67,11 +67,13 @@ public final class SmokeTest {
             tap(R.id.btnNext);
 
             ProgressState.Session session = read(s -> s.sessions.get(0));
+            int retestIndex = -1;
             for (int i = 0; i < session.quizWordIds.size(); i++) {
                 String id = session.quizWordIds.get(i);
                 long seed = session.id * 10007L + (long) i * 31L + id.hashCode();
-                int correct = new QuizGenerator(container.content, new Random(seed))
-                        .generate(container.content.wordById(id)).correctIndex();
+                QuizGenerator.QuizQuestion question = new QuizGenerator(container.content, new Random(seed))
+                        .generate(container.content.wordById(id));
+                int correct = question.correctIndex();
                 if (i == 0) {
                     tap(OPTIONS[(correct + 1) % OPTIONS.length]);
                     waitUntilShown(R.id.btnRetry);
@@ -79,9 +81,15 @@ public final class SmokeTest {
                     pressBack();
                     tap(R.id.btnStart);
                     tap(R.id.btnRetry);
+                    correct = question.reordered(1).correctIndex();
+                    retestIndex = question.reordered(2).correctIndex();
                 }
                 tap(OPTIONS[correct]);
                 tap(R.id.btnNext);
+                if (i == 1) {
+                    tap(OPTIONS[retestIndex]);
+                    tap(R.id.btnNext);
+                }
             }
 
             waitUntilShown(R.id.btnReview);
@@ -100,6 +108,8 @@ public final class SmokeTest {
             assertFalse(completed.answers.get(0).correct);
             String corrected = completed.answers.get(0).wordId;
             assertTrue(completed.correctedWordIds.contains(corrected));
+            assertEquals(Integer.valueOf(1), completed.hintAttempts.get(corrected));
+            assertEquals(Boolean.TRUE, completed.retestResults.get(corrected));
             assertEquals(container.clock.today().plusDays(1).toString(), state.words.get(corrected).dueDate);
         }
     }

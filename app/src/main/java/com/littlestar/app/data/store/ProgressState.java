@@ -61,6 +61,10 @@ public final class ProgressState {
         public boolean practiceStarted;
         public int practiceIndex;
         public List<String> correctedWordIds = new ArrayList<>();
+        public Map<String, Integer> hintAttempts = new HashMap<>();
+        @Nullable
+        public String practiceRetestWordId;
+        public Map<String, Boolean> retestResults = new HashMap<>();
     }
 
     public static final class Answer {

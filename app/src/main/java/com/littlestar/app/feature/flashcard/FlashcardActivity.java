@@ -95,7 +95,7 @@ public final class FlashcardActivity extends ChildActivity {
         vm.effects().observe(this, event -> {
             FlashcardViewModel.Effect effect = event.getContentIfNotHandled();
             if (effect instanceof FlashcardViewModel.Effect.GoQuiz quiz) {
-                startActivity(QuizActivity.sessionIntent(this, quiz.sessionId()));
+                startActivity(QuizActivity.intent(this, quiz.sessionId()));
                 finish();
             } else if (effect instanceof FlashcardViewModel.Effect.Close) {
                 finish();

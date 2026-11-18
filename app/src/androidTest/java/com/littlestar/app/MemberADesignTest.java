@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModelProvider;
 import com.littlestar.app.feature.words.ThemesActivity;
 import com.littlestar.app.feature.words.WordListActivity;
@@ -92,12 +91,11 @@ public class MemberADesignTest {
         final Throwable[] error={null};
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
             try {
-                SavedStateHandle handle=new SavedStateHandle();
-                QuizViewModel first=new QuizViewModel(c,handle); assertTrue(first.init(QuizViewModel.Mode.THEME,901));
+                QuizViewModel first=new QuizViewModel(c); assertTrue(first.init(901));
                 List<String> options=first.state().getValue().question.options(); first.choose(0);
                 c.store.read(s->true, v->{
-                    try { QuizViewModel restored=new QuizViewModel(c,new SavedStateHandle());
-                        assertTrue(restored.init(QuizViewModel.Mode.THEME,901));
+                    try { QuizViewModel restored=new QuizViewModel(c);
+                        assertTrue(restored.init(901));
                         assertEquals(options,restored.state().getValue().question.options());
                         assertTrue(restored.state().getValue().answered); assertEquals(0,restored.state().getValue().chosenIndex);
                     } catch(Throwable t){error[0]=t;} finally {done.countDown();}
