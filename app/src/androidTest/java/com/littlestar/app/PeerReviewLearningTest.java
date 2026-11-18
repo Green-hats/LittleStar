@@ -152,8 +152,8 @@ public class PeerReviewLearningTest {
  @Test public void quizPromptAndOptions_doNotOverlapAtDoubleFontScale() throws Exception {
   float original=android.provider.Settings.System.getFloat(ApplicationProvider.getApplicationContext().getContentResolver(),android.provider.Settings.System.FONT_SCALE,1f);
   try {
-   setFontScale(2f);
    try(ActivityScenario<QuizActivity> s=ActivityScenario.launch(quiz())) {
+    setActivityFont(s,2f);
     AtomicBoolean ready=new AtomicBoolean();long deadline=SystemClock.uptimeMillis()+5000;
     do {
      s.onActivity(a->ready.set(a.getResources().getConfiguration().fontScale>=2f && a.findViewById(R.id.questionHint).getWidth()>0));

@@ -48,10 +48,10 @@ public final class SongProgressView extends View {
 
     public SongProgressView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        trackPaint.setColor(ContextCompat.getColor(context, R.color.ls_track));
-        fillPaint.setColor(ContextCompat.getColor(context, R.color.ls_blue));
-        thumbPaint.setColor(ContextCompat.getColor(context, R.color.ls_yellow));
-        thumbStroke.setColor(ContextCompat.getColor(context, R.color.ls_stroke));
+        trackPaint.setColor(ContextCompat.getColor(context, R.color.sprout_lilac));
+        fillPaint.setColor(ContextCompat.getColor(context, R.color.sprout_plum));
+        thumbPaint.setColor(ContextCompat.getColor(context, R.color.sprout_sun));
+        thumbStroke.setColor(ContextCompat.getColor(context, R.color.sprout_plum));
         thumbStroke.setStyle(Paint.Style.STROKE);
         thumbStroke.setStrokeWidth(
                 getResources().getDimensionPixelSize(R.dimen.ls_stroke_chip));
@@ -87,7 +87,7 @@ public final class SongProgressView extends View {
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
-        float thumb = getResources().getDimension(R.dimen.ls_thumb);
+        float thumb = getResources().getDimensionPixelSize(R.dimen.ls_thumb);
         float trackH = getResources().getDimension(R.dimen.ls_track_height);
         float cy = getHeight() / 2f;
         float left = thumb / 2f;
@@ -145,7 +145,7 @@ public final class SongProgressView extends View {
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         if (!isEnabled() || durationMs <= 0 || onSeek == null
-                || getWidth() <= getResources().getDimension(R.dimen.ls_thumb)) {
+                || getWidth() <= getResources().getDimensionPixelSize(R.dimen.ls_thumb)) {
             cancelDrag();
             return false;
         }
@@ -182,7 +182,7 @@ public final class SongProgressView extends View {
     }
 
     private void updateFromX(float x) {
-        float thumb = getResources().getDimension(R.dimen.ls_thumb);
+        float thumb = getResources().getDimensionPixelSize(R.dimen.ls_thumb);
         float left = thumb / 2f;
         float right = getWidth() - thumb / 2f;
         float frac = Math.max(0f, Math.min(1f, (x - left) / (right - left)));

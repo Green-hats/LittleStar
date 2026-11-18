@@ -5,6 +5,7 @@
     android:id="@+id/themeTile"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/sprout_space"
     style="@style/Widget.Sprout.Card"
     app:cardBackgroundColor="@color/sprout_dew"
     android:clickable="true"
