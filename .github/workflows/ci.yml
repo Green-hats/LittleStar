@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, redesign/child-learning ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, redesign/child-learning ]
 
 jobs:
   build-and-test:
@@ -59,4 +59,5 @@ jobs:
         with:
           name: LittleStar-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
           retention-days: 7

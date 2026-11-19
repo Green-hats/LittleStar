@@ -10,8 +10,8 @@
 <sub>A Chinese-literacy app for heritage kids growing up in English-speaking homes.</sub>
 
 <p>
-  <a href="https://github.com/Green-hats/LittleStar/releases/latest"><img alt="Download" src="https://img.shields.io/badge/Download-APK-8957e5?style=flat-square" /></a>
-  <img alt="CI" src="https://github.com/Green-hats/LittleStar/actions/workflows/ci.yml/badge.svg?style=flat-square" />
+  <a href="https://github.com/Green-hats/LittleStar/actions/workflows/ci.yml?query=branch%3Aredesign%2Fchild-learning+event%3Apush"><img alt="Download Debug APK" src="https://img.shields.io/badge/Download-Debug_APK-305EC4?style=flat-square" /></a>
+  <img alt="CI" src="https://github.com/Green-hats/LittleStar/actions/workflows/ci.yml/badge.svg?branch=redesign%2Fchild-learning" />
   <img alt="Java" src="https://img.shields.io/badge/Java-17-ED8B00?style=flat-square&logo=openjdk&logoColor=white" />
   <img alt="Offline" src="https://img.shields.io/badge/Offline-no%20INTERNET-27A567?style=flat-square" />
   <img alt="License" src="https://img.shields.io/badge/License-MIT-1F6FD0?style=flat-square" />
@@ -68,6 +68,8 @@
 </details>
 
 ## 快速开始
+
+**下载新版 Debug APK** —— 登录 GitHub，打开[新版分支的 CI 记录](https://github.com/Green-hats/LittleStar/actions/workflows/ci.yml?query=branch%3Aredesign%2Fchild-learning+event%3Apush)，选择最近一次成功构建，在 **Artifacts** 下载 `LittleStar-debug-apk` 并解压。构建产物保留 7 天。
 
 **从源码构建** —— Gradle daemon 用 JDK 25，应用使用 Java 17，Android SDK 37。已有 [GitHub Release](https://github.com/Green-hats/LittleStar/releases/latest) 为此前发布的版本。
 
