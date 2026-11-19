@@ -65,7 +65,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.Sprout.Card">
+            style="@style/Widget.Sprout.Card.Hero">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,8 +91,8 @@
                     android:id="@+id/todayProgress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:indicatorColor="@color/sprout_fern"
-                    app:trackColor="@color/sprout_dew"
+                    app:indicatorColor="?attr/colorPrimary"
+                    app:trackColor="@color/sprout_track"
                     app:trackCornerRadius="4dp"
                     app:trackThickness="8dp"
                     android:layout_marginTop="12dp" />
@@ -131,12 +131,11 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.Sprout.Caption"
                 android:text="@string/sprout_path_meet"
-                android:textColor="?attr/colorOnPrimaryContainer"
+                android:textColor="?attr/colorOnSecondaryContainer"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:paddingVertical="10dp"
                 android:background="@drawable/bg_sprout_step"
-                android:backgroundTint="?attr/colorPrimaryContainer"
                 android:layout_marginEnd="6dp" />
 
             <TextView
@@ -156,12 +155,11 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.Sprout.Caption"
                 android:text="@string/sprout_path_done"
-                android:textColor="?attr/colorOnTertiaryContainer"
+                android:textColor="?attr/colorOnSecondaryContainer"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:paddingVertical="10dp"
                 android:background="@drawable/bg_sprout_step"
-                android:backgroundTint="?attr/colorTertiaryContainer"
                 android:layout_marginEnd="0dp" />
         </LinearLayout>
 

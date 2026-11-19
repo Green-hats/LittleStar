@@ -49,8 +49,8 @@
             android:id="@+id/quizProgress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:indicatorColor="@color/sprout_fern"
-            app:trackColor="@color/sprout_dew"
+            app:indicatorColor="?attr/colorPrimary"
+            app:trackColor="@color/sprout_track"
             app:trackCornerRadius="4dp"
             app:trackThickness="8dp"
             android:layout_marginTop="12dp" />
@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
                         android:importantForAccessibility="no"
-                        android:textColor="@color/sprout_on_lilac"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="32sp" />
                     <TextView
                         android:id="@+id/clueText"

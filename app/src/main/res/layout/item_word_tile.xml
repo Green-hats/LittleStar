@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="44sp"
-                android:textColor="@color/sprout_on_lilac"
+                android:textColor="?attr/colorOnSurface"
                 android:layout_gravity="center"
                 android:importantForAccessibility="no" />
 
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="32sp"
-            android:textColor="@color/sprout_on_lilac"
+            android:textColor="?attr/colorOnSurface"
             android:gravity="center" />
 
         <TextView

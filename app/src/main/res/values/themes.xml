@@ -2,25 +2,29 @@
 <resources>
     <style name="Theme.LittleStar" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:forceDarkAllowed">false</item>
-        <item name="colorPrimary">@color/sprout_plum</item>
-        <item name="colorOnPrimary">@color/sprout_on_plum</item>
-        <item name="colorPrimaryContainer">@color/sprout_lilac</item>
-        <item name="colorOnPrimaryContainer">@color/sprout_on_lilac</item>
-        <item name="colorSecondary">@color/sprout_fern</item>
-        <item name="colorOnSecondary">@color/sprout_on_plum</item>
-        <item name="colorSecondaryContainer">@color/sprout_dew</item>
-        <item name="colorOnSecondaryContainer">@color/sprout_fern</item>
-        <item name="colorTertiary">@color/sprout_amber</item>
-        <item name="colorOnTertiary">@color/sprout_on_plum</item>
-        <item name="colorTertiaryContainer">@color/sprout_honey</item>
-        <item name="colorOnTertiaryContainer">@color/sprout_on_honey</item>
+        <item name="colorPrimary">@color/sprout_blue</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorPrimaryContainer">@color/sprout_sky</item>
+        <item name="colorOnPrimaryContainer">@color/sprout_navy</item>
+        <item name="colorSecondary">@color/sprout_steel</item>
+        <item name="colorOnSecondary">@android:color/white</item>
+        <item name="colorSecondaryContainer">@color/sprout_mist</item>
+        <item name="colorOnSecondaryContainer">@color/sprout_steel</item>
+        <item name="colorTertiary">@color/sprout_fern</item>
+        <item name="colorOnTertiary">@android:color/white</item>
+        <item name="colorTertiaryContainer">@color/sprout_dew</item>
+        <item name="colorOnTertiaryContainer">@color/sprout_fern</item>
         <item name="colorSurface">@color/ls_card</item>
-        <item name="colorOnSurface">@color/sprout_on_lilac</item>
-        <item name="colorSurfaceVariant">@color/sprout_lilac</item>
+        <item name="colorOnSurface">@color/sprout_navy</item>
+        <item name="colorSurfaceVariant">@color/sprout_mist</item>
+        <item name="colorSurfaceContainer">@color/sprout_cloud</item>
+        <item name="colorSurfaceContainerHigh">@color/sprout_mist</item>
+        <item name="colorSurfaceContainerHighest">@color/sprout_line</item>
         <item name="colorOnSurfaceVariant">@color/sprout_muted</item>
         <item name="colorOutline">@color/sprout_outline</item>
+        <item name="colorOutlineVariant">@color/sprout_line</item>
         <item name="colorError">@color/sprout_on_rose</item>
-        <item name="colorOnError">@color/sprout_on_plum</item>
+        <item name="colorOnError">@android:color/white</item>
         <item name="colorErrorContainer">@color/sprout_rose</item>
         <item name="colorOnErrorContainer">@color/sprout_on_rose</item>
         <item name="android:colorBackground">@color/sprout_cloud</item>
@@ -44,7 +48,7 @@
         <item name="android:windowLightNavigationBar">true</item>
         <item name="windowSplashScreenBackground">@color/sprout_cloud</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_panda</item>
-        <item name="windowSplashScreenIconBackgroundColor">@color/sprout_sun</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/sprout_sky</item>
         <item name="postSplashScreenTheme">@style/Theme.LittleStar.Child</item>
     </style>
 </resources>

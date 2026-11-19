@@ -146,8 +146,8 @@ public final class QuizActivity extends ChildActivity {
             binding.clueText.setText(clue == null ? R.string.quiz_clue_fallback : clue.description());
         }
         boolean correct = state.lastAnswerCorrect || state.corrected;
-        int success = MaterialColors.getColor(binding.bottomFeedback, attr.colorOnSecondaryContainer);
-        int successBackground = MaterialColors.getColor(binding.bottomFeedback, attr.colorSecondaryContainer);
+        int success = MaterialColors.getColor(binding.bottomFeedback, attr.colorOnTertiaryContainer);
+        int successBackground = MaterialColors.getColor(binding.bottomFeedback, attr.colorTertiaryContainer);
         int retry = MaterialColors.getColor(binding.bottomFeedback, attr.colorOnErrorContainer);
         int retryBackground = MaterialColors.getColor(binding.bottomFeedback, attr.colorErrorContainer);
         int surface = MaterialColors.getColor(binding.bottomFeedback, attr.colorSurface);

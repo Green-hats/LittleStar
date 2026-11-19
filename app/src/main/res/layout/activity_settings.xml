@@ -92,8 +92,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.Sprout.Card"
-            app:cardBackgroundColor="@color/sprout_dew">
+            style="@style/Widget.Sprout.Card">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Widget.Sprout.Card"
-                    app:cardBackgroundColor="@color/sprout_lilac"
+                    app:cardBackgroundColor="?attr/colorPrimaryContainer"
                     android:clickable="true"
                     android:focusable="true">
                     <LinearLayout

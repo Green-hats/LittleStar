@@ -45,8 +45,8 @@
         android:id="@+id/listProgress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:indicatorColor="@color/sprout_fern"
-        app:trackColor="@color/sprout_dew"
+        app:indicatorColor="?attr/colorPrimary"
+        app:trackColor="@color/sprout_track"
         app:trackCornerRadius="4dp"
         app:trackThickness="8dp"
         android:layout_marginTop="12dp" />

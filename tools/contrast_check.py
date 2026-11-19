@@ -17,22 +17,19 @@ PAIRS = [
     ("ls_on_blue", "ls_blue"), ("ls_on_mint", "ls_mint"),
     ("ls_ink", "ls_mint"),
     ("ls_red", "ls_paper"),      # 彩色描边文字（如 Quiz 入口）也要 ≥ 4.5
-    ("sprout_on_plum", "sprout_plum"), ("sprout_on_lilac", "sprout_lilac"),
-    ("sprout_on_lilac", "sprout_cloud"), ("sprout_on_lilac", "ls_card"),
-    ("sprout_on_lilac", "sprout_dew"), ("sprout_on_lilac", "sprout_honey"),
-    ("sprout_plum", "sprout_cloud"), ("sprout_plum", "sprout_lilac"),
-    ("sprout_on_plum", "sprout_fern"), ("sprout_fern", "sprout_dew"),
-    ("sprout_on_plum", "sprout_amber"), ("sprout_on_honey", "sprout_honey"),
-    ("sprout_on_plum", "sprout_on_rose"), ("sprout_on_rose", "sprout_rose"),
-    ("sprout_on_rose", "ls_card"), ("sprout_on_lilac", "sprout_rose"),
-    ("sprout_muted", "sprout_cloud"), ("sprout_muted", "ls_card"),
-    ("sprout_muted", "sprout_lilac"), ("sprout_muted", "sprout_dew"),
-    ("sprout_muted", "sprout_honey"), ("sprout_muted", "sprout_rose"),
-    ("sprout_fern", "sprout_lilac"), ("sprout_on_rose", "sprout_lilac"),
+    ("ls_card", "sprout_blue"), ("sprout_blue", "sprout_cloud"),
+    ("sprout_blue", "sprout_sky"), ("ls_card", "sprout_steel"),
+    ("sprout_steel", "sprout_mist"), ("sprout_fern", "sprout_dew"),
+    ("sprout_on_rose", "sprout_rose"), ("sprout_fern", "ls_card"),
+    ("sprout_on_rose", "ls_card"),
+    *((ink, surface) for ink in ("sprout_navy", "sprout_muted")
+      for surface in ("sprout_cloud", "ls_card", "sprout_sky", "sprout_mist",
+                      "sprout_dew", "sprout_rose")),
 ]
 
 NON_TEXT_PAIRS = [
     ("sprout_outline", "ls_card"), ("sprout_outline", "sprout_cloud"),
+    ("sprout_blue", "sprout_track"), ("sprout_navy", "sprout_sun"),
     ("sprout_fern", "sprout_cloud"), ("sprout_on_rose", "sprout_cloud"),
 ]
 

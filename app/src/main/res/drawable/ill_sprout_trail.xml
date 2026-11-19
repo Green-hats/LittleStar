@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="240dp" android:height="102dp" android:viewportWidth="240" android:viewportHeight="102">
-    <path android:fillColor="@color/sprout_dew"
+    <path android:fillColor="@color/sprout_track"
         android:pathData="M0,102 C37,64 69,67 100,88 C126,65 172,52 204,81 Q226,80 240,63 L240,102 Z"/>
-    <path android:fillColor="@color/sprout_fern"
+    <path android:fillColor="@color/sprout_steel"
         android:pathData="M23,101 Q38,87 64,96 Q96,110 123,87 Q141,73 163,78 L163,82 Q142,77 126,91 Q96,114 63,100 Q38,91 28,102 Z"/>
     <path android:fillColor="@color/sprout_sun"
         android:pathData="M167,12 Q172,11 176,18 L186,37 L208,40 Q218,42 211,50 L195,65 L198,87 Q199,96 191,92 L171,81 L150,92 Q143,95 144,87 L147,65 L131,49 Q124,42 134,40 L156,37 L166,16 Z"/>
-    <path android:fillColor="@color/sprout_on_lilac"
+    <path android:fillColor="@color/sprout_navy"
         android:pathData="M158,55 a2.6,2.6 0,1 0,5.2 0 a2.6,2.6 0,1 0,-5.2 0 M178,55 a2.6,2.6 0,1 0,5.2 0 a2.6,2.6 0,1 0,-5.2 0 M165,63 Q171,68 176,63 Q175,72 170,71 Q166,70 165,63 Z"/>
-    <path android:fillColor="@color/sprout_plum"
+    <path android:fillColor="@color/sprout_blue"
         android:pathData="M81,22 L85,33 L96,37 L85,41 L81,52 L77,41 L66,37 L77,33 Z M222,14 L225,21 L232,24 L225,27 L222,34 L219,27 L212,24 L219,21 Z"/>
 </vector>

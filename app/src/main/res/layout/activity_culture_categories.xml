@@ -53,7 +53,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.Sprout.Card"
-            app:cardBackgroundColor="@color/sprout_lilac"
             android:clickable="true"
             android:focusable="true"
             android:layout_marginBottom="12dp">
@@ -89,7 +88,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:textColor="@color/sprout_on_lilac" />
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:id="@+id/countSongs"
@@ -111,7 +110,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.Sprout.Card"
-            app:cardBackgroundColor="@color/sprout_dew"
             android:clickable="true"
             android:focusable="true"
             android:layout_marginBottom="12dp">
@@ -127,7 +125,7 @@
                     android:layout_width="42dp"
                     android:layout_height="42dp"
                     android:src="@drawable/ic_book"
-                    app:tint="?attr/colorOnSecondaryContainer"
+                    app:tint="?attr/colorPrimary"
                     android:importantForAccessibility="no"
                     android:layout_marginEnd="16dp" />
 
@@ -147,7 +145,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:textColor="@color/sprout_on_lilac" />
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:id="@+id/countStories"
@@ -169,7 +167,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.Sprout.Card"
-            app:cardBackgroundColor="?attr/colorTertiaryContainer"
             android:clickable="true"
             android:focusable="true"
             android:layout_marginBottom="12dp">
@@ -185,7 +182,7 @@
                     android:layout_width="42dp"
                     android:layout_height="42dp"
                     android:src="@drawable/ic_scroll"
-                    app:tint="?attr/colorOnTertiaryContainer"
+                    app:tint="?attr/colorPrimary"
                     android:importantForAccessibility="no"
                     android:layout_marginEnd="16dp" />
 
@@ -205,7 +202,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
-                        android:textColor="@color/sprout_on_lilac" />
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:id="@+id/countPoems"

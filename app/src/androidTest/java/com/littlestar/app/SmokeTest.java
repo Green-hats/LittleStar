@@ -54,10 +54,11 @@ public final class SmokeTest {
     }
 
     @Test
-    public void firstLaunchAndReturnShowLessonActionWithoutScrolling() {
+    public void firstLaunchAndReturnShowLessonActionWithoutScrolling() throws Exception {
         try (ActivityScenario<HomeActivity> ignored = ActivityScenario.launch(HomeActivity.class)) {
             waitUntilShown(R.id.btnStart);
             onView(withId(R.id.btnStart)).check(matches(allOf(isCompletelyDisplayed(), withText(R.string.sprout_start))));
+            UiEvidence.capture("home_first_launch");
             tap(R.id.btnStart);
             waitUntilShown(R.id.pageHanzi);
             onView(withId(R.id.pageIllustration)).check(matches(isCompletelyDisplayed()));

@@ -48,10 +48,10 @@ public final class SongProgressView extends View {
 
     public SongProgressView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        trackPaint.setColor(ContextCompat.getColor(context, R.color.sprout_lilac));
-        fillPaint.setColor(ContextCompat.getColor(context, R.color.sprout_plum));
-        thumbPaint.setColor(ContextCompat.getColor(context, R.color.sprout_sun));
-        thumbStroke.setColor(ContextCompat.getColor(context, R.color.sprout_plum));
+        trackPaint.setColor(ContextCompat.getColor(context, R.color.sprout_track));
+        fillPaint.setColor(ContextCompat.getColor(context, R.color.sprout_blue));
+        thumbPaint.setColor(ContextCompat.getColor(context, R.color.ls_card));
+        thumbStroke.setColor(ContextCompat.getColor(context, R.color.sprout_blue));
         thumbStroke.setStyle(Paint.Style.STROKE);
         thumbStroke.setStrokeWidth(
                 getResources().getDimensionPixelSize(R.dimen.ls_stroke_chip));
