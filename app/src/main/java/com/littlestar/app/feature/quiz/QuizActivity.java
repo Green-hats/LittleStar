@@ -2,6 +2,7 @@ package com.littlestar.app.feature.quiz;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -12,12 +13,13 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.OneShotPreDrawListener;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.viewmodel.CreationExtras;
 
+import com.google.android.material.R.attr;
+import com.google.android.material.color.MaterialColors;
 import com.littlestar.app.R;
 import com.littlestar.app.core.audio.SpeechPlayer;
 import com.littlestar.app.core.ui.ChildActivity;
@@ -144,6 +146,13 @@ public final class QuizActivity extends ChildActivity {
             binding.clueText.setText(clue == null ? R.string.quiz_clue_fallback : clue.description());
         }
         boolean correct = state.lastAnswerCorrect || state.corrected;
+        int success = MaterialColors.getColor(binding.bottomFeedback, attr.colorOnSecondaryContainer);
+        int successBackground = MaterialColors.getColor(binding.bottomFeedback, attr.colorSecondaryContainer);
+        int retry = MaterialColors.getColor(binding.bottomFeedback, attr.colorOnErrorContainer);
+        int retryBackground = MaterialColors.getColor(binding.bottomFeedback, attr.colorErrorContainer);
+        int surface = MaterialColors.getColor(binding.bottomFeedback, attr.colorSurface);
+        int onSurface = MaterialColors.getColor(binding.bottomFeedback, attr.colorOnSurface);
+        int outline = MaterialColors.getColor(binding.bottomFeedback, attr.colorOutline);
         for (int i = 0; i < options.length; i++) {
             ViewQuizOptionBinding option = options[i];
             if (i >= state.question.options().size()) {
@@ -156,13 +165,17 @@ public final class QuizActivity extends ChildActivity {
             boolean wrong = state.answered && !correct && i == wrongIndex;
             option.getRoot().setVisibility(View.VISIBLE);
             option.getRoot().setEnabled(!state.answered || state.retrying);
-            option.getRoot().setCardBackgroundColor(ContextCompat.getColor(this,
-                    right ? R.color.sprout_dew : wrong ? R.color.sprout_peach : R.color.ls_card));
+            int foreground = right ? success : wrong ? retry : onSurface;
+            int background = right ? successBackground : wrong ? retryBackground : surface;
+            option.getRoot().setCardBackgroundColor(background);
+            option.getRoot().setStrokeColor(right || wrong ? foreground : outline);
             option.getRoot().setStrokeWidth(getResources().getDimensionPixelSize(
                     right || wrong ? R.dimen.quiz_outcome_outline : R.dimen.quiz_option_outline));
             option.optionHanzi.setText(value);
+            option.optionHanzi.setTextColor(foreground);
             option.optionBadge.setVisibility(right || wrong ? View.VISIBLE : View.GONE);
             option.optionBadge.setImageResource(right ? R.drawable.ic_check : R.drawable.ic_close);
+            option.optionBadge.setImageTintList(ColorStateList.valueOf(foreground));
             SpannableString pronunciation = new SpannableString(value);
             pronunciation.setSpan(new LocaleSpan(Locale.SIMPLIFIED_CHINESE),
                     0, value.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -174,8 +187,8 @@ public final class QuizActivity extends ChildActivity {
         boolean feedback = state.answered && !state.retrying;
         binding.bottomFeedback.setVisibility(feedback ? View.VISIBLE : View.GONE);
         if (feedback) {
-            binding.bottomFeedback.setCardBackgroundColor(ContextCompat.getColor(this,
-                    correct ? R.color.sprout_dew : R.color.sprout_peach));
+            binding.bottomFeedback.setCardBackgroundColor(correct ? successBackground : retryBackground);
+            binding.feedbackText.setTextColor(correct ? success : retry);
             binding.feedbackText.setText(state.corrected ? getString(R.string.quiz_retry_correct)
                     : state.lastAnswerCorrect ? getString(R.string.quiz_feedback_correct)
                     : state.retest ? getString(R.string.quiz_retest_wrong)

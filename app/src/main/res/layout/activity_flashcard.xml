@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.Sprout.Card"
-                app:cardBackgroundColor="@color/sprout_peach"
+                app:cardBackgroundColor="?attr/colorErrorContainer"
                 android:visibility="gone"
                 android:layout_marginTop="8dp">
                 <LinearLayout
@@ -90,7 +90,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.Sprout.Section"
-                        android:text="@string/pr_audio_title" />
+                    android:text="@string/pr_audio_title"
+                    android:textColor="?attr/colorOnErrorContainer" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnAudioRetry"

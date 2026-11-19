@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -119,13 +118,11 @@ public final class RoundReviewActivity extends ChildActivity {
             h.b.rowAnswer.setText(item.correct
                     ? getString(R.string.review_correct)
                     : getString(R.string.review_wrong, chosen, word.hanzi));
-            h.b.rowAnswer.setTextColor(ContextCompat.getColor(RoundReviewActivity.this,
-                    item.correct ? R.color.ls_muted : R.color.ls_red));
-
             ImageView status = h.b.rowStatus;
+            int outcomeColor = getColor(item.correct ? R.color.sprout_fern : R.color.sprout_on_rose);
+            h.b.rowAnswer.setTextColor(outcomeColor);
             status.setImageResource(item.correct ? R.drawable.ic_check : R.drawable.ic_close);
-            status.setColorFilter(ContextCompat.getColor(RoundReviewActivity.this,
-                    item.correct ? R.color.ls_green : R.color.ls_red));
+            status.setColorFilter(outcomeColor);
             status.setContentDescription(getString(item.correct
                     ? R.string.review_correct_desc : R.string.review_wrong_desc));
 

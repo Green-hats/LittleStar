@@ -14,12 +14,9 @@
     <color name="ls_yellow">#F5B301</color>
     <color name="ls_on_yellow">#211D18</color>
     <color name="ls_green">#27A567</color>
-    <color name="ls_on_green">#211D18</color>     <!-- 青绿上只用墨字 -->
     <color name="ls_blue">#1F6FD0</color>
     <color name="ls_on_blue">#FFFDF6</color>
     <!-- 反馈容器 -->
-    <color name="ls_clay">#F6D3C6</color>
-    <color name="ls_on_clay">#7A4A33</color>      <!-- 答错说明文字 -->
     <color name="ls_mint">#CDEBD8</color>
     <color name="ls_on_mint">#1B5E3B</color>
     <!-- 熊猫插画内容色（不参与颜色角色，深浅色保持一致） -->

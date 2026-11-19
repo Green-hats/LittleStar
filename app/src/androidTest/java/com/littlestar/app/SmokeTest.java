@@ -114,6 +114,7 @@ public final class SmokeTest {
 
             waitUntilShown(R.id.btnReview);
             onView(withId(R.id.rewardScore)).check(matches(withText("First try: 2 of 3")));
+            UiEvidence.capture("lesson_complete_palette");
             tap(R.id.btnReview);
             waitUntilShown(R.id.answerList);
             pressBack();

@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="sprout_cloud">#FFF9F0</color>
-    <color name="sprout_plum">#4E397A</color>
+    <color name="sprout_cloud">#FFFBF5</color>
+    <color name="sprout_plum">#4D42AD</color>
     <color name="sprout_on_plum">#FFFFFF</color>
-    <color name="sprout_lilac">#EFE7FC</color>
-    <color name="sprout_on_lilac">#332051</color>
-    <color name="sprout_fern">#176552</color>
-    <color name="sprout_dew">#D8F2E7</color>
-    <color name="sprout_sun">#FFC659</color>
-    <color name="sprout_outline">#81748D</color>
-    <color name="sprout_peach">#FAE2D6</color>
+    <color name="sprout_lilac">#EDE9FF</color>
+    <color name="sprout_on_lilac">#29234C</color>
+    <color name="sprout_muted">#635A72</color>
+    <color name="sprout_fern">#146550</color>
+    <color name="sprout_dew">#D8F4E9</color>
+    <color name="sprout_sun">#FFCB66</color>
+    <color name="sprout_amber">#795017</color>
+    <color name="sprout_honey">#FFF0CB</color>
+    <color name="sprout_on_honey">#583609</color>
+    <color name="sprout_outline">#827891</color>
+    <color name="sprout_rose">#FCE6E9</color>
+    <color name="sprout_on_rose">#823144</color>
 
     <style name="Widget.Sprout.Button" parent="Widget.Material3.Button">
         <item name="android:minHeight">56dp</item>
@@ -40,7 +45,7 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
     <style name="TextAppearance.Sprout.Caption" parent="TextAppearance.Material3.BodyMedium">
-        <item name="android:textColor">@color/ls_muted</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
     <dimen name="sprout_gutter">20dp</dimen>
     <dimen name="sprout_space">12dp</dimen>

@@ -6,11 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/Widget.Sprout.Card"
-    app:cardBackgroundColor="@color/ls_card"
+    app:cardBackgroundColor="?attr/colorSurface"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:strokeColor="@color/sprout_outline"
+    app:strokeColor="?attr/colorOutline"
     app:strokeWidth="@dimen/quiz_option_outline">
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="@dimen/ls_quiz_option_text"
-            android:textColor="@color/sprout_on_lilac"
+            android:textColor="?attr/colorOnSurface"
             android:layout_weight="1"
             android:gravity="center"
             android:importantForAccessibility="no" />

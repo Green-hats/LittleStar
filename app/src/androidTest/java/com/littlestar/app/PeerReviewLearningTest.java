@@ -1,12 +1,15 @@
 package com.littlestar.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import com.google.android.material.card.MaterialCardView;
 import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.data.store.ProgressState;
 import com.littlestar.app.feature.flashcard.FlashcardActivity;
@@ -72,6 +75,26 @@ public class PeerReviewLearningTest {
   if(view instanceof android.view.ViewGroup group)
    for(int i=0;i<group.getChildCount();i++)if(hasImage(group.getChildAt(i)))return true;
   return false;
+ }
+
+ private static int optionId(int index) {
+  return new int[]{R.id.option0,R.id.option1,R.id.option2,R.id.option3}[index];
+ }
+
+ private static void assertOutcomeColors(Activity activity,int index,int container,int content) {
+  MaterialCardView option=activity.findViewById(optionId(index));
+  MaterialCardView feedback=activity.findViewById(R.id.bottomFeedback);
+  TextView hanzi=option.findViewById(R.id.optionHanzi);
+  TextView message=feedback.findViewById(R.id.feedbackText);
+  ImageView badge=option.findViewById(R.id.optionBadge);
+  int background=activity.getColor(container),foreground=activity.getColor(content);
+  assertEquals(background,option.getCardBackgroundColor().getDefaultColor());
+  assertEquals(background,feedback.getCardBackgroundColor().getDefaultColor());
+  assertEquals(foreground,option.getStrokeColorStateList().getDefaultColor());
+  assertEquals(foreground,hanzi.getCurrentTextColor());
+  assertEquals(foreground,message.getCurrentTextColor());
+  assertEquals(View.VISIBLE,badge.getVisibility());
+  assertEquals(foreground,badge.getImageTintList().getDefaultColor());
  }
 
  private static void assertNoAnswerClue(View view,String... clues) {
@@ -160,12 +183,18 @@ public class PeerReviewLearningTest {
     QuizViewModel vm=new ViewModelProvider(a).get(QuizViewModel.class);model.set(vm);
     assertNotNull(vm.state().getValue().question);
     beforeHint.set(vm.state().getValue().question.correctIndex());
-    vm.choose((beforeHint.get()+1)%4);
+    int wrong=(beforeHint.get()+1)%4;
+    vm.choose(wrong);
+    assertOutcomeColors(a,wrong,R.color.sprout_rose,R.color.sprout_on_rose);
+    var unselected=a.<MaterialCardView>findViewById(optionId(beforeHint.get()));
+    assertEquals(a.getColor(R.color.ls_card),unselected.getCardBackgroundColor().getDefaultColor());
+    assertEquals(View.GONE,unselected.findViewById(R.id.optionBadge).getVisibility());
     assertEquals(View.GONE,a.findViewById(R.id.shapeClue).getVisibility());
     var action=a.<com.google.android.material.button.MaterialButton>findViewById(R.id.btnRetry);
     assertEquals(a.getString(R.string.quiz_see_clue),action.getText());
     assertNotNull(action.getIcon());
    });
+   UiEvidence.capture("quiz_retry_palette");
    String wordId=model.get().state().getValue().question.wordId();
    String due=read(st->st.words.get(wordId).dueDate);
    assertEquals(1,(int)read(st->st.sessions.get(0).answers.size()));
@@ -189,6 +218,7 @@ public class PeerReviewLearningTest {
     afterHint.set(vm.state().getValue().question.correctIndex());
     assertNotEquals(firstRetry,afterHint.get().intValue());
     vm.choose(vm.state().getValue().question.correctIndex());
+    assertOutcomeColors(a,afterHint.get(),R.color.sprout_dew,R.color.sprout_fern);
     assertTrue(vm.state().getValue().corrected);
     assertFalse(vm.state().getValue().lastAnswerCorrect);
    });

@@ -45,7 +45,8 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.Sprout.Card">
+            style="@style/Widget.Sprout.Card"
+            app:cardBackgroundColor="?attr/colorTertiaryContainer">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.Sprout.Title"
                     android:text="@string/sprout_reward_title"
+                    android:textColor="?attr/colorOnTertiaryContainer"
                     android:gravity="center" />
 
                 <TextView
@@ -78,6 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.Sprout.Section"
+                    android:textColor="?attr/colorOnTertiaryContainer"
                     android:gravity="center"
                     android:layout_marginTop="16dp" />
 
