@@ -72,7 +72,7 @@
 **从源码构建** —— Gradle daemon 用 JDK 25，应用使用 Java 17，Android SDK 37。已有 [GitHub Release](https://github.com/Green-hats/LittleStar/releases/latest) 为此前发布的版本。
 
 ```bash
-git clone --branch refactor/java-md3 https://github.com/Green-hats/LittleStar.git && cd LittleStar
+git clone --branch redesign/child-learning https://github.com/Green-hats/LittleStar.git && cd LittleStar
 ./gradlew :app:assembleDebug
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
