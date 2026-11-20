@@ -104,15 +104,11 @@ final class FlashcardLayout implements ViewTreeObserver.OnGlobalLayoutListener {
         }
         int audioTouch = scaled(R.dimen.ls_btn_secondary, R.dimen.ls_btn_icon);
         card.btnListen.setMinimumHeight(audioTouch);
-        card.btnListen.getChildAt(0).setMinimumHeight(audioTouch);
         textSize(card.pageHanzi, R.dimen.ls_flashcard_hanzi_max, R.dimen.ls_flashcard_hanzi_min);
         textSize(card.pagePinyin, R.dimen.ls_flashcard_pinyin_max, R.dimen.ls_flashcard_pinyin_min);
         textSize(card.pageEnglish, R.dimen.ls_flashcard_english_max, R.dimen.ls_flashcard_english_min);
-        textSize(card.listenLabel, R.dimen.ls_flashcard_english_max, R.dimen.ls_flashcard_english_min);
-        textSize(binding.stampLabel, R.dimen.ls_flashcard_english_max, R.dimen.ls_flashcard_english_min);
         textSize(binding.cardTitle, R.dimen.ls_flashcard_title_max, R.dimen.ls_flashcard_title_min);
         textSize(binding.cardCounter, R.dimen.ls_flashcard_title_max, R.dimen.ls_flashcard_title_min);
-        textSize(binding.btnNextText, R.dimen.ls_flashcard_button_max, R.dimen.ls_flashcard_button_min);
     }
 
     void close() {

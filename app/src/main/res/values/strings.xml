@@ -7,6 +7,7 @@
 
     <!-- 组件无障碍 / 组件内文案（D30：UI 外壳英文；教学内容中文在 JSON） -->
     <string name="ls_seg_progress_desc">Progress: %1$d of %2$d</string>
+    <string name="player_desc_seek">Playback position</string>
     <string name="ls_stamp_char">✓</string>
     <string name="ls_stamp_learned_desc">Learning recorded</string>
     <string name="ls_stamp_not_learned_desc">No learning record yet</string>
@@ -83,7 +84,6 @@
     <string name="reward_title">Great job!</string>
     <string name="reward_subtitle">You practiced %1$d characters</string>
     <string name="reward_subtitle_review">Practice complete!</string>
-    <string name="reward_stamp_text">Done!</string>
     <string name="reward_done">DONE</string>
     <string name="reward_again">Play again</string>
 

@@ -25,64 +25,58 @@
         <item name="android:textColor">@color/ls_ink</item>
     </style>
 
-    <style name="TextAppearance.LS.Display" parent="">
+    <style name="TextAppearance.LS.Display" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.LS.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.LS.Headline" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.LS.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.LS.Caption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.LS.HomeLabel" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.LS.HomeTitle" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.LS.HomeProgress" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">?attr/colorOnPrimaryContainer</item>
+    </style>
+
+    <style name="TextAppearance.LS.Pinyin" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="fontFamily">@font/littlestar_latin</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">28sp</item>
-        <item name="android:textColor">@color/ls_ink</item>
     </style>
 
-    <style name="TextAppearance.LS.Title" parent="">
+    <style name="TextAppearance.LS.Pinyin.Small" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="fontFamily">@font/littlestar_latin</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">22sp</item>
-        <item name="android:textColor">@color/ls_ink</item>
     </style>
 
-    <style name="TextAppearance.LS.Headline" parent="">
-        <item name="fontFamily">@font/littlestar_latin</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/ls_ink</item>
+    <style name="TextAppearance.LS.English" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 
-    <style name="TextAppearance.LS.Body" parent="">
-        <item name="fontFamily">@font/littlestar_latin</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/ls_ink</item>
+    <style name="TextAppearance.LS.English.Small" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 
-    <style name="TextAppearance.LS.Caption" parent="">
-        <item name="fontFamily">@font/littlestar_latin</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/ls_muted</item>
-    </style>
-
-    <style name="TextAppearance.LS.Pinyin" parent="">
-        <item name="fontFamily">@font/littlestar_latin</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/ls_ink</item>
-    </style>
-
-    <style name="TextAppearance.LS.Pinyin.Small" parent="TextAppearance.LS.Pinyin">
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="TextAppearance.LS.English" parent="">
-        <item name="fontFamily">@font/littlestar_latin</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/ls_muted</item>
-    </style>
-
-    <style name="TextAppearance.LS.English.Small" parent="TextAppearance.LS.English">
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="TextAppearance.LS.Button" parent="">
-        <item name="fontFamily">@font/littlestar_latin</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/ls_on_red</item>
-        <item name="android:maxLines">1</item>
+    <style name="TextAppearance.LS.Button" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
     <style name="Widget.LS.Label.Control" parent="">
         <item name="android:maxLines">1</item>

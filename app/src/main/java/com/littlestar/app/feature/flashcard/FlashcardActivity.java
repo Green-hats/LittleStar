@@ -9,7 +9,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.core.content.ContextCompat;
 import com.littlestar.app.core.ui.ContentImage;
 
 import com.littlestar.app.R;
@@ -183,8 +182,8 @@ public final class FlashcardActivity extends ChildActivity {
                 ? theme.nameEn
                 : getString(R.string.fc_session_title));
         binding.cardCounter.setText(getString(R.string.fc_counter, s.index + 1, s.words.size()));
-        binding.cardProgress.setSegments(s.words.size());
-        binding.cardProgress.setFilled(s.index + 1);
+        binding.cardProgress.setMax(s.words.size());
+        binding.cardProgress.setProgressCompat(s.index + 1, false);
 
         if (!cur.id.equals(renderedWordId)) {
             boolean first = renderedWordId == null;
@@ -202,15 +201,13 @@ public final class FlashcardActivity extends ChildActivity {
             speakCurrent();
         }
 
-        binding.stamp.setFillColor(ContextCompat.getColor(this,
-                s.currentLearned ? R.color.ls_mint : R.color.ls_card));
         binding.stamp.setContentDescription(getString(s.currentLearned
                 ? R.string.pr_stamp_marked_desc : R.string.pr_stamp_action_desc));
         binding.stamp.setStateDescription(getString(s.currentLearned
                 ? R.string.pr_stamp_state_marked : R.string.pr_stamp_state_unmarked));
-        binding.stampLabel.setText(s.currentLearned
+        binding.stamp.setText(s.currentLearned
                 ? R.string.pr_stamp_marked : R.string.pr_stamp_optional);
-        binding.btnNextText.setText(!s.isLast ? R.string.fc_next
+        binding.btnNext.setText(!s.isLast ? R.string.fc_next
                 : s.mode == FlashcardViewModel.Mode.SESSION
                 ? R.string.fc_start_quiz : R.string.fc_back_words);
         updateReading();

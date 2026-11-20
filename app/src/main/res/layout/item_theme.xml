@@ -3,7 +3,7 @@
 <com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/themeTile" style="@style/Widget.LS.Block.Tile" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="@dimen/ls_gap" android:minHeight="@dimen/ls_theme_tile_height">
 
     <!-- 序号徽章 / 全学完绿勾 -->
-    <com.littlestar.app.core.ui.BlockLayout android:id="@+id/badgeNum" style="@style/Widget.LS.Block.Icon" android:layout_width="@dimen/ls_badge" android:layout_height="@dimen/ls_badge" android:layout_gravity="top|end" android:layout_marginTop="@dimen/ls_gap" android:layout_marginEnd="@dimen/ls_gap" app:ls_fill="@color/ls_yellow" app:ls_pressable="false" app:ls_shadowOffset="@dimen/ls_no_shadow">
+    <com.littlestar.app.core.ui.BlockLayout android:id="@+id/badgeNum" style="@style/Widget.LS.Block.Icon" android:layout_width="@dimen/ls_badge" android:layout_height="@dimen/ls_badge" android:layout_gravity="top|end" android:layout_marginTop="@dimen/ls_gap" android:layout_marginEnd="@dimen/ls_gap" app:ls_fill="@color/ls_yellow" app:ls_pressable="false">
 
         <TextView android:id="@+id/badgeText" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:textAppearance="@style/TextAppearance.LS.Caption" android:textColor="@color/ls_on_yellow" android:textStyle="bold"/>
     </com.littlestar.app.core.ui.BlockLayout>

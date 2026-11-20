@@ -34,8 +34,8 @@ public final class StampView extends View {
     private final float strokeWidth;
     private final float cornerRadius;
 
-    private final int redColor;
-    private final int onRedColor;
+    private final int primaryColor;
+    private final int onPrimaryColor;
     private final int mutedColor;
 
     private boolean learned;
@@ -63,8 +63,8 @@ public final class StampView extends View {
         stampChar = getResources().getString(R.string.ls_stamp_char);
         strokeWidth = getResources().getDimension(R.dimen.ls_stroke_block);
         cornerRadius = getResources().getDimension(R.dimen.ls_radius_chip);
-        redColor = ContextCompat.getColor(context, R.color.ls_red);
-        onRedColor = ContextCompat.getColor(context, R.color.ls_on_red);
+        primaryColor = ContextCompat.getColor(context, R.color.ls_primary);
+        onPrimaryColor = ContextCompat.getColor(context, R.color.ls_on_primary);
         mutedColor = ContextCompat.getColor(context, R.color.ls_muted);
 
         textPaint.setTextAlign(Paint.Align.CENTER);
@@ -143,9 +143,9 @@ public final class StampView extends View {
 
         if (learned) {
             boxPaint.setStyle(Paint.Style.FILL);
-            boxPaint.setColor(redColor);
+            boxPaint.setColor(primaryColor);
             canvas.drawRoundRect(rect, cornerRadius, cornerRadius, boxPaint);
-            textPaint.setColor(onRedColor);
+            textPaint.setColor(onPrimaryColor);
         } else {
             boxPaint.setStyle(Paint.Style.STROKE);
             boxPaint.setStrokeWidth(strokeWidth);

@@ -2,6 +2,8 @@ package com.littlestar.app;
 
 import android.os.SystemClock;
 import android.view.MotionEvent;
+import android.view.ContextThemeWrapper;
+import android.widget.FrameLayout;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -16,7 +18,11 @@ import static org.junit.Assert.*;
 public final class SongProgressTest {
     @Test public void cancelDoesNotSeekAndUpCommitsOnlyOnce() {
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
-            SongProgressView view = new SongProgressView(ApplicationProvider.getApplicationContext());
+            var context = new ContextThemeWrapper(ApplicationProvider.getApplicationContext(),
+                    R.style.Theme_LittleStar_Child);
+            FrameLayout parent = new FrameLayout(context);
+            SongProgressView view = new SongProgressView(context);
+            parent.addView(view);
             view.layout(0, 0, 400, 60);
             view.setProgress(1_000, 10_000);
             List<Long> seeks = new ArrayList<>();

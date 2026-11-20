@@ -47,7 +47,6 @@ public final class PlayerActivity extends ChildActivity {
     private static final String EXTRA_PLAY = "play";
     private static final String STATE_PLAYBACK_STARTED = "playback_started";
     private static final long PROGRESS_TICK_MS = 250L;
-    private static final float DISABLED_ALPHA = 0.38f;
 
     @NonNull
     public static Intent intent(@NonNull Activity from, @NonNull String itemId,
@@ -247,15 +246,10 @@ public final class PlayerActivity extends ChildActivity {
         MediaController c = controller;
         boolean ready = c != null && c.isConnected() && controllerInitialized
                 && c.getMediaItemCount() > 0;
-        setControlEnabled(binding.btnPlay, ready);
+        binding.btnPlay.setEnabled(ready);
         updateTrackControls();
-        setControlEnabled(binding.progress,
-                ready && c.isCurrentMediaItemSeekable() && c.getDuration() > 0);
-    }
-
-    private static void setControlEnabled(View view, boolean enabled) {
-        view.setEnabled(enabled);
-        view.setAlpha(enabled ? 1f : DISABLED_ALPHA);
+        binding.progress.setEnabled(ready
+                && c.isCurrentMediaItemSeekable() && c.getDuration() > 0);
     }
 
     /** Show whether a neighbouring item actually exists in the current category queue. */
@@ -269,12 +263,8 @@ public final class PlayerActivity extends ChildActivity {
         boolean next = ready
                 && c.isCommandAvailable(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
                 && c.hasNextMediaItem();
-        float unavailableAlpha = getResources().getFraction(
-                R.fraction.player_unavailable_alpha, 1, 1);
         binding.btnPrev.setEnabled(previous);
         binding.btnNext.setEnabled(next);
-        binding.btnPrev.setAlpha(previous ? 1f : unavailableAlpha);
-        binding.btnNext.setAlpha(next ? 1f : unavailableAlpha);
         binding.btnPrev.setContentDescription(getString(previous
                 ? R.string.player_desc_prev : R.string.player_desc_prev_unavailable));
         binding.btnNext.setContentDescription(getString(next
@@ -300,7 +290,7 @@ public final class PlayerActivity extends ChildActivity {
 
         binding.playerSummary.setText(s.item.summary);
         binding.playLabel.setText(s.playing ? R.string.player_desc_pause : R.string.player_desc_play);
-        binding.playIcon.setImageResource(s.playing ? R.drawable.ic_pause : R.drawable.ic_play);
+        binding.btnPlay.setIconResource(s.playing ? R.drawable.ic_pause : R.drawable.ic_play);
         binding.btnPlay.setContentDescription(
                 getString(s.playing ? R.string.player_desc_pause : R.string.player_desc_play));
 

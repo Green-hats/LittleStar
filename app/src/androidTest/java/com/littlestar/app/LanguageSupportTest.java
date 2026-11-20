@@ -71,7 +71,7 @@ public final class LanguageSupportTest {
                     "daily progress");
             onView(withId(R.id.todayProgressText)).check(matches(isDisplayed()));
             onView(withId(R.id.todayProgress)).check(matches(isDisplayed()));
-            onView(withId(R.id.btnStartText)).check(matches(isDisplayed())).check(matches(
+            onView(withId(R.id.btnStart)).check(matches(isDisplayed())).check(matches(
                     anyOf(withText(R.string.home_start), withText(R.string.home_review))));
             onView(withId(R.id.moduleWordsIcon)).perform(scrollTo()).check(matches(isDisplayed()));
             onView(withId(R.id.moduleWordsTitle)).check(matches(withText("Browse words")));
@@ -107,10 +107,10 @@ public final class LanguageSupportTest {
                         new Intent(context, CultureDetailActivity.class).putExtra("itemId", item.id))) {
                     waitForText(scenario, R.id.detailTitleEn, item.titleEn);
                     onView(withId(R.id.detailTitleEn)).check(matches(isDisplayed()));
-                    onView(withId(R.id.previewLabel)).check(matches(
+                    onView(withId(R.id.btnPreview)).check(matches(
                             withText(R.string.culture_detail_read_together)));
                     onView(withId(R.id.btnPreview)).perform(scrollTo(), click());
-                    waitForText(scenario, R.id.previewLabel,
+                    waitForText(scenario, R.id.btnPreview,
                             context.getString(R.string.culture_detail_hide_text));
                     scenario.onActivity(activity -> {
                         TextView text = activity.findViewById(R.id.detailTranscript);

@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
+import android.graphics.drawable.RippleDrawable;
 import android.os.SystemClock;
-import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,7 +26,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -74,41 +73,25 @@ public final class CoreUiRegressionTest {
     }
 
     @Test
-    public void blockPress_quickReleaseLeavesNoPendingAnimation() throws Exception {
-        AtomicReference<BlockLayout> ref = new AtomicReference<>();
+    public void blockPress_usesRippleWithoutMovingContent() {
         onMain(() -> {
             BlockLayout block = new BlockLayout(themed);
             block.setClickable(true);
-            block.setPressed(true);
-            block.setPressed(false);
-            ref.set(block);
-        });
-        SystemClock.sleep(260);
-        onMain(() -> assertEquals(0f, pressFraction(ref.get()), 0.001f));
-    }
+            View content = new View(themed);
+            block.addView(content);
+            int size = View.MeasureSpec.makeMeasureSpec(100, View.MeasureSpec.EXACTLY);
+            block.measure(size, size);
+            block.layout(0, 0, 100, 100);
+            int left = content.getLeft();
+            int top = content.getTop();
 
-    @Test
-    public void blockShadowOffset_adjustsReservedPadding() {
-        float newOffset = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2,
-                themed.getResources().getDisplayMetrics());
-        onMain(() -> {
-            BlockLayout block = new BlockLayout(themed);
-            float oldOffset = block.getShadowOffset();
-            int left = block.getPaddingLeft();
-            int top = block.getPaddingTop();
-            int right = block.getPaddingRight();
-            int bottom = block.getPaddingBottom();
-            int delta = (int) newOffset - (int) oldOffset;
-            block.setShadowOffset(newOffset);
-            assertEquals(left, block.getPaddingLeft());
-            assertEquals(top, block.getPaddingTop());
-            assertEquals(right + delta, block.getPaddingRight());
-            assertEquals(bottom + delta, block.getPaddingBottom());
-            int settledRight = block.getPaddingRight();
-            int settledBottom = block.getPaddingBottom();
-            block.setShadowOffset(newOffset);
-            assertEquals(settledRight, block.getPaddingRight());
-            assertEquals(settledBottom, block.getPaddingBottom());
+            assertTrue(block.getBackground() instanceof RippleDrawable);
+            block.setPressed(true);
+            assertTrue(block.isPressed());
+            block.setPressed(false);
+            assertFalse(block.isPressed());
+            assertEquals(left, content.getLeft());
+            assertEquals(top, content.getTop());
         });
     }
 
@@ -124,7 +107,7 @@ public final class CoreUiRegressionTest {
     }
 
     @Test
-    public void progressCancel_restoresPlaybackPositionAndReleasesParent() throws Exception {
+    public void progressCancel_restoresPlaybackPositionAndReleasesParent() {
         AtomicReference<SongProgressView> viewRef = new AtomicReference<>();
         SeekLog log = new SeekLog();
         onMain(() -> {
@@ -142,7 +125,7 @@ public final class CoreUiRegressionTest {
             viewRef.set(view);
         });
         assertTrue(log.values.isEmpty());
-        assertEquals(3000, longField(viewRef.get(), "positionMs"));
+        assertEquals(3000f, viewRef.get().getValue(), 0f);
     }
 
     @Test
@@ -154,12 +137,10 @@ public final class CoreUiRegressionTest {
             view.setOnSeek(log);
             view.setProgress(0, 10000);
             long now = SystemClock.uptimeMillis();
-            float right = view.getWidth()
-                    - view.getResources().getDimension(R.dimen.ls_thumb) / 2f;
             touch(view, now, MotionEvent.ACTION_DOWN, 0);
             assertTrue(parent.disallow);
             touch(view, now, MotionEvent.ACTION_MOVE, 150);
-            assertTrue(touch(view, now, MotionEvent.ACTION_UP, right));
+            assertTrue(touch(view, now, MotionEvent.ACTION_UP, view.getWidth()));
             assertFalse(parent.disallow);
         });
         assertEquals(List.of(10000L), log.values);
@@ -204,25 +185,24 @@ public final class CoreUiRegressionTest {
     }
 
     @Test
-    public void progressSetProgress_clampsAndMeasuresMinHeight() throws Exception {
+    public void progressSetProgress_clampsAndMeasuresMinHeight() {
         AtomicReference<SongProgressView> ref = new AtomicReference<>();
         onMain(() -> {
             SongProgressView view = new SongProgressView(themed);
             view.setProgress(-5, 10000);
             ref.set(view);
         });
-        assertEquals(0, longField(ref.get(), "positionMs"));
+        assertEquals(0f, ref.get().getValue(), 0f);
         onMain(() -> ref.get().setProgress(99999, 10000));
-        assertEquals(10000, longField(ref.get(), "positionMs"));
+        assertEquals(10000f, ref.get().getValue(), 0f);
         onMain(() -> ref.get().setProgress(-5, -3));
-        assertEquals(0, longField(ref.get(), "positionMs"));
+        assertEquals(0f, ref.get().getValue(), 0f);
         onMain(() -> {
             SongProgressView view = ref.get();
             view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
             assertTrue(view.getMeasuredHeight()
                     >= themed.getResources().getDimensionPixelSize(R.dimen.ls_btn_icon));
-            assertTrue(view.performClick());
         });
     }
 
@@ -243,22 +223,6 @@ public final class CoreUiRegressionTest {
         } finally {
             event.recycle();
         }
-    }
-
-    private static float pressFraction(BlockLayout block) {
-        try {
-            Field field = BlockLayout.class.getDeclaredField("pressFraction");
-            field.setAccessible(true);
-            return field.getFloat(block);
-        } catch (ReflectiveOperationException error) {
-            throw new AssertionError(error);
-        }
-    }
-
-    private static long longField(SongProgressView target, String name) throws Exception {
-        Field field = SongProgressView.class.getDeclaredField(name);
-        field.setAccessible(true);
-        return field.getLong(target);
     }
 
     private static void onMain(Runnable action) {

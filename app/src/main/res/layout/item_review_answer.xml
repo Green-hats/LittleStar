@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- A1 回顾行：汉字 + 拼音/英文 + 所选/正确答案 + 发音 -->
-<com.littlestar.app.core.ui.BlockLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/answerRow"
-    style="@style/Widget.LS.Block.Secondary"
+    style="@style/Widget.Material3.CardView.Outlined"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/ls_row_review"
-    android:layout_marginBottom="@dimen/ls_gap"
-    app:ls_pressable="false">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/ls_gap">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:minHeight="@dimen/ls_row_review"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/ls_gap"
-        android:paddingEnd="@dimen/ls_gap">
+        android:paddingHorizontal="@dimen/ls_gap"
+        android:paddingVertical="@dimen/ls_gap_sm">
 
         <com.littlestar.app.core.ui.HanziTextView
             android:id="@+id/rowHanzi"
             android:layout_width="@dimen/ls_cover"
-            android:layout_height="@dimen/ls_cover"
+            android:layout_height="wrap_content"
             android:gravity="center"
+            android:minHeight="@dimen/ls_cover"
             android:textAppearance="@style/TextAppearance.LS.HanziTile"
             android:textSize="30sp" />
 
@@ -49,7 +50,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.LS.Caption" />
         </LinearLayout>
 
@@ -60,21 +60,13 @@
             android:layout_marginStart="@dimen/ls_gap_sm"
             android:contentDescription="@string/review_correct_desc" />
 
-        <com.littlestar.app.core.ui.BlockLayout
+        <com.littlestar.app.core.ui.LearningButton
             android:id="@+id/btnSpeak"
-            style="@style/Widget.LS.Block.Icon"
-            android:layout_width="@dimen/ls_module_glyph"
-            android:layout_height="@dimen/ls_module_glyph"
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="@dimen/ls_btn_icon"
+            android:layout_height="@dimen/ls_btn_icon"
             android:layout_marginStart="@dimen/ls_gap_sm"
-            android:contentDescription="@string/player_desc_play">
-
-            <ImageView
-                android:layout_width="@dimen/ls_icon"
-                android:layout_height="@dimen/ls_icon"
-                android:layout_gravity="center"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_speaker"
-                app:tint="@color/ls_ink" />
-        </com.littlestar.app.core.ui.BlockLayout>
+            android:contentDescription="@string/player_desc_play"
+            app:icon="@drawable/ic_speaker" />
     </LinearLayout>
-</com.littlestar.app.core.ui.BlockLayout>
+</com.google.android.material.card.MaterialCardView>

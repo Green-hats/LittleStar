@@ -12,10 +12,11 @@
 
 ## 设计原则
 
-- 孩子区一屏一个实心主操作，其余使用描边块或图标。
+- 孩子区一屏一个实心主操作。并列的次要操作用描边或色调按钮，低优先级操作用文字按钮。独立图标按钮提供 48dp 触控区域和无障碍名称。[Buttons](https://m3.material.io/components/buttons/overview) · [Icon buttons](https://m3.material.io/components/icon-buttons/overview)
 - 汉字使用标准字形，颜色和动效用于操作反馈，不改变教学字形。
-- 暖白背景、白卡片、墨色描边与硬影构成固定浅色视觉；不跟随系统深色模式。
-- 红色用于学习与保存，蓝色用于听音播放，绿色用于文化与正确反馈，黄色用于局部强调。
+- 全应用固定使用浅色 Material 3。色板由 Google Material Color Utilities 的 Tonal Spot 从 LittleStar 的绿色种子生成，界面使用配对的颜色角色及容器层级。[Color roles](https://m3.material.io/styles/color/roles) · [Material Color Utilities](https://github.com/material-foundation/material-color-utilities)
+- 界面标题、正文和标签使用 Material 3 字阶。教学大字及带声调的拼音使用适合内容的字体，测验反馈配合文字与图标表达正误。[Type scale](https://m3.material.io/styles/typography/type-scale-tokens)
+- 卡片、按钮、进度指示器、选择项、滑块及 PIN 输入使用 Material Components for Android。词卡与测验保留用于呈现教学内容的复合布局。[Material Components for Android](https://github.com/material-components/material-components-android/tree/1.12.0/docs)
 - 控件使用共享尺寸、文字和颜色资源；通过 contentDescription 提供操作说明。
 - 内容页支持滚动，主要播放按钮固定在详情底部，避免长文本把播放操作挤出屏幕。
 - 长文本预览默认收起，由孩子与家长选择 Read together 展开，不要求孩子阅读全部介绍。
@@ -64,10 +65,10 @@ Player 返回打开它的详情或列表；列表直接播放仍传递当前分�
 
 目的：呈现一个明确的今日学习入口，同时提供字、文及家长计划入口。
 
-- 顶栏为熊猫和应用名称；独立问号入口已移除。
-- 每日卡集中显示进度，主操作为 Learn today 或 Review words。
+- 顶部以熊猫图标和应用名称标识。
+- 学习卡用 Primary Container 和确定型线性进度指示器显示今日进度，主按钮为 Learn today 或 Review words。
 - 今日汉字、拼音、英文词义及字音在进入词卡后提供。
-- 两个全宽浏览入口用书本／音符图标和英文标题定位。
+- 浏览卡用细分隔线组织两个全宽入口，书本和音符图标使用各自的底色。
 - 初次引导仍在 Home 内完成，不新增 Activity。
 
 ## A 子系统 识字学习与测评
@@ -86,7 +87,7 @@ Player 返回打开它的详情或列表；列表直接播放仍传递当前分�
 
 ### 测验
 
-一页一题，显示四个汉字选项。答错通过陶土背景和正确答案反馈，答对使用正确反馈。
+一页一题，显示四个汉字选项。答错使用 Error Container 与正确答案文案，答对使用绿色背景与正确提示。
 每题结果保存到对应会话，进入 C 的完成与回顾页时只传 sessionId。
 英文提示是否显示取决于已有设置；不允许滑动跳过题目。
 
@@ -148,7 +149,7 @@ Player 返回打开它的详情或列表；列表直接播放仍传递当前分�
 - 词卡使用单张只读内容，不内部滚动、不手势翻页，仅 Next 换字。竖屏按真实可用宽高动态调整图文排布、图片、间距和字号，保留可读下限与 48dp 触控面积，常用窗口尽量一屏完成，极端窗口才整页滚动。横屏只显示 Please turn your device upright，不提供学习操作；转回竖屏保留当前词卡、记录与会话。
 - 首次答题仍用于记录与复习调度。错题可选 Try again，进入重听重选后隐藏正确答案提示；这次纠正不计分，可随时 Skip practice。测验内容可滚动，反馈不能挤掉选项。
 - 主动 Play／Listen 开始或继续当前内容；普通返回、重建和首页当前播放入口保留暂停状态。首页只展示现有媒体会话，支持打开与暂停／继续，不为空闲页面新建服务。
-- 文化封面贯穿列表、详情与播放器，代表字保留为小教学提示。列表卡片提供 Details，行内 Play 为蓝色描边次级操作；分类直接做页标题。
+- 文化封面贯穿列表、详情与播放器，代表字保留为小教学提示。列表卡片提供 Details 和低强调的行内 Play 按钮。分类直接做页标题。
 
 已删除：收藏、睡前定时、休息或限时页、家长统计与历史记录页、星星奖励。
 应用无账户、云同步、广告和网络内容；学习计划只统计识字，文化播放不计入目标。

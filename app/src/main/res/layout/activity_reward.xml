@@ -16,14 +16,13 @@
         android:padding="@dimen/ls_margin">
 
         <!-- 黄色舞台（confetti 只在舞台内） -->
-        <com.littlestar.app.core.ui.BlockLayout
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/stage"
-            style="@style/Widget.LS.Block.Hero"
+            style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ls_reward_stage"
             android:layout_marginTop="@dimen/ls_section"
-            app:ls_fill="@color/ls_yellow"
-            app:ls_pressable="false">
+            app:cardBackgroundColor="@color/ls_yellow">
 
             <ImageView
                 android:layout_width="@dimen/ls_reward_panda"
@@ -36,56 +35,20 @@
                 android:id="@+id/confettiLayer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </com.littlestar.app.core.ui.BlockLayout>
-        <!-- 标题 + 副标题 + 学会印章 -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_section"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:text="@string/reward_title"
+            android:textAppearance="@style/TextAppearance.LS.Display" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/reward_title"
-                    android:textAppearance="@style/TextAppearance.LS.Display"
-                    android:textSize="34sp" />
-
-                <TextView
-                    android:id="@+id/rewardSubtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ls_gap_sm"
-                    android:textAppearance="@style/TextAppearance.LS.Caption"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <com.littlestar.app.core.ui.BlockLayout
-                style="@style/Widget.LS.Block.Icon"
-                android:layout_width="@dimen/ls_stamp"
-                android:layout_height="@dimen/ls_stamp"
-                android:rotation="-8"
-                app:ls_fill="@color/ls_red"
-                app:ls_pressable="false">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.LS.Body"
-                    android:text="@string/reward_stamp_text"
-                    android:textColor="@color/ls_on_red"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </com.littlestar.app.core.ui.BlockLayout>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/rewardSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap_sm"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
         <!-- 本轮学会的字块 -->
         <LinearLayout
@@ -96,35 +59,16 @@
             android:orientation="horizontal" />
 
         <!-- 次入口：本轮答题回顾（A1） -->
-        <com.littlestar.app.core.ui.BlockLayout
+        <com.littlestar.app.core.ui.LearningButton
             android:id="@+id/btnReview"
-            style="@style/Widget.LS.Block.Secondary"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_secondary"
-            android:layout_marginTop="@dimen/ls_section">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_quiz" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/ls_gap_sm"
-                    android:text="@string/reward_review"
-                    android:textAppearance="@style/TextAppearance.LS.Body"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_section"
+            android:minHeight="@dimen/ls_btn_icon"
+            android:text="@string/reward_review"
+            app:icon="@drawable/ic_quiz"
+            app:iconGravity="textStart" />
 
         <Space
             android:layout_width="1dp"
@@ -132,65 +76,25 @@
             android:layout_weight="1" />
 
         <!-- 主按钮：完成 -->
-        <com.littlestar.app.core.ui.BlockLayout
+        <com.littlestar.app.core.ui.LearningButton
             android:id="@+id/btnDone"
-            style="@style/Widget.LS.Block.Primary"
+            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/ls_section"
-            android:layout_height="@dimen/ls_btn_primary">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_check"
-                    app:tint="@color/ls_on_red" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/ls_gap_sm"
-                    android:text="@string/reward_done"
-                    android:textAppearance="@style/TextAppearance.LS.Button" />
-            </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/ls_btn_icon"
+            android:text="@string/reward_done"
+            app:icon="@drawable/ic_check"
+            app:iconGravity="textStart" />
 
         <!-- 次按钮：再来一次 -->
-        <com.littlestar.app.core.ui.BlockLayout
+        <com.littlestar.app.core.ui.LearningButton
             android:id="@+id/btnAgain"
-            style="@style/Widget.LS.Block.Secondary"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_secondary"
-            android:layout_marginTop="@dimen/ls_gap">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_play" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/ls_gap_sm"
-                    android:text="@string/reward_again"
-                    android:textAppearance="@style/TextAppearance.LS.Button"
-                    android:textColor="@color/ls_ink" />
-            </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap"
+            android:minHeight="@dimen/ls_btn_icon"
+            android:text="@string/reward_again" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

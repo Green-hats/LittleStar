@@ -7,13 +7,15 @@
         app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_max="@dimen/ls_content_max_width">
-        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnBack" style="@style/Widget.LS.Block.Icon"
-            android:layout_width="@dimen/ls_btn_icon" android:layout_height="@dimen/ls_btn_icon"
-            android:contentDescription="@string/nav_back" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
-                android:layout_gravity="center" android:importantForAccessibility="no" android:src="@drawable/ic_back" />
-        </com.littlestar.app.core.ui.BlockLayout>
+        <com.littlestar.app.core.ui.LearningButton
+            android:id="@+id/btnBack"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="@dimen/ls_btn_icon"
+            android:layout_height="@dimen/ls_btn_icon"
+            android:contentDescription="@string/nav_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:icon="@drawable/ic_back" />
         <TextView android:id="@+id/themesTopTitle" android:layout_width="0dp" android:layout_height="wrap_content"
             android:minHeight="@dimen/ls_btn_icon" android:gravity="center_vertical"
             android:layout_marginStart="@dimen/ls_gap" android:text="@string/themes_title"

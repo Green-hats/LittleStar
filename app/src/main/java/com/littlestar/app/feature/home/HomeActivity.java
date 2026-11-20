@@ -3,13 +3,12 @@ package com.littlestar.app.feature.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.chip.Chip;
 import com.littlestar.app.R;
 import com.littlestar.app.core.lifecycle.ViewModelFactory;
 import com.littlestar.app.core.ui.ChildActivity;
@@ -90,11 +89,11 @@ public final class HomeActivity extends ChildActivity {
         }
 
         boolean done = s.isDailyComplete();
-        binding.btnStartText.setText(done ? R.string.home_review : R.string.home_start);
+        binding.btnStart.setText(done ? R.string.home_review : R.string.home_start);
 
         // 今日进度
-        binding.todayProgress.setSegments(Math.max(1, s.goal));
-        binding.todayProgress.setFilled(s.learnedToday);
+        binding.todayProgress.setMax(Math.max(1, s.goal));
+        binding.todayProgress.setProgressCompat(s.learnedToday, false);
         binding.todayProgressText.setText(done
                 ? getString(R.string.home_progress_done)
                 : getString(R.string.home_today_progress, s.learnedToday, s.goal));
@@ -116,30 +115,42 @@ public final class HomeActivity extends ChildActivity {
     // ---------- 首次引导（§7.20） ----------
     private void setupOnboarding() {
         int[] ages = {3, 4, 5, 6};
-        com.littlestar.app.core.ui.BlockLayout[] ageChips = {
+        Chip[] ageChips = {
                 binding.onboarding.obAge3, binding.onboarding.obAge4,
                 binding.onboarding.obAge5, binding.onboarding.obAge6};
-        com.littlestar.app.core.ui.BlockLayout[] goalChips = {
+        Chip[] goalChips = {
                 binding.onboarding.obGoal1, binding.onboarding.obGoal3, binding.onboarding.obGoal5};
         int[] goals = {1, 3, 5};
 
         for (int i = 0; i < ages.length; i++) {
             int age = ages[i];
-            setChipText(ageChips[i], getString(R.string.ob_age_years, age));
-            ageChips[i].setOnClickListener(v -> selectAge(age, ageChips, ages));
+            ageChips[i].setText(getString(R.string.ob_age_years, age));
+            ageChips[i].setChecked(age == obAge);
+            ageChips[i].setOnCheckedChangeListener((button, checked) -> {
+                if (checked) {
+                    obAge = age;
+                    updateSuggestion();
+                }
+            });
         }
         for (int i = 0; i < goals.length; i++) {
             int goal = goals[i];
-            setChipText(goalChips[i], getString(R.string.ob_goal_words, goal));
-            goalChips[i].setOnClickListener(v -> selectGoal(goal, goalChips, goals));
+            goalChips[i].setText(getString(R.string.ob_goal_words, goal));
+            goalChips[i].setChecked(goal == obGoal);
+            goalChips[i].setOnCheckedChangeListener((button, checked) -> {
+                if (checked) {
+                    obGoal = goal;
+                    updateSuggestion();
+                }
+            });
         }
-        selectAge(obAge, ageChips, ages);
-        selectGoal(obGoal, goalChips, goals);
+        updateSuggestion();
 
         binding.onboarding.obNext.setOnClickListener(v -> {
             // PIN 移至首次打开设置时创建；引导仅保留目标与提醒。
             binding.onboarding.obStep1.setVisibility(View.GONE);
             binding.onboarding.obStep2.setVisibility(View.VISIBLE);
+            binding.onboarding.getRoot().scrollTo(0, 0);
             binding.onboarding.obNotifyDesc.setText(getString(R.string.ob_notify_desc, obGoal));
         });
         binding.onboarding.obSkip1.setOnClickListener(v -> vm.completeOnboarding(obGoal));
@@ -155,34 +166,6 @@ public final class HomeActivity extends ChildActivity {
             vm.completeOnboarding(obGoal);
         });
         binding.onboarding.obLater.setOnClickListener(v -> vm.completeOnboarding(obGoal));
-    }
-
-    private void setChipText(com.littlestar.app.core.ui.BlockLayout chip, String text) {
-        View child = chip.getChildAt(0);
-        if (child instanceof TextView) {
-            ((TextView) child).setText(text);
-        }
-    }
-
-    private void selectAge(int age, com.littlestar.app.core.ui.BlockLayout[] chips, int[] values) {
-        obAge = age;
-        updateChips(chips, values, age);
-        updateSuggestion();
-    }
-
-    private void selectGoal(int goal, com.littlestar.app.core.ui.BlockLayout[] chips, int[] values) {
-        obGoal = goal;
-        updateChips(chips, values, goal);
-        updateSuggestion();
-    }
-
-    /** 选中 = 黄底；未选 = 卡片底（§7.20 设计图）。 */
-    private void updateChips(com.littlestar.app.core.ui.BlockLayout[] chips, int[] values, int selected) {
-        int yellow = ContextCompat.getColor(this, R.color.ls_yellow);
-        int card = ContextCompat.getColor(this, R.color.ls_card);
-        for (int i = 0; i < chips.length; i++) {
-            chips[i].setFillColor(values[i] == selected ? yellow : card);
-        }
     }
 
     private void updateSuggestion() {

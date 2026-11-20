@@ -60,7 +60,7 @@
         </com.littlestar.app.core.ui.BlockLayout>
 
         <com.littlestar.app.core.ui.BlockLayout
-            style="@style/Widget.LS.Block.Primary.Blue"
+            style="@style/Widget.LS.Block.Primary.Media"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ls_btn_primary"
             android:layout_marginTop="@dimen/ls_gap">
@@ -124,7 +124,7 @@
             android:orientation="horizontal">
 
             <com.littlestar.app.core.ui.BlockLayout
-                style="@style/Widget.LS.Block.Module"
+                style="@style/Widget.LS.Block.Tile"
                 android:layout_width="0dp"
                 android:layout_height="104dp"
                 android:layout_weight="1">
@@ -140,7 +140,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="40sp"
-                        android:textColor="@color/ls_red"
+                        android:textColor="@color/ls_error"
                         android:text="@string/gallery_module_char" />
 
                     <TextView
@@ -197,7 +197,7 @@
         </com.littlestar.app.core.ui.BlockLayout>
 
         <com.littlestar.app.core.ui.BlockLayout
-            style="@style/Widget.LS.Block.Parent"
+            style="@style/Widget.LS.Block.Tile"
             android:layout_width="match_parent"
             android:layout_height="@dimen/ls_row_parent"
             android:layout_marginTop="@dimen/ls_gap">

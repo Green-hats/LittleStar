@@ -114,12 +114,12 @@ public final class RoundReviewActivity extends ChildActivity {
                     ? getString(R.string.review_correct)
                     : getString(R.string.review_wrong, chosen, word.hanzi));
             h.b.rowAnswer.setTextColor(ContextCompat.getColor(RoundReviewActivity.this,
-                    item.correct ? R.color.ls_muted : R.color.ls_red));
+                    item.correct ? R.color.ls_muted : R.color.ls_error));
 
             ImageView status = h.b.rowStatus;
             status.setImageResource(item.correct ? R.drawable.ic_check : R.drawable.ic_close);
             status.setColorFilter(ContextCompat.getColor(RoundReviewActivity.this,
-                    item.correct ? R.color.ls_green : R.color.ls_red));
+                    item.correct ? R.color.ls_green : R.color.ls_error));
             status.setContentDescription(getString(item.correct
                     ? R.string.review_correct_desc : R.string.review_wrong_desc));
 

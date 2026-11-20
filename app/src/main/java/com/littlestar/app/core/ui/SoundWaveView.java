@@ -46,7 +46,7 @@ public final class SoundWaveView extends View {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SoundWaveView);
         try {
             color = a.getColor(R.styleable.SoundWaveView_barColor,
-                    ContextCompat.getColor(context, R.color.ls_blue));
+                    ContextCompat.getColor(context, R.color.ls_secondary));
         } finally {
             a.recycle();
         }

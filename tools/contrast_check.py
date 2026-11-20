@@ -13,21 +13,39 @@ RES = ROOT / "app/src/main/res"
 PAIRS = [
     ("ls_ink", "ls_paper"), ("ls_ink", "ls_card"),
     ("ls_muted", "ls_paper"), ("ls_muted", "ls_card"),
-    ("ls_on_red", "ls_red"), ("ls_on_yellow", "ls_yellow"),
-    ("ls_on_green", "ls_green"), ("ls_on_blue", "ls_blue"),
+    ("ls_on_primary", "ls_primary"), ("ls_on_yellow", "ls_yellow"),
+    ("ls_on_green", "ls_green"), ("ls_on_secondary", "ls_secondary"),
     ("ls_on_clay", "ls_clay"), ("ls_on_mint", "ls_mint"),
     ("ls_ink", "ls_clay"), ("ls_ink", "ls_mint"),
-    ("ls_red", "ls_paper"),      # 彩色描边文字（如 Quiz 入口）也要 ≥ 4.5
+    ("ls_error", "ls_card"), ("ls_error", "ls_paper"),
+    ("ls_on_primary_container", "ls_primary_container"),
+    ("ls_on_secondary_container", "ls_secondary_container"),
+    ("ls_on_tertiary_container", "ls_tertiary_container"),
+    ("ls_inverse_on_surface", "ls_inverse_surface"),
+    ("ls_ink", "ls_primary_container"), ("ls_muted", "ls_primary_container"),
+    ("ls_ink", "ls_surface_container"),
+    ("ls_primary", "ls_primary_container"),
+    ("ls_on_primary", "ls_primary_disabled"),
+    ("ls_on_secondary", "ls_secondary_disabled"),
+    ("ls_tertiary", "ls_tertiary_container"),
+    ("ls_secondary", "ls_secondary_container"), ("ls_secondary", "ls_card"),
 ]
 
 
 def load_colors(path: Path) -> dict:
-    tree = ET.parse(path)
+    values = {el.attrib["name"]: (el.text or "").strip()
+              for el in ET.parse(path).getroot().findall("color")}
     colors = {}
-    for el in tree.getroot().findall("color"):
-        value = (el.text or "").strip()
+    for name, value in values.items():
+        seen = {name}
+        while value.startswith("@color/"):
+            target = value.removeprefix("@color/")
+            if target in seen:
+                raise ValueError(f"Circular color alias: {name}")
+            seen.add(target)
+            value = values[target]
         if re.fullmatch(r"#[0-9A-Fa-f]{6}", value):
-            colors[el.get("name")] = value
+            colors[name] = value
     return colors
 
 
@@ -61,9 +79,6 @@ def check(name: str, colors: dict) -> bool:
         if ratio < 4.5:
             ok = False
         print(f"[{name}] {status} {fg_name}/{bg_name}: {ratio:.2f}")
-    # 提示：蓝色文字只能放卡片色
-    if "ls_blue" in colors and "ls_card" in colors:
-        print(f"[{name}] 参考 blue/card: {contrast(colors['ls_blue'], colors['ls_card']):.2f}")
     return ok
 
 

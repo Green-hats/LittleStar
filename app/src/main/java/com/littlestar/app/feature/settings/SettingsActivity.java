@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -20,13 +18,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.chip.Chip;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.littlestar.app.BuildConfig;
 import com.littlestar.app.R;
-import com.littlestar.app.core.ui.BlockLayout;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.ParentActivity;
 import com.littlestar.app.databinding.ActivitySettingsBinding;
@@ -36,7 +34,6 @@ import com.littlestar.app.notify.Notifier;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /** PIN 保护的学习任务页；目标与学习提醒只在 Save 时写入，今日计划保持固定。 */
@@ -46,7 +43,6 @@ public final class SettingsActivity extends ParentActivity {
 
     private ActivitySettingsBinding binding;
     private final Set<Integer> days = new HashSet<>();
-    private final List<BlockLayout> dayButtons = new ArrayList<>();
     private String reminderTime;
     private boolean saving;
     private boolean awaitingNotificationPermission;
@@ -172,37 +168,19 @@ public final class SettingsActivity extends ParentActivity {
         String[] descriptions = getResources().getStringArray(R.array.settings_weekdays);
         for (int i = 0; i < 7; i++) {
             int day = i + 1;
-            BlockLayout button = new BlockLayout(this, null, 0, R.style.Widget_LS_Block_Icon);
-            button.setShadowOffset(getResources().getDimension(R.dimen.ls_shadow_parent));
-            button.setLayoutParams(new LinearLayout.LayoutParams(0,
-                    getResources().getDimensionPixelSize(R.dimen.ls_weekday_h), 1f));
-            button.setContentDescription(descriptions[i]);
-            TextView label = new TextView(this);
-            label.setText(labels[i]);
-            label.setTextAppearance(R.style.TextAppearance_LS_Body);
-            label.setGravity(android.view.Gravity.CENTER);
-            label.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-            button.addView(label);
-            button.setOnClickListener(v -> {
-                if (!days.remove(day)) {
+            Chip chip = (Chip) getLayoutInflater().inflate(
+                    R.layout.item_reminder_day, binding.weekdayRow, false);
+            chip.setText(labels[i]);
+            chip.setContentDescription(descriptions[i]);
+            chip.setChecked(days.contains(day));
+            chip.setOnCheckedChangeListener((button, checked) -> {
+                if (checked) {
                     days.add(day);
+                } else {
+                    days.remove(day);
                 }
-                renderDays();
             });
-            dayButtons.add(button);
-            binding.weekdayRow.addView(button);
-        }
-        renderDays();
-    }
-
-    private void renderDays() {
-        for (int i = 0; i < dayButtons.size(); i++) {
-            boolean selected = days.contains(i + 1);
-            dayButtons.get(i).setSelected(selected);
-            dayButtons.get(i).setFillColor(ContextCompat.getColor(this,
-                    selected ? R.color.ls_yellow : R.color.ls_card));
-            ((TextView) dayButtons.get(i).getChildAt(0)).setTextColor(ContextCompat.getColor(this,
-                    selected ? R.color.ls_on_yellow : R.color.ls_ink));
+            binding.weekdayRow.addView(chip);
         }
     }
 

@@ -35,16 +35,11 @@
     <dimen name="ls_radius_tile">16dp</dimen>
     <dimen name="ls_radius_chip">10dp</dimen>
     <dimen name="ls_radius_input">14dp</dimen>
+    <dimen name="ls_radius_pill">32dp</dimen>
 
     <dimen name="ls_stroke_hero">4dp</dimen>
     <dimen name="ls_stroke_block">3dp</dimen>
     <dimen name="ls_stroke_chip">2dp</dimen>
-    <dimen name="ls_shadow_hero">8dp</dimen>
-    <dimen name="ls_shadow_block">6dp</dimen>
-    <dimen name="ls_shadow_tile">4dp</dimen>
-    <dimen name="ls_shadow_secondary">5dp</dimen>
-    <dimen name="ls_shadow_parent">2dp</dimen>
-    <dimen name="ls_press_remain">2dp</dimen>   <!-- 按下后剩余的影子 -->
 
     <dimen name="ls_content_max_width">480dp</dimen>
 
@@ -62,7 +57,6 @@
     <dimen name="ls_wave">40dp</dimen>
     <dimen name="ls_wave_height">24dp</dimen>
     <dimen name="ls_word_chip">72dp</dimen>
-    <dimen name="ls_seg_height">12dp</dimen>
     <dimen name="ls_listen_block">56dp</dimen>
     <dimen name="ls_module_glyph">40dp</dimen>
     <dimen name="ls_module_height">104dp</dimen>
@@ -84,7 +78,6 @@
     <dimen name="ls_switch_travel">22dp</dimen>
     <dimen name="ls_gate_card">88dp</dimen>
     <dimen name="ls_weekday_w">44dp</dimen>
-    <dimen name="ls_weekday_h">48dp</dimen>
     <dimen name="ls_chart_height">140dp</dimen>
     <dimen name="ls_quiz_prompt_ill">120dp</dimen>
     <dimen name="ls_quiz_option_text">34sp</dimen>
@@ -97,8 +90,16 @@
     <dimen name="ls_decorative_glyph_max">20sp</dimen>
     <dimen name="ls_text_fit_step">1sp</dimen>
     <dimen name="ls_surface_stroke">1dp</dimen>
-    <dimen name="ls_no_shadow">0dp</dimen>
+    <dimen name="ls_no_stroke">0dp</dimen>
     <dimen name="ls_detail_cover">128dp</dimen>
     <dimen name="ls_detail_glyph">28sp</dimen>
     <dimen name="ls_play_shortcut">72dp</dimen>
+    <dimen name="ls_home_mascot_size">56dp</dimen>
+    <dimen name="ls_home_icon_badge">40dp</dimen>
+    <dimen name="ls_home_icon_small">20dp</dimen>
+    <dimen name="ls_home_progress_height">8dp</dimen>
+    <dimen name="ls_home_row_height">64dp</dimen>
+    <dimen name="ls_home_title_text">28sp</dimen>
+    <dimen name="ls_home_progress_text">22sp</dimen>
+    <dimen name="ls_home_label_text">16sp</dimen>
 </resources>

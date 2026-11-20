@@ -51,7 +51,7 @@ public class PeerReviewLearningTest {
    waitFor(s,R.id.stamp,View.VISIBLE);
    UiEvidence.capture("after_stamp_optional");
    s.onActivity(a->{
-    assertEquals(a.getString(R.string.pr_stamp_optional),((TextView)a.findViewById(R.id.stampLabel)).getText().toString());
+    assertEquals(a.getString(R.string.pr_stamp_optional),((TextView)a.findViewById(R.id.stamp)).getText().toString());
     assertEquals("android.widget.Button",a.findViewById(R.id.stamp).getAccessibilityClassName());
     View record=a.findViewById(R.id.stamp), next=a.findViewById(R.id.btnNext);
     assertEquals("Buttons must align",record.getTop(),next.getTop());
@@ -66,10 +66,10 @@ public class PeerReviewLearningTest {
    Long learned=read(st->st.words.get("gou").learnedAt);assertNotNull(learned);
    onView(withId(R.id.stamp)).perform(click());
    assertEquals(learned,read(st->st.words.get("gou").learnedAt));
-   s.onActivity(a->assertEquals(a.getString(R.string.pr_stamp_marked),((TextView)a.findViewById(R.id.stampLabel)).getText().toString()));
+   s.onActivity(a->assertEquals(a.getString(R.string.pr_stamp_marked),((TextView)a.findViewById(R.id.stamp)).getText().toString()));
    UiEvidence.capture("after_stamp_marked");
    onView(withId(R.id.btnNext)).perform(click());
-   s.onActivity(a->assertEquals(a.getString(R.string.fc_back_words),((TextView)a.findViewById(R.id.btnNextText)).getText().toString()));
+   s.onActivity(a->assertEquals(a.getString(R.string.fc_back_words),((TextView)a.findViewById(R.id.btnNext)).getText().toString()));
   }
  }
  @Test public void flashcardMissingAudio_retryRecovers_withoutProgressChange() throws Exception {
@@ -206,8 +206,9 @@ public class PeerReviewLearningTest {
     onView(withId(R.id.stamp)).perform(androidx.test.espresso.action.ViewActions.scrollTo());
     s.onActivity(a->{
      assertTrue(a.getResources().getConfiguration().fontScale>=2f);
-     View record=a.findViewById(R.id.stamp),next=a.findViewById(R.id.btnNext);
+     TextView record=a.findViewById(R.id.stamp),next=a.findViewById(R.id.btnNext);
      assertEquals(record.getTop(),next.getTop());assertEquals(record.getHeight(),next.getHeight());
+     assertEquals(1,record.getLineCount());assertEquals(1,next.getLineCount());
      assertEquals(android.widget.LinearLayout.HORIZONTAL,((android.widget.LinearLayout)a.findViewById(R.id.pageMain)).getOrientation());
      View footer=a.findViewById(R.id.flashcardFooter),root=a.findViewById(R.id.flashcardRoot),viewport=a.findViewById(R.id.flashcardScroll);
      assertTrue("Compact layout should fit one screen",footer.getBottom()+root.getPaddingBottom()<=viewport.getHeight());
@@ -256,7 +257,7 @@ public class PeerReviewLearningTest {
    s.onActivity(a->{
     assertEquals(View.GONE,a.findViewById(R.id.rotationGate).getVisibility());
     assertEquals(counter.get(),((TextView)a.findViewById(R.id.cardCounter)).getText().toString());
-    assertEquals(a.getString(R.string.pr_stamp_marked),((TextView)a.findViewById(R.id.stampLabel)).getText().toString());
+    assertEquals(a.getString(R.string.pr_stamp_marked),((TextView)a.findViewById(R.id.stamp)).getText().toString());
    });
   }finally{setFontScale(original);}
  }

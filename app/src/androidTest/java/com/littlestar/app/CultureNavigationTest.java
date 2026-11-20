@@ -122,7 +122,7 @@ public final class CultureNavigationTest {
                         scenario.onActivity(activity -> {
                             RecyclerView list = activity.findViewById(R.id.itemList);
                             var row = list.findViewHolderForAdapterPosition(index).itemView;
-                            TextView label = row.findViewById(R.id.playShortcutLabel);
+                            TextView label = row.findViewById(R.id.btnPlay);
                             assertEquals("Play", label.getText().toString());
                             assertEquals(1, label.getLineCount());
                             assertEquals(0, label.getLayout().getEllipsisCount(0));
@@ -167,7 +167,7 @@ public final class CultureNavigationTest {
                 ((LinearLayoutManager) list.getLayoutManager()).scrollToPositionWithOffset(position, 0);
                 var holder = list.findViewHolderForAdapterPosition(position);
                 ready.set(holder != null && holder.itemView.getWidth() > 0
-                        && holder.itemView.findViewById(R.id.playShortcutLabel).getWidth() > 0);
+                        && holder.itemView.findViewById(R.id.btnPlay).getWidth() > 0);
             });
             if (ready.get()) return;
             SystemClock.sleep(50);

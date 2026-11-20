@@ -1,16 +1,12 @@
 package com.littlestar.app.core.ui;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.drawable.RippleDrawable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.HapticFeedbackConstants;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -18,47 +14,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.littlestar.app.R;
 
-/**
- * 硬影块（工程文档 §8.4）：墨线 + 填充 + 右下硬影，全部在 dispatchDraw 里画，
- * 不用 layer-list / elevation。按下时内容下沉 {@code shadowOffset - pressRemain}，
- * 影子不动，按下后剩 2dp。
- *
- * <p>按下音效通过 {@link #setPressSoundHook(Runnable)} 静态注入（LittleStarApp.onCreate），
- * BlockLayout 不直接依赖 AppContainer。
- */
+/** Material surface for cards and compound controls containing child views. */
 public class BlockLayout extends FrameLayout {
-
-    private static final long PRESS_IN_MS = 100L;
-    private static final long PRESS_OUT_MS = 180L;
-    private static final float OVERSHOOT_TENSION = 1.2f;
 
     @Nullable
     private static Runnable pressSoundHook;
 
-    /** 在 Application.onCreate 里注入按下音效（如 Sfx.TAP）。 */
     public static void setPressSoundHook(@Nullable Runnable hook) {
         pressSoundHook = hook;
     }
 
-    @NonNull
-    private ColorStateList fill;
-    private int strokeColor;
-    private int shadowColor;
-    private float strokeWidth;
-    private float shadowOffset;
-    private float cornerRadius;
-    private final float pressRemain;
+    private final MaterialShapeDrawable surface;
     private final boolean pressable;
-
-    private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final Paint shadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private float pressFraction;          // 0 = 抬起，1 = 按下
     private boolean lastPressed;
-    @Nullable
-    private ValueAnimator pressAnim;
 
     public BlockLayout(@NonNull Context context) {
         this(context, null);
@@ -76,124 +48,56 @@ public class BlockLayout extends FrameLayout {
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
-        int defaultStroke = resolveThemeColor(context, R.attr.lsStroke);
-        int defaultShadow = resolveThemeColor(context, R.attr.lsShadow);
-        pressRemain = getResources().getDimension(R.dimen.ls_press_remain);
-
         TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.BlockLayout, defStyleAttr, defStyleRes);
         try {
-            ColorStateList csl = a.getColorStateList(R.styleable.BlockLayout_ls_fill);
-            fill = csl != null ? csl : ColorStateList.valueOf(
-                    ContextCompat.getColor(context, R.color.ls_card));
-            strokeColor = a.getColor(R.styleable.BlockLayout_ls_strokeColor, defaultStroke);
-            shadowColor = a.getColor(R.styleable.BlockLayout_ls_shadowColor, defaultShadow);
-            strokeWidth = a.getDimension(R.styleable.BlockLayout_ls_strokeWidth,
-                    getResources().getDimension(R.dimen.ls_stroke_block));
-            shadowOffset = a.getDimension(R.styleable.BlockLayout_ls_shadowOffset,
-                    getResources().getDimension(R.dimen.ls_shadow_block));
-            cornerRadius = a.getDimension(R.styleable.BlockLayout_ls_cornerRadius,
-                    getResources().getDimension(R.dimen.ls_radius_block));
-            pressable = a.getBoolean(R.styleable.BlockLayout_ls_pressable, isClickable());
+            float radius = a.getDimension(R.styleable.BlockLayout_ls_cornerRadius,
+                    getResources().getDimension(R.dimen.ls_radius_tile));
+            ShapeAppearanceModel corners = ShapeAppearanceModel.builder()
+                    .setAllCornerSizes(radius)
+                    .build();
+            surface = new MaterialShapeDrawable(corners);
+            ColorStateList fill = a.getColorStateList(R.styleable.BlockLayout_ls_fill);
+            surface.setFillColor(fill != null ? fill
+                    : ContextCompat.getColorStateList(context, R.color.ls_card));
+            surface.setStroke(a.getDimension(R.styleable.BlockLayout_ls_strokeWidth,
+                            getResources().getDimension(R.dimen.ls_surface_stroke)),
+                    a.getColor(R.styleable.BlockLayout_ls_strokeColor,
+                            ContextCompat.getColor(context, R.color.ls_outline_variant)));
+
+            pressable = a.getBoolean(R.styleable.BlockLayout_ls_pressable, true);
+            if (pressable) {
+                ColorStateList ripple = a.getColorStateList(R.styleable.BlockLayout_ls_rippleColor);
+                if (ripple == null) {
+                    ripple = ContextCompat.getColorStateList(context, R.color.ls_ripple);
+                }
+                MaterialShapeDrawable mask = new MaterialShapeDrawable(corners);
+                mask.setFillColor(ContextCompat.getColorStateList(context, android.R.color.white));
+                setBackground(new RippleDrawable(ripple, surface, mask));
+            } else {
+                setBackground(surface);
+            }
         } finally {
             a.recycle();
         }
-
-        strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setStrokeWidth(strokeWidth);
-        strokePaint.setColor(strokeColor);
-        fillPaint.setStyle(Paint.Style.FILL);
-        shadowPaint.setStyle(Paint.Style.FILL);
-        shadowPaint.setColor(shadowColor);
-
-        setWillNotDraw(false);
-        setClipToPadding(false);
-        // 预留影子空间：内容区不包含右下角的影子
-        setPadding(getPaddingLeft(), getPaddingTop(),
-                getPaddingRight() + (int) shadowOffset,
-                getPaddingBottom() + (int) shadowOffset);
-        setElevation(0f);
-    }
-
-    private static int resolveThemeColor(@NonNull Context context, int attr) {
-        TypedValue tv = new TypedValue();
-        context.getTheme().resolveAttribute(attr, tv, true);
-        return ContextCompat.getColor(context, tv.resourceId);
-    }
-
-    @Override
-    protected void dispatchDraw(@NonNull Canvas canvas) {
-        float travel = (shadowOffset - pressRemain) * pressFraction;
-        float w = getWidth() - shadowOffset;
-        float h = getHeight() - shadowOffset;
-        float half = strokeWidth / 2f;
-        float r = cornerRadius;
-        fillPaint.setColor(fill.getColorForState(getDrawableState(), fill.getDefaultColor()));
-        // 1. 影子：固定在 (offset, offset)，不随按下移动
-        canvas.drawRoundRect(shadowOffset, shadowOffset,
-                w + shadowOffset, h + shadowOffset, r, r, shadowPaint);
-        // 2. 块本体 + 子 View 整体平移 travel
-        int save = canvas.save();
-        canvas.translate(travel, travel);
-        canvas.drawRoundRect(half, half, w - half, h - half, r, r, fillPaint);
-        canvas.drawRoundRect(half, half, w - half, h - half, r, r, strokePaint);
-        super.dispatchDraw(canvas);
-        canvas.restoreToCount(save);
     }
 
     @Override
     protected void drawableStateChanged() {
         super.drawableStateChanged();
-        boolean pressed = isPressed() && isEnabled();
-        if (pressable && pressed != lastPressed) {
-            lastPressed = pressed;
-            if (pressed) {
-                Runnable hook = pressSoundHook;
-                if (hook != null) {
-                    hook.run();
-                }
-                performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
-            }
-            animatePress(pressed ? 1f : 0f);
+        boolean pressed = isClickable() && isPressed() && isEnabled();
+        if (pressable && pressed && !lastPressed) {
+            playPressFeedback(this);
         }
-        invalidate();   // 选中态可能改变填充色
+        lastPressed = pressed;
     }
 
-    private void animatePress(float target) {
-        if (pressAnim != null) {
-            pressAnim.cancel();
-            pressAnim = null;
+    static void playPressFeedback(@NonNull View view) {
+        Runnable hook = pressSoundHook;
+        if (hook != null) {
+            hook.run();
         }
-        if (pressFraction == target) {
-            return;
-        }
-        // 减少动态效果：直接跳变
-        if (!ValueAnimator.areAnimatorsEnabled()) {
-            pressFraction = target;
-            invalidate();
-            return;
-        }
-        pressAnim = ValueAnimator.ofFloat(pressFraction, target);
-        pressAnim.setDuration(target == 1f ? PRESS_IN_MS : PRESS_OUT_MS);
-        pressAnim.setInterpolator(target == 1f
-                ? new DecelerateInterpolator()
-                : new OvershootInterpolator(OVERSHOOT_TENSION));
-        pressAnim.addUpdateListener(a -> {
-            pressFraction = (float) a.getAnimatedValue();
-            invalidate();
-        });
-        pressAnim.start();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (pressAnim != null) {
-            pressAnim.cancel();
-            pressAnim = null;
-        }
-        lastPressed = false;
-        pressFraction = 0f;
+        view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
     }
 
     @Override
@@ -201,43 +105,7 @@ public class BlockLayout extends FrameLayout {
         return isClickable() ? Button.class.getName() : super.getAccessibilityClassName();
     }
 
-    public void setFill(@NonNull ColorStateList colors) {
-        fill = colors;
-        invalidate();
-    }
-
     public void setFillColor(int color) {
-        setFill(ColorStateList.valueOf(color));
-    }
-
-    @NonNull
-    public ColorStateList getFill() {
-        return fill;
-    }
-
-    public void setStrokeColor(int color) {
-        strokeColor = color;
-        strokePaint.setColor(color);
-        invalidate();
-    }
-
-    public void setShadowColor(int color) {
-        shadowColor = color;
-        shadowPaint.setColor(color);
-        invalidate();
-    }
-
-    public void setShadowOffset(float offset) {
-        float clamped = Math.max(0f, offset);
-        int paddingDelta = (int) clamped - (int) shadowOffset;
-        shadowOffset = clamped;
-        setPadding(getPaddingLeft(), getPaddingTop(),
-                getPaddingRight() + paddingDelta, getPaddingBottom() + paddingDelta);
-        requestLayout();
-        invalidate();
-    }
-
-    public float getShadowOffset() {
-        return shadowOffset;
+        surface.setFillColor(ColorStateList.valueOf(color));
     }
 }

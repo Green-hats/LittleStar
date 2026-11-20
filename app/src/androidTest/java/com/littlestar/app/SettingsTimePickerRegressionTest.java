@@ -66,7 +66,8 @@ public final class SettingsTimePickerRegressionTest {
                     activity.findViewById(R.id.timeRow).performClick());
             MaterialTimePicker first = waitForPicker(activityRef);
             onMain(() -> {
-                first.setHour(8);
+                // Keep the same AM/PM period when the device uses the 12-hour picker.
+                first.setHour(20);
                 first.setMinute(45);
             });
 
@@ -75,16 +76,16 @@ public final class SettingsTimePickerRegressionTest {
 
             MaterialTimePicker restored = waitForPicker(activityRef);
             onMain(() -> {
-                assertEquals(8, restored.getHour());
+                assertEquals(20, restored.getHour());
                 assertEquals(45, restored.getMinute());
                 restored.requireDialog()
                         .findViewById(com.google.android.material.R.id.material_timepicker_ok_button)
                         .performClick();
             });
-            onView(withId(R.id.timeValue)).check(matches(withText(displayTime(8, 45))));
+            onView(withId(R.id.timeValue)).check(matches(withText(displayTime(20, 45))));
             assertEquals("19:30", container.settings.getReminderTime());
             scenario.onActivity(activity -> activity.findViewById(R.id.btnSave).performClick());
-            assertEquals("08:45", container.settings.getReminderTime());
+            assertEquals("20:45", container.settings.getReminderTime());
         }
     }
 
