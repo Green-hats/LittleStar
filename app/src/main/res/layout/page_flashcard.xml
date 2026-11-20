@@ -7,12 +7,11 @@
         <LinearLayout android:id="@+id/pageMain" android:layout_width="match_parent" android:layout_height="wrap_content"
             android:gravity="center_vertical" android:orientation="vertical">
         <FrameLayout android:id="@+id/illustrationFrame" android:layout_width="@dimen/ls_flashcard_image" android:layout_height="@dimen/ls_flashcard_image" android:layout_gravity="center_horizontal"
-            android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_primary_container"
-            android:clipToOutline="true">
+            android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_primary_container">
             <com.littlestar.app.core.ui.HanziTextView android:id="@+id/pageGlyph" android:layout_width="match_parent"
                 android:layout_height="match_parent" android:gravity="center" android:importantForAccessibility="no"
                 android:textAppearance="@style/TextAppearance.LS.HanziTile" android:textColor="@color/ls_on_yellow"
-                android:background="@color/ls_yellow" />
+                android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_yellow" />
             <ImageView android:id="@+id/pageIllustration" android:layout_width="match_parent"
                 android:layout_height="match_parent" android:importantForAccessibility="no" android:scaleType="fitCenter" />
         </FrameLayout>

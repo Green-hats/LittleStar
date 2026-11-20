@@ -6,10 +6,12 @@
         android:padding="@dimen/ls_gap" android:orientation="vertical">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
             android:gravity="center_vertical" android:orientation="horizontal">
-            <ImageView android:id="@+id/rowCover" android:layout_width="@dimen/ls_culture_thumbnail"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/rowCover" android:layout_width="@dimen/ls_culture_thumbnail"
                 android:layout_height="@dimen/ls_culture_thumbnail" android:layout_marginEnd="@dimen/ls_gap"
                 android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_surface_container"
-                android:clipToOutline="true" android:importantForAccessibility="no" android:scaleType="fitCenter" />
+                android:importantForAccessibility="no" android:scaleType="fitCenter"
+                app:shapeAppearance="?attr/shapeAppearanceCornerMedium" />
             <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
                 android:layout_weight="1" android:orientation="vertical">
                 <TextView android:id="@+id/rowTitleEn" android:layout_width="match_parent" android:layout_height="wrap_content"

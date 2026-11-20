@@ -21,7 +21,6 @@
     <string name="nav_back">Back</string>
 
     <!-- ===== M3 · Home ===== -->
-    <string name="home_panda_desc">Panpan the panda</string>
     <string name="home_words_glyph">字</string>
     <string name="home_culture_glyph">文</string>
     <string name="home_start">Learn today</string>
