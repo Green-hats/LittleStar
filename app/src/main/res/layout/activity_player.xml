@@ -141,7 +141,7 @@
                             android:layout_marginTop="@dimen/ls_gap_sm"
                             android:gravity="center"
                             android:importantForAccessibility="no"
-                            android:text="@string/player_desc_prev"
+                            android:text="@string/player_label_prev"
                             android:textAppearance="@style/TextAppearance.LS.Body" />
                     </LinearLayout>
                     <LinearLayout
