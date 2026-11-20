@@ -83,7 +83,6 @@
     <string name="reward_title">Great job!</string>
     <string name="reward_subtitle">You practiced %1$d characters</string>
     <string name="reward_subtitle_review">Practice complete!</string>
-    <string name="reward_stamp_text">Done!</string>
     <string name="reward_done">DONE</string>
     <string name="reward_again">Play again</string>
 
