@@ -29,11 +29,13 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="@dimen/ls_gap_sm">
+        android:padding="@dimen/ls_gap">
 
         <FrameLayout
             android:layout_width="@dimen/ls_tile_ill"
-            android:layout_height="@dimen/ls_tile_ill">
+            android:layout_height="@dimen/ls_tile_ill"
+            android:background="@drawable/bg_home_icon"
+            android:backgroundTint="@color/ls_surface_container">
 
             <ImageView
                 android:id="@+id/wordIllustration"
@@ -69,6 +71,7 @@
             android:id="@+id/wordEnglish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:textAppearance="@style/TextAppearance.LS.English.Small" />
     </LinearLayout>
 </com.littlestar.app.core.ui.BlockLayout>

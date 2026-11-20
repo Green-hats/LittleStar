@@ -37,7 +37,7 @@
                         android:layout_width="@dimen/ls_home_mascot_size"
                         android:layout_height="@dimen/ls_home_mascot_size"
                         android:background="@drawable/bg_home_icon"
-                        android:backgroundTint="@color/ls_yellow"
+                        android:backgroundTint="@color/ls_primary_container"
                         android:importantForAccessibility="no"
                         android:src="@drawable/ic_panda" />
 
@@ -49,12 +49,12 @@
                         android:accessibilityHeading="true"
                         android:includeFontPadding="false"
                         android:text="@string/app_name"
-                        android:textAppearance="@style/TextAppearance.LS.HomeTitle" />
+                        android:textAppearance="@style/TextAppearance.LS.Display" />
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/nowPlaying"
-                    style="@style/Widget.Material3.CardView.Filled"
+                    style="@style/Widget.LS.Card.Story"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ls_gap"
@@ -104,7 +104,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/dailyPracticeCard"
-                    style="@style/Widget.Material3.CardView.Filled"
+                    style="@style/Widget.LS.Card.Story"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ls_section"
@@ -116,33 +116,49 @@
                         android:orientation="vertical"
                         android:padding="@dimen/ls_card_pad">
 
-                        <TextView
-                            android:id="@+id/todayProgressText"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:textAppearance="@style/TextAppearance.LS.HomeProgress" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/todayProgressText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/ls_gap_sm"
+                                android:layout_weight="1"
+                                android:textAppearance="@style/TextAppearance.LS.HomeProgress" />
+
+                            <ImageView
+                                android:layout_width="@dimen/ls_home_illustration"
+                                android:layout_height="@dimen/ls_home_illustration"
+                                android:importantForAccessibility="no"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/panda_reading" />
+                        </LinearLayout>
 
                         <com.google.android.material.progressindicator.LinearProgressIndicator
                             android:id="@+id/todayProgress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/ls_gap"
-                            android:importantForAccessibility="no" />
+                            android:importantForAccessibility="no"
+                            app:trackColor="@color/ls_track_on_primary_container" />
 
                         <com.littlestar.app.core.ui.LearningButton
                             android:id="@+id/btnStart"
                             style="@style/Widget.Material3.Button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/ls_card_pad"
-                            android:minHeight="@dimen/ls_btn_icon"
+                            android:layout_marginTop="@dimen/ls_gap"
+                            android:minHeight="@dimen/ls_btn_secondary"
                             android:text="@string/home_start" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Material3.CardView.Filled"
+                    style="@style/Widget.LS.Card.Story"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ls_card_pad">
@@ -157,7 +173,8 @@
                             android:id="@+id/moduleWords"
                             style="@style/Widget.LS.Block.Row"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            app:ls_fill="@color/ls_surface_container">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -172,11 +189,11 @@
                                     android:layout_width="@dimen/ls_home_icon_badge"
                                     android:layout_height="@dimen/ls_home_icon_badge"
                                     android:background="@drawable/bg_home_icon"
-                                    android:backgroundTint="@color/ls_tertiary_container"
+                                    android:backgroundTint="@color/ls_yellow"
                                     android:importantForAccessibility="no"
                                     android:padding="@dimen/ls_gap_sm"
                                     android:src="@drawable/ic_book"
-                                    app:tint="@color/ls_tertiary" />
+                                    app:tint="@color/ls_on_yellow" />
 
                                 <TextView
                                     android:id="@+id/moduleWordsTitle"
@@ -198,19 +215,13 @@
                             </LinearLayout>
                         </com.littlestar.app.core.ui.BlockLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/ls_surface_stroke"
-                            android:layout_marginStart="@dimen/ls_btn_primary"
-                            android:layout_marginEnd="@dimen/ls_gap_sm"
-                            android:background="@color/ls_outline_variant"
-                            android:importantForAccessibility="no" />
-
                         <com.littlestar.app.core.ui.BlockLayout
                             android:id="@+id/moduleCulture"
                             style="@style/Widget.LS.Block.Row"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ls_gap_sm"
+                            app:ls_fill="@color/ls_surface_container">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -225,11 +236,11 @@
                                     android:layout_width="@dimen/ls_home_icon_badge"
                                     android:layout_height="@dimen/ls_home_icon_badge"
                                     android:background="@drawable/bg_home_icon"
-                                    android:backgroundTint="@color/ls_secondary_container"
+                                    android:backgroundTint="@color/ls_tertiary_container"
                                     android:importantForAccessibility="no"
                                     android:padding="@dimen/ls_gap_sm"
                                     android:src="@drawable/ic_music"
-                                    app:tint="@color/ls_secondary" />
+                                    app:tint="@color/ls_tertiary" />
 
                                 <TextView
                                     android:id="@+id/moduleCultureTitle"

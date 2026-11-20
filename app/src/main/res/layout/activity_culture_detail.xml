@@ -58,7 +58,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
                 <com.google.android.material.card.MaterialCardView
-                    style="@style/Widget.Material3.CardView.Filled"
+                    style="@style/Widget.LS.Card.Story"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <LinearLayout
@@ -66,12 +66,12 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
-                        android:padding="@dimen/ls_gap">
+                        android:padding="@dimen/ls_card_pad">
                         <ImageView
                             android:id="@+id/detailCover"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/ls_detail_cover"
-                            android:layout_marginBottom="@dimen/ls_gap_sm"
+                            android:layout_marginBottom="@dimen/ls_gap"
                             android:importantForAccessibility="no"
                             android:scaleType="fitCenter"
                             android:visibility="gone" />
@@ -82,13 +82,14 @@
                             android:importantForAccessibility="no"
                             android:textAppearance="@style/TextAppearance.LS.HanziTile"
                             android:textSize="@dimen/ls_detail_glyph"
-                            android:textColor="@color/ls_green" />
+                            android:textColor="@color/ls_primary" />
                         <TextView
                             android:id="@+id/detailTitleEn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:textAppearance="@style/TextAppearance.LS.Title" />
+                            android:accessibilityHeading="true"
+                            android:textAppearance="@style/TextAppearance.LS.Display" />
                         <TextView
                             android:id="@+id/detailTitle"
                             android:layout_width="match_parent"

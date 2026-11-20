@@ -3,7 +3,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/answerRow"
-    style="@style/Widget.Material3.CardView.Outlined"
+    style="@style/Widget.LS.Card.Story"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/ls_gap">
@@ -21,6 +21,8 @@
             android:id="@+id/rowHanzi"
             android:layout_width="@dimen/ls_cover"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_home_icon"
+            android:backgroundTint="@color/ls_surface_container"
             android:gravity="center"
             android:minHeight="@dimen/ls_cover"
             android:textAppearance="@style/TextAppearance.LS.HanziTile"

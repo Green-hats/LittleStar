@@ -52,7 +52,7 @@
     <dimen name="ls_badge">28dp</dimen>
     <dimen name="ls_feedback_height">48dp</dimen>
     <dimen name="ls_reward_stage">180dp</dimen>
-    <dimen name="ls_reward_panda">100dp</dimen>
+    <dimen name="ls_reward_panda">156dp</dimen>
     <dimen name="ls_confetti">10dp</dimen>
     <dimen name="ls_wave">40dp</dimen>
     <dimen name="ls_wave_height">24dp</dimen>
@@ -76,7 +76,6 @@
     <dimen name="ls_switch_knob">22dp</dimen>
     <dimen name="ls_sheet_option_h">80dp</dimen>
     <dimen name="ls_switch_travel">22dp</dimen>
-    <dimen name="ls_gate_card">88dp</dimen>
     <dimen name="ls_weekday_w">44dp</dimen>
     <dimen name="ls_chart_height">140dp</dimen>
     <dimen name="ls_quiz_prompt_ill">120dp</dimen>
@@ -100,6 +99,8 @@
     <dimen name="ls_home_progress_height">8dp</dimen>
     <dimen name="ls_home_row_height">64dp</dimen>
     <dimen name="ls_home_title_text">28sp</dimen>
+    <dimen name="ls_home_illustration">106dp</dimen>
+    <dimen name="ls_onboarding_illustration">88dp</dimen>
     <dimen name="ls_home_progress_text">22sp</dimen>
     <dimen name="ls_home_label_text">16sp</dimen>
 </resources>

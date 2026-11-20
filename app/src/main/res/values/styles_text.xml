@@ -26,14 +26,20 @@
     </style>
 
     <style name="TextAppearance.LS.Display" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/poppins_bold</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
     <style name="TextAppearance.LS.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/poppins_semibold</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
     <style name="TextAppearance.LS.Headline" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="fontFamily">@font/poppins_semibold</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
@@ -46,14 +52,13 @@
     </style>
 
     <style name="TextAppearance.LS.HomeLabel" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/poppins_semibold</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textStyle">normal</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="TextAppearance.LS.HomeTitle" parent="TextAppearance.Material3.HeadlineMedium">
-        <item name="android:textColor">?attr/colorOnSurface</item>
-    </style>
-
-    <style name="TextAppearance.LS.HomeProgress" parent="TextAppearance.Material3.TitleLarge">
+    <style name="TextAppearance.LS.HomeProgress" parent="TextAppearance.LS.Title">
         <item name="android:textColor">?attr/colorOnPrimaryContainer</item>
     </style>
 

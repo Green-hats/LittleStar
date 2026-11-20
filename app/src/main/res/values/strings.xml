@@ -94,7 +94,6 @@
     <string name="themes_order_hint">Start from 1 — recommended order</string>
     <string name="themes_words_count">%1$d characters</string>
     <string name="themes_learned">%1$d/%2$d recorded</string>
-    <string name="themes_badge_desc">Theme %1$d</string>
     <string name="wl_quiz">Quiz</string>
     <string name="wl_learned">%1$d / %2$d recorded</string>
     <string name="wl_hint">Tap a character to hear it</string>

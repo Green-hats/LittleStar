@@ -18,9 +18,10 @@
             app:icon="@drawable/ic_back" />
         <TextView android:id="@+id/themesTopTitle" android:layout_width="0dp" android:layout_height="wrap_content"
             android:minHeight="@dimen/ls_btn_icon" android:gravity="center_vertical"
-            android:layout_marginStart="@dimen/ls_gap" android:text="@string/themes_title"
-            android:textAppearance="@style/TextAppearance.LS.Title" app:layout_constraintStart_toEndOf="@id/btnBack"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@id/btnBack" />
+            android:layout_marginTop="@dimen/ls_gap_sm" android:text="@string/themes_title"
+            android:accessibilityHeading="true" android:textAppearance="@style/TextAppearance.LS.Display"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@id/btnBack" />
         <androidx.recyclerview.widget.RecyclerView android:id="@+id/themesList"
             android:layout_width="0dp" android:layout_height="0dp" android:layout_marginTop="@dimen/ls_gap"
             android:clipToPadding="false" android:overScrollMode="never"
