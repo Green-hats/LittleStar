@@ -75,14 +75,12 @@ public final class HomeViewModelTest {
         }
     }
 
-    @Test public void eveningKeepsTheSameDailyPractice() {
+    @Test public void eveningKeepsTheSameDailyProgress() {
         observe(vm -> {
             var morning = vm.state().getValue();
             clock.advance(Duration.ofHours(12));
             vm.refresh();
             var evening = vm.state().getValue();
-            assertNotNull(evening.nextWord);
-            assertEquals(morning.nextWord.id, evening.nextWord.id);
             assertEquals(morning.goal, evening.goal);
             assertEquals(morning.learnedToday, evening.learnedToday);
             assertFalse(evening.isDailyComplete());
@@ -114,7 +112,6 @@ public final class HomeViewModelTest {
             assertTrue(vm.state().getValue().allDone);
             assertTrue(vm.state().getValue().isDailyComplete());
             assertEquals(0, vm.state().getValue().goal);
-            assertNotNull(vm.state().getValue().nextWord);
             vm.refresh();
             assertTrue(store.readBlocking(state -> state.dailyPlans.isEmpty()));
         });

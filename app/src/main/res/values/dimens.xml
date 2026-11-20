@@ -16,7 +16,6 @@
     <dimen name="ls_flashcard_button_max">20sp</dimen>
     <dimen name="ls_flashcard_button_min">16sp</dimen>
     <dimen name="ls_quiz_option_min">100dp</dimen>
-    <dimen name="ls_home_preview_hanzi">64sp</dimen>
     <dimen name="ls_culture_thumbnail">64dp</dimen>
     <dimen name="ls_margin">24dp</dimen>
     <dimen name="ls_section">24dp</dimen>
@@ -67,7 +66,6 @@
     <dimen name="ls_listen_block">56dp</dimen>
     <dimen name="ls_module_glyph">40dp</dimen>
     <dimen name="ls_module_height">104dp</dimen>
-    <dimen name="ls_parent_entry_top">28dp</dimen>
     <dimen name="ls_ob_dialog_width">280dp</dimen>
     <dimen name="ls_badge_pad">4dp</dimen>
     <dimen name="ls_theme_tile_height">176dp</dimen>

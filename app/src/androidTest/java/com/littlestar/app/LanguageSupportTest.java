@@ -7,6 +7,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.anyOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -38,6 +39,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 
 @RunWith(AndroidJUnit4.class)
 public final class LanguageSupportTest {
@@ -61,29 +63,21 @@ public final class LanguageSupportTest {
     }
 
     @Test
-    public void homeHasEnglishPracticeAndDistinctBrowsingEntries() {
+    public void homeShowsEnglishProgressAndDistinctBrowsingEntries() {
         try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
-            waitForText(scenario, R.id.moduleWordsTitle, "Browse words");
-            AtomicBoolean hasMeaning = new AtomicBoolean();
-            long deadline = SystemClock.uptimeMillis() + 5000;
-            do {
-                scenario.onActivity(activity -> {
-                    TextView english = activity.findViewById(R.id.heroEnglish);
-                    TextView hanzi = activity.findViewById(R.id.heroHanzi);
-                    for (var word : container.content.wordsInOrder()) {
-                        if (english.isShown() && word.english.contentEquals(english.getText())
-                                && word.hanzi.contentEquals(hanzi.getText())) {
-                            hasMeaning.set(true);
-                        }
-                    }
-                });
-                if (hasMeaning.get()) break;
-                SystemClock.sleep(50);
-            } while (SystemClock.uptimeMillis() < deadline);
-            assertTrue("Daily practice needs an English meaning", hasMeaning.get());
+            String completed = context.getString(R.string.home_progress_done);
+            waitForMatchingText(scenario, R.id.todayProgressText,
+                    text -> text.endsWith(" recorded") || text.equals(completed),
+                    "daily progress");
+            onView(withId(R.id.todayProgressText)).check(matches(isDisplayed()));
+            onView(withId(R.id.todayProgress)).check(matches(isDisplayed()));
+            onView(withId(R.id.btnStartText)).check(matches(isDisplayed())).check(matches(
+                    anyOf(withText(R.string.home_start), withText(R.string.home_review))));
             onView(withId(R.id.moduleWordsIcon)).perform(scrollTo()).check(matches(isDisplayed()));
+            onView(withId(R.id.moduleWordsTitle)).check(matches(withText("Browse words")));
             onView(withId(R.id.moduleCultureIcon)).perform(scrollTo()).check(matches(isDisplayed()));
             onView(withId(R.id.moduleCultureTitle)).check(matches(withText("Listen & read")));
+            onView(withId(R.id.parentEntry)).perform(scrollTo()).check(matches(withText("Learning plan")));
         }
     }
 
@@ -214,12 +208,17 @@ public final class LanguageSupportTest {
 
     private static <T extends Activity> void waitForText(ActivityScenario<T> scenario,
                                                        int id, String expected) {
+        waitForMatchingText(scenario, id, expected::equals, expected);
+    }
+
+    private static <T extends Activity> void waitForMatchingText(ActivityScenario<T> scenario,
+            int id, Predicate<String> matchesText, String expected) {
         AtomicBoolean ready = new AtomicBoolean();
         long deadline = SystemClock.uptimeMillis() + 5000;
         do {
             scenario.onActivity(activity -> {
                 TextView view = activity.findViewById(id);
-                ready.set(view != null && expected.contentEquals(view.getText())
+                ready.set(view != null && matchesText.test(view.getText().toString())
                         && view.getWidth() > 0 && view.getLayout() != null);
             });
             if (ready.get()) {
@@ -227,6 +226,6 @@ public final class LanguageSupportTest {
             }
             SystemClock.sleep(50);
         } while (SystemClock.uptimeMillis() < deadline);
-        throw new AssertionError("English text did not load: " + expected);
+        throw new AssertionError("Expected English text did not load: " + expected);
     }
 }

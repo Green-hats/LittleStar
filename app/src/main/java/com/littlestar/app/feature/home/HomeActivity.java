@@ -1,8 +1,6 @@
 package com.littlestar.app.feature.home;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -17,20 +15,16 @@ import com.littlestar.app.core.lifecycle.ViewModelFactory;
 import com.littlestar.app.core.ui.ChildActivity;
 import com.littlestar.app.core.ui.Insets;
 import com.littlestar.app.core.ui.Motion;
-import com.littlestar.app.data.content.model.Word;
 import com.littlestar.app.databinding.ActivityHomeBinding;
 import com.littlestar.app.feature.flashcard.FlashcardActivity;
 
 /**
- * 首页（§7.1）。每日学习主流程：今日字 + START → Flashcard(SESSION)。
+ * 首页展示每日学习进度，学习入口进入 Flashcard(SESSION)。
  * firstLaunch=true 时盖首次引导（§7.20）；设置入口经过 PIN 验证。
  */
 public final class HomeActivity extends ChildActivity {
 
     private static final int REQ_POST_NOTIFICATIONS = 41;
-
-    /** 当天第一次进入自动朗读的日期记录（Activity 级 SharedPreferences，不进 SettingsStore）。 */
-    private static final String PREF_LAST_SPEAK_DATE = "last_speak_date";
 
     private ActivityHomeBinding binding;
     private HomeViewModel vm;
@@ -38,7 +32,6 @@ public final class HomeActivity extends ChildActivity {
     // 引导态本地状态
     private int obAge = 4;
     private int obGoal = 3;
-    private boolean spokenToday;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +47,6 @@ public final class HomeActivity extends ChildActivity {
         vm.state().observe(this, this::render);
 
         binding.btnStart.setOnClickListener(v -> startSession());
-        binding.btnListen.setOnClickListener(v -> speakHero());
         // 内容模块与受 PIN 保护的设置入口。
         binding.moduleWords.setOnClickListener(v -> {
             startActivity(new Intent(this,
@@ -97,17 +89,8 @@ public final class HomeActivity extends ChildActivity {
             return;
         }
 
-        int green = ContextCompat.getColor(this, R.color.ls_green);
-        int ink = ContextCompat.getColor(this, R.color.ls_ink);
         boolean done = s.isDailyComplete();
-        Word w = s.nextWord;
-        binding.todayLabel.setText(done ? R.string.home_today_done : R.string.home_today_words);
-        binding.todayLabel.setTextColor(done ? green : ink);
-        binding.heroHanzi.setText(w != null ? w.hanzi : "");
-        binding.heroPinyin.setText(w != null ? w.pinyin : "");
-        binding.heroEnglish.setText(w != null ? w.english : "");
         binding.btnStartText.setText(done ? R.string.home_review : R.string.home_start);
-        maybeAutoSpeak(s);
 
         // 今日进度
         binding.todayProgress.setSegments(Math.max(1, s.goal));
@@ -115,36 +98,6 @@ public final class HomeActivity extends ChildActivity {
         binding.todayProgressText.setText(done
                 ? getString(R.string.home_progress_done)
                 : getString(R.string.home_today_progress, s.learnedToday, s.goal));
-
-    }
-
-    /** 进入时当天第一次自动朗读今日字（§9.1）。 */
-    private void maybeAutoSpeak(HomeViewModel.UiState s) {
-        if (spokenToday || s.nextWord == null) {
-            return;
-        }
-        spokenToday = true;   // 先占位，防止多次 render 重复触发
-        String today = container().clock.today().toString();
-        // SharedPreferences 首次读会加载文件：放到 diskIO，避免主线程磁盘读（StrictMode）
-        container().executors.diskIO().execute(() -> {
-            SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-            boolean already = today.equals(prefs.getString(PREF_LAST_SPEAK_DATE, null));
-            if (!already) {
-                prefs.edit().putString(PREF_LAST_SPEAK_DATE, today).apply();
-            }
-            container().executors.mainThread().execute(() -> {
-                if (!already && !isFinishing() && !isDestroyed()) {
-                    speakHero();
-                }
-            });
-        });
-    }
-
-    private void speakHero() {
-        HomeViewModel.UiState s = vm.state().getValue();
-        if (s != null && s.nextWord != null) {
-            container().speech.play(s.nextWord);
-        }
     }
 
     /** START：进会话。会话由 Flashcard(SESSION) 进入时用 SessionBuilder 创建。 */
