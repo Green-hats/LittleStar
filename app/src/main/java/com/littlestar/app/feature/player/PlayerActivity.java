@@ -28,7 +28,6 @@ import com.littlestar.app.core.ui.Motion;
 import com.littlestar.app.data.content.model.CultureItem;
 import com.littlestar.app.data.content.model.LyricLine;
 import com.littlestar.app.databinding.ActivityPlayerBinding;
-import com.littlestar.app.feature.culture.CultureListActivity;
 import com.littlestar.app.playback.PlaybackService;
 import com.littlestar.app.playback.PlaybackControls;
 
@@ -89,7 +88,7 @@ public final class PlayerActivity extends ChildActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityPlayerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        cover = new ContentImage(binding.playerCover, container().executors);
+        cover = new ContentImage(binding.playerCover, container().executors, binding.coverGlyph);
         Insets.applySystemBarPadding(binding.getRoot());
 
         vm = new ViewModelProvider(this,
@@ -284,9 +283,7 @@ public final class PlayerActivity extends ChildActivity {
         binding.songTitle.setText(s.item.titleZh);
         binding.coverGlyph.setText(s.item.glyph);
         cover.bind(s.item.cover);
-        binding.songSubtitle.setText(getString(R.string.player_subtitle_fmt,
-                s.item.subtitleEn == null ? "" : s.item.subtitleEn,
-                CultureListActivity.formatDuration(s.item.durationSec)));
+        binding.songSubtitle.setText(s.item.subtitleEn);
 
         binding.playerSummary.setText(s.item.summary);
         binding.playLabel.setText(s.playing ? R.string.player_desc_pause : R.string.player_desc_play);

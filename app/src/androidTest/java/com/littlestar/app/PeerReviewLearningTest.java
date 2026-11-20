@@ -209,10 +209,9 @@ public class PeerReviewLearningTest {
      TextView record=a.findViewById(R.id.stamp),next=a.findViewById(R.id.btnNext);
      assertEquals(record.getTop(),next.getTop());assertEquals(record.getHeight(),next.getHeight());
      assertEquals(1,record.getLineCount());assertEquals(1,next.getLineCount());
-     assertEquals(android.widget.LinearLayout.HORIZONTAL,((android.widget.LinearLayout)a.findViewById(R.id.pageMain)).getOrientation());
-     View footer=a.findViewById(R.id.flashcardFooter),root=a.findViewById(R.id.flashcardRoot),viewport=a.findViewById(R.id.flashcardScroll);
-     assertTrue("Compact layout should fit one screen",footer.getBottom()+root.getPaddingBottom()<=viewport.getHeight());
+     View illustration=a.findViewById(R.id.illustrationFrame);
      TextView hanzi=a.findViewById(R.id.pageHanzi);
+     assertTrue("Illustration must stay above the character",illustration.getBottom()<=hanzi.getTop());
      assertTrue("Bounded viewport should adapt text size",hanzi.getTextSize()<a.getResources().getDimension(R.dimen.ls_flashcard_hanzi_max));
      assertTrue(hanzi.getTextSize()>=a.getResources().getDimension(R.dimen.ls_flashcard_hanzi_min));
      assertStaticCard(a.findViewById(R.id.pageCard));

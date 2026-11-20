@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="ls_flashcard_margin">16dp</dimen>
-    <dimen name="ls_flashcard_image">80dp</dimen>
-    <dimen name="ls_flashcard_image_compact">64dp</dimen>
+    <dimen name="ls_flashcard_image">104dp</dimen>
+    <dimen name="ls_flashcard_image_compact">88dp</dimen>
     <dimen name="ls_flashcard_image_min">48dp</dimen>
     <dimen name="ls_flashcard_gap_min">4dp</dimen>
     <dimen name="ls_flashcard_hanzi_max">100sp</dimen>
@@ -68,7 +68,11 @@
     <dimen name="ls_row_review">96dp</dimen>
     <dimen name="ls_cover">56dp</dimen>
     <dimen name="ls_play_big">76dp</dimen>
-    <dimen name="ls_player_cover">200dp</dimen>
+    <dimen name="ls_player_cover">208dp</dimen>
+    <dimen name="ls_player_seek_track">4dp</dimen>
+    <dimen name="ls_player_seek_thumb">12dp</dimen>
+    <dimen name="ls_player_seek_inset">16dp</dimen>
+    <dimen name="ls_player_play_icon">32dp</dimen>
     <dimen name="ls_track_height">10dp</dimen>
     <dimen name="ls_thumb">22dp</dimen>
     <dimen name="ls_switch_w">52dp</dimen>

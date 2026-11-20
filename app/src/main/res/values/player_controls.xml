@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="player_heading">Listen &amp; learn</string>
+    <string name="player_heading">Now playing</string>
+    <string name="player_lyrics_heading">Lyrics</string>
     <string name="player_desc_prev_unavailable">No previous item in this category</string>
     <string name="player_desc_next_unavailable">No next item in this category</string>
 </resources>
