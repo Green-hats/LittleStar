@@ -206,8 +206,9 @@ public class PeerReviewLearningTest {
     onView(withId(R.id.stamp)).perform(androidx.test.espresso.action.ViewActions.scrollTo());
     s.onActivity(a->{
      assertTrue(a.getResources().getConfiguration().fontScale>=2f);
-     View record=a.findViewById(R.id.stamp),next=a.findViewById(R.id.btnNext);
+     TextView record=a.findViewById(R.id.stamp),next=a.findViewById(R.id.btnNext);
      assertEquals(record.getTop(),next.getTop());assertEquals(record.getHeight(),next.getHeight());
+     assertEquals(1,record.getLineCount());assertEquals(1,next.getLineCount());
      assertEquals(android.widget.LinearLayout.HORIZONTAL,((android.widget.LinearLayout)a.findViewById(R.id.pageMain)).getOrientation());
      View footer=a.findViewById(R.id.flashcardFooter),root=a.findViewById(R.id.flashcardRoot),viewport=a.findViewById(R.id.flashcardScroll);
      assertTrue("Compact layout should fit one screen",footer.getBottom()+root.getPaddingBottom()<=viewport.getHeight());
