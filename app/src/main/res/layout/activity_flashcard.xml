@@ -11,45 +11,43 @@
             android:orientation="vertical" android:padding="@dimen/ls_flashcard_margin">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:gravity="center_vertical" android:orientation="horizontal">
-                <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnBack" style="@style/Widget.LS.Block.Navigation"
-                    android:layout_width="@dimen/ls_btn_icon" android:layout_height="@dimen/ls_btn_icon"
-                    android:contentDescription="@string/nav_back">
-                    <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
-                        android:layout_gravity="center" android:importantForAccessibility="no" android:src="@drawable/ic_back" />
-                </com.littlestar.app.core.ui.BlockLayout>
+                <com.littlestar.app.core.ui.LearningButton
+                    android:id="@+id/btnBack"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="@dimen/ls_btn_icon"
+                    android:layout_height="@dimen/ls_btn_icon"
+                    android:contentDescription="@string/nav_back"
+                    app:icon="@drawable/ic_back" />
                 <TextView android:id="@+id/cardTitle" android:layout_width="0dp" android:layout_weight="1"
                     android:layout_height="wrap_content" android:layout_marginHorizontal="@dimen/ls_gap"
                     android:text="@string/fc_session_title" android:textAppearance="@style/TextAppearance.LS.Title" />
                 <TextView android:id="@+id/cardCounter" android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.LS.Title" android:textColor="@color/ls_muted" />
             </LinearLayout>
-            <com.littlestar.app.core.ui.SegmentProgressView android:id="@+id/cardProgress"
-                android:layout_width="match_parent" android:layout_height="@dimen/ls_seg_height" android:layout_marginTop="@dimen/ls_gap" />
+            <com.google.android.material.progressindicator.LinearProgressIndicator android:id="@+id/cardProgress"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" />
             <include android:id="@+id/pageCard" layout="@layout/page_flashcard"
                 android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" />
             <LinearLayout android:id="@+id/flashcardFooter" android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ls_gap" android:gravity="center_vertical" android:baselineAligned="false"
                 android:orientation="horizontal">
-                <com.littlestar.app.core.ui.BlockLayout android:id="@+id/stamp" style="@style/Widget.LS.Block.Secondary"
-                    android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent"
-                    android:minHeight="@dimen/ls_btn_primary">
-                    <TextView android:id="@+id/stampLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:layout_gravity="center" android:padding="@dimen/ls_gap_sm" android:gravity="center"
-                        android:text="@string/pr_stamp_optional" android:textAppearance="@style/TextAppearance.LS.Body" />
-                </com.littlestar.app.core.ui.BlockLayout>
-                <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnNext" style="@style/Widget.LS.Block.Primary"
-                    android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/ls_gap" android:minHeight="@dimen/ls_btn_primary">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:layout_gravity="center" android:padding="@dimen/ls_gap_sm" android:gravity="center_vertical"
-                        android:orientation="horizontal">
-                        <TextView android:id="@+id/btnNextText" android:layout_width="0dp" android:layout_weight="1"
-                            android:layout_height="wrap_content" android:gravity="center" android:maxLines="3"
-                            android:text="@string/fc_next" android:textAppearance="@style/TextAppearance.LS.Button" />
-                        <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
-                            android:importantForAccessibility="no" android:src="@drawable/ic_chevron" app:tint="@color/ls_on_primary" />
-                    </LinearLayout>
-                </com.littlestar.app.core.ui.BlockLayout>
+                <com.littlestar.app.core.ui.LearningButton
+                    android:id="@+id/stamp"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/ls_btn_icon"
+                    android:text="@string/pr_stamp_optional" />
+                <com.littlestar.app.core.ui.LearningButton
+                    android:id="@+id/btnNext"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/ls_gap"
+                    android:minHeight="@dimen/ls_btn_icon"
+                    android:text="@string/fc_next" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -67,20 +65,24 @@
 
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" android:text="@string/pr_audio_title" android:textAppearance="@style/TextAppearance.LS.Title"/>
 
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap_sm" android:text="@string/pr_audio_message" android:textAppearance="@style/TextAppearance.LS.Caption" android:textSize="14sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap_sm" android:text="@string/pr_audio_message" android:textAppearance="@style/TextAppearance.Material3.BodyMedium"/>
 
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" android:orientation="horizontal">
+                <com.littlestar.app.core.ui.LearningButton
+                    android:id="@+id/btnAudioRetry"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_gap"
+                    android:minHeight="@dimen/ls_btn_icon"
+                    android:text="@string/pr_audio_retry" />
 
-                    <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnAudioContinue" style="@style/Widget.LS.Block.Option" android:layout_width="0dp" android:layout_height="@dimen/ls_btn_icon" android:layout_weight="1">
-
-                        <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="@string/fc_audio_continue" android:textAppearance="@style/TextAppearance.LS.Body" android:id="@+id/audioContinueLabel"/>
-                    </com.littlestar.app.core.ui.BlockLayout>
-
-                    <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnAudioRetry" style="@style/Widget.LS.Block.Option" android:layout_width="0dp" android:layout_height="@dimen/ls_btn_icon" android:layout_marginStart="@dimen/ls_gap" android:layout_weight="1">
-
-                        <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="@string/pr_audio_retry" android:textAppearance="@style/TextAppearance.LS.Body"/>
-                    </com.littlestar.app.core.ui.BlockLayout>
-                </LinearLayout>
+                <com.littlestar.app.core.ui.LearningButton
+                    android:id="@+id/btnAudioContinue"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/ls_btn_icon"
+                    android:text="@string/fc_audio_continue" />
             </LinearLayout>
         </com.littlestar.app.core.ui.BlockLayout>
     </FrameLayout>

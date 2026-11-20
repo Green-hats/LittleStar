@@ -16,7 +16,8 @@ import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.Checkable;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -143,7 +144,7 @@ public final class SettingsFlowTest {
         try (ActivityScenario<SettingsActivity> scenario = ActivityScenario.launch(SettingsActivity.class)) {
             scenario.onActivity(activity -> {
                 ((StepperView) activity.findViewById(R.id.goalStepper)).setValue(5);
-                ((LinearLayout) activity.findViewById(R.id.weekdayRow)).getChildAt(1).performClick();
+                ((ViewGroup) activity.findViewById(R.id.weekdayRow)).getChildAt(1).performClick();
                 activity.findViewById(R.id.btnCancel).performClick();
             });
             assertEquals(3, container.settings.getDailyGoal());
@@ -262,12 +263,13 @@ public final class SettingsFlowTest {
         try (ActivityScenario<SettingsActivity> scenario = ActivityScenario.launch(SettingsActivity.class)) {
             scenario.onActivity(activity -> {
                 ((StepperView) activity.findViewById(R.id.goalStepper)).setValue(7);
-                ((LinearLayout) activity.findViewById(R.id.weekdayRow)).getChildAt(1).performClick();
+                ((ViewGroup) activity.findViewById(R.id.weekdayRow)).getChildAt(1).performClick();
             });
             scenario.recreate();
             scenario.onActivity(activity -> {
                 assertEquals(7, ((StepperView) activity.findViewById(R.id.goalStepper)).getValue());
-                assertTrue(((LinearLayout) activity.findViewById(R.id.weekdayRow)).getChildAt(1).isSelected());
+                ViewGroup weekdays = activity.findViewById(R.id.weekdayRow);
+                assertTrue(((Checkable) weekdays.getChildAt(1)).isChecked());
                 assertEquals(3, container.settings.getDailyGoal());
             });
         }
@@ -278,7 +280,7 @@ public final class SettingsFlowTest {
         container.settings.setReminderDays(Set.of(1, 3));
         try (ActivityScenario<SettingsActivity> scenario = ActivityScenario.launch(SettingsActivity.class)) {
             scenario.onActivity(activity -> {
-                LinearLayout weekdays = activity.findViewById(R.id.weekdayRow);
+                ViewGroup weekdays = activity.findViewById(R.id.weekdayRow);
                 weekdays.getChildAt(0).performClick();
                 weekdays.getChildAt(2).performClick();
                 activity.findViewById(R.id.btnSave).performClick();

@@ -52,9 +52,9 @@
                         android:textAppearance="@style/TextAppearance.LS.HomeTitle" />
                 </LinearLayout>
 
-                <com.littlestar.app.core.ui.BlockLayout
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/nowPlaying"
-                    style="@style/Widget.LS.Block.Surface"
+                    style="@style/Widget.Material3.CardView.Filled"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ls_gap"
@@ -93,31 +93,22 @@
                                 android:textAppearance="@style/TextAppearance.LS.HomeLabel" />
                         </LinearLayout>
 
-                        <com.littlestar.app.core.ui.BlockLayout
+                        <com.littlestar.app.core.ui.LearningButton
                             android:id="@+id/nowPlayingToggle"
-                            style="@style/Widget.LS.Block.Row"
+                            style="@style/Widget.Material3.Button.IconButton"
                             android:layout_width="@dimen/ls_btn_icon"
-                            android:layout_height="@dimen/ls_btn_icon">
-
-                            <ImageView
-                                android:id="@+id/nowPlayingIcon"
-                                android:layout_width="@dimen/ls_icon"
-                                android:layout_height="@dimen/ls_icon"
-                                android:layout_gravity="center"
-                                android:importantForAccessibility="no"
-                                app:tint="@color/ls_secondary" />
-                        </com.littlestar.app.core.ui.BlockLayout>
+                            android:layout_height="@dimen/ls_btn_icon"
+                            app:icon="@drawable/ic_play" />
                     </LinearLayout>
-                </com.littlestar.app.core.ui.BlockLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                <com.littlestar.app.core.ui.BlockLayout
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/dailyPracticeCard"
-                    style="@style/Widget.LS.Block.Surface"
+                    style="@style/Widget.Material3.CardView.Filled"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ls_section"
-                    app:ls_fill="@color/ls_primary_container"
-                    app:ls_strokeColor="@color/ls_primary_container_outline">
+                    app:cardBackgroundColor="@color/ls_primary_container">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -132,39 +123,26 @@
                             android:includeFontPadding="false"
                             android:textAppearance="@style/TextAppearance.LS.HomeProgress" />
 
-                        <com.littlestar.app.core.ui.SegmentProgressView
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
                             android:id="@+id/todayProgress"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/ls_home_progress_height"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/ls_gap"
-                            android:importantForAccessibility="no"
-                            app:fillColor="@color/ls_primary"
-                            app:trackColor="@color/ls_track" />
+                            android:importantForAccessibility="no" />
 
-                        <com.littlestar.app.core.ui.BlockLayout
+                        <com.littlestar.app.core.ui.LearningButton
                             android:id="@+id/btnStart"
-                            style="@style/Widget.LS.Block.Primary"
+                            style="@style/Widget.Material3.Button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/ls_card_pad">
-
-                            <TextView
-                                android:id="@+id/btnStartText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:includeFontPadding="false"
-                                android:minHeight="@dimen/ls_btn_secondary"
-                                android:padding="@dimen/ls_gap"
-                                android:text="@string/home_start"
-                                android:textAppearance="@style/TextAppearance.LS.HomeLabel"
-                                android:textColor="@color/ls_card" />
-                        </com.littlestar.app.core.ui.BlockLayout>
+                            android:layout_marginTop="@dimen/ls_card_pad"
+                            android:minHeight="@dimen/ls_btn_icon"
+                            android:text="@string/home_start" />
                     </LinearLayout>
-                </com.littlestar.app.core.ui.BlockLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                <com.littlestar.app.core.ui.BlockLayout
-                    style="@style/Widget.LS.Block.Surface"
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.Material3.CardView.Filled"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ls_card_pad">
@@ -273,7 +251,7 @@
                             </LinearLayout>
                         </com.littlestar.app.core.ui.BlockLayout>
                     </LinearLayout>
-                </com.littlestar.app.core.ui.BlockLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/parentEntry"

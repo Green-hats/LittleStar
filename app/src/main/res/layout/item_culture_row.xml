@@ -19,18 +19,15 @@
                 android:layout_marginTop="@dimen/ls_gap_sm" android:text="@string/culture_list_details"
                 android:textAppearance="@style/TextAppearance.LS.Caption" android:textColor="@color/ls_secondary" />
         </LinearLayout>
-        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnPlay" style="@style/Widget.LS.Block.Tonal"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:minWidth="@dimen/ls_play_shortcut" android:minHeight="@dimen/ls_btn_primary">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:minHeight="@dimen/ls_btn_secondary" android:layout_gravity="center"
-                android:padding="@dimen/ls_gap_sm" android:gravity="center" android:orientation="horizontal">
-                <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
-                    android:importantForAccessibility="no" android:src="@drawable/ic_play" app:tint="@color/ls_secondary" />
-                <TextView android:id="@+id/playShortcutLabel" android:layout_width="wrap_content"
-                    android:layout_marginStart="@dimen/ls_gap_sm" android:layout_height="wrap_content" android:gravity="center" android:text="@string/culture_list_play"
-                    android:textAppearance="@style/TextAppearance.LS.Body" android:textColor="@color/ls_secondary" />
-            </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
+        <com.littlestar.app.core.ui.LearningButton
+            android:id="@+id/btnPlay"
+            style="@style/Widget.Material3.Button.TonalButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="@dimen/ls_play_shortcut"
+            android:minHeight="@dimen/ls_btn_icon"
+            android:text="@string/culture_list_play"
+            app:icon="@drawable/ic_play"
+            app:iconGravity="textStart" />
     </LinearLayout>
 </com.littlestar.app.core.ui.BlockLayout>

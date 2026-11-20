@@ -154,8 +154,8 @@ public final class QuizActivity extends ChildActivity {
             return;
         }
         binding.quizCounter.setText(getString(R.string.quiz_counter, s.index + 1, s.total));
-        binding.quizProgress.setSegments(Math.max(1, s.total));
-        binding.quizProgress.setFilled(s.index + 1);
+        binding.quizProgress.setMax(Math.max(1, s.total));
+        binding.quizProgress.setProgressCompat(s.index + 1, false);
 
         // 英文提示默认隐藏（settings.isEnglishHint）
         binding.englishHint.setVisibility(s.showEnglishHint ? View.VISIBLE : View.GONE);
@@ -211,7 +211,7 @@ public final class QuizActivity extends ChildActivity {
                     positive ? R.drawable.ic_check : s.retrying ? R.drawable.ic_speaker : R.drawable.ic_close);
             binding.feedbackIcon.setColorFilter(positive ? onMint : s.retrying ? ink : onClay);
             binding.btnRetry.setVisibility(!positive && !s.retrying ? View.VISIBLE : View.GONE);
-            binding.btnNextText.setText(s.retrying ? R.string.quiz_skip_retry
+            binding.btnNext.setText(s.retrying ? R.string.quiz_skip_retry
                     : s.isLast ? R.string.quiz_done : R.string.quiz_next);
             if (feedbackShownFor != s.index) {
                 feedbackShownFor = s.index;

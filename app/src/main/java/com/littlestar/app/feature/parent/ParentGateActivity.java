@@ -3,6 +3,8 @@ package com.littlestar.app.feature.parent;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.Nullable;
@@ -45,6 +47,20 @@ public final class ParentGateActivity extends ParentActivity {
 
         binding.btnBack.setOnClickListener(v -> finish());
         binding.btnConfirm.setOnClickListener(v -> submit());
+        binding.answerInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence text, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence text, int start, int before, int count) {
+                if (count > 0) {
+                    binding.pinField.setError(null);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable text) {}
+        });
         binding.answerInput.setOnEditorActionListener((tv, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 submit();
@@ -65,7 +81,6 @@ public final class ParentGateActivity extends ParentActivity {
             if (pendingPin == null) {
                 pendingPin = input;
                 binding.answerInput.setText("");
-                binding.answerInput.setError(null);
                 binding.questionText.setText(R.string.peer_settings_pin_confirm);
                 binding.questionText.announceForAccessibility(
                         getString(R.string.peer_settings_pin_confirm));
@@ -77,7 +92,7 @@ public final class ParentGateActivity extends ParentActivity {
                 pendingPin = null;
                 binding.questionText.setText(R.string.pg_pin_create);
                 binding.answerInput.setText("");
-                binding.answerInput.setError(getString(R.string.peer_settings_pin_mismatch));
+                binding.pinField.setError(getString(R.string.peer_settings_pin_mismatch));
                 Motion.shake(binding.answerInput);
             }
         } else if (input.equals(container().settings.getParentPin())) {

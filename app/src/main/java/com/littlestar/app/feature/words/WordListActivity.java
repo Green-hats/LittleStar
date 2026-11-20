@@ -79,8 +79,8 @@ public final class WordListActivity extends ChildActivity {
             return;
         }
         binding.listTitle.setText(s.theme.nameEn);
-        binding.listProgress.setSegments(Math.max(1, s.words.size()));
-        binding.listProgress.setFilled(s.learned);
+        binding.listProgress.setMax(Math.max(1, s.words.size()));
+        binding.listProgress.setProgressCompat(s.learned, false);
         binding.listProgressText.setText(
                 getString(R.string.wl_learned, s.learned, s.words.size()));
         adapter.setItems(s.words);

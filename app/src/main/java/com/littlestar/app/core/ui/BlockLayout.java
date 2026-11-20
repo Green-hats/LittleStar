@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.RippleDrawable;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -86,13 +87,17 @@ public class BlockLayout extends FrameLayout {
         super.drawableStateChanged();
         boolean pressed = isClickable() && isPressed() && isEnabled();
         if (pressable && pressed && !lastPressed) {
-            Runnable hook = pressSoundHook;
-            if (hook != null) {
-                hook.run();
-            }
-            performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
+            playPressFeedback(this);
         }
         lastPressed = pressed;
+    }
+
+    static void playPressFeedback(@NonNull View view) {
+        Runnable hook = pressSoundHook;
+        if (hook != null) {
+            hook.run();
+        }
+        view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);
     }
 
     @Override

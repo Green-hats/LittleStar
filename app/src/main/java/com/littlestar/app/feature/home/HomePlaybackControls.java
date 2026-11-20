@@ -99,7 +99,7 @@ final class HomePlaybackControls implements DefaultLifecycleObserver {
         binding.nowPlayingTitle.setText(title == null ? home.getString(R.string.player_heading) : title);
         binding.nowPlayingState.setText(playing ? R.string.home_audio_playing : R.string.home_audio_paused);
         binding.nowPlayingOpen.setContentDescription(home.getString(R.string.home_audio_open, title));
-        binding.nowPlayingIcon.setImageResource(playing ? R.drawable.ic_pause : R.drawable.ic_play);
+        binding.nowPlayingToggle.setIconResource(playing ? R.drawable.ic_pause : R.drawable.ic_play);
         binding.nowPlayingToggle.setContentDescription(home.getString(
                 playing ? R.string.player_desc_pause : R.string.player_desc_play));
     }

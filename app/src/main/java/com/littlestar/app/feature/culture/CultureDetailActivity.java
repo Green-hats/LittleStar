@@ -110,7 +110,7 @@ public final class CultureDetailActivity extends ChildActivity {
         binding.detailTranscript.setVisibility(visibility);
         binding.detailFocus.setVisibility(visibility);
         binding.detailFocusHeading.setVisibility(visibility);
-        binding.previewLabel.setText(previewExpanded
+        binding.btnPreview.setText(previewExpanded
                 ? R.string.culture_detail_hide_text : R.string.culture_detail_read_together);
         binding.btnPreview.setContentDescription(getString(previewExpanded
                 ? R.string.culture_detail_hide_text : R.string.culture_detail_read_together));

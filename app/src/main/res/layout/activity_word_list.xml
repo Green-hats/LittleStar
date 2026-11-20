@@ -5,20 +5,33 @@
     <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/wordListContent" android:layout_width="0dp" android:layout_height="0dp" android:padding="@dimen/ls_margin" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" app:layout_constraintWidth_max="@dimen/ls_content_max_width">
 
         <!-- 顶栏：返回 + 主题名 + Quiz 入口 -->
-        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnBack" style="@style/Widget.LS.Block.Navigation" android:layout_width="@dimen/ls_btn_icon" android:layout_height="@dimen/ls_btn_icon" android:contentDescription="@string/nav_back" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon" android:layout_gravity="center" android:importantForAccessibility="no" android:src="@drawable/ic_back"/>
-        </com.littlestar.app.core.ui.BlockLayout>
+        <com.littlestar.app.core.ui.LearningButton
+            android:id="@+id/btnBack"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="@dimen/ls_btn_icon"
+            android:layout_height="@dimen/ls_btn_icon"
+            android:contentDescription="@string/nav_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:icon="@drawable/ic_back" />
 
         <TextView android:id="@+id/listTitle" style="@style/Widget.LS.Label.Navigation" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/ls_gap" android:layout_marginEnd="@dimen/ls_gap" android:textAppearance="@style/TextAppearance.LS.Title" app:layout_constraintBottom_toBottomOf="@id/btnBack" app:layout_constraintEnd_toStartOf="@id/btnQuiz" app:layout_constraintStart_toEndOf="@id/btnBack" app:layout_constraintTop_toTopOf="@id/btnBack" android:maxLines="1" android:ellipsize="end"/>
 
-        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnQuiz" style="@style/Widget.LS.Block.Icon" android:layout_width="wrap_content" android:layout_height="@dimen/ls_btn_icon" app:layout_constraintBottom_toBottomOf="@id/btnBack" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@id/btnBack" app:ls_fill="@color/ls_primary_container">
-
-            <TextView android:layout_width="wrap_content" android:layout_height="match_parent" android:gravity="center" android:paddingStart="@dimen/ls_gap" android:paddingEnd="@dimen/ls_gap" android:text="@string/wl_quiz" android:textAppearance="@style/TextAppearance.LS.Body" android:textColor="@color/ls_primary" android:textStyle="bold"/>
-        </com.littlestar.app.core.ui.BlockLayout>
+        <com.littlestar.app.core.ui.LearningButton
+            android:id="@+id/btnQuiz"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            android:minHeight="@dimen/ls_btn_icon"
+            android:text="@string/wl_quiz"
+            app:icon="@drawable/ic_quiz"
+            app:iconGravity="textStart" />
 
         <!-- 进度 -->
-        <com.littlestar.app.core.ui.SegmentProgressView android:id="@+id/listProgress" android:layout_width="0dp" android:layout_height="@dimen/ls_seg_height" android:layout_marginEnd="@dimen/ls_gap" app:layout_constraintBottom_toBottomOf="@id/listProgressText" app:layout_constraintEnd_toStartOf="@id/listProgressText" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="@id/listProgressText"/>
+        <com.google.android.material.progressindicator.LinearProgressIndicator android:id="@+id/listProgress" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="@dimen/ls_gap" app:layout_constraintBottom_toBottomOf="@id/listProgressText" app:layout_constraintEnd_toStartOf="@id/listProgressText" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="@id/listProgressText"/>
 
         <TextView android:id="@+id/listProgressText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" android:textAppearance="@style/TextAppearance.LS.Caption" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@id/btnBack"/>
 
@@ -29,7 +42,7 @@
 
             <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon" android:importantForAccessibility="no" android:src="@drawable/ic_speaker" app:tint="@color/ls_muted"/>
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/ls_gap_sm" android:text="@string/wl_hint" android:textAppearance="@style/TextAppearance.LS.Caption" android:textSize="14sp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/ls_gap_sm" android:text="@string/wl_hint" android:textAppearance="@style/TextAppearance.Material3.BodyMedium"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

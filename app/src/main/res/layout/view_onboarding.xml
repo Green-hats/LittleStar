@@ -31,16 +31,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_section_lg"
             android:text="@string/ob_title_setup"
-            android:textAppearance="@style/TextAppearance.LS.Display"
-            android:textSize="34sp" />
+            android:textAppearance="@style/TextAppearance.LS.Display" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_gap_sm"
             android:text="@string/ob_subtitle_setup"
-            android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textSize="14sp" />
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,71 +48,38 @@
             android:textAppearance="@style/TextAppearance.LS.Body"
             android:textStyle="bold" />
 
-        <LinearLayout
+        <com.google.android.material.chip.ChipGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_gap"
-            android:orientation="horizontal">
+            app:chipSpacing="@dimen/ls_gap_sm"
+            app:selectionRequired="true"
+            app:singleSelection="true">
 
-            <com.littlestar.app.core.ui.BlockLayout
+            <com.google.android.material.chip.Chip
                 android:id="@+id/obAge3"
-                style="@style/Widget.LS.Block.Option"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/ls_btn_secondary"
-                android:layout_weight="1">
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-                <com.littlestar.app.core.ui.HanziTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <com.littlestar.app.core.ui.BlockLayout
+            <com.google.android.material.chip.Chip
                 android:id="@+id/obAge4"
-                style="@style/Widget.LS.Block.Option"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/ls_btn_secondary"
-                android:layout_marginStart="@dimen/ls_gap"
-                android:layout_weight="1">
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-                <com.littlestar.app.core.ui.HanziTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <com.littlestar.app.core.ui.BlockLayout
+            <com.google.android.material.chip.Chip
                 android:id="@+id/obAge5"
-                style="@style/Widget.LS.Block.Option"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/ls_btn_secondary"
-                android:layout_marginStart="@dimen/ls_gap"
-                android:layout_weight="1">
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-                <com.littlestar.app.core.ui.HanziTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <com.littlestar.app.core.ui.BlockLayout
+            <com.google.android.material.chip.Chip
                 android:id="@+id/obAge6"
-                style="@style/Widget.LS.Block.Option"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/ls_btn_secondary"
-                android:layout_marginStart="@dimen/ls_gap"
-                android:layout_weight="1">
-
-                <com.littlestar.app.core.ui.HanziTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp" />
-            </com.littlestar.app.core.ui.BlockLayout>
-        </LinearLayout>
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.chip.ChipGroup>
 
         <TextView
             android:layout_width="wrap_content"
@@ -124,65 +89,41 @@
             android:textAppearance="@style/TextAppearance.LS.Body"
             android:textStyle="bold" />
 
-        <LinearLayout
+        <com.google.android.material.chip.ChipGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_gap"
-            android:orientation="horizontal">
+            app:chipSpacing="@dimen/ls_gap_sm"
+            app:selectionRequired="true"
+            app:singleSelection="true">
 
-            <com.littlestar.app.core.ui.BlockLayout
+            <com.google.android.material.chip.Chip
                 android:id="@+id/obGoal1"
-                style="@style/Widget.LS.Block.Option"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/ls_btn_secondary"
-                android:layout_weight="1">
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-                <com.littlestar.app.core.ui.HanziTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <com.littlestar.app.core.ui.BlockLayout
+            <com.google.android.material.chip.Chip
                 android:id="@+id/obGoal3"
-                style="@style/Widget.LS.Block.Option"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/ls_btn_secondary"
-                android:layout_marginStart="@dimen/ls_gap"
-                android:layout_weight="1">
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-                <com.littlestar.app.core.ui.HanziTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp" />
-            </com.littlestar.app.core.ui.BlockLayout>
-
-            <com.littlestar.app.core.ui.BlockLayout
+            <com.google.android.material.chip.Chip
                 android:id="@+id/obGoal5"
-                style="@style/Widget.LS.Block.Option"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/ls_btn_secondary"
-                android:layout_marginStart="@dimen/ls_gap"
-                android:layout_weight="1">
-
-                <com.littlestar.app.core.ui.HanziTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp" />
-            </com.littlestar.app.core.ui.BlockLayout>
-        </LinearLayout>
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.chip.ChipGroup>
 
         <!-- 建议卡 -->
-        <com.littlestar.app.core.ui.BlockLayout
-            style="@style/Widget.LS.Block.Hero"
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/ls_btn_secondary"
             android:layout_marginTop="@dimen/ls_section"
-            app:ls_pressable="false">
+            app:cardBackgroundColor="?attr/colorPrimaryContainer">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -220,37 +161,29 @@
                         android:textAppearance="@style/TextAppearance.LS.Caption" />
                 </LinearLayout>
             </LinearLayout>
-        </com.littlestar.app.core.ui.BlockLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <Space
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <com.littlestar.app.core.ui.BlockLayout
+        <com.littlestar.app.core.ui.LearningButton
             android:id="@+id/obNext"
-            style="@style/Widget.LS.Block.Primary"
+            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_primary">
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/ls_btn_icon"
+            android:text="@string/ob_next" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/ob_next"
-                android:textAppearance="@style/TextAppearance.LS.Button" />
-        </com.littlestar.app.core.ui.BlockLayout>
-
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/obSkip1"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/ls_gap"
-            android:padding="@dimen/ls_gap_sm"
-            android:text="@string/ob_skip"
-            android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textSize="14sp" />
+            android:minHeight="@dimen/ls_btn_icon"
+            android:text="@string/ob_skip" />
     </LinearLayout>
 
     <!-- ===== 第二步：提醒 ===== -->
@@ -273,16 +206,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_section_lg"
             android:text="@string/ob_title_notify"
-            android:textAppearance="@style/TextAppearance.LS.Display"
-            android:textSize="34sp" />
+            android:textAppearance="@style/TextAppearance.LS.Display" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_gap_sm"
             android:text="@string/ob_subtitle_notify"
-            android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textSize="14sp" />
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
         <!-- 提醒卡 -->
         <com.littlestar.app.core.ui.BlockLayout
@@ -337,8 +268,7 @@
                             android:id="@+id/obNotifyDesc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/TextAppearance.LS.Caption"
-                            android:textSize="14sp" />
+                            android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -372,43 +302,29 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_gap"
             android:text="@string/ob_notify_note"
-            android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textSize="14sp" />
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
         <Space
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <com.littlestar.app.core.ui.BlockLayout
+        <com.littlestar.app.core.ui.LearningButton
             android:id="@+id/obAllow"
-            style="@style/Widget.LS.Block.Primary"
+            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_primary">
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/ls_btn_icon"
+            android:text="@string/ob_allow" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/ob_allow"
-                android:textAppearance="@style/TextAppearance.LS.Button" />
-        </com.littlestar.app.core.ui.BlockLayout>
-
-        <com.littlestar.app.core.ui.BlockLayout
+        <com.littlestar.app.core.ui.LearningButton
             android:id="@+id/obLater"
-            style="@style/Widget.LS.Block.Secondary"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_secondary"
-            android:layout_marginTop="@dimen/ls_gap">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/ob_later"
-                android:textAppearance="@style/TextAppearance.LS.Button"
-                android:textColor="@color/ls_ink" />
-        </com.littlestar.app.core.ui.BlockLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap"
+            android:minHeight="@dimen/ls_btn_icon"
+            android:text="@string/ob_later" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -7,12 +7,13 @@
         android:padding="@dimen/ls_margin" android:orientation="vertical">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="horizontal" android:gravity="center_vertical">
-            <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnBack" style="@style/Widget.LS.Block.Navigation"
-                android:layout_width="@dimen/ls_btn_icon" android:layout_height="@dimen/ls_btn_icon"
-                android:contentDescription="@string/nav_back">
-                <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
-                    android:layout_gravity="center" android:importantForAccessibility="no" android:src="@drawable/ic_back" />
-            </com.littlestar.app.core.ui.BlockLayout>
+            <com.littlestar.app.core.ui.LearningButton
+                android:id="@+id/btnBack"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="@dimen/ls_btn_icon"
+                android:layout_height="@dimen/ls_btn_icon"
+                android:contentDescription="@string/nav_back"
+                app:icon="@drawable/ic_back" />
             <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
                 android:layout_marginStart="@dimen/ls_gap" android:text="@string/home_module_culture_title"
                 android:textAppearance="@style/TextAppearance.LS.Title" />

@@ -19,19 +19,13 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-            <com.littlestar.app.core.ui.BlockLayout
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBack"
-                style="@style/Widget.LS.Block.Navigation"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="@dimen/ls_btn_icon"
                 android:layout_height="@dimen/ls_btn_icon"
-                android:contentDescription="@string/nav_back">
-                <ImageView
-                    android:layout_width="@dimen/ls_icon"
-                    android:layout_height="@dimen/ls_icon"
-                    android:layout_gravity="center"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_back" />
-            </com.littlestar.app.core.ui.BlockLayout>
+                android:contentDescription="@string/nav_back"
+                app:icon="@drawable/ic_back" />
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/settingsToolbar"
                 android:layout_width="0dp"
@@ -123,13 +117,12 @@
                 </com.littlestar.app.core.ui.BlockLayout>
             </LinearLayout>
         </com.littlestar.app.core.ui.BlockLayout>
-        <LinearLayout
+        <com.google.android.material.chip.ChipGroup
             android:id="@+id/weekdayRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_gap"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal" />
+            app:chipSpacing="@dimen/ls_gap_sm" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -145,7 +138,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_section"
-            android:minHeight="@dimen/ls_btn_primary"
+            android:minHeight="@dimen/ls_btn_icon"
             android:text="@string/settings_save" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancel"
@@ -153,6 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:minHeight="@dimen/ls_btn_icon"
             android:text="@string/settings_cancel" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
