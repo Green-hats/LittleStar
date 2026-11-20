@@ -19,7 +19,7 @@
 
 | 页面/状态 | 中文保留在哪里 | 必须可见的英文 | 本次处理 |
 |---|---|---|---|
-| 首页 | 今日字 | 学习进度、英文词义、Learn today / Review words、Browse words / Listen & read、Learning plan | 卡片顶部直接显示进度。今日字和主按钮在进度下方。浏览入口使用图标和英文标题。 |
+| 首页 | 播放中的中文作品原名 | 学习进度、Learn today / Review words、Browse words / Listen & read、Learning plan | 每日学习卡只显示进度和主按钮。词卡内显示汉字、拼音、英文词义，并提供朗读。 |
 | 首次引导两步 | 不要求中文识字 | 年龄/目标说明、Next/Skip、提醒说明与允许/稍后 | 保持完整英文引导，不改系统权限页 |
 | Themes | 主题中文名和代表字 | Pick a theme、Animals 等主题名、顺序及进度 | 保留已有中英双层主题 |
 | WordList | 汉字 | 主题英文、各词含义、操作提示、Quiz | 保留每词汉字+拼音+英文 |

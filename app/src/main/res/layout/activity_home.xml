@@ -39,7 +39,7 @@
                 </LinearLayout>
             </com.littlestar.app.core.ui.BlockLayout>
             <com.littlestar.app.core.ui.BlockLayout
-                android:id="@+id/heroCard" style="@style/Widget.LS.Block.Surface"
+                android:id="@+id/dailyPracticeCard" style="@style/Widget.LS.Block.Surface"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ls_gap">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -50,28 +50,6 @@
                     <com.littlestar.app.core.ui.SegmentProgressView android:id="@+id/todayProgress"
                         android:layout_width="match_parent" android:layout_height="@dimen/ls_seg_height"
                         android:layout_marginTop="@dimen/ls_gap_sm" android:importantForAccessibility="no" />
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/ls_gap"
-                        android:gravity="center" android:orientation="horizontal">
-                        <com.littlestar.app.core.ui.HanziTextView android:id="@+id/heroHanzi"
-                            android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:textAppearance="@style/TextAppearance.LS.HanziHero" android:textSize="@dimen/ls_home_preview_hanzi" />
-                        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnListen"
-                            style="@style/Widget.LS.Block.Icon" android:layout_width="@dimen/ls_btn_icon"
-                            android:layout_height="@dimen/ls_btn_icon" android:layout_marginStart="@dimen/ls_gap"
-                            android:contentDescription="@string/home_listen_desc" app:ls_fill="@color/ls_yellow">
-                            <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
-                                android:layout_gravity="center" android:importantForAccessibility="no"
-                                android:src="@drawable/ic_speaker" app:tint="@color/ls_on_yellow" />
-                        </com.littlestar.app.core.ui.BlockLayout>
-                    </LinearLayout>
-                    <TextView android:id="@+id/heroPinyin" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:includeFontPadding="false"
-                        android:textAppearance="@style/TextAppearance.LS.Pinyin" />
-                    <TextView android:id="@+id/heroEnglish" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:includeFontPadding="false"
-                        android:textAppearance="@style/TextAppearance.LS.English" />
                     <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnStart"
                         style="@style/Widget.LS.Block.Primary" android:layout_width="match_parent"
                         android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap">
@@ -95,7 +73,7 @@
                         android:layout_height="wrap_content" android:layout_weight="1"
                         android:includeFontPadding="false"
                         android:layout_marginHorizontal="@dimen/ls_gap" android:text="@string/home_module_words_title"
-                        android:textAppearance="@style/TextAppearance.LS.Title" />
+                        android:textAppearance="@style/TextAppearance.LS.Body" android:textStyle="bold" />
                     <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
                         android:importantForAccessibility="no" android:src="@drawable/ic_chevron" />
                 </LinearLayout>
@@ -113,7 +91,7 @@
                         android:layout_height="wrap_content" android:layout_weight="1"
                         android:includeFontPadding="false"
                         android:layout_marginHorizontal="@dimen/ls_gap" android:text="@string/home_module_culture_title"
-                        android:textAppearance="@style/TextAppearance.LS.Title" />
+                        android:textAppearance="@style/TextAppearance.LS.Body" android:textStyle="bold" />
                     <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
                         android:importantForAccessibility="no" android:src="@drawable/ic_chevron" />
                 </LinearLayout>
