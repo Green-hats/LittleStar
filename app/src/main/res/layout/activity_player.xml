@@ -53,6 +53,7 @@
             android:paddingBottom="@dimen/ls_margin">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/coverFrame"
                 style="@style/Widget.LS.Card.Story"
                 android:layout_width="@dimen/ls_player_cover"
                 android:layout_height="@dimen/ls_player_cover"

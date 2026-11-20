@@ -69,6 +69,7 @@
     <dimen name="ls_cover">56dp</dimen>
     <dimen name="ls_play_big">76dp</dimen>
     <dimen name="ls_player_cover">208dp</dimen>
+    <dimen name="ls_player_cover_large_text">148dp</dimen>
     <dimen name="ls_player_seek_track">4dp</dimen>
     <dimen name="ls_player_seek_thumb">12dp</dimen>
     <dimen name="ls_player_seek_inset">16dp</dimen>

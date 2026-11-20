@@ -87,6 +87,13 @@ public final class PlayerActivity extends ChildActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPlayerBinding.inflate(getLayoutInflater());
+        if (getResources().getConfiguration().fontScale >= 1.5f) {
+            int size = getResources().getDimensionPixelSize(R.dimen.ls_player_cover_large_text);
+            var coverParams = binding.coverFrame.getLayoutParams();
+            coverParams.width = size;
+            coverParams.height = size;
+            binding.coverFrame.setLayoutParams(coverParams);
+        }
         setContentView(binding.getRoot());
         cover = new ContentImage(binding.playerCover, container().executors, binding.coverGlyph);
         Insets.applySystemBarPadding(binding.getRoot());
