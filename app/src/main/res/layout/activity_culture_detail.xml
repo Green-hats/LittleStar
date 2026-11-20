@@ -17,7 +17,7 @@
         android:paddingTop="@dimen/ls_gap">
         <com.littlestar.app.core.ui.BlockLayout
             android:id="@+id/btnBack"
-            style="@style/Widget.LS.Block.Icon"
+            style="@style/Widget.LS.Block.Navigation"
             android:layout_width="@dimen/ls_btn_icon"
             android:layout_height="@dimen/ls_btn_icon"
             android:contentDescription="@string/nav_back">
@@ -164,7 +164,7 @@
 
     <com.littlestar.app.core.ui.BlockLayout
         android:id="@+id/btnListen"
-        style="@style/Widget.LS.Block.Primary.Blue"
+        style="@style/Widget.LS.Block.Primary.Media"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ls_btn_primary"
         android:layout_marginStart="@dimen/ls_margin"
@@ -178,6 +178,6 @@
             android:gravity="center"
             android:text="@string/culture_detail_listen"
             android:textAppearance="@style/TextAppearance.LS.Button"
-            android:textColor="@color/ls_on_blue" />
+            android:textColor="@color/ls_on_secondary" />
     </com.littlestar.app.core.ui.BlockLayout>
 </LinearLayout>

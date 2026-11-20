@@ -61,7 +61,7 @@
     <style name="TextAppearance.LS.HomeLabel" parent="">
         <item name="android:fontFamily">@font/poppins_semibold</item>
         <item name="android:textSize">@dimen/ls_home_label_text</item>
-        <item name="android:textColor">@color/ls_home_ink</item>
+        <item name="android:textColor">@color/ls_ink</item>
     </style>
 
     <style name="TextAppearance.LS.HomeTitle" parent="TextAppearance.LS.HomeLabel">
@@ -96,7 +96,7 @@
     <style name="TextAppearance.LS.Button" parent="">
         <item name="fontFamily">@font/littlestar_latin</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/ls_on_red</item>
+        <item name="android:textColor">@color/ls_on_primary</item>
         <item name="android:maxLines">1</item>
     </style>
     <style name="Widget.LS.Label.Control" parent="">

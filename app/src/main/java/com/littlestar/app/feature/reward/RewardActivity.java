@@ -200,8 +200,8 @@ public final class RewardActivity extends ChildActivity {
                 return;
             }
             int size = getResources().getDimensionPixelSize(R.dimen.ls_confetti);
-            int[] colors = {R.color.ls_red, R.color.ls_blue, R.color.ls_green,
-                    R.color.ls_on_red, R.color.ls_mint, R.color.ls_clay};
+            int[] colors = {R.color.ls_primary, R.color.ls_secondary, R.color.ls_green,
+                    R.color.ls_on_primary, R.color.ls_mint, R.color.ls_clay};
             for (int i = 0; i < CONFETTI_COUNT; i++) {
                 View v = new View(this);
                 v.setBackgroundColor(ContextCompat.getColor(this, colors[i % colors.length]));

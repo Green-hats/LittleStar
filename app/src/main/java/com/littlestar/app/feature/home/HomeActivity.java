@@ -140,6 +140,7 @@ public final class HomeActivity extends ChildActivity {
             // PIN 移至首次打开设置时创建；引导仅保留目标与提醒。
             binding.onboarding.obStep1.setVisibility(View.GONE);
             binding.onboarding.obStep2.setVisibility(View.VISIBLE);
+            binding.onboarding.getRoot().scrollTo(0, 0);
             binding.onboarding.obNotifyDesc.setText(getString(R.string.ob_notify_desc, obGoal));
         });
         binding.onboarding.obSkip1.setOnClickListener(v -> vm.completeOnboarding(obGoal));
@@ -176,12 +177,13 @@ public final class HomeActivity extends ChildActivity {
         updateSuggestion();
     }
 
-    /** 选中 = 黄底；未选 = 卡片底（§7.20 设计图）。 */
     private void updateChips(com.littlestar.app.core.ui.BlockLayout[] chips, int[] values, int selected) {
-        int yellow = ContextCompat.getColor(this, R.color.ls_yellow);
+        int selectedFill = ContextCompat.getColor(this, R.color.ls_primary_container);
         int card = ContextCompat.getColor(this, R.color.ls_card);
         for (int i = 0; i < chips.length; i++) {
-            chips[i].setFillColor(values[i] == selected ? yellow : card);
+            boolean isSelected = values[i] == selected;
+            chips[i].setSelected(isSelected);
+            chips[i].setFillColor(isSelected ? selectedFill : card);
         }
     }
 

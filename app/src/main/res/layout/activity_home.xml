@@ -37,7 +37,7 @@
                         android:layout_width="@dimen/ls_home_mascot_size"
                         android:layout_height="@dimen/ls_home_mascot_size"
                         android:background="@drawable/bg_home_icon"
-                        android:backgroundTint="@color/ls_home_mascot"
+                        android:backgroundTint="@color/ls_yellow"
                         android:importantForAccessibility="no"
                         android:src="@drawable/ic_panda" />
 
@@ -54,7 +54,7 @@
 
                 <com.littlestar.app.core.ui.BlockLayout
                     android:id="@+id/nowPlaying"
-                    style="@style/Widget.LS.Block.HomeSurface"
+                    style="@style/Widget.LS.Block.Surface"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ls_gap"
@@ -84,7 +84,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="@style/TextAppearance.LS.Caption"
-                                android:textColor="@color/ls_home_muted" />
+                                android:textColor="@color/ls_muted" />
 
                             <TextView
                                 android:id="@+id/nowPlayingTitle"
@@ -95,7 +95,7 @@
 
                         <com.littlestar.app.core.ui.BlockLayout
                             android:id="@+id/nowPlayingToggle"
-                            style="@style/Widget.LS.Block.HomeRow"
+                            style="@style/Widget.LS.Block.Row"
                             android:layout_width="@dimen/ls_btn_icon"
                             android:layout_height="@dimen/ls_btn_icon">
 
@@ -105,19 +105,19 @@
                                 android:layout_height="@dimen/ls_icon"
                                 android:layout_gravity="center"
                                 android:importantForAccessibility="no"
-                                app:tint="@color/ls_home_culture_icon" />
+                                app:tint="@color/ls_secondary" />
                         </com.littlestar.app.core.ui.BlockLayout>
                     </LinearLayout>
                 </com.littlestar.app.core.ui.BlockLayout>
 
                 <com.littlestar.app.core.ui.BlockLayout
                     android:id="@+id/dailyPracticeCard"
-                    style="@style/Widget.LS.Block.HomeSurface"
+                    style="@style/Widget.LS.Block.Surface"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ls_section"
-                    app:ls_fill="@color/ls_home_practice"
-                    app:ls_strokeColor="@color/ls_home_practice_border">
+                    app:ls_fill="@color/ls_primary_container"
+                    app:ls_strokeColor="@color/ls_primary_container_outline">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -138,12 +138,12 @@
                             android:layout_height="@dimen/ls_home_progress_height"
                             android:layout_marginTop="@dimen/ls_gap"
                             android:importantForAccessibility="no"
-                            app:fillColor="@color/ls_home_action"
-                            app:trackColor="@color/ls_home_progress_track" />
+                            app:fillColor="@color/ls_primary"
+                            app:trackColor="@color/ls_track" />
 
                         <com.littlestar.app.core.ui.BlockLayout
                             android:id="@+id/btnStart"
-                            style="@style/Widget.LS.Block.HomeAction"
+                            style="@style/Widget.LS.Block.Primary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/ls_card_pad">
@@ -164,7 +164,7 @@
                 </com.littlestar.app.core.ui.BlockLayout>
 
                 <com.littlestar.app.core.ui.BlockLayout
-                    style="@style/Widget.LS.Block.HomeSurface"
+                    style="@style/Widget.LS.Block.Surface"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ls_card_pad">
@@ -177,7 +177,7 @@
 
                         <com.littlestar.app.core.ui.BlockLayout
                             android:id="@+id/moduleWords"
-                            style="@style/Widget.LS.Block.HomeRow"
+                            style="@style/Widget.LS.Block.Row"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -194,11 +194,11 @@
                                     android:layout_width="@dimen/ls_home_icon_badge"
                                     android:layout_height="@dimen/ls_home_icon_badge"
                                     android:background="@drawable/bg_home_icon"
-                                    android:backgroundTint="@color/ls_home_words_bg"
+                                    android:backgroundTint="@color/ls_tertiary_container"
                                     android:importantForAccessibility="no"
                                     android:padding="@dimen/ls_gap_sm"
                                     android:src="@drawable/ic_book"
-                                    app:tint="@color/ls_home_words_icon" />
+                                    app:tint="@color/ls_tertiary" />
 
                                 <TextView
                                     android:id="@+id/moduleWordsTitle"
@@ -216,7 +216,7 @@
                                     android:layout_height="@dimen/ls_home_icon_small"
                                     android:importantForAccessibility="no"
                                     android:src="@drawable/ic_chevron"
-                                    app:tint="@color/ls_home_muted" />
+                                    app:tint="@color/ls_muted" />
                             </LinearLayout>
                         </com.littlestar.app.core.ui.BlockLayout>
 
@@ -225,12 +225,12 @@
                             android:layout_height="@dimen/ls_surface_stroke"
                             android:layout_marginStart="@dimen/ls_btn_primary"
                             android:layout_marginEnd="@dimen/ls_gap_sm"
-                            android:background="@color/ls_home_border"
+                            android:background="@color/ls_outline_variant"
                             android:importantForAccessibility="no" />
 
                         <com.littlestar.app.core.ui.BlockLayout
                             android:id="@+id/moduleCulture"
-                            style="@style/Widget.LS.Block.HomeRow"
+                            style="@style/Widget.LS.Block.Row"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -247,11 +247,11 @@
                                     android:layout_width="@dimen/ls_home_icon_badge"
                                     android:layout_height="@dimen/ls_home_icon_badge"
                                     android:background="@drawable/bg_home_icon"
-                                    android:backgroundTint="@color/ls_home_culture_bg"
+                                    android:backgroundTint="@color/ls_secondary_container"
                                     android:importantForAccessibility="no"
                                     android:padding="@dimen/ls_gap_sm"
                                     android:src="@drawable/ic_music"
-                                    app:tint="@color/ls_home_culture_icon" />
+                                    app:tint="@color/ls_secondary" />
 
                                 <TextView
                                     android:id="@+id/moduleCultureTitle"
@@ -269,7 +269,7 @@
                                     android:layout_height="@dimen/ls_home_icon_small"
                                     android:importantForAccessibility="no"
                                     android:src="@drawable/ic_chevron"
-                                    app:tint="@color/ls_home_muted" />
+                                    app:tint="@color/ls_muted" />
                             </LinearLayout>
                         </com.littlestar.app.core.ui.BlockLayout>
                     </LinearLayout>
@@ -285,11 +285,11 @@
                     android:minHeight="@dimen/ls_btn_icon"
                     android:text="@string/home_parent_entry"
                     android:textAppearance="@style/TextAppearance.LS.Body"
-                    android:textColor="@color/ls_home_muted"
+                    android:textColor="@color/ls_muted"
                     app:icon="@drawable/ic_calendar"
                     app:iconGravity="textStart"
                     app:iconSize="@dimen/ls_home_icon_small"
-                    app:iconTint="@color/ls_home_muted" />
+                    app:iconTint="@color/ls_muted" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

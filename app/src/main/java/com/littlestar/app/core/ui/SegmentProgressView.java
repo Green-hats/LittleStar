@@ -47,7 +47,7 @@ public final class SegmentProgressView extends View {
             segments = Math.max(1, a.getInt(R.styleable.SegmentProgressView_segments, 6));
             filled = a.getInt(R.styleable.SegmentProgressView_filled, 0);
             fillColor = a.getColor(R.styleable.SegmentProgressView_fillColor,
-                    ContextCompat.getColor(context, R.color.ls_red));
+                    ContextCompat.getColor(context, R.color.ls_primary));
             trackColor = a.getColor(R.styleable.SegmentProgressView_trackColor,
                     ContextCompat.getColor(context, R.color.ls_track));
         } finally {

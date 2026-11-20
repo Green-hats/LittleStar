@@ -2,23 +2,34 @@
 <resources>
     <style name="Theme.LittleStar" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:forceDarkAllowed">false</item>
-        <item name="colorPrimary">@color/ls_red</item>
-        <item name="colorOnPrimary">@color/ls_on_red</item>
-        <item name="colorSecondary">@color/ls_blue</item>
-        <item name="colorOnSecondary">@color/ls_on_blue</item>
-        <item name="colorTertiary">@color/ls_green</item>
-        <item name="colorOnTertiary">@color/ls_on_green</item>
+        <item name="colorPrimary">@color/ls_primary</item>
+        <item name="colorOnPrimary">@color/ls_on_primary</item>
+        <item name="colorPrimaryContainer">@color/ls_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/ls_ink</item>
+        <item name="colorSecondary">@color/ls_secondary</item>
+        <item name="colorOnSecondary">@color/ls_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/ls_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/ls_secondary</item>
+        <item name="colorTertiary">@color/ls_tertiary</item>
+        <item name="colorOnTertiary">@color/ls_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/ls_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/ls_tertiary</item>
         <item name="colorSurface">@color/ls_card</item>
+        <item name="colorSurfaceVariant">@color/ls_surface_container_high</item>
+        <item name="colorSurfaceContainer">@color/ls_surface_container</item>
+        <item name="colorSurfaceContainerHigh">@color/ls_surface_container_high</item>
+        <item name="colorSurfaceContainerHighest">@color/ls_surface_container_high</item>
         <item name="colorOnSurface">@color/ls_ink</item>
         <item name="colorOnSurfaceVariant">@color/ls_muted</item>
-        <item name="colorOutline">@color/ls_stroke</item>
-        <item name="colorError">@color/ls_on_clay</item>
+        <item name="colorOutline">@color/ls_outline</item>
+        <item name="colorOutlineVariant">@color/ls_outline_variant</item>
+        <item name="colorError">@color/ls_error</item>
+        <item name="colorOnError">@color/ls_card</item>
         <item name="colorErrorContainer">@color/ls_clay</item>
+        <item name="colorOnErrorContainer">@color/ls_on_clay</item>
         <item name="android:colorBackground">@color/ls_paper</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="lsStroke">@color/ls_stroke</item>
-        <item name="lsShadow">@color/ls_shadow</item>
         <item name="blockLayoutStyle">@style/Widget.LS.Block</item>
     </style>
 

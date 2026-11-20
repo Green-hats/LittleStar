@@ -1,99 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 硬影块基础样式：子样式只覆盖差异项 -->
     <style name="Widget.LS.Block" parent="">
-        <item name="ls_fill">@color/ls_card</item>
-        <item name="ls_strokeWidth">@dimen/ls_stroke_block</item>
-        <item name="ls_shadowOffset">@dimen/ls_shadow_block</item>
-        <item name="ls_cornerRadius">@dimen/ls_radius_block</item>
-        <item name="ls_pressable">true</item>
+        <item name="ls_fill">?attr/colorSurface</item>
+        <item name="ls_strokeColor">?attr/colorOutlineVariant</item>
+        <item name="ls_strokeWidth">@dimen/ls_surface_stroke</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_tile</item>
     </style>
 
-    <!-- 实心主块 64dp：朱红 -->
     <style name="Widget.LS.Block.Primary">
-        <item name="ls_fill">@color/ls_red</item>
-        <item name="ls_strokeWidth">@dimen/ls_stroke_hero</item>
-        <item name="ls_shadowOffset">@dimen/ls_shadow_block</item>
-        <item name="ls_cornerRadius">@dimen/ls_radius_block</item>
+        <item name="ls_fill">@color/primary_fill</item>
+        <item name="ls_strokeWidth">@dimen/ls_no_stroke</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_pill</item>
+        <item name="ls_rippleColor">@color/ls_ripple_on_fill</item>
     </style>
 
-    <!-- 实心主块 64dp：靛蓝（听 / 媒体） -->
-    <style name="Widget.LS.Block.Primary.Blue">
-        <item name="ls_fill">@color/ls_blue</item>
-        <item name="ls_strokeWidth">@dimen/ls_stroke_hero</item>
-        <item name="ls_shadowOffset">@dimen/ls_shadow_block</item>
-        <item name="ls_cornerRadius">@dimen/ls_radius_block</item>
+    <style name="Widget.LS.Block.Primary.Media">
+        <item name="ls_fill">@color/secondary_fill</item>
     </style>
 
-    <!-- 次按钮 56dp -->
     <style name="Widget.LS.Block.Secondary">
-        <item name="ls_strokeWidth">@dimen/ls_stroke_block</item>
-        <item name="ls_shadowOffset">@dimen/ls_shadow_secondary</item>
-        <item name="ls_cornerRadius">@dimen/ls_radius_block</item>
+        <item name="ls_strokeColor">?attr/colorOutline</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_pill</item>
     </style>
 
-    <!-- 图标块 48dp -->
+    <style name="Widget.LS.Block.Tonal">
+        <item name="ls_fill">?attr/colorSecondaryContainer</item>
+        <item name="ls_strokeWidth">@dimen/ls_no_stroke</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_pill</item>
+    </style>
+
     <style name="Widget.LS.Block.Icon">
-        <item name="ls_strokeWidth">@dimen/ls_stroke_block</item>
-        <item name="ls_shadowOffset">@dimen/ls_shadow_tile</item>
+        <item name="ls_fill">?attr/colorSurfaceContainer</item>
+        <item name="ls_strokeWidth">@dimen/ls_no_stroke</item>
         <item name="ls_cornerRadius">@dimen/ls_radius_input</item>
     </style>
 
-    <!-- 主角卡 -->
-    <style name="Widget.LS.Block.Hero">
-        <item name="ls_strokeWidth">@dimen/ls_stroke_hero</item>
-        <item name="ls_shadowOffset">@dimen/ls_shadow_hero</item>
+    <style name="Widget.LS.Block.Navigation" parent="Widget.LS.Block.Icon">
+        <item name="ls_fill">@android:color/transparent</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_pill</item>
+    </style>
+
+    <style name="Widget.LS.Block.Surface">
         <item name="ls_cornerRadius">@dimen/ls_radius_hero</item>
         <item name="ls_pressable">false</item>
     </style>
 
-    <style name="Widget.LS.Block.Surface" parent="Widget.LS.Block.Hero">
-        <item name="ls_strokeWidth">@dimen/ls_surface_stroke</item>
-        <item name="ls_strokeColor">@color/ls_track</item>
-        <item name="ls_shadowOffset">@dimen/ls_no_shadow</item>
+    <style name="Widget.LS.Block.Hero" parent="Widget.LS.Block.Surface">
+        <item name="ls_fill">?attr/colorPrimaryContainer</item>
+        <item name="ls_strokeWidth">@dimen/ls_no_stroke</item>
     </style>
 
-    <style name="Widget.LS.Block.HomeSurface" parent="Widget.LS.Block.Surface">
-        <item name="ls_strokeColor">@color/ls_home_border</item>
-    </style>
-
-    <style name="Widget.LS.Block.HomeAction" parent="Widget.LS.Block">
-        <item name="ls_fill">@color/home_action_fill</item>
-        <item name="ls_strokeColor">@android:color/transparent</item>
-        <item name="ls_strokeWidth">@dimen/ls_no_shadow</item>
-        <item name="ls_shadowOffset">@dimen/ls_no_shadow</item>
-    </style>
-
-    <style name="Widget.LS.Block.HomeRow" parent="Widget.LS.Block.HomeAction">
-        <item name="ls_fill">@color/home_row_fill</item>
+    <style name="Widget.LS.Block.Row">
+        <item name="ls_fill">@android:color/transparent</item>
+        <item name="ls_strokeWidth">@dimen/ls_no_stroke</item>
         <item name="ls_cornerRadius">@dimen/ls_radius_input</item>
     </style>
 
-    <!-- 模块块 104dp -->
-    <style name="Widget.LS.Block.Module">
-        <item name="ls_strokeWidth">@dimen/ls_stroke_hero</item>
-        <item name="ls_shadowOffset">@dimen/ls_shadow_block</item>
-        <item name="ls_cornerRadius">@dimen/ls_radius_block</item>
-    </style>
+    <style name="Widget.LS.Block.Tile" />
 
-    <!-- 网格卡 160dp -->
-    <style name="Widget.LS.Block.Tile">
-        <item name="ls_strokeWidth">@dimen/ls_stroke_block</item>
-        <item name="ls_shadowOffset">@dimen/ls_shadow_tile</item>
-        <item name="ls_cornerRadius">@dimen/ls_radius_tile</item>
-    </style>
-
-    <!-- 测验选项 92dp -->
     <style name="Widget.LS.Block.Option">
-        <item name="ls_strokeWidth">@dimen/ls_stroke_block</item>
-        <item name="ls_shadowOffset">@dimen/ls_shadow_tile</item>
-        <item name="ls_cornerRadius">@dimen/ls_radius_tile</item>
-    </style>
-
-    <!-- 家长区行 56dp：2dp 线 + 2dp 影 -->
-    <style name="Widget.LS.Block.Parent">
-        <item name="ls_strokeWidth">@dimen/ls_stroke_chip</item>
-        <item name="ls_shadowOffset">@dimen/ls_shadow_parent</item>
-        <item name="ls_cornerRadius">@dimen/ls_radius_input</item>
+        <item name="ls_strokeColor">?attr/colorOutline</item>
     </style>
 </resources>

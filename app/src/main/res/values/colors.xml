@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 中性 -->
+    <!-- Material 3 · surface -->
     <color name="ls_paper">#FAF9F6</color>
     <color name="ls_card">#FFFFFF</color>
-    <color name="ls_ink">#211D18</color>
-    <color name="ls_muted">#6E6252</color>
-    <color name="ls_stroke">#211D18</color>
-    <color name="ls_shadow">#211D18</color>
-    <color name="ls_track">#E2D3B8</color>        <!-- 未完成进度段、关闭的开关 -->
-    <!-- 职务色 -->
-    <color name="ls_red">#B8331C</color>          <!-- 修正：原 #C93A22 在纸白上 4.47 -->
-    <color name="ls_on_red">#FFFDF6</color>
-    <color name="ls_yellow">#F5B301</color>
-    <color name="ls_on_yellow">#211D18</color>
-    <color name="ls_green">#27A567</color>
-    <color name="ls_on_green">#211D18</color>     <!-- 青绿上只用墨字 -->
-    <color name="ls_blue">#1F6FD0</color>
-    <color name="ls_on_blue">#FFFDF6</color>
-    <!-- 反馈容器 -->
+    <color name="ls_ink">#182D25</color>
+    <color name="ls_muted">#4F6057</color>
+    <color name="ls_stroke">@color/ls_ink</color>
+    <color name="ls_outline">#748178</color>
+    <color name="ls_outline_variant">#E3E3D9</color>
+    <color name="ls_surface_container">#F0F1EB</color>
+    <color name="ls_surface_container_high">#E6E9E1</color>
+    <color name="ls_track">#C2D2BC</color>
+    <color name="ls_ripple">#20182D25</color>
+    <color name="ls_ripple_on_fill">#33FFFFFF</color>
+
+    <!-- Material 3 · accent and container roles -->
+    <color name="ls_primary">#245A46</color>
+    <color name="ls_on_primary">@color/ls_card</color>
+    <color name="ls_primary_container">#E7EFE1</color>
+    <color name="ls_primary_container_outline">#D7E3D0</color>
+    <color name="ls_primary_disabled">#486B5D</color>
+    <color name="ls_secondary">#554982</color>
+    <color name="ls_on_secondary">@color/ls_card</color>
+    <color name="ls_secondary_container">#EAE9F4</color>
+    <color name="ls_secondary_disabled">#69617F</color>
+    <color name="ls_tertiary">#865125</color>
+    <color name="ls_on_tertiary">@color/ls_card</color>
+    <color name="ls_tertiary_container">#F7EBDA</color>
+    <color name="ls_yellow">#F6E6C5</color>
+    <color name="ls_on_yellow">#4D371B</color>
+
+    <!-- 学习反馈 -->
+    <color name="ls_error">#9A3F2E</color>
+    <color name="ls_green">#256647</color>
+    <color name="ls_on_green">@color/ls_card</color>
     <color name="ls_clay">#F6D3C6</color>
     <color name="ls_on_clay">#7A4A33</color>      <!-- 答错说明文字 -->
     <color name="ls_mint">#CDEBD8</color>
@@ -32,22 +48,5 @@
     <color name="ls_panda_zzz">#6E6252</color>
     <!-- M3：遮罩 / 柔和黄 -->
     <color name="ls_ink_scrim">#61211D18</color>   <!-- 38% 墨色遮罩（音频缺失） -->
-    <color name="ls_yellow_soft">#FBE7B2</color>   <!-- 通知预览条 -->
-
-    <!-- 首页 -->
-    <color name="ls_home_ink">#182D25</color>
-    <color name="ls_home_muted">#4F6057</color>
-    <color name="ls_home_border">#E3E3D9</color>
-    <color name="ls_home_mascot">#F6E6C5</color>
-    <color name="ls_home_practice">#E7EFE1</color>
-    <color name="ls_home_practice_border">#D7E3D0</color>
-    <color name="ls_home_progress_track">#C2D2BC</color>
-    <color name="ls_home_action">#245A46</color>
-    <color name="ls_home_action_pressed">#194634</color>
-    <color name="ls_home_action_disabled">#486B5D</color>
-    <color name="ls_home_row_pressed">#F2F2EB</color>
-    <color name="ls_home_words_bg">#F7EBDA</color>
-    <color name="ls_home_words_icon">#865125</color>
-    <color name="ls_home_culture_bg">#EAE9F4</color>
-    <color name="ls_home_culture_icon">#554982</color>
+    <color name="ls_yellow_soft">@color/ls_tertiary_container</color>
 </resources>

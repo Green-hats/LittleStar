@@ -25,7 +25,7 @@
 
             <com.littlestar.app.core.ui.BlockLayout
                 android:id="@+id/btnBack"
-                style="@style/Widget.LS.Block.Icon"
+                style="@style/Widget.LS.Block.Navigation"
                 android:layout_width="@dimen/ls_btn_icon"
                 android:layout_height="@dimen/ls_btn_icon"
                 android:contentDescription="@string/nav_back">
@@ -159,7 +159,7 @@
                 android:orientation="vertical">
                 <com.littlestar.app.core.ui.BlockLayout
                     android:id="@+id/btnPlay"
-                    style="@style/Widget.LS.Block.Primary.Blue"
+                    style="@style/Widget.LS.Block.Primary.Media"
                     android:layout_width="@dimen/ls_play_big"
                     android:layout_height="@dimen/ls_play_big"
                     android:contentDescription="@string/player_desc_play">
@@ -170,7 +170,7 @@
                         android:layout_gravity="center"
                         android:importantForAccessibility="no"
                         android:src="@drawable/ic_play"
-                        app:tint="@color/ls_on_blue" />
+                        app:tint="@color/ls_on_secondary" />
                 </com.littlestar.app.core.ui.BlockLayout>
                 <TextView
                     android:id="@+id/playLabel"

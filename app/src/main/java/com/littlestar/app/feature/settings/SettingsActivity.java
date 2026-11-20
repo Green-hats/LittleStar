@@ -173,7 +173,6 @@ public final class SettingsActivity extends ParentActivity {
         for (int i = 0; i < 7; i++) {
             int day = i + 1;
             BlockLayout button = new BlockLayout(this, null, 0, R.style.Widget_LS_Block_Icon);
-            button.setShadowOffset(getResources().getDimension(R.dimen.ls_shadow_parent));
             button.setLayoutParams(new LinearLayout.LayoutParams(0,
                     getResources().getDimensionPixelSize(R.dimen.ls_weekday_h), 1f));
             button.setContentDescription(descriptions[i]);
@@ -198,11 +197,12 @@ public final class SettingsActivity extends ParentActivity {
     private void renderDays() {
         for (int i = 0; i < dayButtons.size(); i++) {
             boolean selected = days.contains(i + 1);
-            dayButtons.get(i).setSelected(selected);
-            dayButtons.get(i).setFillColor(ContextCompat.getColor(this,
-                    selected ? R.color.ls_yellow : R.color.ls_card));
-            ((TextView) dayButtons.get(i).getChildAt(0)).setTextColor(ContextCompat.getColor(this,
-                    selected ? R.color.ls_on_yellow : R.color.ls_ink));
+            BlockLayout button = dayButtons.get(i);
+            button.setSelected(selected);
+            button.setFillColor(ContextCompat.getColor(this,
+                    selected ? R.color.ls_primary : R.color.ls_surface_container));
+            ((TextView) button.getChildAt(0)).setTextColor(ContextCompat.getColor(this,
+                    selected ? R.color.ls_on_primary : R.color.ls_ink));
         }
     }
 

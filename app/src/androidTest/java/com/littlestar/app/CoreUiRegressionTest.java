@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
+import android.graphics.drawable.RippleDrawable;
 import android.os.SystemClock;
-import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.MotionEvent;
 import android.view.View;
@@ -74,41 +74,25 @@ public final class CoreUiRegressionTest {
     }
 
     @Test
-    public void blockPress_quickReleaseLeavesNoPendingAnimation() throws Exception {
-        AtomicReference<BlockLayout> ref = new AtomicReference<>();
+    public void blockPress_usesRippleWithoutMovingContent() {
         onMain(() -> {
             BlockLayout block = new BlockLayout(themed);
             block.setClickable(true);
-            block.setPressed(true);
-            block.setPressed(false);
-            ref.set(block);
-        });
-        SystemClock.sleep(260);
-        onMain(() -> assertEquals(0f, pressFraction(ref.get()), 0.001f));
-    }
+            View content = new View(themed);
+            block.addView(content);
+            int size = View.MeasureSpec.makeMeasureSpec(100, View.MeasureSpec.EXACTLY);
+            block.measure(size, size);
+            block.layout(0, 0, 100, 100);
+            int left = content.getLeft();
+            int top = content.getTop();
 
-    @Test
-    public void blockShadowOffset_adjustsReservedPadding() {
-        float newOffset = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2,
-                themed.getResources().getDisplayMetrics());
-        onMain(() -> {
-            BlockLayout block = new BlockLayout(themed);
-            float oldOffset = block.getShadowOffset();
-            int left = block.getPaddingLeft();
-            int top = block.getPaddingTop();
-            int right = block.getPaddingRight();
-            int bottom = block.getPaddingBottom();
-            int delta = (int) newOffset - (int) oldOffset;
-            block.setShadowOffset(newOffset);
-            assertEquals(left, block.getPaddingLeft());
-            assertEquals(top, block.getPaddingTop());
-            assertEquals(right + delta, block.getPaddingRight());
-            assertEquals(bottom + delta, block.getPaddingBottom());
-            int settledRight = block.getPaddingRight();
-            int settledBottom = block.getPaddingBottom();
-            block.setShadowOffset(newOffset);
-            assertEquals(settledRight, block.getPaddingRight());
-            assertEquals(settledBottom, block.getPaddingBottom());
+            assertTrue(block.getBackground() instanceof RippleDrawable);
+            block.setPressed(true);
+            assertTrue(block.isPressed());
+            block.setPressed(false);
+            assertFalse(block.isPressed());
+            assertEquals(left, content.getLeft());
+            assertEquals(top, content.getTop());
         });
     }
 
@@ -242,16 +226,6 @@ public final class CoreUiRegressionTest {
             return view.onTouchEvent(event);
         } finally {
             event.recycle();
-        }
-    }
-
-    private static float pressFraction(BlockLayout block) {
-        try {
-            Field field = BlockLayout.class.getDeclaredField("pressFraction");
-            field.setAccessible(true);
-            return field.getFloat(block);
-        } catch (ReflectiveOperationException error) {
-            throw new AssertionError(error);
         }
     }
 

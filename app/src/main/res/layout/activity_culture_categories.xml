@@ -7,7 +7,7 @@
         android:padding="@dimen/ls_margin" android:orientation="vertical">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="horizontal" android:gravity="center_vertical">
-            <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnBack" style="@style/Widget.LS.Block.Icon"
+            <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnBack" style="@style/Widget.LS.Block.Navigation"
                 android:layout_width="@dimen/ls_btn_icon" android:layout_height="@dimen/ls_btn_icon"
                 android:contentDescription="@string/nav_back">
                 <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
@@ -24,7 +24,9 @@
                 android:orientation="horizontal" android:gravity="center_vertical">
                 <ImageView android:id="@+id/iconSongs" android:layout_width="@dimen/ls_btn_icon"
                     android:layout_height="@dimen/ls_btn_icon" android:importantForAccessibility="no"
-                    android:src="@drawable/ic_music" app:tint="@color/ls_blue" />
+                    android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_secondary_container"
+                    android:padding="@dimen/ls_gap"
+                    android:src="@drawable/ic_music" app:tint="@color/ls_secondary" />
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
                     android:layout_weight="1" android:layout_marginHorizontal="@dimen/ls_gap" android:orientation="vertical">
                     <TextView android:id="@+id/nameSongsEn" android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -45,7 +47,9 @@
                 android:orientation="horizontal" android:gravity="center_vertical">
                 <ImageView android:id="@+id/iconStories" android:layout_width="@dimen/ls_btn_icon"
                     android:layout_height="@dimen/ls_btn_icon" android:importantForAccessibility="no"
-                    android:src="@drawable/ic_book" app:tint="@color/ls_blue" />
+                    android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_tertiary_container"
+                    android:padding="@dimen/ls_gap"
+                    android:src="@drawable/ic_book" app:tint="@color/ls_tertiary" />
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
                     android:layout_weight="1" android:layout_marginHorizontal="@dimen/ls_gap" android:orientation="vertical">
                     <TextView android:id="@+id/nameStoriesEn" android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -66,7 +70,9 @@
                 android:orientation="horizontal" android:gravity="center_vertical">
                 <ImageView android:id="@+id/iconPoems" android:layout_width="@dimen/ls_btn_icon"
                     android:layout_height="@dimen/ls_btn_icon" android:importantForAccessibility="no"
-                    android:src="@drawable/ic_scroll" app:tint="@color/ls_blue" />
+                    android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_primary_container"
+                    android:padding="@dimen/ls_gap"
+                    android:src="@drawable/ic_scroll" app:tint="@color/ls_primary" />
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
                     android:layout_weight="1" android:layout_marginHorizontal="@dimen/ls_gap" android:orientation="vertical">
                     <TextView android:id="@+id/namePoemsEn" android:layout_width="match_parent" android:layout_height="wrap_content"

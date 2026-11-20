@@ -17,7 +17,7 @@ import com.littlestar.app.R;
 import java.util.Locale;
 
 /**
- * 最近 7 天分钟数柱状图（§8.5）：今天用 ls_red，其余 ls_ink 40% 透明度；
+ * 最近 7 天分钟数柱状图（§8.5）：今天用 ls_primary，其余 ls_ink 40% 透明度；
  * 柱顶写分钟数。Canvas 绘制，不引图表库。数据最后一项是今天。
  */
 public final class BarChartView extends View {
@@ -57,7 +57,7 @@ public final class BarChartView extends View {
             a.recycle();
         }
 
-        todayColor = ContextCompat.getColor(context, R.color.ls_red);
+        todayColor = ContextCompat.getColor(context, R.color.ls_primary);
         otherColor = ContextCompat.getColor(context, R.color.ls_ink);
         gap = getResources().getDimension(R.dimen.ls_gap_sm);
 

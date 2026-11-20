@@ -25,7 +25,7 @@
 
             <com.littlestar.app.core.ui.BlockLayout
                 android:id="@+id/btnBack"
-                style="@style/Widget.LS.Block.Icon"
+                style="@style/Widget.LS.Block.Navigation"
                 android:layout_width="@dimen/ls_btn_icon"
                 android:layout_height="@dimen/ls_btn_icon"
                 android:contentDescription="@string/nav_back">

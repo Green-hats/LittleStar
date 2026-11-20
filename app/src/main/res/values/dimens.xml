@@ -35,16 +35,11 @@
     <dimen name="ls_radius_tile">16dp</dimen>
     <dimen name="ls_radius_chip">10dp</dimen>
     <dimen name="ls_radius_input">14dp</dimen>
+    <dimen name="ls_radius_pill">32dp</dimen>
 
     <dimen name="ls_stroke_hero">4dp</dimen>
     <dimen name="ls_stroke_block">3dp</dimen>
     <dimen name="ls_stroke_chip">2dp</dimen>
-    <dimen name="ls_shadow_hero">8dp</dimen>
-    <dimen name="ls_shadow_block">6dp</dimen>
-    <dimen name="ls_shadow_tile">4dp</dimen>
-    <dimen name="ls_shadow_secondary">5dp</dimen>
-    <dimen name="ls_shadow_parent">2dp</dimen>
-    <dimen name="ls_press_remain">2dp</dimen>   <!-- 按下后剩余的影子 -->
 
     <dimen name="ls_content_max_width">480dp</dimen>
 
@@ -97,7 +92,7 @@
     <dimen name="ls_decorative_glyph_max">20sp</dimen>
     <dimen name="ls_text_fit_step">1sp</dimen>
     <dimen name="ls_surface_stroke">1dp</dimen>
-    <dimen name="ls_no_shadow">0dp</dimen>
+    <dimen name="ls_no_stroke">0dp</dimen>
     <dimen name="ls_detail_cover">128dp</dimen>
     <dimen name="ls_detail_glyph">28sp</dimen>
     <dimen name="ls_play_shortcut">72dp</dimen>

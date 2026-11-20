@@ -26,7 +26,7 @@ public final class LittleStarApp extends Application {
             android.os.StrictMode.setThreadPolicy(new android.os.StrictMode.ThreadPolicy.Builder()
                     .detectDiskReads().detectDiskWrites().penaltyLog().build());
         }
-        // 硬影块按下音效（BlockLayout 不直接依赖 AppContainer）
+        // 复合控件按下音效（BlockLayout 不直接依赖 AppContainer）
         BlockLayout.setPressSoundHook(() -> container.sfx.play(SfxPlayer.Sfx.TAP));
         // 通知渠道 + 每日提醒重排（§10.4：App 启动是重排时机之一）
         container.notifier.ensureChannels();

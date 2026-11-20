@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- §7.20 首次引导：HomeActivity 的 firstLaunch 态。step1 年龄+目标 → step2 提醒。 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/obRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ls_paper"
-    android:orientation="vertical"
-    android:padding="@dimen/ls_margin">
+    android:fillViewport="true">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/ls_margin">
     <!-- ===== 第一步：年龄与目标 ===== -->
     <LinearLayout
         android:id="@+id/obStep1"
@@ -174,7 +177,7 @@
 
         <!-- 建议卡 -->
         <com.littlestar.app.core.ui.BlockLayout
-            style="@style/Widget.LS.Block.Secondary"
+            style="@style/Widget.LS.Block.Hero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/ls_btn_secondary"
@@ -194,7 +197,7 @@
                     android:layout_height="@dimen/ls_icon"
                     android:importantForAccessibility="no"
                     android:src="@drawable/ic_check"
-                    app:tint="@color/ls_yellow" />
+                    app:tint="@color/ls_primary" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -414,4 +417,5 @@
             android:text="@string/ob_notify_footer"
             android:textAppearance="@style/TextAppearance.LS.Caption" />
     </LinearLayout>
-</LinearLayout>
+    </FrameLayout>
+</androidx.core.widget.NestedScrollView>

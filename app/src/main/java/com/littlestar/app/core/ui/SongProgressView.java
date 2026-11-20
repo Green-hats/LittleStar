@@ -49,12 +49,12 @@ public final class SongProgressView extends View {
     public SongProgressView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         trackPaint.setColor(ContextCompat.getColor(context, R.color.ls_track));
-        fillPaint.setColor(ContextCompat.getColor(context, R.color.ls_blue));
+        fillPaint.setColor(ContextCompat.getColor(context, R.color.ls_secondary));
         thumbPaint.setColor(ContextCompat.getColor(context, R.color.ls_yellow));
-        thumbStroke.setColor(ContextCompat.getColor(context, R.color.ls_stroke));
+        thumbStroke.setColor(ContextCompat.getColor(context, R.color.ls_secondary));
         thumbStroke.setStyle(Paint.Style.STROKE);
         thumbStroke.setStrokeWidth(
-                getResources().getDimensionPixelSize(R.dimen.ls_stroke_chip));
+                getResources().getDimensionPixelSize(R.dimen.ls_surface_stroke));
     }
 
     public void setProgress(long position, long duration) {
@@ -145,7 +145,7 @@ public final class SongProgressView extends View {
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         if (!isEnabled() || durationMs <= 0 || onSeek == null
-                || getWidth() <= getResources().getDimension(R.dimen.ls_thumb)) {
+                || getWidth() <= getResources().getDimensionPixelSize(R.dimen.ls_thumb)) {
             cancelDrag();
             return false;
         }

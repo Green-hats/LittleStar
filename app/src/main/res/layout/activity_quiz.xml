@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/quizContent" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="@dimen/ls_margin">
 
         <!-- 顶栏 -->
-        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnBack" style="@style/Widget.LS.Block.Icon" android:layout_width="@dimen/ls_btn_icon" android:layout_height="@dimen/ls_btn_icon" android:contentDescription="@string/nav_back" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnBack" style="@style/Widget.LS.Block.Navigation" android:layout_width="@dimen/ls_btn_icon" android:layout_height="@dimen/ls_btn_icon" android:contentDescription="@string/nav_back" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
 
             <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon" android:layout_gravity="center" android:importantForAccessibility="no" android:src="@drawable/ic_back"/>
         </com.littlestar.app.core.ui.BlockLayout>
@@ -41,10 +41,10 @@
                         android:text="@string/quiz_listen_hint" android:textAppearance="@style/TextAppearance.LS.Caption" />
                     <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnListen" style="@style/Widget.LS.Block.Icon"
                         android:layout_width="@dimen/ls_listen_block" android:layout_height="@dimen/ls_listen_block"
-                        android:contentDescription="@string/home_listen_desc" app:ls_fill="@color/ls_blue">
+                        android:contentDescription="@string/home_listen_desc" app:ls_fill="@color/ls_secondary_container">
                         <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon"
                             android:layout_gravity="center" android:importantForAccessibility="no"
-                            android:src="@drawable/ic_speaker" app:tint="@color/ls_on_blue" />
+                            android:src="@drawable/ic_speaker" app:tint="@color/ls_secondary" />
                     </com.littlestar.app.core.ui.BlockLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -88,7 +88,7 @@
 
                     <TextView android:id="@+id/btnNextText" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:gravity="center" android:maxLines="2" android:text="@string/quiz_next" android:textAppearance="@style/TextAppearance.LS.Button"/>
 
-                    <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon" android:layout_marginStart="@dimen/ls_gap_sm" android:importantForAccessibility="no" android:src="@drawable/ic_chevron" app:tint="@color/ls_on_red"/>
+                    <ImageView android:layout_width="@dimen/ls_icon" android:layout_height="@dimen/ls_icon" android:layout_marginStart="@dimen/ls_gap_sm" android:importantForAccessibility="no" android:src="@drawable/ic_chevron" app:tint="@color/ls_on_primary"/>
                 </LinearLayout>
             </com.littlestar.app.core.ui.BlockLayout>
         </LinearLayout>

@@ -7,7 +7,7 @@
         app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_max="@dimen/ls_content_max_width">
-        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnBack" style="@style/Widget.LS.Block.Icon"
+        <com.littlestar.app.core.ui.BlockLayout android:id="@+id/btnBack" style="@style/Widget.LS.Block.Navigation"
             android:layout_width="@dimen/ls_btn_icon" android:layout_height="@dimen/ls_btn_icon"
             android:contentDescription="@string/nav_back" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">

@@ -21,7 +21,7 @@
             android:orientation="horizontal">
             <com.littlestar.app.core.ui.BlockLayout
                 android:id="@+id/btnBack"
-                style="@style/Widget.LS.Block.Icon"
+                style="@style/Widget.LS.Block.Navigation"
                 android:layout_width="@dimen/ls_btn_icon"
                 android:layout_height="@dimen/ls_btn_icon"
                 android:contentDescription="@string/nav_back">
@@ -35,7 +35,8 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/settingsToolbar"
                 android:layout_width="0dp"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
                 android:layout_marginStart="@dimen/ls_gap"
                 android:layout_weight="1"
                 app:contentInsetStart="0dp"
@@ -77,13 +78,15 @@
             android:textAppearance="@style/TextAppearance.LS.Title" />
         <com.littlestar.app.core.ui.BlockLayout
             android:id="@+id/timeRow"
-            style="@style/Widget.LS.Block.Parent"
+            style="@style/Widget.LS.Block.Tile"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_row_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/ls_row_parent"
             android:layout_marginTop="@dimen/ls_gap_sm">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/ls_row_parent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingStart="@dimen/ls_gap"
@@ -104,18 +107,18 @@
                 <com.littlestar.app.core.ui.BlockLayout
                     style="@style/Widget.LS.Block.Icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/ls_module_glyph"
-                    app:ls_fill="@color/ls_yellow"
+                    android:layout_height="wrap_content"
+                    app:ls_fill="@color/ls_primary_container"
                     app:ls_pressable="false">
                     <TextView
                         android:id="@+id/timeValue"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:paddingStart="@dimen/ls_gap"
-                        android:paddingEnd="@dimen/ls_gap"
+                        android:paddingHorizontal="@dimen/ls_gap"
+                        android:paddingVertical="@dimen/ls_gap_sm"
                         android:textAppearance="@style/TextAppearance.LS.Body"
-                        android:textColor="@color/ls_on_yellow"
+                        android:textColor="@color/ls_primary"
                         android:textStyle="bold" />
                 </com.littlestar.app.core.ui.BlockLayout>
             </LinearLayout>
@@ -137,28 +140,19 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
-        <com.littlestar.app.core.ui.BlockLayout
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
-            style="@style/Widget.LS.Block.Primary"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/ls_btn_secondary"
-            android:layout_marginTop="@dimen/ls_section">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/settings_save"
-                android:textAppearance="@style/TextAppearance.LS.Button" />
-        </com.littlestar.app.core.ui.BlockLayout>
-        <TextView
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_section"
+            android:minHeight="@dimen/ls_btn_primary"
+            android:text="@string/settings_save" />
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancel"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/ls_gap"
-            android:padding="@dimen/ls_gap_sm"
-            android:text="@string/settings_cancel"
-            android:textAppearance="@style/TextAppearance.LS.Caption"
-            android:textSize="14sp" />
+            android:text="@string/settings_cancel" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
