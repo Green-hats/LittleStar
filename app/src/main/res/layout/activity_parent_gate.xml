@@ -125,7 +125,8 @@
             android:maxLength="4"
             android:paddingStart="@dimen/ls_card_pad"
             android:paddingEnd="@dimen/ls_card_pad"
-            android:textAppearance="@style/TextAppearance.LS.Title" />
+            android:textAppearance="@style/TextAppearance.LS.Title"
+            android:textColorHint="?attr/colorOnSurfaceVariant" />
 
         <!-- 确认 -->
         <com.google.android.material.button.MaterialButton
