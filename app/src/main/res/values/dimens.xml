@@ -67,7 +67,6 @@
     <dimen name="ls_listen_block">56dp</dimen>
     <dimen name="ls_module_glyph">40dp</dimen>
     <dimen name="ls_module_height">104dp</dimen>
-    <dimen name="ls_parent_entry_top">28dp</dimen>
     <dimen name="ls_ob_dialog_width">280dp</dimen>
     <dimen name="ls_badge_pad">4dp</dimen>
     <dimen name="ls_theme_tile_height">176dp</dimen>

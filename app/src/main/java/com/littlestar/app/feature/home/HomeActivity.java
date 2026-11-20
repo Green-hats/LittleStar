@@ -97,12 +97,8 @@ public final class HomeActivity extends ChildActivity {
             return;
         }
 
-        int green = ContextCompat.getColor(this, R.color.ls_green);
-        int ink = ContextCompat.getColor(this, R.color.ls_ink);
         boolean done = s.isDailyComplete();
         Word w = s.nextWord;
-        binding.todayLabel.setText(done ? R.string.home_today_done : R.string.home_today_words);
-        binding.todayLabel.setTextColor(done ? green : ink);
         binding.heroHanzi.setText(w != null ? w.hanzi : "");
         binding.heroPinyin.setText(w != null ? w.pinyin : "");
         binding.heroEnglish.setText(w != null ? w.english : "");
@@ -115,7 +111,6 @@ public final class HomeActivity extends ChildActivity {
         binding.todayProgressText.setText(done
                 ? getString(R.string.home_progress_done)
                 : getString(R.string.home_today_progress, s.learnedToday, s.goal));
-
     }
 
     /** 进入时当天第一次自动朗读今日字（§9.1）。 */
