@@ -109,6 +109,8 @@
     <string name="cul_slogan">A little listening, every day.</string>
     <string name="cul_list_header_fmt">%1$s · %2$d items</string>
 
+    <string name="player_heading">Now playing</string>
+    <string name="player_lyrics_heading">Lyrics</string>
     <string name="player_desc_play">Play</string>
     <string name="player_desc_pause">Pause</string>
     <string name="player_desc_prev">Previous</string>
