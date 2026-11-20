@@ -60,6 +60,7 @@
 
     <style name="TextAppearance.LS.HomeProgress" parent="TextAppearance.LS.Title">
         <item name="android:textColor">?attr/colorOnPrimaryContainer</item>
+        <item name="android:textSize">@dimen/ls_home_progress_text</item>
     </style>
 
     <style name="TextAppearance.LS.Pinyin" parent="TextAppearance.Material3.HeadlineSmall">

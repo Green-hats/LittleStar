@@ -98,8 +98,8 @@
     <dimen name="ls_home_progress_height">8dp</dimen>
     <dimen name="ls_home_row_height">64dp</dimen>
     <dimen name="ls_home_title_text">28sp</dimen>
-    <dimen name="ls_home_illustration">106dp</dimen>
+    <dimen name="ls_home_illustration">64dp</dimen>
     <dimen name="ls_onboarding_illustration">88dp</dimen>
-    <dimen name="ls_home_progress_text">22sp</dimen>
+    <dimen name="ls_home_progress_text">19sp</dimen>
     <dimen name="ls_home_label_text">16sp</dimen>
 </resources>
