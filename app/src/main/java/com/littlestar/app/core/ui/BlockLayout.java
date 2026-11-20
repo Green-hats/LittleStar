@@ -123,15 +123,17 @@ public class BlockLayout extends FrameLayout {
 
     @Override
     protected void dispatchDraw(@NonNull Canvas canvas) {
-        float travel = (shadowOffset - pressRemain) * pressFraction;
+        float travel = Math.max(0f, shadowOffset - pressRemain) * pressFraction;
         float w = getWidth() - shadowOffset;
         float h = getHeight() - shadowOffset;
         float half = strokeWidth / 2f;
         float r = cornerRadius;
         fillPaint.setColor(fill.getColorForState(getDrawableState(), fill.getDefaultColor()));
         // 1. 影子：固定在 (offset, offset)，不随按下移动
-        canvas.drawRoundRect(shadowOffset, shadowOffset,
-                w + shadowOffset, h + shadowOffset, r, r, shadowPaint);
+        if (shadowOffset > 0f) {
+            canvas.drawRoundRect(shadowOffset, shadowOffset,
+                    w + shadowOffset, h + shadowOffset, r, r, shadowPaint);
+        }
         // 2. 块本体 + 子 View 整体平移 travel
         int save = canvas.save();
         canvas.translate(travel, travel);

@@ -18,6 +18,13 @@ PAIRS = [
     ("ls_on_clay", "ls_clay"), ("ls_on_mint", "ls_mint"),
     ("ls_ink", "ls_clay"), ("ls_ink", "ls_mint"),
     ("ls_red", "ls_paper"),      # 彩色描边文字（如 Quiz 入口）也要 ≥ 4.5
+    ("ls_home_ink", "ls_paper"), ("ls_home_ink", "ls_home_practice"),
+    ("ls_home_ink", "ls_card"), ("ls_home_ink", "ls_home_row_pressed"),
+    ("ls_home_muted", "ls_paper"), ("ls_home_muted", "ls_card"),
+    ("ls_card", "ls_home_action"), ("ls_card", "ls_home_action_pressed"),
+    ("ls_card", "ls_home_action_disabled"),
+    ("ls_home_words_icon", "ls_home_words_bg"),
+    ("ls_home_culture_icon", "ls_home_culture_bg"),
 ]
 
 

@@ -58,6 +58,21 @@
         <item name="android:textColor">@color/ls_muted</item>
     </style>
 
+    <style name="TextAppearance.LS.HomeLabel" parent="">
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:textSize">@dimen/ls_home_label_text</item>
+        <item name="android:textColor">@color/ls_home_ink</item>
+    </style>
+
+    <style name="TextAppearance.LS.HomeTitle" parent="TextAppearance.LS.HomeLabel">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textSize">@dimen/ls_home_title_text</item>
+    </style>
+
+    <style name="TextAppearance.LS.HomeProgress" parent="TextAppearance.LS.HomeLabel">
+        <item name="android:textSize">@dimen/ls_home_progress_text</item>
+    </style>
+
     <style name="TextAppearance.LS.Pinyin" parent="">
         <item name="fontFamily">@font/littlestar_latin</item>
         <item name="android:textSize">24sp</item>
