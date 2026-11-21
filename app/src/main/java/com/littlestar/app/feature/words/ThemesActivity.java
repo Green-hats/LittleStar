@@ -114,11 +114,7 @@ public final class ThemesActivity extends ChildActivity {
                     ? illustration : R.drawable.ill_placeholder);
             h.b.themeGlyph.setText(item.theme.glyph);
             h.b.themeGlyph.setVisibility(hasIllustration ? View.GONE : View.VISIBLE);
-            h.b.badgeText.setText(String.valueOf(item.theme.order));
-            h.b.badgeNum.setContentDescription(
-                    getString(R.string.themes_badge_desc, item.theme.order));
             boolean done = item.total > 0 && item.learned >= item.total;
-            h.b.badgeNum.setVisibility(done ? View.GONE : View.VISIBLE);
             h.b.badgeDone.setVisibility(done ? View.VISIBLE : View.GONE);
             h.b.themeNameZh.setText(item.theme.nameZh);
             h.b.themeNameEn.setText(item.theme.nameEn);

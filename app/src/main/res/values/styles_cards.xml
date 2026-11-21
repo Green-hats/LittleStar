@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ShapeAppearanceOverlay.LS.StoryCard" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/ls_radius_hero</item>
+    </style>
+
+    <style name="Widget.LS.Card.Story" parent="Widget.Material3.CardView.Filled">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.LS.StoryCard</item>
+        <item name="cardBackgroundColor">@color/ls_card</item>
+    </style>
+</resources>

@@ -44,7 +44,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_gap_sm"
-            android:textAppearance="@style/TextAppearance.LS.Caption" />
+            android:background="@drawable/bg_home_icon"
+            android:backgroundTint="@color/ls_primary_container"
+            android:padding="@dimen/ls_card_pad"
+            android:textAppearance="@style/TextAppearance.LS.Title"
+            android:textColor="?attr/colorOnPrimaryContainer" />
 
         <FrameLayout
             android:layout_width="match_parent"

@@ -21,7 +21,6 @@
     <string name="nav_back">Back</string>
 
     <!-- ===== M3 · Home ===== -->
-    <string name="home_panda_desc">Panpan the panda</string>
     <string name="home_words_glyph">字</string>
     <string name="home_culture_glyph">文</string>
     <string name="home_start">Learn today</string>
@@ -94,7 +93,6 @@
     <string name="themes_order_hint">Start from 1 — recommended order</string>
     <string name="themes_words_count">%1$d characters</string>
     <string name="themes_learned">%1$d/%2$d recorded</string>
-    <string name="themes_badge_desc">Theme %1$d</string>
     <string name="wl_quiz">Quiz</string>
     <string name="wl_learned">%1$d / %2$d recorded</string>
     <string name="wl_hint">Tap a character to hear it</string>
@@ -111,9 +109,12 @@
     <string name="cul_slogan">A little listening, every day.</string>
     <string name="cul_list_header_fmt">%1$s · %2$d items</string>
 
+    <string name="player_heading">Now playing</string>
+    <string name="player_lyrics_heading">Lyrics</string>
     <string name="player_desc_play">Play</string>
     <string name="player_desc_pause">Pause</string>
     <string name="player_desc_prev">Previous</string>
+    <string name="player_label_prev">Prev</string>
     <string name="player_desc_next">Next</string>
     <string name="player_time_fmt">%1$d:%2$02d</string>
     <string name="player_subtitle_fmt">%1$s · %2$s</string>

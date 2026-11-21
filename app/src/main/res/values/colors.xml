@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Light Tonal Spot scheme generated with Google Material Color Utilities 0.3.0, seed #245A46. -->
-    <color name="ls_paper">#F5FBF5</color>
+    <!-- Neutral gray surfaces with indigo for primary actions. -->
+    <color name="ls_paper">#F5F6F7</color>
     <color name="ls_card">#FFFFFF</color>
-    <color name="ls_ink">#171D1A</color>
-    <color name="ls_muted">#404944</color>
+    <color name="ls_ink">#19263D</color>
+    <color name="ls_muted">#4D5666</color>
     <color name="ls_stroke">@color/ls_ink</color>
-    <color name="ls_outline">#707974</color>
-    <color name="ls_outline_variant">#BFC9C2</color>
-    <color name="ls_surface_container">#EAEFEA</color>
-    <color name="ls_surface_container_high">#E4EAE4</color>
+    <color name="ls_outline">#747B88</color>
+    <color name="ls_outline_variant">#D2D6DC</color>
+    <color name="ls_surface_container">#EDEFF2</color>
+    <color name="ls_surface_container_high">#E6E9ED</color>
     <color name="ls_track">@color/ls_secondary_container</color>
+    <color name="ls_track_on_primary_container">#98AAD1</color>
     <color name="ls_ripple">#1F171D1A</color>
     <color name="ls_ripple_on_fill">#1FFFFFFF</color>
 
     <!-- Material 3 · accent and container roles -->
-    <color name="ls_primary">#1C6B50</color>
+    <color name="ls_primary">#294886</color>
     <color name="ls_on_primary">@color/ls_card</color>
-    <color name="ls_primary_container">#A6F2D1</color>
+    <color name="ls_primary_container">#E4EBFD</color>
     <color name="ls_primary_container_outline">@color/ls_outline_variant</color>
-    <color name="ls_primary_disabled">#486B5D</color>
-    <color name="ls_secondary">#4C6358</color>
+    <color name="ls_primary_disabled">#536287</color>
+    <color name="ls_secondary">#4B5D85</color>
     <color name="ls_on_secondary">@color/ls_card</color>
-    <color name="ls_secondary_container">#CFE9DA</color>
+    <color name="ls_secondary_container">#E4EBF9</color>
     <color name="ls_secondary_disabled">#69617F</color>
-    <color name="ls_tertiary">#3E6374</color>
+    <color name="ls_tertiary">#8A4C29</color>
     <color name="ls_on_tertiary">@color/ls_card</color>
-    <color name="ls_tertiary_container">#C2E8FC</color>
-    <color name="ls_yellow">#F6E6C5</color>
+    <color name="ls_tertiary_container">#FFEBDA</color>
+    <color name="ls_yellow">#FFE8A7</color>
     <color name="ls_on_yellow">#4D371B</color>
 
-    <color name="ls_on_primary_container">#00513B</color>
-    <color name="ls_on_secondary_container">#354B41</color>
-    <color name="ls_on_tertiary_container">#254B5C</color>
-    <color name="ls_surface_variant">#DBE5DE</color>
-    <color name="ls_surface_dim">#D6DBD6</color>
-    <color name="ls_surface_container_low">#EFF5F0</color>
-    <color name="ls_surface_container_highest">#DEE4DF</color>
-    <color name="ls_inverse_surface">#2C322E</color>
-    <color name="ls_inverse_on_surface">#ECF2ED</color>
-    <color name="ls_inverse_primary">#8BD6B5</color>
+    <color name="ls_on_primary_container">#1E386F</color>
+    <color name="ls_on_secondary_container">#2E405D</color>
+    <color name="ls_on_tertiary_container">#663718</color>
+    <color name="ls_surface_variant">#E4E7EC</color>
+    <color name="ls_surface_dim">#D9DDE4</color>
+    <color name="ls_surface_container_low">#FAFBFC</color>
+    <color name="ls_surface_container_highest">#DFE3E9</color>
+    <color name="ls_inverse_surface">#202C44</color>
+    <color name="ls_inverse_on_surface">#F2F4F8</color>
+    <color name="ls_inverse_primary">#C0D1FF</color>
 
     <!-- 学习反馈 -->
     <color name="ls_error">#BA1A1A</color>

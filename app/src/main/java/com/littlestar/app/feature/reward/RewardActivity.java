@@ -124,7 +124,10 @@ public final class RewardActivity extends ChildActivity {
             Word w = s.learnedWords.get(i);
             BlockLayout block = new BlockLayout(this);
             block.setClickable(false);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(chip, chip);
+            block.setMinimumWidth(chip);
+            block.setMinimumHeight(chip);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             if (i > 0) {
                 lp.setMarginStart(gap);
             }

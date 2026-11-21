@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="ls_flashcard_margin">16dp</dimen>
-    <dimen name="ls_flashcard_image">80dp</dimen>
-    <dimen name="ls_flashcard_image_compact">64dp</dimen>
+    <dimen name="ls_flashcard_image">104dp</dimen>
+    <dimen name="ls_flashcard_image_compact">88dp</dimen>
     <dimen name="ls_flashcard_image_min">48dp</dimen>
     <dimen name="ls_flashcard_gap_min">4dp</dimen>
     <dimen name="ls_flashcard_hanzi_max">100sp</dimen>
@@ -52,7 +52,7 @@
     <dimen name="ls_badge">28dp</dimen>
     <dimen name="ls_feedback_height">48dp</dimen>
     <dimen name="ls_reward_stage">180dp</dimen>
-    <dimen name="ls_reward_panda">100dp</dimen>
+    <dimen name="ls_reward_panda">156dp</dimen>
     <dimen name="ls_confetti">10dp</dimen>
     <dimen name="ls_wave">40dp</dimen>
     <dimen name="ls_wave_height">24dp</dimen>
@@ -68,7 +68,12 @@
     <dimen name="ls_row_review">96dp</dimen>
     <dimen name="ls_cover">56dp</dimen>
     <dimen name="ls_play_big">76dp</dimen>
-    <dimen name="ls_player_cover">200dp</dimen>
+    <dimen name="ls_player_cover">208dp</dimen>
+    <dimen name="ls_player_cover_large_text">148dp</dimen>
+    <dimen name="ls_player_seek_track">4dp</dimen>
+    <dimen name="ls_player_seek_thumb">12dp</dimen>
+    <dimen name="ls_player_seek_inset">16dp</dimen>
+    <dimen name="ls_player_play_icon">32dp</dimen>
     <dimen name="ls_track_height">10dp</dimen>
     <dimen name="ls_thumb">22dp</dimen>
     <dimen name="ls_switch_w">52dp</dimen>
@@ -76,7 +81,6 @@
     <dimen name="ls_switch_knob">22dp</dimen>
     <dimen name="ls_sheet_option_h">80dp</dimen>
     <dimen name="ls_switch_travel">22dp</dimen>
-    <dimen name="ls_gate_card">88dp</dimen>
     <dimen name="ls_weekday_w">44dp</dimen>
     <dimen name="ls_chart_height">140dp</dimen>
     <dimen name="ls_quiz_prompt_ill">120dp</dimen>
@@ -86,7 +90,6 @@
     <dimen name="ls_quiz_listen_bottom">20dp</dimen>
     <dimen name="ls_control_label_min">12sp</dimen>
     <dimen name="ls_control_label_max">16sp</dimen>
-    <dimen name="ls_navigation_label_max">22sp</dimen>
     <dimen name="ls_decorative_glyph_max">20sp</dimen>
     <dimen name="ls_text_fit_step">1sp</dimen>
     <dimen name="ls_surface_stroke">1dp</dimen>
@@ -100,6 +103,8 @@
     <dimen name="ls_home_progress_height">8dp</dimen>
     <dimen name="ls_home_row_height">64dp</dimen>
     <dimen name="ls_home_title_text">28sp</dimen>
-    <dimen name="ls_home_progress_text">22sp</dimen>
+    <dimen name="ls_home_illustration">64dp</dimen>
+    <dimen name="ls_onboarding_illustration">88dp</dimen>
+    <dimen name="ls_home_progress_text">19sp</dimen>
     <dimen name="ls_home_label_text">16sp</dimen>
 </resources>

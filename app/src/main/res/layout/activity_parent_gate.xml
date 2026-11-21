@@ -64,14 +64,16 @@
             </com.littlestar.app.core.ui.BlockLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/ls_gap"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:accessibilityHeading="true"
                     android:text="@string/pg_title"
                     android:textAppearance="@style/TextAppearance.LS.Display" />
 
@@ -83,50 +85,47 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- PIN 提示卡（D31：密码登录） -->
+        <!-- PIN 提示、输入和确认放在同一个表单。 -->
         <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.Material3.CardView.Filled"
+            style="@style/Widget.LS.Card.Story"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/ls_gate_card"
-            android:layout_marginTop="@dimen/ls_section_lg">
-
-            <TextView
-                android:id="@+id/questionText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.LS.Title" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- 输入框 -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/pinField"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_section"
-            android:hint="@string/pg_answer_hint">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/answerInput"
+            android:layout_marginTop="@dimen/ls_section">
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionDone"
-                android:importantForAutofill="no"
-                android:inputType="numberPassword"
-                android:maxLength="4" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- 确认 -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_section"
-            android:minHeight="@dimen/ls_btn_icon"
-            android:text="@string/pg_confirm" />
+                android:orientation="vertical"
+                android:padding="@dimen/ls_card_pad">
+                <TextView
+                    android:id="@+id/questionText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.LS.Title" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/pinField"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_gap"
+                    android:hint="@string/pg_answer_hint">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/answerInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:importantForAutofill="no"
+                        android:inputType="numberPassword"
+                        android:maxLength="4" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnConfirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ls_gap"
+                    android:minHeight="@dimen/ls_btn_icon"
+                    android:text="@string/pg_confirm" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_width="wrap_content"

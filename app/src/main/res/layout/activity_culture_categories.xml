@@ -4,29 +4,27 @@
     android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true"
     android:background="@color/ls_paper">
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" android:maxWidth="@dimen/ls_content_max_width"
         android:padding="@dimen/ls_margin" android:orientation="vertical">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="horizontal" android:gravity="center_vertical">
-            <com.littlestar.app.core.ui.LearningButton
-                android:id="@+id/btnBack"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="@dimen/ls_btn_icon"
-                android:layout_height="@dimen/ls_btn_icon"
-                android:contentDescription="@string/nav_back"
-                app:icon="@drawable/ic_back" />
-            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
-                android:layout_marginStart="@dimen/ls_gap" android:text="@string/home_module_culture_title"
-                android:textAppearance="@style/TextAppearance.LS.Title" />
-        </LinearLayout>
+        <com.littlestar.app.core.ui.LearningButton
+            android:id="@+id/btnBack"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="@dimen/ls_btn_icon"
+            android:layout_height="@dimen/ls_btn_icon"
+            android:contentDescription="@string/nav_back"
+            app:icon="@drawable/ic_back" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap_sm" android:text="@string/home_module_culture_title"
+            android:accessibilityHeading="true" android:textAppearance="@style/TextAppearance.LS.Display" />
         <com.littlestar.app.core.ui.BlockLayout android:id="@+id/catSongs" style="@style/Widget.LS.Block.Tile"
             android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:minHeight="@dimen/ls_module_height" android:padding="@dimen/ls_gap"
                 android:orientation="horizontal" android:gravity="center_vertical">
-                <ImageView android:id="@+id/iconSongs" android:layout_width="@dimen/ls_btn_icon"
-                    android:layout_height="@dimen/ls_btn_icon" android:importantForAccessibility="no"
+                <ImageView android:id="@+id/iconSongs" android:layout_width="@dimen/ls_tile_ill"
+                    android:layout_height="@dimen/ls_tile_ill" android:importantForAccessibility="no"
                     android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_secondary_container"
-                    android:padding="@dimen/ls_gap"
+                    android:padding="@dimen/ls_card_pad"
                     android:src="@drawable/ic_music" app:tint="@color/ls_secondary" />
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
                     android:layout_weight="1" android:layout_marginHorizontal="@dimen/ls_gap" android:orientation="vertical">
@@ -46,10 +44,10 @@
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:minHeight="@dimen/ls_module_height" android:padding="@dimen/ls_gap"
                 android:orientation="horizontal" android:gravity="center_vertical">
-                <ImageView android:id="@+id/iconStories" android:layout_width="@dimen/ls_btn_icon"
-                    android:layout_height="@dimen/ls_btn_icon" android:importantForAccessibility="no"
+                <ImageView android:id="@+id/iconStories" android:layout_width="@dimen/ls_tile_ill"
+                    android:layout_height="@dimen/ls_tile_ill" android:importantForAccessibility="no"
                     android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_tertiary_container"
-                    android:padding="@dimen/ls_gap"
+                    android:padding="@dimen/ls_card_pad"
                     android:src="@drawable/ic_book" app:tint="@color/ls_tertiary" />
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
                     android:layout_weight="1" android:layout_marginHorizontal="@dimen/ls_gap" android:orientation="vertical">
@@ -69,11 +67,11 @@
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:minHeight="@dimen/ls_module_height" android:padding="@dimen/ls_gap"
                 android:orientation="horizontal" android:gravity="center_vertical">
-                <ImageView android:id="@+id/iconPoems" android:layout_width="@dimen/ls_btn_icon"
-                    android:layout_height="@dimen/ls_btn_icon" android:importantForAccessibility="no"
-                    android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_primary_container"
-                    android:padding="@dimen/ls_gap"
-                    android:src="@drawable/ic_scroll" app:tint="@color/ls_primary" />
+                <ImageView android:id="@+id/iconPoems" android:layout_width="@dimen/ls_tile_ill"
+                    android:layout_height="@dimen/ls_tile_ill" android:importantForAccessibility="no"
+                    android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_yellow"
+                    android:padding="@dimen/ls_card_pad"
+                    android:src="@drawable/ic_scroll" app:tint="@color/ls_on_yellow" />
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
                     android:layout_weight="1" android:layout_marginHorizontal="@dimen/ls_gap" android:orientation="vertical">
                     <TextView android:id="@+id/namePoemsEn" android:layout_width="match_parent" android:layout_height="wrap_content"

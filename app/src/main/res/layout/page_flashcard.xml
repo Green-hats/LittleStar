@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/pageCard" style="@style/Widget.Material3.CardView.Filled"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/pageCard" style="@style/Widget.LS.Card.Story"
     android:layout_width="match_parent" android:layout_height="wrap_content">
     <LinearLayout android:id="@+id/cardBody" android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="vertical" android:gravity="center_horizontal" android:padding="@dimen/ls_gap">
-        <LinearLayout android:id="@+id/pageMain" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:gravity="center_vertical" android:orientation="vertical">
-        <FrameLayout android:id="@+id/illustrationFrame" android:layout_width="@dimen/ls_flashcard_image" android:layout_height="@dimen/ls_flashcard_image" android:layout_gravity="center_horizontal">
+        <FrameLayout
+            android:id="@+id/illustrationFrame"
+            android:layout_width="@dimen/ls_flashcard_image"
+            android:layout_height="@dimen/ls_flashcard_image"
+            android:layout_gravity="center_horizontal">
             <com.littlestar.app.core.ui.HanziTextView android:id="@+id/pageGlyph" android:layout_width="match_parent"
                 android:layout_height="match_parent" android:gravity="center" android:importantForAccessibility="no"
                 android:textAppearance="@style/TextAppearance.LS.HanziTile" android:textColor="@color/ls_on_yellow"
-                android:background="@color/ls_yellow" />
-            <ImageView android:id="@+id/pageIllustration" android:layout_width="match_parent"
-                android:layout_height="match_parent" android:importantForAccessibility="no" android:scaleType="fitCenter" />
+                android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_yellow" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/pageIllustration"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop"
+                app:shapeAppearance="?attr/shapeAppearanceCornerMedium" />
         </FrameLayout>
-        <LinearLayout android:id="@+id/wordLabels" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ls_gap_sm" android:orientation="vertical">
         <com.littlestar.app.core.ui.HanziTextView android:id="@+id/pageHanzi" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:gravity="center"
+            android:layout_height="wrap_content" android:gravity="center" android:layout_marginTop="@dimen/ls_gap"
             android:textAppearance="@style/TextAppearance.LS.HanziHero" />
         <TextView android:id="@+id/pagePinyin" android:layout_width="match_parent" android:layout_height="wrap_content"
             android:gravity="center" android:textAppearance="@style/TextAppearance.LS.Pinyin" />
         <TextView android:id="@+id/pageEnglish" android:layout_width="match_parent" android:layout_height="wrap_content"
             android:gravity="center" android:layout_marginTop="@dimen/ls_gap_sm"
             android:textAppearance="@style/TextAppearance.LS.English" />
-        </LinearLayout>
-        </LinearLayout>
         <LinearLayout android:id="@+id/audioRow" android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ls_gap" android:gravity="center" android:orientation="horizontal">
             <com.littlestar.app.core.ui.LearningButton

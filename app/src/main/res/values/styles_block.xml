@@ -56,9 +56,13 @@
         <item name="ls_cornerRadius">@dimen/ls_radius_input</item>
     </style>
 
-    <style name="Widget.LS.Block.Tile" />
+    <style name="Widget.LS.Block.Tile">
+        <item name="ls_fill">@color/ls_card</item>
+        <item name="ls_cornerRadius">@dimen/ls_radius_block</item>
+    </style>
 
     <style name="Widget.LS.Block.Option">
+        <item name="ls_fill">@color/ls_card</item>
         <item name="ls_strokeColor">?attr/colorOutline</item>
     </style>
 </resources>

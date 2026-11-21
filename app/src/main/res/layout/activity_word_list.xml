@@ -4,7 +4,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/wordListContent" android:layout_width="0dp" android:layout_height="0dp" android:padding="@dimen/ls_margin" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" app:layout_constraintWidth_max="@dimen/ls_content_max_width">
 
-        <!-- 顶栏：返回 + 主题名 + Quiz 入口 -->
+        <!-- 返回和测验操作在顶栏，主题名称独占一行并允许换行。 -->
         <com.littlestar.app.core.ui.LearningButton
             android:id="@+id/btnBack"
             style="@style/Widget.Material3.Button.IconButton"
@@ -15,7 +15,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:icon="@drawable/ic_back" />
 
-        <TextView android:id="@+id/listTitle" style="@style/Widget.LS.Label.Navigation" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/ls_gap" android:layout_marginEnd="@dimen/ls_gap" android:textAppearance="@style/TextAppearance.LS.Title" app:layout_constraintBottom_toBottomOf="@id/btnBack" app:layout_constraintEnd_toStartOf="@id/btnQuiz" app:layout_constraintStart_toEndOf="@id/btnBack" app:layout_constraintTop_toTopOf="@id/btnBack" android:maxLines="1" android:ellipsize="end"/>
+        <TextView
+            android:id="@+id/listTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ls_gap_sm"
+            android:accessibilityHeading="true"
+            android:textAppearance="@style/TextAppearance.LS.Display"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnQuiz" />
 
         <com.littlestar.app.core.ui.LearningButton
             android:id="@+id/btnQuiz"
@@ -33,7 +42,7 @@
         <!-- 进度 -->
         <com.google.android.material.progressindicator.LinearProgressIndicator android:id="@+id/listProgress" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginEnd="@dimen/ls_gap" app:layout_constraintBottom_toBottomOf="@id/listProgressText" app:layout_constraintEnd_toStartOf="@id/listProgressText" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="@id/listProgressText"/>
 
-        <TextView android:id="@+id/listProgressText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" android:textAppearance="@style/TextAppearance.LS.Caption" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@id/btnBack"/>
+        <TextView android:id="@+id/listProgressText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" android:textAppearance="@style/TextAppearance.LS.Caption" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@id/listTitle"/>
 
         <androidx.recyclerview.widget.RecyclerView android:id="@+id/wordGrid" android:layout_width="0dp" android:layout_height="0dp" android:layout_marginTop="@dimen/ls_gap" android:layout_marginBottom="@dimen/ls_gap" android:clipToPadding="false" android:overScrollMode="never" app:layout_constraintBottom_toTopOf="@id/wordListHintRow" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/listProgressText"/>
 

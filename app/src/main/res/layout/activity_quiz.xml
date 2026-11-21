@@ -25,26 +25,25 @@
 
         <com.google.android.material.progressindicator.LinearProgressIndicator android:id="@+id/quizProgress" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/btnBack"/>
 
-        <com.google.android.material.card.MaterialCardView android:id="@+id/questionCard" style="@style/Widget.Material3.CardView.Filled"
+        <com.google.android.material.card.MaterialCardView android:id="@+id/questionCard" style="@style/Widget.LS.Card.Story"
             android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginTop="@dimen/ls_gap"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/quizProgress"
             app:cardBackgroundColor="?attr/colorPrimaryContainer">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:padding="@dimen/ls_gap" android:orientation="vertical">
+                android:padding="@dimen/ls_card_pad" android:orientation="vertical">
                 <FrameLayout android:id="@+id/questionIllustration" android:layout_width="@dimen/ls_quiz_prompt_ill"
-                    android:layout_height="@dimen/ls_quiz_prompt_ill" android:layout_gravity="center_horizontal">
-                    <ImageView android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:importantForAccessibility="no" android:src="@drawable/ill_placeholder" />
+                    android:layout_height="@dimen/ls_quiz_prompt_ill" android:layout_gravity="center_horizontal"
+                    android:background="@drawable/bg_home_icon" android:backgroundTint="@color/ls_card">
                     <ImageView android:layout_width="match_parent" android:layout_height="match_parent"
                         android:importantForAccessibility="no" android:padding="@dimen/ls_quiz_icon_padding"
-                        android:src="@drawable/ic_quiz" app:tint="@color/ls_on_yellow" />
+                        android:src="@drawable/ic_quiz" app:tint="@color/ls_primary" />
                 </FrameLayout>
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/ls_gap" android:gravity="center_vertical" android:orientation="horizontal">
                     <TextView android:id="@+id/questionHint" android:layout_width="0dp" android:layout_weight="1"
                         android:layout_height="wrap_content" android:layout_marginEnd="@dimen/ls_gap"
-                        android:text="@string/quiz_listen_hint" android:textAppearance="@style/TextAppearance.LS.Caption" />
+                        android:text="@string/quiz_listen_hint" android:textAppearance="@style/TextAppearance.LS.Title" />
                     <com.littlestar.app.core.ui.LearningButton
                         android:id="@+id/btnListen"
                         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
